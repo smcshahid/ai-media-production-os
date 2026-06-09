@@ -15,8 +15,10 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 |--------|------:|
 | Sprint 0 issues (class A) | 26 |
 | Complete | 2 |
-| In progress | 0 |
-| Not started | 24 |
+| In progress | 4 |
+| Not started | 20 |
+
+*In progress = code + review complete on `feature/T-04-01-sqlalchemy-models`, pending merge: US-04 and its three tasks T-04-01/02/03.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -29,16 +31,16 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 ### Backend foundation
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
-| US-04 | 4 | Database schema foundation | ⬜ |
+| US-04 | 4 | Database schema foundation | 🟡 All tasks done; pending merge |
 | US-03 | 5 | API health and logging | ⬜ |
 | T-02-02 | 45 | Configure PostgreSQL volume and init scripts | ✅ Done (merged, #72) |
 | T-02-03 | 46 | Configure MinIO bucket on startup | ✅ Done (pending merge) |
 | T-03-01 | 53 | Implement /health with dependency probes | ⬜ |
 | T-03-02 | 54 | Add structured logging middleware | ⬜ |
 | T-03-03 | 55 | Request ID propagation | ⬜ |
-| T-04-01 | 50 | SQLAlchemy models for core tables | ⬜ |
-| T-04-02 | 51 | Initial Alembic migration | ⬜ |
-| T-04-03 | 52 | Repository layer interfaces | ⬜ |
+| T-04-01 | 50 | SQLAlchemy models for core tables | 🟡 In progress (code + tests done; PR open) |
+| T-04-02 | 51 | Initial Alembic migration | 🟡 In progress (migration + verify done; PR open) |
+| T-04-03 | 52 | Repository layer interfaces | 🟡 Done (repos + async tests; PR open) |
 
 ### Create Project
 | Issue | # | Title | Status |
@@ -135,6 +137,104 @@ Approve with comments. AC2 bucket-name conflict (`aimpos-spark` placeholder vs `
 
 ---
 
+## T-04-01 — completion record
+
+**Issue:** #50 · **Parent:** US-04 · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge) · **First application code in `api/` and `packages/`**
+
+### Acceptance criteria
+| AC | Result |
+|----|--------|
+| Model file(s) exist for all 6 tables | ✅ `projects`, `pipeline_runs`, `asset_versions`, `approvals`, `audit_events`, `lineage_edges` |
+| `asset_versions` includes `stage`, `version`, `minio_key`, `content_hash`, `is_ai_generated`, `branch` | ✅ Verified by `test_asset_versions_required_columns` |
+| FKs and indexes for `pipeline_run_id`, `project_id` | ✅ Verified by `test_foreign_keys_and_indexes_present` |
+| Models importable without circular dependency errors | ✅ Import + `create_all` on SQLite pass (5/5 tests) |
+
+### Delivered
+- `packages/aimpos-core/` — first shared package: enums (`PipelineStage`, `PipelineRunStatus`, `AssetStage`, `ProjectStatus`, `ApprovalDecision`) + `events/AuditEventType`, `pyproject.toml`
+- `api/pyproject.toml` — api service manifest (FastAPI, SQLAlchemy 2.0, Alembic, asyncpg/psycopg, Pydantic; Ruff/mypy/pytest dev) per D-12; majors pinned
+- `api/app/infrastructure/db/base.py` — `DeclarativeBase` + constraint naming convention + `uuid_pk`/`created_at` helpers
+- `api/app/infrastructure/db/models/` — 6 ORM models + aggregating `__init__` (full `Base.metadata`)
+- `api/tests/unit/test_models_importable.py` — 5 tests (schema completeness, AC columns, FK/index, SQLite build)
+- `.gitignore` — Python tooling artifacts (`.pytest_cache`, `*.egg-info`, caches)
+- `DECISIONS.md` — D-18 (name/minio_key reconciliation), D-19 (enum/UUID/migration strategy)
+
+### Verification
+`pytest api/tests/unit/test_models_importable.py` → 5 passed. `ruff check` clean; `ruff format --check` clean.
+
+### Self-review notes
+- Domain purity preserved: SQLAlchemy lives only in `api/app/infrastructure/db/` (coding-standards §32-33); `api/app/domain/` not touched.
+- Shared enums in `aimpos-core` (not duplicated in api) per Sprint 0 plan §4.3.
+- `pipeline_runs.temporal_workflow_id` added as **nullable** forward-field (TD-10) — bound in US-07.
+- Migration (T-04-02) and repositories (T-04-03) are the remaining US-04 tasks; not in this PR.
+
+---
+
+## T-04-02 — completion record
+
+**Issue:** #51 · **Parent:** US-04 · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge) · Builds directly on T-04-01
+
+### Acceptance criteria
+| AC | Result |
+|----|--------|
+| `alembic upgrade head` creates all 6 tables on empty DB | ✅ Verified on PostgreSQL 16 (compose + throwaway) |
+| `alembic downgrade -1` rolls back cleanly on empty DB | ✅ `downgrade base` removes all tables; re-upgrade succeeds |
+| Migration committed under `api/alembic/versions/` | ✅ `0001_initial_core_tables.py` |
+| Documented in README: `make migrate` | ✅ `api/README.md` + `docs/runbooks/migrations.md`; `make migrate`/`migrate-down` wired |
+
+### Delivered
+- `api/alembic.ini` — URL via `DATABASE_URL`; ruff post-write hook
+- `api/alembic/env.py` — `target_metadata = Base.metadata`; online/offline; `compare_type`/`compare_server_default`
+- `api/alembic/script.py.mako` — typed template matching repo style
+- `api/alembic/versions/0001_initial_core_tables.py` — autogenerated from models, reviewed; 6 tables, FKs, indexes, unique + enum CHECK constraints, JSONB variant, named per D-19
+- `Makefile` — `migrate` (`upgrade head`) + `migrate-down` (`downgrade -1`) via one-off container on `aimpos-spark` network
+- `api/README.md`, `docs/runbooks/migrations.md` — migration docs
+- `DECISIONS.md` — D-20
+
+### Verification
+Autogenerate **NO_DRIFT** vs models; `upgrade head` → 6 tables (+ `alembic_version`) confirmed in the live compose DB via `psql \dt`; `downgrade base` clean; `make migrate` recipe run against the real Sprint-0 stack (exit 0). `ruff check` + `format --check` clean.
+
+### Self-review notes
+- Migration is generated from the T-04-01 models (single source of truth) — no hand-drift.
+- Resolves TD-05's sibling: `make migrate` is no longer a stub. (`logs-api` stub remains, TD-05.)
+- Remaining US-04 task: **T-04-03** (repository interfaces) — not in scope here.
+
+---
+
+## T-04-03 — completion record (closes US-04)
+
+**Issue:** #52 · **Parent:** US-04 · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge) · Completes US-04 (T-04-01/02/03)
+
+### Acceptance criteria
+| AC | Result |
+|----|--------|
+| Repository interfaces in `api/app/infrastructure/db/repositories/` | ✅ `Repository` Protocol + `SQLAlchemyRepository` base + 5 concrete repos |
+| CRUD / query methods per aggregate root | ✅ add/get/list + `list_active`, `list_for_project`, `next_version`, `list_for_run`, `append` |
+| Async SQLAlchemy session pattern | ✅ `AsyncSession`; `session.py` async engine/sessionmaker builders |
+| ≥1 smoke test instantiates each repository against a test DB | ✅ 5 async round-trip tests on `aiosqlite` (all repos) |
+
+### Delivered
+- `api/app/infrastructure/db/session.py` — pure async engine/sessionmaker builders (no globals, no env reads)
+- `api/app/infrastructure/db/repositories/` — `base.py` (Protocol + generic), `project.py`, `pipeline_run.py`, `asset_version.py`, `approval.py`, `audit_event.py`, `__init__.py`
+- `api/tests/conftest.py` — hermetic in-memory async DB fixture
+- `api/tests/integration/test_repositories.py` — per-repository round-trip tests
+- `api/pyproject.toml` — `aiosqlite` dev dep
+- `packages/aimpos-core/aimpos_core/py.typed` — PEP 561 marker (types now flow to api/worker)
+- `DECISIONS.md` — D-21
+
+### Verification
+`pytest` → **10 passed** (5 model + 5 repository). `ruff check` + `format --check` clean (35 files). `mypy` strict clean on `aimpos-core`; clean on `api/app`.
+
+### Self-review notes
+- Repositories `flush`, not `commit` — caller owns the transaction (enables US-05 atomic `store_asset`).
+- `Repository` Protocol keeps domain free to depend on the port, not SQLAlchemy (domain purity).
+- No `LineageEdgeRepository` yet — `lineage_edges` is a relation, not an aggregate root; added when US-14+ writes edges (TD-13).
+- **US-04 is complete** (all three tasks). Unblocks US-01 (seed/repo), US-03 (`/health` DB probe), US-05 (asset storage).
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -150,6 +250,11 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-07 | `minio` uses blanket `env_file` (same least-privilege smell as TD-01) | Low | Broaden #69 to all compose services |
 | TD-08 | `test_minio.py` shares the dev stack/volume (same non-hermetic gap as TD-02) | Low | Broaden #70 to all smoke tests |
 | TD-09 | `#46` carries a stale `sprint:s1` label and the tasks markdown still says "Sprint 1" (live milestone is Sprint 0) | Trivial | Doc/label drift; same as T-02-02 |
+| TD-10 | `pipeline_runs.temporal_workflow_id` is a nullable forward-looking column with no writer until US-07 (Sprint 2) | Low | Intentional; keeps the run table stable per Sprint 0 plan §4.3 ("tables must be correct before data exists"). Populated by US-07 |
+| TD-11 | Enum columns are app-validated `VARCHAR + CHECK`; no DB-native enum type and no DB-level append-only guard on `audit_events`/`approvals` (immutability is by domain rule only, per Sprint 0 plan §4.3) | Low | Accepted for MVP; revisit if a DB trigger is wanted post-MVP |
+| TD-12 | `#50` / T-04-01 task card says `sprint:s1` + location `api/app/...` while milestone is Sprint 0 — same label/milestone drift as TD-09 | Trivial | Doc/label drift |
+| TD-13 | No `LineageEdgeRepository` yet (lineage_edges has a model + migration but no repo) | Low | Intentional — not an aggregate root; add when US-14+/US-20 write/read lineage |
+| TD-14 | Repository tests run on SQLite (`aiosqlite`), not PostgreSQL — JSONB/edge SQL not exercised at unit level | Low | Hermetic by design; covered by compose integration tests later (relates to TD-02/08) |
 
 ---
 
@@ -160,6 +265,12 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | [#69](https://github.com/smcshahid/ai-media-production-os/issues/69) | Harden PostgreSQL service env (least-privilege, drop blanket `env_file`) | Sprint 1 | tech-debt, devops |
 | [#70](https://github.com/smcshahid/ai-media-production-os/issues/70) | Isolate PostgreSQL smoke test from the dev stack (ephemeral project/volume) | Sprint 1 | tech-debt, devops, test |
 | [#71](https://github.com/smcshahid/ai-media-production-os/issues/71) | Add Sprint-0 service port map to README | Sprint 1 | tech-debt, docs |
+
+## Planning inconsistencies discovered (T-04-01)
+
+- **`projects.name` vs `title`:** Sprint 0 plan §4.6 (`GET /projects` → `name`) and the exit gate conflict with T-01-01/T-01-03 task cards (`title`). Resolved to **`name`** (higher doc authority) in D-18. **Action for US-01:** align T-01-03 API field to `name` (no model change needed).
+- **`asset_versions.minio_key` vs `storage_key`:** MVP Definition §6.5 and T-04-01 AC say `minio_key`; Sprint 0 plan §4.3 DoD says `storage_key`. Resolved to **`minio_key`** in D-18. **Action for US-05:** `store_asset()` must populate `minio_key`.
+- Neither requires an SCR — both are field-name reconciliations inside the frozen 6-table model.
 
 ## Planning notes (for when the owning issue begins)
 
@@ -173,3 +284,6 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2026-06-09 | Initial Sprint 0 status; T-02-02 complete; tech-debt register; follow-ups #69–#71 |
+| 1.1 | 2026-06-09 | T-04-01 (SQLAlchemy models) done pending review; first `api/` + `aimpos-core` code; D-18/D-19; TD-10–12; name/minio_key inconsistencies recorded |
+| 1.2 | 2026-06-09 | T-04-02 (initial Alembic migration) done pending review; `make migrate`/`migrate-down` wired; migrations runbook; D-20; verified on PostgreSQL 16 (no drift) |
+| 1.3 | 2026-06-09 | T-04-03 (repositories) done pending review — **closes US-04**; async repos + Protocol port; `py.typed`; D-21; TD-13/14; 10 tests + ruff + mypy clean |

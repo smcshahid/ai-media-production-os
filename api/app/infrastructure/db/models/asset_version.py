@@ -1,0 +1,43 @@
+"""``asset_versions`` — immutable, content-addressable outputs (BC: Asset & Provenance).
+
+Field names follow MVP Definition §6.5 and T-04-01 AC: ``stage``, ``version``,
+``minio_key``, ``content_hash``, ``is_ai_generated``, ``branch``.
+"""
+
+from __future__ import annotations
+
+import uuid
+from datetime import datetime
+
+from aimpos_core.enums import AssetStage
+from sqlalchemy import Boolean, Enum, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy.orm import Mapped, mapped_column
+
+from app.infrastructure.db.base import Base, created_at_column, uuid_pk
+
+
+class AssetVersion(Base):
+    __tablename__ = "asset_versions"
+    __table_args__ = (
+        # Version chain is unique per (project, stage). T-05-03 increments
+        # ``version`` along this chain.
+        UniqueConstraint("project_id", "stage", "version"),
+    )
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("projects.id"), nullable=False, index=True
+    )
+    # Human uploads (US-05) have no run; agent outputs reference their run.
+    pipeline_run_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("pipeline_runs.id"), nullable=True, index=True
+    )
+    stage: Mapped[AssetStage] = mapped_column(
+        Enum(AssetStage, native_enum=False, length=16), nullable=False
+    )
+    version: Mapped[int] = mapped_column(Integer, nullable=False)
+    minio_key: Mapped[str] = mapped_column(String(1024), nullable=False)
+    content_hash: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    is_ai_generated: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    branch: Mapped[str] = mapped_column(String(64), nullable=False, default="main")
+    created_at: Mapped[datetime] = created_at_column()
