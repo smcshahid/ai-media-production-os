@@ -8,12 +8,50 @@ from collections.abc import Sequence
 from aimpos_core.enums import AssetStage
 from sqlalchemy import func, select
 
+from app.domain.assets.service import StoredAsset
 from app.infrastructure.db.models.asset_version import AssetVersion
 from app.infrastructure.db.repositories.base import SQLAlchemyRepository
 
 
 class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
     model = AssetVersion
+
+    async def add_version(
+        self,
+        *,
+        project_id: uuid.UUID,
+        stage: AssetStage,
+        version: int,
+        minio_key: str,
+        content_hash: str,
+        is_ai_generated: bool,
+        branch: str,
+    ) -> StoredAsset:
+        """Persist a new asset version (port impl for ``store_asset``).
+
+        Maps the ORM row to a framework-free ``StoredAsset`` so the domain never
+        sees SQLAlchemy. Flushes (not commits) — the caller owns the transaction.
+        """
+        row = AssetVersion(
+            project_id=project_id,
+            stage=stage,
+            version=version,
+            minio_key=minio_key,
+            content_hash=content_hash,
+            is_ai_generated=is_ai_generated,
+            branch=branch,
+        )
+        await self.add(row)
+        return StoredAsset(
+            id=row.id,
+            project_id=row.project_id,
+            stage=row.stage,
+            version=row.version,
+            minio_key=row.minio_key,
+            content_hash=row.content_hash,
+            is_ai_generated=row.is_ai_generated,
+            branch=row.branch,
+        )
 
     async def next_version(self, project_id: uuid.UUID, stage: AssetStage) -> int:
         """Return the next version number for a ``(project, stage)`` chain.

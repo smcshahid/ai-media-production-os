@@ -37,6 +37,11 @@ class Settings(BaseSettings):
 
     # --- MinIO (US-05) ---
     minio_endpoint: str = "minio:9000"
+    minio_access_key: str = Field(default="aimpos", validation_alias="MINIO_ROOT_USER")
+    minio_secret_key: str = Field(
+        default="change-me-local-dev-password", validation_alias="MINIO_ROOT_PASSWORD"
+    )
+    minio_bucket: str = "aimpos-hot-assets"
     minio_secure: bool = False
 
     # --- Redis ---

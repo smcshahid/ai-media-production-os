@@ -19,6 +19,7 @@ dependencies = [
     "pydantic-settings>=2.3,<3.0",
     "redis>=5.0,<6.0",
     "httpx>=0.27,<1.0",
+    "minio>=7.2,<8.0",
 ]
 
 [project.optional-dependencies]
@@ -72,3 +73,6 @@ warn_redundant_casts = true
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+markers = [
+    "integration: requires live compose MinIO + PostgreSQL (set AIMPOS_RUN_INTEGRATION=1)",
+]

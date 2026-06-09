@@ -15,10 +15,10 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 |--------|------:|
 | Sprint 0 issues (class A) | 26 |
 | Complete | 2 |
-| In progress | 13 |
-| Not started | 11 |
+| In progress | 18 |
+| Not started | 6 |
 
-*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), and **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests). FEAT-01 (#20) is the US-01 feature wrapper.*
+*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), and **US-05** (T-05-01/02/03/04 asset storage service). FEAT-01 (#20) is the US-01 feature wrapper.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -55,11 +55,11 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 ### Upload Asset
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
-| US-05 | 6 | MinIO asset upload service | ⬜ |
-| T-05-01 | 56 | MinIO client wrapper | ⬜ |
-| T-05-02 | 57 | Content-hash keys | ⬜ |
-| T-05-03 | 58 | AssetVersion on upload | ⬜ |
-| T-05-04 | 59 | Upload round-trip test | ⬜ |
+| US-05 | 6 | MinIO asset upload service | 🟡 All tasks done; pending merge |
+| T-05-01 | 56 | MinIO client wrapper | 🟡 Done (pending merge) |
+| T-05-02 | 57 | Content-hash keys | 🟡 Done (pending merge) |
+| T-05-03 | 58 | AssetVersion on upload | 🟡 Done (pending merge) |
+| T-05-04 | 59 | Upload round-trip test | 🟡 Done (pending merge) |
 
 ### Login + Dashboard shell
 | Issue | # | Title | Status |
@@ -347,6 +347,48 @@ Autogenerate **NO_DRIFT** vs models; `upgrade head` → 6 tables (+ `alembic_ver
 
 ---
 
+## US-05 — completion record (T-05-01…04)
+
+**Issue:** #6 · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge) · Asset storage **service** (no HTTP route — see TD-22)
+
+### Acceptance criteria (US-05)
+| AC | Result |
+|----|--------|
+| `store_asset` computes SHA-256 and stores at hash key | ✅ `compute_content_hash` (SHA-256) → `build_object_key` `{project_id}/{stage}/{hash}`; live object stored at that key |
+| Metadata row `content_hash` matches ETag | ⚠️ Reconciled (D-25): MinIO single-PUT ETag is **MD5**, not SHA-256. `content_hash`=SHA-256 (content address); `upload_bytes` **verifies the ETag against `md5(data)`** post-upload ("verified after upload") |
+| Duplicate bytes deduplicated | ✅ Same bytes → same `minio_key` (one blob) + **new version row** (versions 1,2 live) |
+
+### Tasks
+| Task | AC | Result |
+|------|----|--------|
+| T-05-01 (#56) MinIO client wrapper | reads endpoint/keys from env; `upload_bytes`/`download_bytes`; typed errors | ✅ `MinioClient` (sync SDK + `asyncio.to_thread`); `StorageError`/`ObjectNotFoundError`; `stat_object` (head); config via `aimpos-config` |
+| T-05-02 (#57) content-hash keys | `compute_hash`→sha256; `build_object_key` deterministic; empty/small/large | ✅ Pure `domain/assets/content.py`; unit-tested empty/5MB/large |
+| T-05-03 (#58) AssetVersion on upload | returns `id/version/content_hash/minio_key`; version increments per `(project,stage)`; `is_ai_generated`/`branch` settable; hash verified | ✅ `store_asset` (ports & adapters); `StoredAsset` DTO; `next_version` chain; flags pass-through |
+| T-05-04 (#59) round-trip test | runs vs compose MinIO+PG; bytes identical; DB `content_hash`=sha256; dup→new version | ✅ `tests/integration/test_asset_upload.py` (skipped unless `AIMPOS_RUN_INTEGRATION=1`); live round-trip + dedup verified |
+
+### Delivered
+- `api/app/domain/assets/content.py` — `compute_content_hash` / `build_object_key` (pure, T-05-02)
+- `api/app/domain/assets/service.py` — `store_asset` + `BlobStore`/`AssetVersionStore` ports + `StoredAsset` DTO (framework-free, T-05-03)
+- `api/app/infrastructure/storage/minio_client.py` — `MinioClient` (`BlobStore` impl, T-05-01); `StorageError`/`ObjectNotFoundError`
+- `api/app/infrastructure/db/repositories/asset_version.py` — `add_version(...) -> StoredAsset` (port impl, ORM→DTO map)
+- `packages/aimpos-config/aimpos_config/settings.py` — `minio_access_key`/`minio_secret_key`/`minio_bucket` (aliased to `MINIO_ROOT_USER`/`MINIO_ROOT_PASSWORD`/`MINIO_BUCKET`)
+- `api/pyproject.toml` — `minio` dep + `integration` pytest marker
+- `api/tests/unit/test_asset_content.py` + `test_store_asset.py` (6 unit tests); `api/tests/integration/test_asset_upload.py` + `conftest.py` (T-05-04)
+- `DECISIONS.md` — D-25; `api/README.md` — asset storage section
+
+### Verification
+`pytest` → **33 passed, 1 skipped** (27 prior + 6; integration skipped by default). `ruff` + `mypy` (strict on `aimpos-config`) clean. **Live (`AIMPOS_RUN_INTEGRATION=1`, compose MinIO+PostgreSQL):** identical bytes stored twice → versions **1**/**2**, same `minio_key`+`content_hash`; object **downloaded byte-identical**; downloaded SHA-256 == recorded `content_hash`.
+
+### Self-review notes
+- **Domain purity preserved:** `store_asset` lives in `api/domain/assets/` yet imports no SQLAlchemy/SDK — it depends on the `BlobStore`/`AssetVersionStore` ports; adapters are injected (resolves the Repository-Structure §113 vs coding-standards §32 tension — D-25).
+- **`minio_key` populated** (not `storage_key`) — discharges the D-18 "Action for US-05".
+- **Scope held:** service only. **No `POST/GET /assets` route** is defined by any Sprint-0 task, yet the "Upload Asset" success criterion needs it → **TD-22** (add before Week-3 frontend). Did not invent the route here.
+- `content_hash` (SHA-256) vs ETag (MD5) honestly reconciled — see AC table + D-25.
+- The running `aimpos-api:dev` image predates the `minio` dep; **rebuild needed** only when the assets route lands (no runtime use in US-05).
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -374,6 +416,9 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-19 | Uvicorn startup banner lines ("Application startup complete", "Uvicorn running…") stay plaintext (uvicorn loggers have own handlers, `propagate=False`) | Trivial | Cosmetic; route `uvicorn.*` through the JSON root handler in `configure_logging` if fully-unified logs are wanted |
 | TD-20 | Structured-logging `extra={}` keys can collide with reserved `LogRecord` attributes (`name`, `msg`, …) and raise at call time (hit + fixed during T-01-02: `name`→`project_name`) | Trivial | Optional hardening: a small `log_extra()` helper that prefixes/screens reserved keys |
 | TD-21 | No CI workflow yet (`ci-api.yml` referenced by T-01-04 AC) — tests run locally only | Low | Add GitHub Actions `ci-api.yml` (ruff + mypy + pytest) — likely its own infra task/issue |
+| TD-22 | No Sprint-0 task defines the `POST /assets` + `GET /assets` HTTP surface, yet the "Upload Asset" success criterion + Week-3 frontend need it (US-05 delivers only the `store_asset` service) | Medium | Add a thin assets route task (calls `store_asset` / `AssetVersionRepository.list_for_project`) before the Week-3 frontend integration; requires `aimpos-api` image rebuild (adds `minio` dep) |
+| TD-23 | App uses MinIO **root** credentials (`MINIO_ROOT_USER/PASSWORD`) rather than a scoped service account | Low | Mint a least-privilege MinIO access key for the api/worker (relates to #69 least-privilege theme) |
+| TD-24 | `psycopg` async rejects Windows' default `ProactorEventLoop`; integration tests need a `WindowsSelectorEventLoopPolicy` shim (added in `tests/integration/conftest.py`) | Trivial | Windows-dev-host only; no-op on Linux/CI. Revisit if `asyncpg` is adopted for the app engine |
 
 ---
 
@@ -388,7 +433,7 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 ## Planning inconsistencies discovered (T-04-01)
 
 - **`projects.name` vs `title`:** Sprint 0 plan §4.6 (`GET /projects` → `name`) and the exit gate conflict with T-01-01/T-01-03 task cards (`title`). Resolved to **`name`** (higher doc authority) in D-18. **Action for US-01:** align T-01-03 API field to `name` (no model change needed).
-- **`asset_versions.minio_key` vs `storage_key`:** MVP Definition §6.5 and T-04-01 AC say `minio_key`; Sprint 0 plan §4.3 DoD says `storage_key`. Resolved to **`minio_key`** in D-18. **Action for US-05:** `store_asset()` must populate `minio_key`.
+- **`asset_versions.minio_key` vs `storage_key`:** MVP Definition §6.5 and T-04-01 AC say `minio_key`; Sprint 0 plan §4.3 DoD says `storage_key`. Resolved to **`minio_key`** in D-18. **Action for US-05:** ✅ **Done** — `store_asset()` populates `minio_key` (D-25).
 - Neither requires an SCR — both are field-name reconciliations inside the frozen 6-table model.
 
 ## Planning notes (for when the owning issue begins)
@@ -409,3 +454,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.4 | 2026-06-09 | US-04 committed (`791a94b`); **T-03-01 (`/health`) done** — opens US-03; `aimpos-config` + app factory + probes + api/redis compose services + Dockerfile; D-22; TD-05 resolved, TD-15–18; 16 tests + ruff + mypy clean; live 200/503 verified |
 | 1.5 | 2026-06-09 | **US-03 closed** — T-03-02 (structured access logging) + T-03-03 (request-id propagation); pure-ASGI middleware + `request_id_var`/filter in `aimpos-config`; `--no-access-log`; D-23; TD-19; 21 tests + ruff + mypy clean; live request-scoped correlation verified |
 | 1.6 | 2026-06-09 | **US-01 done** — T-01-01 (verify-only, covered by `0001`), T-01-02 (idempotent seed), T-01-03 (`GET /projects`, `name`), T-01-04 (repo/seed/route tests); `domain/studio` policy; D-24; TD-20/21; 27 tests + ruff + mypy clean; live seed + `GET /projects` ACTIVE verified |
+| 1.7 | 2026-06-09 | **US-05 done** — T-05-01 (`MinioClient`), T-05-02 (content hash/key), T-05-03 (`store_asset` ports & adapters + `StoredAsset`), T-05-04 (integration round-trip); `aimpos-config` MinIO creds; D-25; TD-22/23/24; 33 tests (+1 skipped) + ruff + mypy clean; **live** round-trip + dedup verified against compose MinIO+PostgreSQL |
