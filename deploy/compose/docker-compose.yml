@@ -1,0 +1,47 @@
+# AIMPOS-Spark Visual — Sprint-0 compose stack.
+# T-02-02 lands the PostgreSQL service; later tasks append minio (T-02-03),
+# redis, and api on the same internal `aimpos-spark` network.
+#
+# Usage (from repo root):
+#   cp .env.example .env        # first time only
+#   docker compose -f deploy/compose/docker-compose.yml --env-file .env up -d
+#
+# Or via Makefile:  make up
+name: aimpos-spark
+
+services:
+  postgresql:
+    image: postgres:16-alpine
+    container_name: aimpos-postgresql
+    restart: unless-stopped
+    # Credentials and database name come from the repo .env (see .env.example).
+    # The official image creates POSTGRES_USER/POSTGRES_DB on first boot.
+    env_file:
+      - ../../.env
+    # Internal network only — no host port published in the base file.
+    # Other services reach the database at `postgresql:5432`.
+    # The dev overlay (docker-compose.dev.yml) publishes 5432 to the host
+    # for local psql / GUI tooling.
+    expose:
+      - "5432"
+    volumes:
+      - aimpos-postgres-data:/var/lib/postgresql/data
+      # Scripts here run once, in lexical order, on an empty data directory.
+      - ../init/postgres:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - aimpos-spark
+
+networks:
+  aimpos-spark:
+    name: aimpos-spark
+    driver: bridge
+
+volumes:
+  aimpos-postgres-data:
+    name: aimpos-postgres-data

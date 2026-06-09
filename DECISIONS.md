@@ -16,7 +16,8 @@ Format: `D-NN | Decision | Date | Rationale`
 ### D-11 — US-26 ships in Sprint 0 against a 4-service compose
 **Date:** 2026-06-09  
 **Decision:** The frontend nav shell (US-26) is delivered in Sprint 0 even though `aimpos-spark-dependencies.csv` lists `US-02 → US-26` (frontend needs running stack).  
-**Rationale:** Sprint 0 uses a Sprint-0-scoped compose (PostgreSQL, MinIO, Redis, API) created in T-02-02 — not the full 9-service stack (US-02, Sprint 1). The frontend only needs the API base URL, which the 4-service compose provides. This override is intentional and conservative; it does not pull GPU/Temporal work forward. See Sprint Reclassification §risks R2.
+**Rationale:** Sprint 0 uses a Sprint-0-scoped compose (PostgreSQL, MinIO, Redis, API) created in T-02-02 — not the full 9-service stack (US-02, Sprint 1). The frontend only needs the API base URL, which the 4-service compose provides. This override is intentional and conservative; it does not pull GPU/Temporal work forward. See Sprint Reclassification §risks R2.  
+**Clarification (2026-06-09 — see D-16):** "created in T-02-02" should read *introduced* in T-02-02. T-02-02 authors the Sprint-0 compose file with the **PostgreSQL** service only. The remaining Sprint-0 services are appended incrementally on the same `aimpos-spark` network by their owning tasks (MinIO by T-02-03; the API and Redis service entries by their respective Sprint-0 tasks). D-11's decision is unaffected: US-26 depends only on the API base URL, which is available once the API service entry lands — at or before the Sprint-0 exit gate, not necessarily within T-02-02.
 
 ### D-12 — Tooling pinned for the monorepo
 **Date:** 2026-06-09  
@@ -37,6 +38,12 @@ Format: `D-NN | Decision | Date | Rationale`
 **Date:** 2026-06-09  
 **Decision:** Branch protection could not be enabled via API — GitHub returned 403 "Upgrade to GitHub Pro or make this repository public." The PR workflow is therefore enforced by governance convention (branching-strategy.md), not by a server-side rule, until the repo is on GitHub Pro or made public.  
 **Rationale:** As a solo founder this is low risk; the bootstrap exception (D-13) already allows direct-to-`main` skeleton commits. Revisit when upgrading to Pro or when collaborators join. Re-run `backlog/protect_and_audit.py` to apply protection once the plan supports it.
+
+### D-16 — PostgreSQL service: internal-only base, dev overlay publishes the port
+**Date:** 2026-06-09
+**Decision:** The Sprint-0 compose (`deploy/compose/docker-compose.yml`) runs `postgres:16-alpine` on the internal `aimpos-spark` network with no host port published; a separate `docker-compose.dev.yml` overlay publishes `5432` for local tooling. The database/user are created by the image from `.env`; `deploy/init/postgres/01-extensions.sql` enables `uuid-ossp` + `pgcrypto`. Compose project, network, and volume use explicit fixed names (`aimpos-spark`, `aimpos-postgres-data`) for deterministic verification.
+**Rationale:** Satisfies T-02-02 AC ("exposes 5432 to API on internal network only") while keeping a developer escape hatch. T-02-02 is Sprint 0 but its dependency T-02-01 (full 9-service compose) is Sprint 1 per Sprint Reclassification, so this task creates a PostgreSQL-only Sprint-0 compose; later tasks (T-02-03 MinIO, API) append services to the same file. Extensions chosen for the US-04 schema's UUID primary keys. Verified by `scripts/smoke/test_postgres.py`.  
+**Relationship to D-11:** This entry refines D-11's phrase "Sprint-0-scoped compose … created in T-02-02." T-02-02 *introduces* the compose file with PostgreSQL only and does not author the MinIO/Redis/API services; those are added by their own Sprint-0 tasks (MinIO = T-02-03). The multi-service Sprint-0 stack that D-11 relies on is reached by the Sprint-0 exit gate, not by T-02-02 alone. D-16 supersedes only the task-attribution clause of D-11; the rest of D-11 stands.
 
 ---
 
