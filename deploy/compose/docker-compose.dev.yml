@@ -23,3 +23,14 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"
+
+  redis:
+    # Publish 6379 for local redis-cli / GUI tooling.
+    ports:
+      - "6379:6379"
+
+  api:
+    # Publish the API on API_PORT (default 8000) for local access:
+    #   http://localhost:8000/health  ·  http://localhost:8000/docs
+    ports:
+      - "${API_PORT:-8000}:8000"

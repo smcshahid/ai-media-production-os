@@ -23,6 +23,22 @@ REST API for AIMPOS-Spark Visual. Single deployable application container.
 
 `pyproject.toml` (FastAPI, SQLAlchemy, Alembic, Ruff, mypy) is introduced with US-04.
 
+## Running the API + health check (US-03)
+
+The API is a service in the Sprint-0 compose stack (built from `api/Dockerfile`).
+
+```bash
+make up-dev        # build + start postgresql, minio, redis, api (ports published)
+make health        # GET /health (pretty-printed)  ·  make logs-api  to tail logs
+```
+
+- Docs/OpenAPI: <http://localhost:8000/docs> · health: <http://localhost:8000/health>
+- `GET /health` runs concurrent reachability probes for **postgresql**, **redis**,
+  and **minio** and returns **200** (`status: healthy`) when all are reachable,
+  otherwise **503** (`status: unhealthy`) with a per-dependency breakdown.
+- Configuration loads via the shared `aimpos-config` package (`Settings`) — no
+  `os.getenv` in application code. `temporal`/`ollama` join `/health` in Sprint 1.
+
 ## Database migrations (US-04)
 
 PostgreSQL is the system of record; all schema changes go through Alembic

@@ -1,7 +1,8 @@
 # AIMPOS-Spark Visual — Developer shortcuts
 # Functional targets land with their owning issues:
-#   up/down/logs/db-* -> T-02-02 (Sprint-0 compose: postgresql; +minio/redis/api later)
+#   up/down/logs/db-* -> T-02-02 (Sprint-0 compose: postgresql, minio, redis, api)
 #   migrate           -> US-04   (Alembic initial migration)
+#   logs-api/health   -> T-03-01 (API service + /health endpoint)
 
 COMPOSE_FILE := deploy/compose/docker-compose.yml
 COMPOSE_DEV  := deploy/compose/docker-compose.dev.yml
@@ -9,7 +10,7 @@ ENV_FILE     := .env
 COMPOSE      := docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE)
 COMPOSE_DEV_CMD := docker compose -f $(COMPOSE_FILE) -f $(COMPOSE_DEV) --env-file $(ENV_FILE)
 
-.PHONY: help env up up-dev down logs logs-api db-shell db-smoke minio-smoke migrate migrate-down
+.PHONY: help env up up-dev down logs logs-api db-shell db-smoke minio-smoke health migrate migrate-down
 
 # US-04 / T-04-02: until the API image lands (US-03), run Alembic in a one-off
 # python container attached to the compose network so DATABASE_URL
@@ -35,6 +36,7 @@ help:
 	@echo "  make db-shell  Open a psql shell on the postgresql service"
 	@echo "  make db-smoke    Run the PostgreSQL smoke test (T-02-02 acceptance)"
 	@echo "  make minio-smoke Run the MinIO smoke test (T-02-03 acceptance)"
+	@echo "  make health      Curl the API /health endpoint (needs make up-dev)"
 	@echo "  make migrate     Apply Alembic migrations (alembic upgrade head)"
 	@echo "  make migrate-down Roll back the last Alembic migration (downgrade -1)"
 
@@ -54,7 +56,12 @@ logs:
 	$(COMPOSE) logs -f
 
 logs-api:
-	@echo "[pending] 'make logs-api' tails the api service once it joins the compose stack."
+	$(COMPOSE) logs -f api
+
+# Hits /health on the dev-published port. -f makes curl exit non-zero on 503 so
+# this doubles as a quick readiness gate. Requires `make up-dev`.
+health:
+	curl -fsS http://localhost:$${API_PORT:-8000}/health | python -m json.tool
 
 db-shell:
 	$(COMPOSE) exec postgresql sh -c 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
