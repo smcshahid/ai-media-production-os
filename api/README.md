@@ -39,6 +39,15 @@ make health        # GET /health (pretty-printed)  ·  make logs-api  to tail lo
 - Configuration loads via the shared `aimpos-config` package (`Settings`) — no
   `os.getenv` in application code. `temporal`/`ollama` join `/health` in Sprint 1.
 
+### Logging & request correlation (US-03)
+
+- Logs are single-line **JSON** (`aimpos-config` `configure_logging`). Each request
+  gets a **`request_id`** (inbound `X-Request-ID` header if present, else a UUID4),
+  echoed on the response and attached to **every** log line emitted while handling
+  the request (access log, in-handler library logs) for correlation.
+- One structured access line per request: `http_method`, `path`, `status_code`,
+  `duration_ms`, `client`, `request_id` (uvicorn's plaintext access log is disabled).
+
 ## Database migrations (US-04)
 
 PostgreSQL is the system of record; all schema changes go through Alembic

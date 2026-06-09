@@ -17,6 +17,8 @@ from fastapi import FastAPI
 
 from app.infrastructure.cache.redis_client import build_redis
 from app.infrastructure.db.session import build_engine
+from app.middleware.logging import AccessLogMiddleware
+from app.middleware.request_id import RequestIDMiddleware
 from app.routes.health import router as health_router
 
 
@@ -44,6 +46,11 @@ def create_app() -> FastAPI:
         summary="Governed AI media production platform — REST surface.",
         lifespan=lifespan,
     )
+    # Order matters: middleware added last runs outermost. RequestID must wrap
+    # AccessLog so the request_id context var is set before the access line is
+    # emitted (and is available to the handler in between).
+    app.add_middleware(AccessLogMiddleware)
+    app.add_middleware(RequestIDMiddleware)
     app.include_router(health_router)
     return app
 
