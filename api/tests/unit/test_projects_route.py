@@ -9,12 +9,15 @@ from __future__ import annotations
 
 import httpx
 import pytest
+from aimpos_config import get_settings
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dependencies import get_session
 from app.domain.studio.project import DEFAULT_PROJECT_NAME
 from app.main import create_app
 from app.seed.default_project import seed_default_project
+
+_AUTH = {"Authorization": f"Bearer {get_settings().api_token}"}
 
 
 def _app_with_session(session: AsyncSession) -> httpx.ASGITransport:
@@ -28,7 +31,7 @@ async def test_get_projects_returns_seeded_project(session: AsyncSession) -> Non
     await seed_default_project(session)
     transport = _app_with_session(session)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.get("/projects")
+        response = await client.get("/projects", headers=_AUTH)
 
     assert response.status_code == 200
     body = response.json()
@@ -42,7 +45,7 @@ async def test_get_projects_returns_seeded_project(session: AsyncSession) -> Non
 async def test_get_projects_empty_when_unseeded(session: AsyncSession) -> None:
     transport = _app_with_session(session)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.get("/projects")
+        response = await client.get("/projects", headers=_AUTH)
 
     assert response.status_code == 200
     assert response.json() == []

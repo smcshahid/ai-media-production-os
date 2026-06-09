@@ -15,8 +15,8 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 |--------|------:|
 | Sprint 0 issues (class A) | 26 |
 | Complete | 2 |
-| In progress | 18 |
-| Not started | 6 |
+| In progress | 19 |
+| Not started | 5 |
 
 *In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), and **US-05** (T-05-01/02/03/04 asset storage service). FEAT-01 (#20) is the US-01 feature wrapper.*
 
@@ -65,7 +65,7 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 ### Login + Dashboard shell
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
-| US-25 | 17 | Bearer token auth | ⬜ |
+| US-25 | 17 | Bearer token auth | 🟡 Backend done (T-25-01/02); frontend T-25-03 deferred to US-26 |
 | US-26 | 12 | Nav shell + idle routes | ⬜ |
 | T-26-01 | 67 | App shell with React Router | ⬜ |
 | T-26-02 | 68 | Nav bar and route guards | ⬜ |
@@ -397,6 +397,48 @@ Completes US-05's Asset-Storage component per the frozen plan (`GET /assets` is 
 
 ---
 
+## US-25 (backend) — completion record (T-25-01/02)
+
+**Issue:** #17 · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Backend done (pending merge) · Frontend login (T-25-03) deferred to US-26 (no `web/` app yet)
+
+US-25 is **S2** in the old issue tracker but a **Sprint-0** deliverable per the higher-authority Sprint 0 plan §4.5 (Authentication) and the exit gate ("auth middleware live on all routes") — a Sprint reclassification. Implemented the backend half now; the React login page + token interceptor (T-25-03) lands with the frontend.
+
+### Acceptance criteria (Sprint 0 plan §4.5, backend)
+| AC | Result |
+|----|--------|
+| `middleware/auth.py` validates Bearer against `AIMPOS_API_TOKEN` | ✅ `AuthMiddleware` reads `Settings.api_token` (alias `AIMPOS_API_TOKEN`) |
+| All routes except `/health` → 401 when token absent/invalid | ✅ Live: `/projects`, `POST /assets` → 401; `/health` → 200 without token |
+| `/health` exempt (Docker health/monitoring) | ✅ Exempt set is exactly `{"/health"}` |
+| 401 body is `{"detail": "Unauthorized"}` | ✅ Live body matches; `WWW-Authenticate: Bearer` header added |
+| Token from `Authorization: Bearer` only — no query fallback | ✅ `?token=…` → 401 (unit + design) |
+| `AIMPOS_API_TOKEN` documented in env template | ✅ Present in `.env` template (line 8) — T-25-02 |
+| D-09 recorded (token strategy; Keycloak → Phase 1) | ✅ DECISIONS D-09 |
+
+### Tasks
+| Task | Result |
+|------|--------|
+| T-25-01 Bearer middleware | ✅ `api/app/middleware/auth.py` (pure-ASGI; innermost so 401s are still id'd + access-logged) |
+| T-25-02 token via env var | ✅ `Settings.api_token` (existing) + env template |
+| T-25-03 wire token into React client | ⬜ Deferred to US-26 (frontend not yet scaffolded) |
+
+### Delivered
+- `api/app/middleware/auth.py` — `AuthMiddleware` (Bearer, `secrets.compare_digest`, 401 JSON)
+- `api/app/main.py` — middleware order `RequestID → AccessLog → Auth → app`
+- `api/tests/unit/test_auth.py` — 6 tests; updated `test_projects_route.py` + `test_assets_route.py` to send the Bearer header
+- `DECISIONS.md` — D-09; `api/README.md` — auth section
+
+### Verification
+`pytest` → **44 passed, 1 skipped** (6 auth + header updates). `ruff` + `mypy` clean. **Live (rebuilt image):** `/health` 200 (no token); `/projects` & `POST /assets` → **401 `{"detail":"Unauthorized"}`** without/with-wrong token; `/projects` → **200** with the valid token.
+
+### Self-review notes
+- **Strict DoD:** only `/health` is exempt, so `/docs` + `/openapi.json` are also protected (return 401 unauthenticated) — better security posture; documented in D-09. Hit `/openapi.json` with the token to explore.
+- Middleware (not a dependency) per DoD; pure-ASGI matches the request-id/access-log style (D-23).
+- **CORS/OPTIONS** preflight is not yet handled — needed when the cross-origin frontend lands; recorded as **TD-26** (pair with US-26).
+- Token compare is constant-time (`secrets.compare_digest`); empty configured token fails closed.
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -426,6 +468,7 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-21 | No CI workflow yet (`ci-api.yml` referenced by T-01-04 AC) — tests run locally only | Low | Add GitHub Actions `ci-api.yml` (ruff + mypy + pytest) — likely its own infra task/issue |
 | TD-22 | No Sprint-0 task defines the `POST /assets` + `GET /assets` HTTP surface, yet the "Upload Asset" success criterion + Week-3 frontend need it (US-05 delivers only the `store_asset` service) | Medium | ✅ **Resolved** — `POST /assets` + `GET /assets` added (D-26); image rebuilt; live upload flow verified |
 | TD-25 | `store_asset` writes the MinIO blob before the DB row flush; on a later DB failure the object is orphaned (no delete-on-failure compensation) | Low | Benign by design — content-addressed key is self-deduplicating; add compensation (or an unreferenced-object sweep) post-MVP. Matches plan §4.7 "atomic … or compensates" allowance |
+| TD-26 | No CORS handling yet — the auth middleware will 401 the browser's credential-less OPTIONS preflight once a cross-origin frontend (`localhost:5173`) calls the API | Medium | Add `CORSMiddleware` (outermost) with the web origin + exempt/short-circuit OPTIONS preflight; do it with US-26 frontend integration |
 | TD-23 | App uses MinIO **root** credentials (`MINIO_ROOT_USER/PASSWORD`) rather than a scoped service account | Low | Mint a least-privilege MinIO access key for the api/worker (relates to #69 least-privilege theme) |
 | TD-24 | `psycopg` async rejects Windows' default `ProactorEventLoop`; integration tests need a `WindowsSelectorEventLoopPolicy` shim (added in `tests/integration/conftest.py`) | Trivial | Windows-dev-host only; no-op on Linux/CI. Revisit if `asyncpg` is adopted for the app engine |
 
@@ -465,3 +508,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.6 | 2026-06-09 | **US-01 done** — T-01-01 (verify-only, covered by `0001`), T-01-02 (idempotent seed), T-01-03 (`GET /projects`, `name`), T-01-04 (repo/seed/route tests); `domain/studio` policy; D-24; TD-20/21; 27 tests + ruff + mypy clean; live seed + `GET /projects` ACTIVE verified |
 | 1.7 | 2026-06-09 | **US-05 done** — T-05-01 (`MinioClient`), T-05-02 (content hash/key), T-05-03 (`store_asset` ports & adapters + `StoredAsset`), T-05-04 (integration round-trip); `aimpos-config` MinIO creds; D-25; TD-22/23/24; 33 tests (+1 skipped) + ruff + mypy clean; **live** round-trip + dedup verified against compose MinIO+PostgreSQL |
 | 1.8 | 2026-06-09 | **`POST`/`GET /assets` added** (closes TD-22; D-26) — thin controllers over `store_asset`; `get_minio`/`app.state.minio`; `python-multipart`; 5 route tests (38 passed, 1 skipped) + ruff + mypy clean; **live** Upload-Asset flow verified end-to-end (201/dedup/list DESC/404/422); TD-25 (blob compensation) recorded |
+| 1.9 | 2026-06-09 | **US-25 backend done** — T-25-01 Bearer `AuthMiddleware` (all routes except `/health` → 401) + T-25-02 env token; D-09; T-25-03 (React client) deferred to US-26; TD-26 (CORS/OPTIONS) recorded; 44 tests (+1 skipped) + ruff + mypy clean; **live** 401/200 + `/health` exemption verified |
