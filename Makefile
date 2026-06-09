@@ -10,7 +10,7 @@ ENV_FILE     := .env
 COMPOSE      := docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE)
 COMPOSE_DEV_CMD := docker compose -f $(COMPOSE_FILE) -f $(COMPOSE_DEV) --env-file $(ENV_FILE)
 
-.PHONY: help env up up-dev down logs logs-api db-shell db-smoke minio-smoke health migrate migrate-down
+.PHONY: help env up up-dev down logs logs-api db-shell db-smoke minio-smoke health migrate migrate-down seed
 
 # US-04 / T-04-02: until the API image lands (US-03), run Alembic in a one-off
 # python container attached to the compose network so DATABASE_URL
@@ -39,6 +39,7 @@ help:
 	@echo "  make health      Curl the API /health endpoint (needs make up-dev)"
 	@echo "  make migrate     Apply Alembic migrations (alembic upgrade head)"
 	@echo "  make migrate-down Roll back the last Alembic migration (downgrade -1)"
+	@echo "  make seed        Seed the default project (idempotent; run after migrate)"
 
 env:
 	@test -f $(ENV_FILE) || (cp .env.example $(ENV_FILE) && echo "Created $(ENV_FILE) from .env.example - review before use.")
@@ -77,3 +78,8 @@ migrate:
 
 migrate-down:
 	$(call ALEMBIC_RUN,downgrade -1)
+
+# Idempotent default-project seed (US-01). Also runs automatically on API
+# startup; this target is for a fresh stack right after `make migrate`.
+seed:
+	$(COMPOSE) exec api python -m app.seed.default_project

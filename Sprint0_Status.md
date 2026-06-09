@@ -15,10 +15,10 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 |--------|------:|
 | Sprint 0 issues (class A) | 26 |
 | Complete | 2 |
-| In progress | 8 |
-| Not started | 16 |
+| In progress | 13 |
+| Not started | 11 |
 
-*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): US-04 + T-04-01/02/03 (`791a94b`) and **US-03 fully implemented** — T-03-01 (`/health`, `dc0bbc1`), T-03-02 (access logging) + T-03-03 (request-id). US-03's three tasks are all done.*
+*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), and **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests). FEAT-01 (#20) is the US-01 feature wrapper.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -45,12 +45,12 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 ### Create Project
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
-| US-01 | 8 | Create default project | ⬜ |
-| FEAT-01 | 20 | Project Bootstrap | ⬜ |
-| T-01-01 | 63 | Projects table migration | ⬜ |
-| T-01-02 | 64 | Seed default project | ⬜ |
-| T-01-03 | 65 | GET /projects endpoint | ⬜ |
-| T-01-04 | 66 | Unit test project repository | ⬜ |
+| US-01 | 8 | Create default project | 🟡 All tasks done; pending merge |
+| FEAT-01 | 20 | Project Bootstrap | 🟡 Satisfied by US-01 (pending merge) |
+| T-01-01 | 63 | Projects table migration | 🟡 Verify-only — covered by `0001` (D-24) |
+| T-01-02 | 64 | Seed default project | 🟡 Done (pending merge) |
+| T-01-03 | 65 | GET /projects endpoint | 🟡 Done (pending merge) |
+| T-01-04 | 66 | Unit test project repository | 🟡 Done (pending merge) |
 
 ### Upload Asset
 | Issue | # | Title | Status |
@@ -306,6 +306,47 @@ Autogenerate **NO_DRIFT** vs models; `upgrade head` → 6 tables (+ `alembic_ver
 
 ---
 
+## US-01 — completion record (T-01-01…04)
+
+**Issue:** #8 (FEAT-01 #20) · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge)
+
+### Acceptance criteria (US-01)
+| AC | Result |
+|----|--------|
+| Fresh deployment → one project "AIMPOS Spark Demo" | ✅ Seeded on startup / `make seed`; live `GET /projects` shows exactly one |
+| `GET /projects` returns project with status ACTIVE | ✅ Live `200` → `{"name":"AIMPOS Spark Demo","status":"ACTIVE"}` |
+| Pipeline runs list is empty | ✅ No `pipeline_runs` created (trivially empty) |
+
+### Tasks
+| Task | AC | Result |
+|------|----|--------|
+| T-01-01 (#63) projects table migration | Table has `id/name/status/created_at` | ✅ **Verify-only** — already in `0001` (T-04-02); no new migration (D-24, avoids drift) |
+| T-01-02 (#64) seed default project | one on fresh DB; no dup on restart; runs on startup or `make seed`; log line | ✅ All four — verified live (`created`→`skipped {existing_count:1}` on restart; `deferred` pre-migration) |
+| T-01-03 (#65) `GET /projects` | `200` array; `id`+`name`+`status`; one ACTIVE; OpenAPI | ✅ Returns `name` (D-18, not `title`); in OpenAPI |
+| T-01-04 (#66) repo unit tests | tests file; list returns seeded; dup seed no 2nd row; pass | ✅ `test_project_repository.py` (+ `test_projects_route.py`); CI workflow is **TD-21** |
+
+### Delivered
+- `api/app/domain/studio/project.py` — `DEFAULT_PROJECT_NAME` / `DEFAULT_PROJECT_STATUS` (framework-free; imports only `aimpos-core`)
+- `api/app/seed/default_project.py` — idempotent seed; startup + `python -m app.seed.default_project`
+- `api/app/routes/projects.py` — `GET /projects` (`ProjectRead` = `id/name/status`)
+- `api/app/dependencies.py` — `get_session` (request-scoped unit of work); `app.state.sessionmaker`
+- `api/app/main.py` — seed-on-startup (tolerant of unmigrated schema); projects router
+- `Makefile` — `make seed`; `api/README.md` — projects/seed flow
+- `api/tests/unit/test_project_repository.py` + `test_projects_route.py` — 6 tests
+- `DECISIONS.md` — D-24
+
+### Verification
+`pytest` → **27 passed** (21 prior + 6). `ruff` + `mypy` (strict on `aimpos-config`) clean. **Live:** `alembic upgrade head` → `make seed` → `GET /projects` = `200` single ACTIVE project; second seed no duplicate; restart logs idempotent `skipped`.
+
+### Self-review notes
+- Domain purity preserved — seed/route depend on the repository (infrastructure); domain holds only the default-project policy.
+- `name` (not `title`) discharges the D-18 follow-up for US-01.
+- Scope held: only `GET /projects`; no mutation/pipeline routes (Sprint 1+).
+- `GET /projects` is currently unauthenticated — the Bearer-token guard arrives with **US-25**.
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -331,6 +372,8 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-17 | `make migrate` still runs in a one-off container; not switched to `docker compose run --rm api alembic` because the api wheel excludes `alembic/` | Low | Switch when the image ships migrations (copy `alembic/` into the image or add a console entrypoint); supersedes the D-20 follow-up |
 | TD-18 | `api` service uses blanket `env_file: .env` (same least-privilege smell as TD-01/07) | Low | Broaden #69 to the api service |
 | TD-19 | Uvicorn startup banner lines ("Application startup complete", "Uvicorn running…") stay plaintext (uvicorn loggers have own handlers, `propagate=False`) | Trivial | Cosmetic; route `uvicorn.*` through the JSON root handler in `configure_logging` if fully-unified logs are wanted |
+| TD-20 | Structured-logging `extra={}` keys can collide with reserved `LogRecord` attributes (`name`, `msg`, …) and raise at call time (hit + fixed during T-01-02: `name`→`project_name`) | Trivial | Optional hardening: a small `log_extra()` helper that prefixes/screens reserved keys |
+| TD-21 | No CI workflow yet (`ci-api.yml` referenced by T-01-04 AC) — tests run locally only | Low | Add GitHub Actions `ci-api.yml` (ruff + mypy + pytest) — likely its own infra task/issue |
 
 ---
 
@@ -365,3 +408,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.3 | 2026-06-09 | T-04-03 (repositories) done pending review — **closes US-04**; async repos + Protocol port; `py.typed`; D-21; TD-13/14; 10 tests + ruff + mypy clean |
 | 1.4 | 2026-06-09 | US-04 committed (`791a94b`); **T-03-01 (`/health`) done** — opens US-03; `aimpos-config` + app factory + probes + api/redis compose services + Dockerfile; D-22; TD-05 resolved, TD-15–18; 16 tests + ruff + mypy clean; live 200/503 verified |
 | 1.5 | 2026-06-09 | **US-03 closed** — T-03-02 (structured access logging) + T-03-03 (request-id propagation); pure-ASGI middleware + `request_id_var`/filter in `aimpos-config`; `--no-access-log`; D-23; TD-19; 21 tests + ruff + mypy clean; live request-scoped correlation verified |
+| 1.6 | 2026-06-09 | **US-01 done** — T-01-01 (verify-only, covered by `0001`), T-01-02 (idempotent seed), T-01-03 (`GET /projects`, `name`), T-01-04 (repo/seed/route tests); `domain/studio` policy; D-24; TD-20/21; 27 tests + ruff + mypy clean; live seed + `GET /projects` ACTIVE verified |

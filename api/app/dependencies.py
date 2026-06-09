@@ -9,12 +9,13 @@ override it without standing up real PostgreSQL / Redis / MinIO.
 from __future__ import annotations
 
 import asyncio
+from collections.abc import AsyncIterator
 
 import httpx
 from aimpos_config import Settings
 from fastapi import Request
 from redis.asyncio import Redis
-from sqlalchemy.ext.asyncio import AsyncEngine
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from app.infrastructure.health.probes import (
     DependencyStatus,
@@ -32,6 +33,13 @@ def get_settings(request: Request) -> Settings:
 def get_engine(request: Request) -> AsyncEngine:
     engine: AsyncEngine = request.app.state.engine
     return engine
+
+
+async def get_session(request: Request) -> AsyncIterator[AsyncSession]:
+    """Yield a request-scoped DB session; the request is the unit of work."""
+    sessionmaker: async_sessionmaker[AsyncSession] = request.app.state.sessionmaker
+    async with sessionmaker() as session:
+        yield session
 
 
 def get_redis(request: Request) -> Redis:
