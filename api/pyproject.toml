@@ -8,6 +8,7 @@ requires-python = ">=3.11"
 # open so security fixes are picked up; majors bounded to prevent silent breaks.
 dependencies = [
     "aimpos-core",
+    "aimpos-config",
     "fastapi>=0.115,<1.0",
     "uvicorn[standard]>=0.30,<1.0",
     "sqlalchemy>=2.0,<3.0",
@@ -16,6 +17,8 @@ dependencies = [
     "psycopg[binary]>=3.2,<4.0",
     "pydantic>=2.7,<3.0",
     "pydantic-settings>=2.3,<3.0",
+    "redis>=5.0,<6.0",
+    "httpx>=0.27,<1.0",
 ]
 
 [project.optional-dependencies]
@@ -34,10 +37,11 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
 
-# aimpos-core is consumed as an editable local package in development; the
-# compose/CI image installs it from packages/aimpos-core.
+# aimpos-core / aimpos-config are consumed as editable local packages in
+# development; the compose/CI image installs them from packages/*.
 [tool.uv.sources]
 aimpos-core = { path = "../packages/aimpos-core", editable = true }
+aimpos-config = { path = "../packages/aimpos-config", editable = true }
 
 [tool.ruff]
 line-length = 100
@@ -45,6 +49,18 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+# FastAPI's parameter helpers are called in argument defaults by design; treat
+# them as immutable so B008 doesn't flag the standard dependency-injection idiom.
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.Query",
+    "fastapi.Path",
+    "fastapi.Header",
+    "fastapi.Body",
+    "fastapi.Security",
+]
 
 [tool.mypy]
 python_version = "3.11"

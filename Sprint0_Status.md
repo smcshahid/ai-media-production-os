@@ -15,10 +15,10 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 |--------|------:|
 | Sprint 0 issues (class A) | 26 |
 | Complete | 2 |
-| In progress | 4 |
-| Not started | 20 |
+| In progress | 6 |
+| Not started | 18 |
 
-*In progress = code + review complete on `feature/T-04-01-sqlalchemy-models`, pending merge: US-04 and its three tasks T-04-01/02/03.*
+*In progress on `feature/T-04-01-sqlalchemy-models`: US-04 + T-04-01/02/03 (committed `791a94b`, pending merge) and US-03 + T-03-01 (`/health`, committed-pending). US-03's T-03-02/03 not yet started.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -31,11 +31,11 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 ### Backend foundation
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
-| US-04 | 4 | Database schema foundation | 🟡 All tasks done; pending merge |
-| US-03 | 5 | API health and logging | ⬜ |
+| US-04 | 4 | Database schema foundation | 🟡 All tasks done; committed `791a94b`, pending merge |
+| US-03 | 5 | API health and logging | 🟡 T-03-01 done; T-03-02/03 pending |
 | T-02-02 | 45 | Configure PostgreSQL volume and init scripts | ✅ Done (merged, #72) |
 | T-02-03 | 46 | Configure MinIO bucket on startup | ✅ Done (pending merge) |
-| T-03-01 | 53 | Implement /health with dependency probes | ⬜ |
+| T-03-01 | 53 | Implement /health with dependency probes | 🟡 Done (pending merge) |
 | T-03-02 | 54 | Add structured logging middleware | ⬜ |
 | T-03-03 | 55 | Request ID propagation | ⬜ |
 | T-04-01 | 50 | SQLAlchemy models for core tables | 🟡 In progress (code + tests done; PR open) |
@@ -235,6 +235,45 @@ Autogenerate **NO_DRIFT** vs models; `upgrade head` → 6 tables (+ `alembic_ver
 
 ---
 
+## T-03-01 — completion record (opens US-03)
+
+**Issue:** #53 · **Parent:** US-03 · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge) · First running API service + `aimpos-config`
+
+### Acceptance criteria
+| AC | Result |
+|----|--------|
+| `GET /health` reports postgresql, minio, redis status | ✅ Three concurrent probes; per-dependency `{status, detail}` block |
+| Returns 200 when all dependencies reachable | ✅ Live stack → `{"status":"healthy", ...}` HTTP 200 |
+| Failed dependency returns 503 | ✅ Stopped PostgreSQL → `postgresql: error`, HTTP 503; recovers to 200 on restart |
+| Endpoint registered in OpenAPI schema | ✅ `test_health_is_registered_in_openapi` (200 + 503 shapes) |
+
+*Note: US-03 AC also lists structured JSON logs + `temporal`. Logs are **T-03-02/03**; `temporal`/`ollama` join `/health` in Sprint 1 (Sprint 0 plan §4.6). The response shape already supports adding probes.*
+
+### Delivered
+- `packages/aimpos-config/` — new shared package: Pydantic `Settings` (env/`.env`, no `os.getenv` in app code) + minimal JSON `configure_logging`; `py.typed`
+- `api/app/main.py` — `create_app()` factory + lifespan owning DB engine / Redis / HTTP client on `app.state`
+- `api/app/dependencies.py` — DI providers + `get_health_checks` (overridable in tests)
+- `api/app/routes/health.py` — `GET /health` (200/503 + OpenAPI)
+- `api/app/infrastructure/health/probes.py` — `check_postgres` / `check_redis` / `check_minio` (timeout-bounded, never raise)
+- `api/app/infrastructure/cache/redis_client.py` — pure async Redis builder
+- `api/Dockerfile` — repo-root build context; installs local `packages/*` + api; non-root
+- `deploy/compose/docker-compose.yml` — `redis` + `api` services (internal, health-gated); dev overlay publishes `6379` + `API_PORT`
+- `api/pyproject.toml` — `aimpos-config`, `redis`, `httpx`; `flake8-bugbear` immutable-calls for FastAPI DI
+- `Makefile` — `logs-api` (resolves TD-05), `health` targets
+- `api/tests/unit/test_health.py` — 6 tests (route 200/503/OpenAPI + offline probe tests)
+- `DECISIONS.md` — D-22
+
+### Verification
+`pytest` → **16 passed** (10 prior + 6 health). `ruff check` + `format --check` clean (37 files); `mypy` strict clean on `aimpos-config`, clean on `api/app` (27 files). **Live:** `make up-dev` (build) → all 4 services healthy; `GET /health` = **200** (postgres/redis/minio ok) and the `api` container's own healthcheck passes; `stop postgresql` → **503** (`postgresql: error`); `start postgresql` → back to **200**.
+
+### Self-review notes
+- Resolves **TD-05** (`logs-api` is real). `make migrate` still uses the one-off container (D-20) — not switched to the api image yet because the wheel excludes `alembic/` (TD-17).
+- Probes are reachability-only by design; full MinIO client is US-05, logging middleware is T-03-02.
+- Corrects the stale **#53 → T-02-01** dependency edge (see D-22 / Planning notes below).
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -245,7 +284,7 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-02 | Smoke test is non-hermetic — operates on the dev stack/volume and bounces containers | Low | Follow-up #70 |
 | TD-03 | Smoke test writes a real `.env` into the working tree when absent | Low | Follow-up #70 |
 | TD-04 | `pgcrypto` is speculative for Sprint 0 (`gen_random_uuid()` is built-in on PG13+; lineage/audit is Future Release) | Low | Accepted for now; revisit if unused by US-04 |
-| TD-05 | `Makefile` `logs-api` is a stub until the API service joins the compose | Trivial | Resolves when API service entry lands |
+| TD-05 | `Makefile` `logs-api` is a stub until the API service joins the compose | Trivial | ✅ Resolved in T-03-01 (`logs-api` tails the api service) |
 | TD-06 | Root `README.md` lacks the Sprint-0 service port map required by the Phase A DoD | Low | Follow-up #71 |
 | TD-07 | `minio` uses blanket `env_file` (same least-privilege smell as TD-01) | Low | Broaden #69 to all compose services |
 | TD-08 | `test_minio.py` shares the dev stack/volume (same non-hermetic gap as TD-02) | Low | Broaden #70 to all smoke tests |
@@ -255,6 +294,10 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-12 | `#50` / T-04-01 task card says `sprint:s1` + location `api/app/...` while milestone is Sprint 0 — same label/milestone drift as TD-09 | Trivial | Doc/label drift |
 | TD-13 | No `LineageEdgeRepository` yet (lineage_edges has a model + migration but no repo) | Low | Intentional — not an aggregate root; add when US-14+/US-20 write/read lineage |
 | TD-14 | Repository tests run on SQLite (`aiosqlite`), not PostgreSQL — JSONB/edge SQL not exercised at unit level | Low | Hermetic by design; covered by compose integration tests later (relates to TD-02/08) |
+| TD-15 | `api` dev overlay publishes the port but does **not** mount source for hot-reload (image installs the package non-editable) | Low | DX-only; add an editable/`--reload` dev image when iteration speed warrants |
+| TD-16 | A down-PostgreSQL `/health` probe reports `detail: ""` (psycopg `OperationalError` str is sometimes empty) — status is correctly `error` but the message is unhelpful | Trivial | Cosmetic; improve probe error formatting (use `repr`/type name fallback) in T-03-02 |
+| TD-17 | `make migrate` still runs in a one-off container; not switched to `docker compose run --rm api alembic` because the api wheel excludes `alembic/` | Low | Switch when the image ships migrations (copy `alembic/` into the image or add a console entrypoint); supersedes the D-20 follow-up |
+| TD-18 | `api` service uses blanket `env_file: .env` (same least-privilege smell as TD-01/07) | Low | Broaden #69 to the api service |
 
 ---
 
@@ -274,8 +317,8 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 
 ## Planning notes (for when the owning issue begins)
 
-- **Sprint-0 compose service ownership (resolved by approved analysis, 2026-06-09):** the **API** service entry is **required** for Sprint 0 and is owned by **US-03 / T-03-01 (#53)**; the **Redis** service entry is **optional** (only referenced by the `/health` probe) and, if included, is also owned by US-03 / T-03-01. No new task is needed.
-- **T-03-01 dependency inconsistency (recorded on #53, do not action until US-03 begins):** T-03-01 lists `T-02-01` (the full 9-service compose, Sprint 1) as a dependency, but T-03-01 is Sprint 0. The real dependency is "Sprint-0 compose exists (T-02-02, D-16) + initial migration T-04-02." Correct the dependency when US-03 is picked up.
+- **Sprint-0 compose service ownership — ✅ DONE in T-03-01:** the **API** and **Redis** service entries were added to the Sprint-0 compose by T-03-01 (D-22), as planned. No new task was needed.
+- **T-03-01 dependency inconsistency — ✅ RESOLVED in T-03-01 (D-22):** the stale `#53 → T-02-01` (full 9-service compose, Sprint 1) edge is corrected. The effective Sprint-0 prerequisite is "Sprint-0 compose exists"; T-03-01 added the `redis`/`api` services it needs, and `/health` requires **no** migration (probe is `SELECT 1`).
 
 ---
 
@@ -287,3 +330,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.1 | 2026-06-09 | T-04-01 (SQLAlchemy models) done pending review; first `api/` + `aimpos-core` code; D-18/D-19; TD-10–12; name/minio_key inconsistencies recorded |
 | 1.2 | 2026-06-09 | T-04-02 (initial Alembic migration) done pending review; `make migrate`/`migrate-down` wired; migrations runbook; D-20; verified on PostgreSQL 16 (no drift) |
 | 1.3 | 2026-06-09 | T-04-03 (repositories) done pending review — **closes US-04**; async repos + Protocol port; `py.typed`; D-21; TD-13/14; 10 tests + ruff + mypy clean |
+| 1.4 | 2026-06-09 | US-04 committed (`791a94b`); **T-03-01 (`/health`) done** — opens US-03; `aimpos-config` + app factory + probes + api/redis compose services + Dockerfile; D-22; TD-05 resolved, TD-15–18; 16 tests + ruff + mypy clean; live 200/503 verified |
