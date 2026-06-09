@@ -31,6 +31,7 @@ from generate_github_issues_visual_mvp import (  # noqa: E402
     load_blocks,
     load_tasks,
 )
+from github_auth import resolve_token, require_token  # noqa: E402
 
 ROOT = Path(__file__).parent.parent
 TASKS_CSV = Path(__file__).parent / "github-issues-tasks-01-25.csv"
@@ -305,10 +306,9 @@ def main() -> int:
             print("\nRun with --dry-run, --parents, --tasks, or --all after setting GITHUB_TOKEN.")
         return 0
 
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    token = resolve_token()
     if not token and not args.dry_run:
-        print("ERROR: Set GITHUB_TOKEN or GH_TOKEN, or run: gh auth login", file=sys.stderr)
-        print("  Then: $env:GITHUB_TOKEN = gh auth token   (PowerShell)", file=sys.stderr)
+        require_token()  # prints helpful message and exits
         return 1
 
     do_parents = args.parents or args.all

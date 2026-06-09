@@ -5,6 +5,8 @@ import sys
 import urllib.error
 import urllib.request
 
+from github_auth import require_token
+
 REPO = "smcshahid/ai-media-production-os"
 
 
@@ -22,24 +24,20 @@ def api(token: str, path: str) -> dict:
 
 
 def main() -> int:
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-    if not token:
-        print("No token found. In PowerShell run:")
-        print('  $env:GITHUB_TOKEN = "ghp_your_token_here"')
-        print("Then run this script again.")
-        return 1
+    token = require_token()
+    source = "env var" if (os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")) else "gh auth token"
 
     try:
         user = api(token, "/user")
         repo = api(token, f"/repos/{REPO}")
         perms = repo.get("permissions", {})
-        print(f"OK — logged in as: {user['login']}")
+        print(f"OK — logged in as: {user['login']} (via {source})")
         print(f"OK — repo access: {REPO} ({repo['visibility']})")
         print(f"     admin={perms.get('admin')} push={perms.get('push')} pull={perms.get('pull')}")
         if not perms.get("push"):
             print("WARN — token may lack repo scope; issue import might fail.")
         else:
-            print("OK — ready for issue import (Step 2).")
+            print("OK — ready for gh issue/pr workflow and backlog scripts.")
         return 0
     except urllib.error.HTTPError as e:
         body = e.read().decode()

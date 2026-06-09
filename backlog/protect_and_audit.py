@@ -9,20 +9,20 @@ Solo-founder friendly protection:
 
 Also lists all milestones and flags empty/stale ones for manual review.
 
-Token from GITHUB_TOKEN or GH_TOKEN env var (never stored in this file).
+Token from GITHUB_TOKEN, GH_TOKEN, or `gh auth token` (keyring).
 
-Usage (PowerShell):
-  $env:GITHUB_TOKEN = "ghp_..."
+Usage:
   python backlog/protect_and_audit.py
 """
 from __future__ import annotations
 
 import json
-import os
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+
+from github_auth import require_token
 
 REPO = "smcshahid/ai-media-production-os"
 API = "https://api.github.com"
@@ -55,10 +55,7 @@ def request(token, method, path, body=None, query=None):
 
 
 def main() -> int:
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-    if not token:
-        print("ERROR: set GITHUB_TOKEN or GH_TOKEN first.", file=sys.stderr)
-        return 1
+    token = require_token()
 
     print(f"Target: https://github.com/{REPO}\n")
 

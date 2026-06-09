@@ -51,12 +51,12 @@ See [Sprint Reclassification.md](./Sprint%20Reclassification.md) for full issue 
 ### Backlog maintenance
 
 ```powershell
-# Verify token
-$env:GITHUB_TOKEN = "ghp_your_token"
-python backlog/verify_github_token.py
+# One-time setup after gh auth login (no manual tokens)
+.\scripts\setup-github.ps1
 
-# Relabel milestones per Sprint Reclassification (one-time)
-# Then normal issue → merge workflow
+# Or verify anytime (uses gh keyring automatically)
+python backlog/verify_github_token.py
+python backlog/protect_and_audit.py
 ```
 
 Do **not** re-run `import_to_github.py --all` unless resetting the repo — it creates duplicate issues.
