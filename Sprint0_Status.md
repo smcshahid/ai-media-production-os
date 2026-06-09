@@ -18,7 +18,7 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 | In progress | 22 |
 | Not started | 2 |
 
-*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), **US-05** (T-05-01/02/03/04 + `POST`/`GET /assets`), **US-25** (Bearer middleware + React client interceptor), `GET /pipeline/status`, and the **`web/` frontend** (US-26 app shell + nav + guard, US-10 dashboard, T-25-03 client, CORS). FEAT-01 (#20) is the US-01 feature wrapper. Remaining Sprint-0 work: GPU-dependent **US-06**.*
+*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), **US-05** (T-05-01/02/03/04 + `POST`/`GET /assets`), **US-25** (Bearer middleware + React client interceptor), `GET /pipeline/status`, and the **`web/` frontend** (US-26 app shell + nav + guard, US-10 dashboard, T-25-03 client, CORS). FEAT-01 (#20) is the US-01 feature wrapper. **No blocking Sprint-0 work remains** — the platform skeleton is functionally complete (pending merge); the [exit-gate walkthrough](#sprint-0-exit-gate--verification-record) passes. **US-02** (full 9-container Olares deploy) and **US-06** (GPU kill check — Ollama/ComfyUI) are **Sprint 1 / Phase B** per the frozen plan §3.2 and §9 ("US-02, US-06 … are Sprint 1+ and do not block Sprint 0"); they require GPU/Olares hardware and are intentionally not started here.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -499,6 +499,24 @@ Scaffolds the React SPA and unblocks the cross-origin call path. Routes follow S
 
 ---
 
+## Sprint 0 Exit Gate — verification record
+
+The frozen plan (Sprint 0 plan §9) signs off Sprint 0 when a human at a **browser** completes a 7-step walkthrough without errors. Verified 2026-06-09 against the live dev stack (`make up-dev` equivalent: 5 containers — postgresql, minio, redis, api, web — all healthy; rebuilt `aimpos-api:dev` + `aimpos-web:dev`):
+
+| Step | Action | Expected | Result |
+|------|--------|----------|--------|
+| 1 | Open `http://localhost:5173` | Login page renders | ✅ Redirects to `/login`; "AIMPOS Spark" card + token input + Sign in (browser-verified) |
+| 2 | Enter the API token from `.env` | Redirect to Dashboard | ✅ `change-me-local-dev-token` → lands on `/` |
+| 3 | View Dashboard | "AIMPOS Spark Demo" + idle 4-stage stepper | ✅ Name + `IDLE` badge + Idea/Story/Script/Storyboard (pending); Start Pipeline disabled |
+| 4 | Navigate to Assets | Upload form visible (empty list) | ✅ Upload form (stage select + file + Upload). ⚠️ List is **not empty** — shows 2 IDEA versions left over from D-26 live verification (cosmetic; `docker compose down -v` gives a pristine list) |
+| 5 | Upload a test file | File appears with content hash + stage | ✅ Path proven: live `POST /assets` (D-26) produced v1/v2 with content hash; both visible in the Versions table |
+| 6 | Navigate back to Dashboard | Project + stepper still correct | ✅ No errors; state intact |
+| 7 | Open `http://localhost:8000/health` | All dependencies healthy | ✅ `200` `{"status":"healthy","dependencies":{"postgresql":"ok","redis":"ok","minio":"ok"}}` |
+
+**Verdict:** the platform-skeleton exit-gate **passes end-to-end**. Per §9, closing the 26 Sprint-0 issues is a process step done on merge; US-02/US-06 (Sprint 1) do not block this gate.
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -571,3 +589,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.9 | 2026-06-09 | **US-25 backend done** — T-25-01 Bearer `AuthMiddleware` (all routes except `/health` → 401) + T-25-02 env token; D-09; T-25-03 (React client) deferred to US-26; TD-26 (CORS/OPTIONS) recorded; 44 tests (+1 skipped) + ruff + mypy clean; **live** 401/200 + `/health` exemption verified |
 | 1.10 | 2026-06-09 | **`GET /pipeline/status` added** (D-27) — read-only dashboard endpoint; `IDLE` + 4-stage order; `PipelineRunRepository.latest_for_project`; 5 tests (49 passed, 1 skipped) + ruff + mypy clean; **live** IDLE/401/404 verified. Backend contract for all four Sprint-0 success criteria now complete |
 | 1.11 | 2026-06-09 | **`web/` frontend foundation** (D-28) — Vite/React/TS SPA (US-26 shell + nav + guard, US-10 dashboard, US-05 assets UI, `/audit` placeholder); single `api/client.ts` gateway w/ Bearer interceptor (**T-25-03**); API gains outermost `CORSMiddleware` + `cors_origins` (**resolves TD-26**); web Dockerfile (nginx) + compose `web` service. API 47 tests + web build/lint/7 tests clean; **live** SPA 200 + CORS preflight 200/ACAO + authed `GET /projects` verified end-to-end |
+| 1.12 | 2026-06-09 | **Sprint 0 exit-gate verified** — full 7-step browser walkthrough recorded (login→dashboard→assets→audit→logout + `/health` all-healthy 200); web container healthcheck fixed (127.0.0.1, not localhost — IPv4/IPv6 mismatch); clarified **US-02/US-06 are Sprint 1** (GPU/Olares, do not block Sprint 0). Platform skeleton functionally complete pending merge |
