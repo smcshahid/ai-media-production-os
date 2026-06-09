@@ -28,6 +28,16 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** The monorepo skeleton (folders, `.gitkeep`, governance files, templates) is committed directly to `main` as a bootstrap commit.  
 **Rationale:** Permitted by branching-strategy §73–81 for "empty repo skeleton with no application logic." All subsequent application code merges via `feature/*` PRs.
 
+### D-14 — GitHub milestones relabeled to Sprint 0–5 + Future Release
+**Date:** 2026-06-09  
+**Decision:** Created milestones Sprint 0 (#10), Sprint 5 (#11), Future Release (#12); reused existing Sprint 1–4 (#6–9); reassigned all 68 issues per `Sprint Reclassification.md` via `backlog/reassign_milestones.py`. Final distribution: S0=26, S1=11, S2=6, S3=7, S4=7, S5=9, Future=2.  
+**Rationale:** Single source of truth for sprint scope is the frozen reclassification. The old architectural milestones M1–M5 (#1–5) were already closed/empty and are left closed for history. Corrected an arithmetic slip in the reclassification doc: Sprint 0 is 26 issues, not 24 (T-02-02/03 belong to S0).
+
+### D-15 — Branch protection on `main` deferred (free private plan)
+**Date:** 2026-06-09  
+**Decision:** Branch protection could not be enabled via API — GitHub returned 403 "Upgrade to GitHub Pro or make this repository public." The PR workflow is therefore enforced by governance convention (branching-strategy.md), not by a server-side rule, until the repo is on GitHub Pro or made public.  
+**Rationale:** As a solo founder this is low risk; the bootstrap exception (D-13) already allows direct-to-`main` skeleton commits. Revisit when upgrading to Pro or when collaborators join. Re-run `backlog/protect_and_audit.py` to apply protection once the plan supports it.
+
 ---
 
 <!-- New decisions appended below. Do not edit prior entries; supersede with a new D-NN. -->

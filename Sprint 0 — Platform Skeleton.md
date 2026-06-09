@@ -73,9 +73,9 @@ These four capabilities must work together in one session. Testing them in isola
 
 ## 3. Issue Assignment
 
-Per [Sprint Reclassification.md](./Sprint%20Reclassification.md) (conservative). GitHub milestones must be relabeled before implementation begins.
+Per [Sprint Reclassification.md](./Sprint%20Reclassification.md) (conservative). GitHub milestones were relabeled to Sprint 0–5 + Future Release on 2026-06-09 and all 68 issues reassigned (see `backlog/reassign_milestones.py`).
 
-### 3.1 Issues assigned to Sprint 0 (24 total)
+### 3.1 Issues assigned to Sprint 0 (26 total)
 
 | Issue | Was | Sprint 0 deliverable |
 |-------|-----|----------------------|
@@ -498,7 +498,7 @@ These gates are non-negotiable. The next activity cannot begin until the gate pa
 |------|-----------|--------|
 | **Week 1 gate** | `GET /health` returns 200; `GET /projects` returns seeded project | Week 2 GPU work |
 | **Sprint 1 GPU gate** | Ollama + ComfyUI smoke pass on Olares (US-06) | Sprint 2 (Temporal workflow) |
-| **Sprint 0 exit gate** | All 24 Sprint 0 issues closed; end-to-end browser walkthrough passes | Sprint 1 (Infrastructure Validation) |
+| **Sprint 0 exit gate** | All 26 Sprint 0 issues closed; end-to-end browser walkthrough passes | Sprint 1 (Infrastructure Validation) |
 
 The Week 2 GPU gate deliberately does not block the Platform Skeleton verification. If GPU smoke fails, invoke the failure protocol (stub PNGs, document as known limitation, proceed). The Platform Skeleton can be signed off regardless. Sprint 1 then carries the GPU resolution as an open risk item.
 
@@ -532,7 +532,7 @@ Sprint 0 is signed off when a human evaluator — sitting at a browser, not a te
 | 6 | Navigate back to Dashboard | Project and stepper still correct; no errors |
 | 7 | Open `http://localhost:8000/health` | JSON response with all infrastructure dependencies listed as healthy |
 
-All 24 Sprint 0 issues (§3.1) must be closed before the exit gate walkthrough is attempted. US-02, US-06, and US-10 are Sprint 1+ and do not block Sprint 0.
+All 26 Sprint 0 issues (§3.1) must be closed before the exit gate walkthrough is attempted. US-02, US-06, and US-10 are Sprint 1+ and do not block Sprint 0.
 
 ---
 
@@ -568,7 +568,8 @@ Sprint 1 cannot begin until Sprint 0 exit gate passes. Sprint 2 cannot begin unt
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-06-09 | Product / Architecture | Initial Sprint 0 planning document — Platform Skeleton |
-| 1.1 | 2026-06-09 | Product / Architecture | Aligned with Sprint Reclassification; US-02/US-06/US-10 moved to Sprint 1+; 24 issues in S0 |
+| 1.1 | 2026-06-09 | Product / Architecture | Aligned with Sprint Reclassification; US-02/US-06/US-10 moved to Sprint 1+; 26 issues in S0 |
+| 1.2 | 2026-06-09 | Lead Engineer | GitHub milestones relabeled + 68 issues reassigned; S0 count corrected 24→26 (T-02-02/03 included) |
 
 **Related documents (frozen):**
 

@@ -123,7 +123,7 @@
 
 | Sprint | Count | Issue IDs |
 |--------|------:|-----------|
-| **A — Platform Skeleton** | 24 | US-01, US-03, US-04, US-05, US-25, US-26, FEAT-01, EPIC-06, T-01-01–04, T-02-02–03, T-03-01–03, T-04-01–03, T-05-01–04, T-26-01–02 |
+| **A — Platform Skeleton** | 26 | US-01, US-03, US-04, US-05, US-25, US-26, FEAT-01, EPIC-06, T-01-01–04, T-02-02–03, T-03-01–03, T-04-01–03, T-05-01–04, T-26-01–02 |
 | **B — Infrastructure Validation** | 11 | EPIC-01, FEAT-INFRA, US-02, US-06, T-02-01, T-02-04–06, T-06-01–03 |
 | **C — Workflow Foundation** | 6 | EPIC-02, FEAT-03, FEAT-16, US-07, US-08, US-10 |
 | **D — Idea → Story** | 7 | FEAT-02, FEAT-04, FEAT-05, US-09, US-11, US-12, US-13 |
@@ -138,7 +138,7 @@
 
 | Milestone | Issues |
 |-----------|--------|
-| Sprint 0 | 24 (class A) |
+| Sprint 0 | 26 (class A) |
 | Sprint 1 | 11 (class B) |
 | Sprint 2 | 6 (class C) |
 | Sprint 3 | 7 (class D) |
