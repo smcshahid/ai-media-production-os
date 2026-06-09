@@ -64,6 +64,37 @@ curl localhost:8000/projects
 
   The seed only inserts when the table is empty, so restarts never duplicate it.
 
+### Asset storage service (US-05)
+
+Reusable content-addressable storage — the **service**, not yet an HTTP route
+(`POST/GET /assets` is tracked as **TD-22**).
+
+- **`app/domain/assets/content.py`** (pure): `compute_content_hash(bytes)` →
+  SHA-256 hex; `build_object_key(project_id, stage, content_hash)` →
+  `"{project_id}/{stage}/{content_hash}"`.
+- **`app/domain/assets/service.py`**: `store_asset(...)` hashes the bytes, uploads
+  via a `BlobStore` port, appends a version row via an `AssetVersionStore` port, and
+  returns a framework-free `StoredAsset`. The domain imports **no** SQLAlchemy/SDK —
+  adapters are injected (ports & adapters; see DECISIONS D-25).
+- **`app/infrastructure/storage/minio_client.py`**: `MinioClient` (the `BlobStore`
+  adapter) wraps the sync `minio` SDK with `asyncio.to_thread`; `upload_bytes`
+  verifies the object against MinIO's MD5 ETag and raises typed `StorageError` /
+  `ObjectNotFoundError`. Credentials/bucket come from `aimpos-config` `Settings`.
+- **Dedup:** identical bytes for a `(project, stage)` reuse the same `minio_key`
+  (one stored blob) but always create a **new version row** (version increments
+  along the chain). `content_hash` is SHA-256 (the content address); MinIO's ETag
+  is the body MD5 and is used only for the post-upload integrity check.
+
+Round-trip integration test (`tests/integration/test_asset_upload.py`) is skipped
+unless services are up:
+
+```bash
+# from api/ — point settings at the dev-published ports, then run the integration mark
+$env:AIMPOS_RUN_INTEGRATION="1"; $env:MINIO_ENDPOINT="localhost:9000"
+$env:DATABASE_URL="postgresql+psycopg://aimpos:<pw>@localhost:5432/aimpos_spark"
+pytest -m integration tests/integration/test_asset_upload.py
+```
+
 ## Database migrations (US-04)
 
 PostgreSQL is the system of record; all schema changes go through Alembic
