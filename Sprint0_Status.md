@@ -55,11 +55,12 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 ### Upload Asset
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
-| US-05 | 6 | MinIO asset upload service | 🟡 All tasks done; pending merge |
+| US-05 | 6 | MinIO asset upload service | 🟡 All tasks done + `POST`/`GET /assets`; pending merge |
 | T-05-01 | 56 | MinIO client wrapper | 🟡 Done (pending merge) |
 | T-05-02 | 57 | Content-hash keys | 🟡 Done (pending merge) |
 | T-05-03 | 58 | AssetVersion on upload | 🟡 Done (pending merge) |
 | T-05-04 | 59 | Upload round-trip test | 🟡 Done (pending merge) |
+| — | — | `POST /assets` + `GET /assets` (plan §4.6/§4.7; D-26, was TD-22) | 🟡 Done (pending merge) |
 
 ### Login + Dashboard shell
 | Issue | # | Title | Status |
@@ -387,6 +388,13 @@ Autogenerate **NO_DRIFT** vs models; `upgrade head` → 6 tables (+ `alembic_ver
 - `content_hash` (SHA-256) vs ETag (MD5) honestly reconciled — see AC table + D-25.
 - The running `aimpos-api:dev` image predates the `minio` dep; **rebuild needed** only when the assets route lands (no runtime use in US-05).
 
+### Follow-up — `POST /assets` + `GET /assets` (closes TD-22; D-26)
+Completes US-05's Asset-Storage component per the frozen plan (`GET /assets` is in §4.7's DoD; `POST /assets` in §4.6) — the HTTP surface the `store_asset` service was built for.
+- `api/app/routes/assets.py` — `POST /assets` (multipart `project_id`/`stage`/`file`; validates project → 404; `store_asset` → commit → **201** `AssetRead`) and `GET /assets?project_id=…` (versions, `created_at` DESC). Human uploads are `is_ai_generated=False` (agent outputs use the worker path).
+- `api/app/dependencies.py` (`get_minio`) + `api/app/main.py` (`app.state.minio`, router) + `python-multipart` dep.
+- `api/tests/unit/test_assets_route.py` — 5 tests (201 create, 404 no-upload, list+dedup DESC, empty, OpenAPI).
+- **Verification:** 38 passed, 1 skipped; ruff + mypy clean. **Live (rebuilt image):** `POST` `idea.txt` → `v1`; re-POST same bytes → `v2` same `content_hash`+`minio_key` (dedup); `GET /assets` lists both newest-first — **"Upload Asset" criterion met end-to-end**; unknown project → 404 (no blob written); bad stage → 422.
+
 ---
 
 ## Technical debt register
@@ -416,7 +424,8 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-19 | Uvicorn startup banner lines ("Application startup complete", "Uvicorn running…") stay plaintext (uvicorn loggers have own handlers, `propagate=False`) | Trivial | Cosmetic; route `uvicorn.*` through the JSON root handler in `configure_logging` if fully-unified logs are wanted |
 | TD-20 | Structured-logging `extra={}` keys can collide with reserved `LogRecord` attributes (`name`, `msg`, …) and raise at call time (hit + fixed during T-01-02: `name`→`project_name`) | Trivial | Optional hardening: a small `log_extra()` helper that prefixes/screens reserved keys |
 | TD-21 | No CI workflow yet (`ci-api.yml` referenced by T-01-04 AC) — tests run locally only | Low | Add GitHub Actions `ci-api.yml` (ruff + mypy + pytest) — likely its own infra task/issue |
-| TD-22 | No Sprint-0 task defines the `POST /assets` + `GET /assets` HTTP surface, yet the "Upload Asset" success criterion + Week-3 frontend need it (US-05 delivers only the `store_asset` service) | Medium | Add a thin assets route task (calls `store_asset` / `AssetVersionRepository.list_for_project`) before the Week-3 frontend integration; requires `aimpos-api` image rebuild (adds `minio` dep) |
+| TD-22 | No Sprint-0 task defines the `POST /assets` + `GET /assets` HTTP surface, yet the "Upload Asset" success criterion + Week-3 frontend need it (US-05 delivers only the `store_asset` service) | Medium | ✅ **Resolved** — `POST /assets` + `GET /assets` added (D-26); image rebuilt; live upload flow verified |
+| TD-25 | `store_asset` writes the MinIO blob before the DB row flush; on a later DB failure the object is orphaned (no delete-on-failure compensation) | Low | Benign by design — content-addressed key is self-deduplicating; add compensation (or an unreferenced-object sweep) post-MVP. Matches plan §4.7 "atomic … or compensates" allowance |
 | TD-23 | App uses MinIO **root** credentials (`MINIO_ROOT_USER/PASSWORD`) rather than a scoped service account | Low | Mint a least-privilege MinIO access key for the api/worker (relates to #69 least-privilege theme) |
 | TD-24 | `psycopg` async rejects Windows' default `ProactorEventLoop`; integration tests need a `WindowsSelectorEventLoopPolicy` shim (added in `tests/integration/conftest.py`) | Trivial | Windows-dev-host only; no-op on Linux/CI. Revisit if `asyncpg` is adopted for the app engine |
 
@@ -455,3 +464,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.5 | 2026-06-09 | **US-03 closed** — T-03-02 (structured access logging) + T-03-03 (request-id propagation); pure-ASGI middleware + `request_id_var`/filter in `aimpos-config`; `--no-access-log`; D-23; TD-19; 21 tests + ruff + mypy clean; live request-scoped correlation verified |
 | 1.6 | 2026-06-09 | **US-01 done** — T-01-01 (verify-only, covered by `0001`), T-01-02 (idempotent seed), T-01-03 (`GET /projects`, `name`), T-01-04 (repo/seed/route tests); `domain/studio` policy; D-24; TD-20/21; 27 tests + ruff + mypy clean; live seed + `GET /projects` ACTIVE verified |
 | 1.7 | 2026-06-09 | **US-05 done** — T-05-01 (`MinioClient`), T-05-02 (content hash/key), T-05-03 (`store_asset` ports & adapters + `StoredAsset`), T-05-04 (integration round-trip); `aimpos-config` MinIO creds; D-25; TD-22/23/24; 33 tests (+1 skipped) + ruff + mypy clean; **live** round-trip + dedup verified against compose MinIO+PostgreSQL |
+| 1.8 | 2026-06-09 | **`POST`/`GET /assets` added** (closes TD-22; D-26) — thin controllers over `store_asset`; `get_minio`/`app.state.minio`; `python-multipart`; 5 route tests (38 passed, 1 skipped) + ruff + mypy clean; **live** Upload-Asset flow verified end-to-end (201/dedup/list DESC/404/422); TD-25 (blob compensation) recorded |
