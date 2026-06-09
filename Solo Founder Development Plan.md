@@ -2,7 +2,7 @@
 
 **Document Type:** Solo Founder Execution Plan  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** ARCHIVED — Superseded by [Sprint 0 — Platform Skeleton.md](./Sprint%200%20%E2%80%94%20Platform%20Skeleton.md) and [Sprint Reclassification.md](./Sprint%20Reclassification.md). Do not use for execution.  
 **Date:** June 8, 2026  
 **Audience:** Solo founder working evenings and weekends  
 **Product:** AIMPOS-Spark Visual (`Idea → Story → Script → Storyboard`)  

@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 BACKLOG = Path(__file__).parent / "aimpos-spark-backlog.csv"
 DEPS = Path(__file__).parent / "aimpos-spark-dependencies.csv"
-OUT = ROOT / "GitHub Issues.md"
+OUT = ROOT / "GitHub Issues - Full MVP (Superseded).md"
 
 # Business value by feature/epic
 BV = {

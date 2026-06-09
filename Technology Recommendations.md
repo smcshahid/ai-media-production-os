@@ -2,7 +2,7 @@
 
 **Document Type:** Architecture Decision Record — Technology Stack  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** READ-ONLY REFERENCE — Frozen June 9, 2026. Adopt list locked in MVP Scope Freeze §5.
 **Date:** June 8, 2026  
 **Parent Documents:**
 

@@ -2,7 +2,7 @@
 
 **Document Type:** Graph Schema & Semantic Model  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** READ-ONLY REFERENCE — Frozen June 9, 2026. Neo4j deferred; PostgreSQL lineage_edges in MVP.
 **Date:** June 8, 2026  
 **Target Platforms:** Neo4j (primary), portable to Amazon Neptune, Azure Cosmos DB (Gremlin), ArangoDB, Memgraph  
 **Parent Documents:**

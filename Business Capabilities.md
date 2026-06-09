@@ -2,6 +2,7 @@
 
 **Document Type:** Business Architecture — Capability Map  
 **Version:** 1.0  
+**Status:** READ-ONLY REFERENCE — Frozen June 9, 2026. Implement 18 Included capabilities only per MVP Scope Freeze.  
 **Date:** June 8, 2026  
 **Parent Document:** Blueprint for a multi-year initiative.md  
 **Scope:** AI Media Production Operating System (AIMPOS) — all media verticals

@@ -1,6 +1,7 @@
 # Environment and secrets
 .env
 .env.*
+!.env.example
 *.pem
 
 # Python
@@ -15,5 +16,9 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Import artifacts (regenerable)
-backlog/github-issue-mapping.json
+# Local tokens (never commit)
+backlog/.github-token
+.env.local
+
+# Import artifacts (regenerable; mapping may be committed after import)
+# backlog/github-issue-mapping.json

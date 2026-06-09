@@ -2,6 +2,7 @@
 
 **Document Type:** Architecture Dependency Analysis  
 **Version:** 1.0  
+**Status:** FROZEN — Effective June 9, 2026. Dependency order locked; milestone labels per Sprint Reclassification.  
 **Date:** June 8, 2026  
 **Author Role:** Principal Enterprise Architect  
 **Parent Documents:** [MVP Definition.md](./MVP%20Definition.md), [MVP Backlog.md](./MVP%20Backlog.md), [System Architecture.md](./System%20Architecture.md)

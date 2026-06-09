@@ -2,7 +2,7 @@
 
 **Document Type:** Agentic Intelligence Architecture  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** READ-ONLY REFERENCE — Frozen June 9, 2026. Implement 3 agents only (Story, Script, Cinematography).
 **Date:** June 8, 2026  
 **Parent Documents:**
 

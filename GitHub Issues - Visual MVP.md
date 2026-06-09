@@ -3,6 +3,7 @@
 **Scope:** Idea → Story → Script → Storyboard · **Local AI only** (Ollama + ComfyUI)  
 **Total Issues:** 43  
 **Codename:** `AIMPOS-Spark-Visual`  
+**Status:** FROZEN — Issue bodies locked. Milestone labels per [Sprint Reclassification.md](./Sprint%20Reclassification.md).  
 
 ## What This MVP Delivers
 
@@ -24,14 +25,18 @@
 | Export bundle | F-15, US-21 |
 | Full 5-stage demo | US-27, EPIC-05 |
 
-## Sprint Plan (8 weeks)
+## Sprint Plan
 
-| Sprint | Weeks | Deliverable |
-|--------|-------|-------------|
-| S1 | 1–2 | Platform running on Olares |
-| S2 | 3–4 | 4-stage workflow + dashboard |
-| S3 | 5–6 | Idea → approved script |
-| S4 | 7–8 | Storyboard + lineage + **Visual MVP sign-off** |
+**Superseded by [Sprint Reclassification.md](./Sprint%20Reclassification.md)** — use that document for milestone assignments.
+
+| Sprint | Deliverable |
+|--------|-------------|
+| S0 | Platform Skeleton |
+| S1 | Infrastructure Validation |
+| S2 | Workflow Foundation |
+| S3 | Idea → Story |
+| S4 | Story → Script |
+| S5 | Script → Storyboard + sign-off |
 
 ## Import
 

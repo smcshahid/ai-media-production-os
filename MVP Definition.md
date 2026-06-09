@@ -2,7 +2,7 @@
 
 **Document Type:** MVP Scope & Delivery Plan  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** ARCHIVED — Superseded by [MVP Scope Freeze.md](./MVP%20Scope%20Freeze.md). Do not use for execution.  
 **Date:** June 8, 2026  
 **Codename:** `AIMPOS-Spark`  
 **Parent Documents:** [System Architecture.md](./System%20Architecture.md), [Blueprint for a multi-year initiative.md](./Blueprint%20for%20a%20multi-year%20initiative.md)

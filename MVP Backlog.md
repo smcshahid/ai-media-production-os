@@ -1,6 +1,7 @@
 # AIMPOS-Spark — Product Backlog
 
 **Document Type:** Product Backlog (Epics → Features → Stories → Tasks)  
+**Status:** ARCHIVED — Superseded by [GitHub Issues - Visual MVP.md](./GitHub%20Issues%20-%20Visual%20MVP.md). Do not use for execution.  
 **Version:** 1.0  
 **Date:** June 8, 2026  
 **Product:** AIMPOS-Spark MVP  

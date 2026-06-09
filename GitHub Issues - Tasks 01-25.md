@@ -2,6 +2,7 @@
 
 **Document Type:** Task-level GitHub Issues (import-ready)  
 **Version:** 1.0  
+**Status:** FROZEN — Effective June 9, 2026. Milestones per [Sprint Reclassification.md](./Sprint%20Reclassification.md).  
 **Date:** June 8, 2026  
 **Scope:** [MVP Scope Freeze.md](./MVP%20Scope%20Freeze.md) · Idea → Story → Script → Storyboard  
 **Source:** [MVP Backlog.md](./MVP%20Backlog.md) · [MVP Dependency Map.md](./MVP%20Dependency%20Map.md)  

@@ -2,7 +2,7 @@
 
 **Document Type:** Workflow & Orchestration Architecture  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** READ-ONLY REFERENCE — Frozen June 9, 2026. Implement SparkPipelineWorkflow only.
 **Date:** June 8, 2026  
 **Parent Documents:**
 

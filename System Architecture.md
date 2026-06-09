@@ -2,7 +2,7 @@
 
 **Document Type:** Solution Architecture — C4 Model & Deployment  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** READ-ONLY REFERENCE — Frozen June 9, 2026. MVP subset in MVP Scope Freeze §5.
 **Date:** June 8, 2026  
 **Parent Documents:**
 

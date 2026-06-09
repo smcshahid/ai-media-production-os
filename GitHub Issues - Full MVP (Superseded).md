@@ -1,5 +1,7 @@
 # AIMPOS-Spark — GitHub Issues
 
+**Status:** ARCHIVED — Superseded by [GitHub Issues - Visual MVP.md](./GitHub%20Issues%20-%20Visual%20MVP.md). Do not use for execution.
+
 **Product:** AIMPOS-Spark MVP  
 **Format:** GitHub Issue Markdown (copy body into issue or use `gh issue create`)  
 **Total Issues:** 50 (6 Epics · 17 Features · 27 User Stories)  

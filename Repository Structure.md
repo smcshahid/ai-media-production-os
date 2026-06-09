@@ -2,7 +2,7 @@
 
 **Document Type:** Monorepo Architecture — Folder Design  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** FROZEN — Effective June 9, 2026. Monorepo layout locked for Visual MVP.  
 **Date:** June 8, 2026  
 **Author Role:** Lead Architect  
 **Codename:** `aimpos-spark`  

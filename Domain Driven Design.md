@@ -2,7 +2,7 @@
 
 **Document Type:** Strategic & Tactical DDD Architecture  
 **Version:** 1.0  
-**Status:** Approved — Pre-Implementation  
+**Status:** READ-ONLY REFERENCE — Frozen June 9, 2026. MVP collapses to 5 api/domain modules.
 **Date:** June 8, 2026  
 **Parent Documents:**
 
