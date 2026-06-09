@@ -1,0 +1,58 @@
+[project]
+name = "aimpos-api"
+version = "0.1.0"
+description = "AIMPOS-Spark Visual — FastAPI monolith (REST surface, domain, infrastructure)."
+requires-python = ">=3.11"
+
+# Major versions pinned per coding-standards.md §213-219. Patch ranges left
+# open so security fixes are picked up; majors bounded to prevent silent breaks.
+dependencies = [
+    "aimpos-core",
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+    "sqlalchemy>=2.0,<3.0",
+    "alembic>=1.13,<2.0",
+    "asyncpg>=0.29,<1.0",
+    "psycopg[binary]>=3.2,<4.0",
+    "pydantic>=2.7,<3.0",
+    "pydantic-settings>=2.3,<3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.5,<1.0",
+    "mypy>=1.10,<2.0",
+    "pytest>=8.2,<9.0",
+    "pytest-asyncio>=0.23,<1.0",
+    "aiosqlite>=0.20,<1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+# aimpos-core is consumed as an editable local package in development; the
+# compose/CI image installs it from packages/aimpos-core.
+[tool.uv.sources]
+aimpos-core = { path = "../packages/aimpos-core", editable = true }
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+# Pragmatic outside packages/ per coding-standards.md §71; persistence layer
+# uses SQLAlchemy's typed mapped_column so we keep checks meaningful.
+warn_unused_ignores = true
+warn_redundant_casts = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
