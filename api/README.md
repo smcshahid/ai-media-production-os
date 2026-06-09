@@ -64,10 +64,24 @@ curl localhost:8000/projects
 
   The seed only inserts when the table is empty, so restarts never duplicate it.
 
-### Asset storage service (US-05)
+### Asset storage (US-05)
 
-Reusable content-addressable storage — the **service**, not yet an HTTP route
-(`POST/GET /assets` is tracked as **TD-22**).
+Content-addressable storage exposed over HTTP:
+
+- **`POST /assets`** — `multipart/form-data` with `project_id`, `stage`
+  (`IDEA`/`STORY`/`SCRIPT`/`STORYBOARD`), and `file`. Validates the project
+  (**404** if missing), stores the bytes via `store_asset`, and returns **201**
+  with the created version. Human uploads are always `is_ai_generated=False`.
+- **`GET /assets?project_id=<uuid>`** — the project's asset versions, newest first.
+
+```bash
+curl -X POST http://localhost:8000/assets \
+  -F project_id=<uuid> -F stage=IDEA -F file=@idea.txt
+curl "http://localhost:8000/assets?project_id=<uuid>"
+```
+
+Re-uploading identical bytes returns a **new version** that reuses the same
+content-addressed `minio_key` (blob dedup). Underlying service:
 
 - **`app/domain/assets/content.py`** (pure): `compute_content_hash(bytes)` →
   SHA-256 hex; `build_object_key(project_id, stage, content_hash)` →

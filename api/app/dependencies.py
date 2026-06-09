@@ -23,11 +23,17 @@ from app.infrastructure.health.probes import (
     check_postgres,
     check_redis,
 )
+from app.infrastructure.storage.minio_client import MinioClient
 
 
 def get_settings(request: Request) -> Settings:
     settings: Settings = request.app.state.settings
     return settings
+
+
+def get_minio(request: Request) -> MinioClient:
+    minio: MinioClient = request.app.state.minio
+    return minio
 
 
 def get_engine(request: Request) -> AsyncEngine:
