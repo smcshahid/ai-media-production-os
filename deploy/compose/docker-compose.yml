@@ -1,6 +1,6 @@
 # AIMPOS-Spark Visual — Sprint-0 compose stack.
-# T-02-02 lands the PostgreSQL service; later tasks append minio (T-02-03),
-# redis, and api on the same internal `aimpos-spark` network.
+# T-02-02 lands the PostgreSQL service; T-02-03 adds MinIO + bucket init;
+# later tasks append redis and api on the same internal `aimpos-spark` network.
 #
 # Usage (from repo root):
 #   cp .env.example .env        # first time only
@@ -37,6 +37,48 @@ services:
     networks:
       - aimpos-spark
 
+  minio:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    container_name: aimpos-minio
+    restart: unless-stopped
+    # MINIO_ROOT_USER / MINIO_ROOT_PASSWORD come from the repo .env.
+    env_file:
+      - ../../.env
+    command: server /data --console-address ":9001"
+    # Internal network only (S3 API 9000, console 9001). The dev overlay
+    # publishes these to the host for local tooling.
+    expose:
+      - "9000"
+      - "9001"
+    volumes:
+      - aimpos-minio-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9000/minio/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - aimpos-spark
+
+  # One-shot bucket bootstrap. MinIO has no initdb hook, so a dedicated mc
+  # container creates the bucket idempotently once MinIO reports healthy,
+  # then exits. The bucket name is read from MINIO_BUCKET (.env).
+  minio-init:
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    container_name: aimpos-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    env_file:
+      - ../../.env
+    entrypoint: ["/bin/sh", "/init/create-buckets.sh"]
+    volumes:
+      - ../init/minio:/init:ro
+    networks:
+      - aimpos-spark
+    restart: "no"
+
 networks:
   aimpos-spark:
     name: aimpos-spark
@@ -45,3 +87,5 @@ networks:
 volumes:
   aimpos-postgres-data:
     name: aimpos-postgres-data
+  aimpos-minio-data:
+    name: aimpos-minio-data

@@ -45,6 +45,12 @@ Format: `D-NN | Decision | Date | Rationale`
 **Rationale:** Satisfies T-02-02 AC ("exposes 5432 to API on internal network only") while keeping a developer escape hatch. T-02-02 is Sprint 0 but its dependency T-02-01 (full 9-service compose) is Sprint 1 per Sprint Reclassification, so this task creates a PostgreSQL-only Sprint-0 compose; later tasks (T-02-03 MinIO, API) append services to the same file. Extensions chosen for the US-04 schema's UUID primary keys. Verified by `scripts/smoke/test_postgres.py`.  
 **Relationship to D-11:** This entry refines D-11's phrase "Sprint-0-scoped compose … created in T-02-02." T-02-02 *introduces* the compose file with PostgreSQL only and does not author the MinIO/Redis/API services; those are added by their own Sprint-0 tasks (MinIO = T-02-03). The multi-service Sprint-0 stack that D-11 relies on is reached by the Sprint-0 exit gate, not by T-02-02 alone. D-16 supersedes only the task-attribution clause of D-11; the rest of D-11 stands.
 
+### D-17 — MinIO bucket bootstrap via a one-shot mc init container; bucket name is env-driven
+**Date:** 2026-06-09
+**Decision:** The Sprint-0 compose adds `minio` (RELEASE-pinned) on the internal `aimpos-spark` network with named volume `aimpos-minio-data`, internal-only (dev overlay publishes 9000/9001). A one-shot `minio-init` (`minio/mc`) service waits for MinIO to be healthy, then runs `deploy/init/minio/create-buckets.sh` to create the bucket idempotently and keep it private. The bucket name is read from `MINIO_BUCKET` (`.env`) — the single source of truth — and is not hardcoded anywhere.
+**Rationale:** MinIO has no `/docker-entrypoint-initdb.d` hook, so a dedicated `mc` init container is the idiomatic, idempotent bootstrap. Internal-only networking mirrors D-16. Health-gated startup uses MinIO's `/minio/health/live` endpoint (curl is present in the server image). Verified by `scripts/smoke/test_minio.py`.
+**Naming note (resolved 2026-06-09):** issues #46 and #56 and the T-05 tasks reference the bucket `aimpos-hot-assets`, while `.env.example` originally shipped a placeholder `aimpos-spark`. Resolved by aligning `.env.example` to `MINIO_BUCKET=aimpos-hot-assets` (the name AC2 and the T-05 asset tasks require). The bucket remains env-driven — all code must read `MINIO_BUCKET` rather than a literal — so the value can still change without code edits. The Sprint 0 plan's `aimpos-spark` mention is superseded by this alignment.
+
 ---
 
 <!-- New decisions appended below. Do not edit prior entries; supersede with a new D-NN. -->

@@ -16,3 +16,10 @@ services:
     # client. The base file keeps the database internal-only.
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
+
+  minio:
+    # Publish the S3 API (9000) and console (9001) for local tooling.
+    # The base file keeps MinIO internal-only.
+    ports:
+      - "9000:9000"
+      - "9001:9001"
