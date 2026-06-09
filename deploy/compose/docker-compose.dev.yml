@@ -34,3 +34,10 @@ services:
     #   http://localhost:8000/health  ·  http://localhost:8000/docs
     ports:
       - "${API_PORT:-8000}:8000"
+
+  web:
+    # Publish the SPA on 5173 (nginx listens on 80 inside the container):
+    #   http://localhost:5173
+    # The origin (localhost:5173) must be in the API's CORS_ORIGINS.
+    ports:
+      - "${WEB_PORT:-5173}:80"
