@@ -69,6 +69,7 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 | US-26 | 12 | Nav shell + idle routes | ⬜ |
 | T-26-01 | 67 | App shell with React Router | ⬜ |
 | T-26-02 | 68 | Nav bar and route guards | ⬜ |
+| — | — | `GET /pipeline/status` (plan §4.6/§4.7; D-27) — dashboard backend | 🟡 Done (pending merge) |
 
 ### Governance umbrella
 | Issue | # | Title | Status |
@@ -439,6 +440,17 @@ US-25 is **S2** in the old issue tracker but a **Sprint-0** deliverable per the 
 
 ---
 
+## `GET /pipeline/status` — completion record (Basic Backend; D-27)
+
+Adds the last Basic-Backend endpoint behind the **"View Dashboard"** success criterion. No task card of its own (same gap pattern as the assets routes / TD-22), but required by Sprint 0 plan §4.6 (narrative) and §4.7 (frontend Dashboard deps).
+- `api/app/routes/pipeline.py` — `GET /pipeline/status?project_id=…`: validates project (404), reads the latest run (`PipelineRunRepository.latest_for_project`, new `LIMIT 1` query), returns `{project_id, run_id, status, current_stage, stages, updated_at}`. Read-only — no pipeline start/approve/Temporal (Sprint 1+). `IDLE` when no run; `stages` from the `PipelineStage` enum.
+- `api/app/main.py` — router wired; protected by the auth middleware (D-09).
+- `api/tests/unit/test_pipeline_route.py` — 5 tests (idle, latest-run, 404, 401, OpenAPI).
+- **Verification:** 49 passed, 1 skipped; ruff + mypy clean. **Live (rebuilt image):** seeded project + token → `200` `IDLE` with the 4-stage order; no token → `401`; unknown project → `404`.
+- **Milestone:** the backend contract for **all four Sprint-0 success criteria** is now in place (Login=auth, Create Project=`/projects`, Upload Asset=`/assets`, View Dashboard=`/pipeline/status`). Remaining Sprint-0 work is the **frontend** (US-26/US-10/T-25-03) and the GPU-dependent **US-06**.
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -509,3 +521,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.7 | 2026-06-09 | **US-05 done** — T-05-01 (`MinioClient`), T-05-02 (content hash/key), T-05-03 (`store_asset` ports & adapters + `StoredAsset`), T-05-04 (integration round-trip); `aimpos-config` MinIO creds; D-25; TD-22/23/24; 33 tests (+1 skipped) + ruff + mypy clean; **live** round-trip + dedup verified against compose MinIO+PostgreSQL |
 | 1.8 | 2026-06-09 | **`POST`/`GET /assets` added** (closes TD-22; D-26) — thin controllers over `store_asset`; `get_minio`/`app.state.minio`; `python-multipart`; 5 route tests (38 passed, 1 skipped) + ruff + mypy clean; **live** Upload-Asset flow verified end-to-end (201/dedup/list DESC/404/422); TD-25 (blob compensation) recorded |
 | 1.9 | 2026-06-09 | **US-25 backend done** — T-25-01 Bearer `AuthMiddleware` (all routes except `/health` → 401) + T-25-02 env token; D-09; T-25-03 (React client) deferred to US-26; TD-26 (CORS/OPTIONS) recorded; 44 tests (+1 skipped) + ruff + mypy clean; **live** 401/200 + `/health` exemption verified |
+| 1.10 | 2026-06-09 | **`GET /pipeline/status` added** (D-27) — read-only dashboard endpoint; `IDLE` + 4-stage order; `PipelineRunRepository.latest_for_project`; 5 tests (49 passed, 1 skipped) + ruff + mypy clean; **live** IDLE/401/404 verified. Backend contract for all four Sprint-0 success criteria now complete |

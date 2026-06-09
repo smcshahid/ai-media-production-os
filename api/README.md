@@ -126,6 +126,22 @@ $env:DATABASE_URL="postgresql+psycopg://aimpos:<pw>@localhost:5432/aimpos_spark"
 pytest -m integration tests/integration/test_asset_upload.py
 ```
 
+### Pipeline status (dashboard)
+
+`GET /pipeline/status?project_id=<uuid>` feeds the dashboard's 4-stage stepper.
+Read-only (no pipeline start/approve in Sprint 0):
+
+```bash
+curl -H "Authorization: Bearer $AIMPOS_API_TOKEN" \
+     "http://localhost:8000/pipeline/status?project_id=<uuid>"
+# {"project_id":"...","run_id":null,"status":"IDLE","current_stage":null,
+#  "stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":null}
+```
+
+With no runs yet it returns `IDLE` plus the canonical stage order; once pipelines
+start (US-07) it reflects the latest run's `status`/`current_stage`. Unknown
+project → `404`.
+
 ## Database migrations (US-04)
 
 PostgreSQL is the system of record; all schema changes go through Alembic

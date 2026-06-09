@@ -25,6 +25,7 @@ from app.middleware.logging import AccessLogMiddleware
 from app.middleware.request_id import RequestIDMiddleware
 from app.routes.assets import router as assets_router
 from app.routes.health import router as health_router
+from app.routes.pipeline import router as pipeline_router
 from app.routes.projects import router as projects_router
 from app.seed.default_project import seed_default_project
 
@@ -77,6 +78,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(projects_router)
     app.include_router(assets_router)
+    app.include_router(pipeline_router)
     return app
 
 
