@@ -6,7 +6,7 @@ Actions:
   2. Assign milestone to any open issues missing one
   3. Fix US-02 title typo (Olama → Olares) if present
 
-Requires GITHUB_TOKEN or GH_TOKEN with repo scope.
+Requires GITHUB_TOKEN, GH_TOKEN, or `gh auth login` with repo scope.
 
 Usage:
   $env:GITHUB_TOKEN = "ghp_..."
@@ -24,6 +24,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+from github_auth import resolve_token, require_token
 
 REPO = "smcshahid/ai-media-production-os"
 API = "https://api.github.com"
@@ -126,14 +128,12 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="Preview changes only")
     args = parser.parse_args()
 
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    token = resolve_token()
     token_file = Path(__file__).parent / ".github-token"
     if not token and token_file.exists():
         token = token_file.read_text(encoding="utf-8").strip()
     if not token:
-        print("ERROR: Set GITHUB_TOKEN or GH_TOKEN before running.", file=sys.stderr)
-        print('  $env:GITHUB_TOKEN = "ghp_your_token"', file=sys.stderr)
-        print(f"  Or create {token_file} (gitignored) with your token.", file=sys.stderr)
+        require_token()
         return 1
 
     gh = GitHub(token, dry_run=args.dry_run)

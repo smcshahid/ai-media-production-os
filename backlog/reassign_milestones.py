@@ -3,10 +3,9 @@ Reassign AIMPOS GitHub issues to Sprint 0-5 + Future Release milestones.
 
 Source of truth: Sprint Reclassification.md (frozen).
 Reads issue-id -> GitHub number from github-issue-mapping.json.
-Token from GITHUB_TOKEN or GH_TOKEN env var (never stored in this file).
+Token from GITHUB_TOKEN, GH_TOKEN, or `gh auth token` (keyring).
 
-Usage (PowerShell):
-  $env:GITHUB_TOKEN = "ghp_..."
+Usage:
   python backlog/reassign_milestones.py --dry-run
   python backlog/reassign_milestones.py
 """
@@ -21,6 +20,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+from github_auth import require_token
 
 REPO = "smcshahid/ai-media-production-os"
 API = "https://api.github.com"
@@ -130,10 +131,7 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-    if not token:
-        print("ERROR: set GITHUB_TOKEN or GH_TOKEN first.", file=sys.stderr)
-        return 1
+    token = require_token()
 
     mapping_path = Path(__file__).parent / "github-issue-mapping.json"
     id_to_number: dict[str, int] = json.loads(mapping_path.read_text(encoding="utf-8"))
