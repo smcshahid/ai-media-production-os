@@ -15,10 +15,10 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 |--------|------:|
 | Sprint 0 issues (class A) | 26 |
 | Complete | 2 |
-| In progress | 6 |
-| Not started | 18 |
+| In progress | 8 |
+| Not started | 16 |
 
-*In progress on `feature/T-04-01-sqlalchemy-models`: US-04 + T-04-01/02/03 (committed `791a94b`, pending merge) and US-03 + T-03-01 (`/health`, committed-pending). US-03's T-03-02/03 not yet started.*
+*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): US-04 + T-04-01/02/03 (`791a94b`) and **US-03 fully implemented** — T-03-01 (`/health`, `dc0bbc1`), T-03-02 (access logging) + T-03-03 (request-id). US-03's three tasks are all done.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -32,12 +32,12 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
 | US-04 | 4 | Database schema foundation | 🟡 All tasks done; committed `791a94b`, pending merge |
-| US-03 | 5 | API health and logging | 🟡 T-03-01 done; T-03-02/03 pending |
+| US-03 | 5 | API health and logging | 🟡 All tasks done; pending merge |
 | T-02-02 | 45 | Configure PostgreSQL volume and init scripts | ✅ Done (merged, #72) |
 | T-02-03 | 46 | Configure MinIO bucket on startup | ✅ Done (pending merge) |
 | T-03-01 | 53 | Implement /health with dependency probes | 🟡 Done (pending merge) |
-| T-03-02 | 54 | Add structured logging middleware | ⬜ |
-| T-03-03 | 55 | Request ID propagation | ⬜ |
+| T-03-02 | 54 | Add structured logging middleware | 🟡 Done (pending merge) |
+| T-03-03 | 55 | Request ID propagation | 🟡 Done (pending merge) |
 | T-04-01 | 50 | SQLAlchemy models for core tables | 🟡 In progress (code + tests done; PR open) |
 | T-04-02 | 51 | Initial Alembic migration | 🟡 In progress (migration + verify done; PR open) |
 | T-04-03 | 52 | Repository layer interfaces | 🟡 Done (repos + async tests; PR open) |
@@ -274,6 +274,38 @@ Autogenerate **NO_DRIFT** vs models; `upgrade head` → 6 tables (+ `alembic_ver
 
 ---
 
+## T-03-02 + T-03-03 — completion record (closes US-03)
+
+**Issues:** #54 (logging middleware) + #55 (request-id) · **Parent:** US-03 · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge) · Implemented together (request-id is consumed by the access log)
+
+### Acceptance criteria (US-03)
+| AC | Result |
+|----|--------|
+| `GET /health` reports postgresql, minio, redis | ✅ T-03-01 (temporal joins in Sprint 1, plan §4.6) |
+| Structured JSON logs with `request_id` | ✅ `aimpos.access` JSON line + **all** request-scoped logs carry `request_id` (verified: in-handler httpx line shared the id) |
+| Failed dependency returns 503 | ✅ T-03-01 |
+
+### Delivered
+- `packages/aimpos-config/aimpos_config/logging.py` — `request_id_var` (ContextVar) + `RequestIdFilter`; filter wired into `configure_logging`
+- `api/app/middleware/request_id.py` — `RequestIDMiddleware` (pure ASGI): accept inbound `X-Request-ID` or generate UUID4; echo on response; set/reset contextvar
+- `api/app/middleware/logging.py` — `AccessLogMiddleware` (pure ASGI): one JSON line per request (method/path/status/duration_ms/client/request_id)
+- `api/app/main.py` — register both (RequestID outermost)
+- `api/Dockerfile` — `--no-access-log` (structured access log supersedes uvicorn's plaintext)
+- `api/tests/unit/test_middleware.py` — 5 tests (generated/echoed/distinct id; formatter+filter; end-to-end correlation)
+- `DECISIONS.md` — D-23
+
+### Verification
+`pytest` → **21 passed** (16 prior + 5). `ruff` + `mypy` (strict on `aimpos-config`) clean. **Live:** inbound `X-Request-ID: smoke-trace-9999` echoed on the response and present on both the `aimpos.access` line and the in-handler `httpx` MinIO-probe line (proves request-scoped correlation); generated requests get distinct UUID4 ids; no duplicate plaintext access line.
+
+### Self-review notes
+- Pure-ASGI (not `BaseHTTPMiddleware`) is deliberate — guarantees contextvar propagation into the endpoint and downstream library logs (D-23).
+- `request_id_var` lives in `aimpos-config` so the worker reuses the same correlation mechanism.
+- Uvicorn startup banners remain plaintext (TD-19) — cosmetic; access/request logs are JSON.
+- **US-03 is complete** (T-03-01/02/03). Unblocks US-01 (project endpoints) and US-05 (asset upload) — both build on the running API + logging.
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -298,6 +330,7 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-16 | A down-PostgreSQL `/health` probe reports `detail: ""` (psycopg `OperationalError` str is sometimes empty) — status is correctly `error` but the message is unhelpful | Trivial | Cosmetic; improve probe error formatting (use `repr`/type name fallback) in T-03-02 |
 | TD-17 | `make migrate` still runs in a one-off container; not switched to `docker compose run --rm api alembic` because the api wheel excludes `alembic/` | Low | Switch when the image ships migrations (copy `alembic/` into the image or add a console entrypoint); supersedes the D-20 follow-up |
 | TD-18 | `api` service uses blanket `env_file: .env` (same least-privilege smell as TD-01/07) | Low | Broaden #69 to the api service |
+| TD-19 | Uvicorn startup banner lines ("Application startup complete", "Uvicorn running…") stay plaintext (uvicorn loggers have own handlers, `propagate=False`) | Trivial | Cosmetic; route `uvicorn.*` through the JSON root handler in `configure_logging` if fully-unified logs are wanted |
 
 ---
 
@@ -331,3 +364,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.2 | 2026-06-09 | T-04-02 (initial Alembic migration) done pending review; `make migrate`/`migrate-down` wired; migrations runbook; D-20; verified on PostgreSQL 16 (no drift) |
 | 1.3 | 2026-06-09 | T-04-03 (repositories) done pending review — **closes US-04**; async repos + Protocol port; `py.typed`; D-21; TD-13/14; 10 tests + ruff + mypy clean |
 | 1.4 | 2026-06-09 | US-04 committed (`791a94b`); **T-03-01 (`/health`) done** — opens US-03; `aimpos-config` + app factory + probes + api/redis compose services + Dockerfile; D-22; TD-05 resolved, TD-15–18; 16 tests + ruff + mypy clean; live 200/503 verified |
+| 1.5 | 2026-06-09 | **US-03 closed** — T-03-02 (structured access logging) + T-03-03 (request-id propagation); pure-ASGI middleware + `request_id_var`/filter in `aimpos-config`; `--no-access-log`; D-23; TD-19; 21 tests + ruff + mypy clean; live request-scoped correlation verified |
