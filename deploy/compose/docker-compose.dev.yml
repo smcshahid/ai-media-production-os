@@ -1,0 +1,18 @@
+# AIMPOS-Spark Visual — local development overlay.
+# Layer on top of the base file to publish service ports to the host
+# for local tooling (psql, GUI clients). Never use this overlay in a
+# shared or production-like environment.
+#
+# Usage (from repo root):
+#   docker compose -f deploy/compose/docker-compose.yml \
+#     -f deploy/compose/docker-compose.dev.yml --env-file .env up -d
+#
+# Or via Makefile:  make up-dev
+name: aimpos-spark
+
+services:
+  postgresql:
+    # Publish 5432 to the host so a developer can connect with a local psql
+    # client. The base file keeps the database internal-only.
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
