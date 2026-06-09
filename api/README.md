@@ -48,6 +48,22 @@ make health        # GET /health (pretty-printed)  ·  make logs-api  to tail lo
 - One structured access line per request: `http_method`, `path`, `status_code`,
   `duration_ms`, `client`, `request_id` (uvicorn's plaintext access log is disabled).
 
+### Projects & default seed (US-01)
+
+- `GET /projects` returns the project list as `[{ "id", "name", "status" }]`
+  (field is `name`, per Sprint 0 plan §4.6 / DECISIONS D-18).
+- A default project **"AIMPOS Spark Demo"** (`status=ACTIVE`) is seeded
+  idempotently on API startup. On a **fresh** stack the schema must exist first:
+
+```bash
+make up-dev          # start the stack (api boots; seed is deferred if unmigrated)
+make migrate         # create the tables
+make seed            # seed the default project (or: docker compose restart api)
+curl localhost:8000/projects
+```
+
+  The seed only inserts when the table is empty, so restarts never duplicate it.
+
 ## Database migrations (US-04)
 
 PostgreSQL is the system of record; all schema changes go through Alembic

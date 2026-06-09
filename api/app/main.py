@@ -8,18 +8,22 @@ packages.
 
 from __future__ import annotations
 
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 import httpx
 from aimpos_config import configure_logging, get_settings
 from fastapi import FastAPI
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.infrastructure.cache.redis_client import build_redis
-from app.infrastructure.db.session import build_engine
+from app.infrastructure.db.session import build_engine, build_sessionmaker
 from app.middleware.logging import AccessLogMiddleware
 from app.middleware.request_id import RequestIDMiddleware
 from app.routes.health import router as health_router
+from app.routes.projects import router as projects_router
+from app.seed.default_project import seed_default_project
 
 
 @asynccontextmanager
@@ -29,8 +33,21 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     app.state.settings = settings
     app.state.engine = build_engine(settings.database_url)
+    app.state.sessionmaker = build_sessionmaker(app.state.engine)
     app.state.redis = build_redis(settings.redis_url)
     app.state.http = httpx.AsyncClient()
+
+    # Idempotent default-project seed (US-01). Tolerate a not-yet-migrated
+    # schema so the API still boots and /health stays serviceable; the operator
+    # runs `make migrate` then `make seed` (or restarts) on a fresh stack.
+    try:
+        async with app.state.sessionmaker() as session:
+            await seed_default_project(session)
+    except SQLAlchemyError as exc:
+        logging.getLogger("aimpos.seed").warning(
+            "seed.default_project.deferred", extra={"error": str(exc)}
+        )
+
     try:
         yield
     finally:
@@ -52,6 +69,7 @@ def create_app() -> FastAPI:
     app.add_middleware(AccessLogMiddleware)
     app.add_middleware(RequestIDMiddleware)
     app.include_router(health_router)
+    app.include_router(projects_router)
     return app
 
 
