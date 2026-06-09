@@ -1,0 +1,166 @@
+Issue Type,Summary,Description,Issue Key,Parent ID,Epic Name,Epic Link,Feature ID,Priority,Story Points,Sprint,Labels,Acceptance Criteria
+Epic,[EPIC-01] Platform Foundation,"Runnable Olares stack: PostgreSQL, MinIO, Redis, Ollama, ComfyUI, API skeleton, health checks.",EPIC-01,,,,,P0,,S1,aimpos-spark;foundation;olares,Docker Compose starts all services with one command. /health returns OK. ComfyUI test image succeeds. Ollama responds locally with zero egress.
+Epic,[EPIC-02] Pipeline Orchestration,"Temporal workflow skeleton with start, status, approve/reject signals, audit events.",EPIC-02,,,,,P0,,S2,aimpos-spark;temporal;workflow,User starts pipeline and sees status transitions. Workflow pauses at review gates. Approve advances; reject keeps stage. All transitions in audit_events.
+Epic,"[EPIC-03] Idea, Story & Script Stages",Idea capture through approved script using Story Architect and Screenwriter agents.,EPIC-03,,,,,P0,,S3,aimpos-spark;agents;story;script,Creator completes Idea to approved Story to approved Script in one run. Assets versioned in MinIO. Agent invocations logged with model ID.
+Epic,[EPIC-04] Storyboard Stage,"ComfyUI storyboard frames from approved script, gallery review, approval.",EPIC-04,,,,,P0,,S4,aimpos-spark;storyboard;comfyui,4-6 frames generated locally. Gallery review with approve/reject/regenerate. GPU jobs sequenced without OOM.
+Epic,[EPIC-05] Video & Pipeline Completion,"Short video generation, approval, export bundle, lineage summary.",EPIC-05,,,,,P0,,S5,aimpos-spark;video;export,15-30s video generated locally. Full pipeline end-to-end per demo script. Export ZIP with manifest.
+Epic,"[EPIC-06] Governance, Assets & Console","Asset history, audit log, auth token, navigation shell, durability.",EPIC-06,,,,,P0,,S1-S5,aimpos-spark;governance;ui,All assets versioned and browsable. Full audit trail visible. Pipeline survives worker restart. API token auth on mutating endpoints.
+Story,[FEAT-01] Project Bootstrap,Default project on startup. F-01.,FEAT-01,EPIC-03,"Idea, Story & Script Stages",EPIC-03,F-01,P0,,S1,feature;F-01;type:feature,
+Story,[FEAT-INFRA] Infrastructure Enabler,"Docker Compose, health, schema, MinIO, Ollama/ComfyUI smoke tests.",FEAT-INFRA,EPIC-01,Platform Foundation,EPIC-01,F-INFRA,P0,,S1,feature;infrastructure;type:feature,
+Story,[FEAT-03] Start Production Pipeline,Start Temporal workflow after idea capture. F-03.,FEAT-03,EPIC-02,Pipeline Orchestration,EPIC-02,F-03,P0,,S2,feature;F-03;type:feature,
+Story,[FEAT-16] Pipeline Status Dashboard,"Dashboard showing stage, progress, CTAs. F-16.",FEAT-16,EPIC-02,Pipeline Orchestration,EPIC-02,F-16,P0,,S2,feature;F-16;type:feature,
+Story,[FEAT-02] Capture Idea,"Title, paragraph, optional style note. F-02.",FEAT-02,EPIC-03,"Idea, Story & Script Stages",EPIC-03,F-02,P0,,S3,feature;F-02;type:feature,
+Story,[FEAT-04] AI Story Generation,Story Architect agent generates treatment. F-04.,FEAT-04,EPIC-03,"Idea, Story & Script Stages",EPIC-03,F-04,P0,,S3,feature;F-04;type:feature,
+Story,[FEAT-05] Story Review & Approval,"Read, edit, approve/reject story. F-05.",FEAT-05,EPIC-03,"Idea, Story & Script Stages",EPIC-03,F-05,P0,,S3,feature;F-05;type:feature,
+Story,[FEAT-06] AI Script Generation,Screenwriter agent generates one-scene Fountain script. F-06.,FEAT-06,EPIC-03,"Idea, Story & Script Stages",EPIC-03,F-06,P0,,S3,feature;F-06;type:feature,
+Story,[FEAT-07] Script Review & Approval,"Preview script, approve/reject. F-07.",FEAT-07,EPIC-03,"Idea, Story & Script Stages",EPIC-03,F-07,P0,,S3,feature;F-07;type:feature,
+Story,[FEAT-08] AI Storyboard Generation,Cinematography agent + ComfyUI frames. F-08.,FEAT-08,EPIC-04,Storyboard Stage,EPIC-04,F-08,P0,,S4,feature;F-08;type:feature,
+Story,[FEAT-09] Storyboard Gallery Review,"Grid gallery, approve/reject frames. F-09.",FEAT-09,EPIC-04,Storyboard Stage,EPIC-04,F-09,P0,,S4,feature;F-09;type:feature,
+Story,[FEAT-10] AI Short Video Generation,ComfyUI image-to-video from frames. F-10.,FEAT-10,EPIC-05,Video & Pipeline Completion,EPIC-05,F-10,P0,,S5,feature;F-10;type:feature,
+Story,[FEAT-11] Video Preview & Approval,In-browser video preview and final approval. F-11.,FEAT-11,EPIC-05,Video & Pipeline Completion,EPIC-05,F-11,P0,,S5,feature;F-11;type:feature,
+Story,[FEAT-14] Lineage Summary,Idea to video chain visualization. F-14.,FEAT-14,EPIC-05,Video & Pipeline Completion,EPIC-05,F-14,P1,,S5,feature;F-14;type:feature,
+Story,[FEAT-15] Export Final Bundle,ZIP download with manifest.json. F-15.,FEAT-15,EPIC-05,Video & Pipeline Completion,EPIC-05,F-15,P1,,S5,feature;F-15;type:feature,
+Story,[FEAT-12] Asset Version History,Browse versions per stage. F-12.,FEAT-12,EPIC-06,"Governance, Assets & Console",EPIC-06,F-12,P0,,S4,feature;F-12;type:feature,
+Story,[FEAT-13] Audit Log Viewer,Chronological pipeline event log. F-13.,FEAT-13,EPIC-06,"Governance, Assets & Console",EPIC-06,F-13,P0,,S3,feature;F-13;type:feature,
+Story,[US-01] Create default project,"As a creator, I want a default project on startup so I can begin without setup.",US-01,FEAT-01,"Idea, Story & Script Stages",EPIC-03,F-01,P0,2,S1,user-story;backend,"Given fresh deployment, one project AIMPOS Spark Demo exists. GET /projects returns project with status ACTIVE. Pipeline runs list is empty."
+Story,[US-02] Deploy MVP stack on Olares,"As a platform engineer, I want Docker Compose for all MVP services.",US-02,FEAT-INFRA,Platform Foundation,EPIC-01,F-INFRA,P0,5,S1,user-story;devops,docker compose up brings 9 containers healthy within 5 min. /health returns 200. MinIO upload/download round-trip works. All services on aimpos-spark network.
+Story,[US-03] API health and logging,"As a platform engineer, I want health checks and structured logs.",US-03,FEAT-INFRA,Platform Foundation,EPIC-01,F-INFRA,P0,2,S1,user-story;backend,"GET /health includes postgresql, minio, redis, temporal status. Structured JSON logs with request_id. Failed dependency returns 503."
+Story,[US-04] Database schema foundation,"As a backend developer, I want core tables migrated.",US-04,FEAT-INFRA,Platform Foundation,EPIC-01,F-INFRA,P0,3,S1,user-story;backend,"Tables: projects, pipeline_runs, asset_versions, approvals, audit_events, lineage_edges. Rollback works on empty DB. asset_versions has stage, version, minio_key, content_hash, is_ai_generated."
+Story,[US-05] MinIO asset upload service,"As a backend developer, I want reusable content-addressable asset storage.",US-05,FEAT-INFRA,Platform Foundation,EPIC-01,F-INFRA,P0,3,S1,user-story;backend,store_asset computes SHA-256 and stores at hash key. Metadata row content_hash matches ETag. Duplicate bytes deduplicated.
+Story,[US-06] Ollama and ComfyUI smoke test,"As an AI engineer, I want verified local model endpoints.",US-06,FEAT-INFRA,Platform Foundation,EPIC-01,F-INFRA,P0,3,S1,user-story;ai,Ollama generate responds in <30s. ComfyUI workflow writes PNG to MinIO. Sequential GPU use without OOM.
+Story,[US-07] Start pipeline workflow,"As a creator, I want to start production after entering my idea.",US-07,FEAT-03,Pipeline Orchestration,EPIC-02,F-03,P0,5,S2,user-story;workflow,POST /pipeline/start creates SparkPipelineWorkflow. GET /pipeline/status shows STORY_GENERATING or STORY_REVIEW. Duplicate start returns 409. PipelineStarted audit event recorded.
+Story,[US-08] Approve or reject stage output,"As a creator, I want to approve or reject AI output at each stage.",US-08,FEAT-03,Pipeline Orchestration,EPIC-02,F-03,P0,5,S2,user-story;workflow,POST /pipeline/approve with GRANT creates immutable approvals row. Approve advances workflow. Reject with note keeps stage. ApprovalGranted audit event logged.
+Story,[US-09] Regenerate after rejection,"As a creator, I want to regenerate AI output after rejecting it.",US-09,FEAT-03,Pipeline Orchestration,EPIC-02,F-03,P0,3,S2,user-story;workflow,POST /pipeline/regenerate triggers agent for current stage. New asset_version with incremented version. Max 3 regenerations per stage (429 after). Rejection note passed to agent.
+Story,[US-10] View pipeline status dashboard,"As a creator, I want a dashboard showing stage and progress.",US-10,FEAT-16,Pipeline Orchestration,EPIC-02,F-16,P0,3,S2,user-story;frontend,"Dashboard shows stage, status, 5-step progress. REVIEW shows Go to Review CTA. GENERATING polls every 5s. FAILED shows error and Retry."
+Story,[US-11] Enter production idea,"As a creator, I want to enter title, paragraph, and style note.",US-11,FEAT-02,"Idea, Story & Script Stages",EPIC-03,F-02,P0,2,S3,user-story;frontend,Submit idea stores idea.txt v1 in MinIO. Style note in metadata. Appears under stage IDEA. Validation on required fields and 50-2000 char paragraph.
+Story,[US-12] Generate story from idea,"As a creator, I want Story Architect to generate a treatment.",US-12,FEAT-04,"Idea, Story & Script Stages",EPIC-03,F-04,P0,5,S3,user-story;ai,LangGraph Story Architect invoked. story.md on ai-draft branch. Audit logs model_id and agent. Local-only Ollama. Workflow to STORY_REVIEW.
+Story,[US-13] Review and edit story,"As a creator, I want to read, edit, and approve the story.",US-13,FEAT-05,"Idea, Story & Script Stages",EPIC-03,F-05,P0,3,S3,user-story;frontend,Review screen shows editable treatment. Save creates human-edit version. Approve advances pipeline. Reject enables regenerate.
+Story,[US-14] Generate one-scene script,"As a creator, I want Screenwriter to generate a Fountain script.",US-14,FEAT-06,"Idea, Story & Script Stages",EPIC-03,F-06,P0,5,S3,user-story;ai,Exactly 1 scene Fountain script. script.fountain is_ai_generated=true. Lineage edge story to script. Workflow to SCRIPT_REVIEW.
+Story,[US-15] Review and approve script,"As a creator, I want to preview and approve the script.",US-15,FEAT-07,"Idea, Story & Script Stages",EPIC-03,F-07,P0,3,S3,user-story;frontend,Fountain rendered with formatting. Approve advances to STORYBOARD_GENERATING. Reject/regenerate works. Approved version marked in DB.
+Story,[US-16] Generate storyboard frames,"As a creator, I want 4-6 storyboard images from my script.",US-16,FEAT-08,Storyboard Stage,EPIC-04,F-08,P0,8,S4,user-story;ai,4-6 PNG frames via ComfyUI. Ollama unloaded before GPU. Lineage script to frames. STORYBOARD_REVIEW on success. Retry 2x then FAILED.
+Story,[US-17] Review storyboard gallery,"As a creator, I want to view frames in a grid and approve or reject.",US-17,FEAT-09,Storyboard Stage,EPIC-04,F-09,P0,3,S4,user-story;frontend,Responsive grid of 4-6 images. Lightbox preview. Approve-all advances to video. Reject triggers regenerate. AI badge on frames.
+Story,[US-18] Generate short video clip,"As a creator, I want a short video from approved frames.",US-18,FEAT-10,Video & Pipeline Completion,EPIC-05,F-10,P0,8,S5,user-story;ai,scene_video.mp4 15-30s <=480p. Lineage frames to video. VIDEO_REVIEW on success. Slideshow fallback on failure.
+Story,[US-19] Preview and approve video,"As a creator, I want to preview video and complete the pipeline.",US-19,FEAT-11,Video & Pipeline Completion,EPIC-05,F-11,P0,3,S5,user-story;frontend,HTML5 player renders video. Approve sets COMPLETED. Reject enables regenerate. PipelineCompleted audit event.
+Story,[US-20] View asset lineage chain,"As a creator, I want to see idea to video lineage.",US-20,FEAT-14,Video & Pipeline Completion,EPIC-05,F-14,P1,3,S5,user-story;frontend,Ordered chain: idea to story to script to frames to video. Click node shows metadata. Data from lineage_edges PostgreSQL.
+Story,[US-21] Download production bundle,"As a creator, I want ZIP of approved assets with manifest.",US-21,FEAT-15,Video & Pipeline Completion,EPIC-05,F-15,P1,3,S5,user-story;backend,"ZIP contains all approved assets and manifest.json with hashes, approvals, model IDs. BundleExported audit event."
+Story,[US-22] Browse asset versions,"As a creator, I want to see all versions per stage.",US-22,FEAT-12,"Governance, Assets & Console",EPIC-06,F-12,P0,3,S4,user-story;frontend,"Versions grouped by stage. Newest first. Preview or download per version. Shows is_ai_generated, branch, content_hash."
+Story,[US-23] View audit trail,"As a creator, I want chronological pipeline event log.",US-23,FEAT-13,"Governance, Assets & Console",EPIC-06,F-13,P0,3,S3,user-story;frontend,"Events: PipelineStarted, AgentTaskCompleted, ApprovalGranted, Rejected, Completed. Agent events show model_id. Append-only. Included in export."
+Story,[US-24] Pipeline survives worker restart,"As a platform engineer, I want workflow resume after restart.",US-24,FEAT-03,"Governance, Assets & Console",EPIC-06,F-03,P0,3,S2,user-story;workflow,Worker restart resumes within 2 min. Approve signal works after API restart. No duplicate asset versions.
+Story,[US-25] API token authentication,"As a platform engineer, I want Bearer token on mutating endpoints.",US-25,FEAT-INFRA,"Governance, Assets & Console",EPIC-06,F-INFRA,P0,2,S2,user-story;security,No token on POST returns 401. Valid Bearer succeeds. Web client sends token from env.
+Story,[US-26] App navigation shell,"As a creator, I want nav between Dashboard, Review, Assets, Audit, Export.",US-26,FEAT-16,"Governance, Assets & Console",EPIC-06,F-16,P0,2,S2,user-story;frontend,Nav bar on all screens. Empty states when pipeline not started. CTA reflects current stage. Usable at >=768px.
+Story,[US-27] MVP demo acceptance validation,"As a product owner, I want demo script executable end-to-end.",US-27,FEAT-15,Video & Pipeline Completion,EPIC-05,F-15,P0,2,S5,user-story;qa,All 10 demo steps pass. SC-01 to SC-08 verified. Limitations documented. Stakeholder sign-off.
+Sub-task,[T-01-01] Create projects table migration,Implementation task for US-01: Create projects table migration,T-01-01,US-01,,,F-01,P0,,S1,task,
+Sub-task,[T-01-02] Implement seed script for default project,Implementation task for US-01: Implement seed script for default project,T-01-02,US-01,,,F-01,P0,,S1,task,
+Sub-task,[T-01-03] Add GET /projects endpoint,Implementation task for US-01: Add GET /projects endpoint,T-01-03,US-01,,,F-01,P0,,S1,task,
+Sub-task,[T-01-04] Unit test project repository,Implementation task for US-01: Unit test project repository,T-01-04,US-01,,,F-01,P0,,S1,task,
+Sub-task,[T-02-01] Write docker-compose.yml for all 9 services,Implementation task for US-02: Write docker-compose.yml for all 9 services,T-02-01,US-02,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-02-02] Configure PostgreSQL volume and init scripts,Implementation task for US-02: Configure PostgreSQL volume and init scripts,T-02-02,US-02,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-02-03] Configure MinIO bucket aimpos-hot-assets on startup,Implementation task for US-02: Configure MinIO bucket aimpos-hot-assets on startup,T-02-03,US-02,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-02-04] Pin Ollama model llama3.1:13b in compose init,Implementation task for US-02: Pin Ollama model llama3.1:13b in compose init,T-02-04,US-02,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-02-05] Document Olares deployment in README,Implementation task for US-02: Document Olares deployment in README,T-02-05,US-02,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-02-06] Verify zero egress during compose startup,Implementation task for US-02: Verify zero egress during compose startup,T-02-06,US-02,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-03-01] Implement /health with dependency probes,Implementation task for US-03: Implement /health with dependency probes,T-03-01,US-03,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-03-02] Add structured logging middleware,Implementation task for US-03: Add structured logging middleware,T-03-02,US-03,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-03-03] Add request ID propagation,Implementation task for US-03: Add request ID propagation,T-03-03,US-03,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-04-01] Define SQLAlchemy models for core tables,Implementation task for US-04: Define SQLAlchemy models for core tables,T-04-01,US-04,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-04-02] Create initial Alembic migration,Implementation task for US-04: Create initial Alembic migration,T-04-02,US-04,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-04-03] Add repository layer interfaces,Implementation task for US-04: Add repository layer interfaces,T-04-03,US-04,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-05-01] Implement MinIO client wrapper,Implementation task for US-05: Implement MinIO client wrapper,T-05-01,US-05,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-05-02] Implement content-hash key generator,Implementation task for US-05: Implement content-hash key generator,T-05-02,US-05,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-05-03] Implement AssetVersion create on upload,Implementation task for US-05: Implement AssetVersion create on upload,T-05-03,US-05,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-05-04] Integration test upload round-trip,Implementation task for US-05: Integration test upload round-trip,T-05-04,US-05,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-06-01] Create Ollama connectivity test script,Implementation task for US-06: Create Ollama connectivity test script,T-06-01,US-06,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-06-02] Pin and test ComfyUI SDXL workflow JSON,Implementation task for US-06: Pin and test ComfyUI SDXL workflow JSON,T-06-02,US-06,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-06-03] Document GPU sequencing rule in worker README,Implementation task for US-06: Document GPU sequencing rule in worker README,T-06-03,US-06,,,F-INFRA,P0,,S1,task,
+Sub-task,[T-07-01] Deploy Temporal server with PostgreSQL persistence,Implementation task for US-07: Deploy Temporal server with PostgreSQL persistence,T-07-01,US-07,,,F-03,P0,,S2,task,
+Sub-task,[T-07-02] Implement SparkPipelineWorkflow skeleton,Implementation task for US-07: Implement SparkPipelineWorkflow skeleton,T-07-02,US-07,,,F-03,P0,,S2,task,
+Sub-task,[T-07-03] Implement POST /pipeline/start API,Implementation task for US-07: Implement POST /pipeline/start API,T-07-03,US-07,,,F-03,P0,,S2,task,
+Sub-task,[T-07-04] Implement GET /pipeline/status API,Implementation task for US-07: Implement GET /pipeline/status API,T-07-04,US-07,,,F-03,P0,,S2,task,
+Sub-task,[T-07-05] Register Temporal worker pod,Implementation task for US-07: Register Temporal worker pod,T-07-05,US-07,,,F-03,P0,,S2,task,
+Sub-task,[T-07-06] Write audit event on pipeline start,Implementation task for US-07: Write audit event on pipeline start,T-07-06,US-07,,,F-03,P0,,S2,task,
+Sub-task,[T-08-01] Implement approval API endpoints,Implementation task for US-08: Implement approval API endpoints,T-08-01,US-08,,,F-03,P0,,S2,task,
+Sub-task,[T-08-02] Wire Temporal approve/reject signals,Implementation task for US-08: Wire Temporal approve/reject signals,T-08-02,US-08,,,F-03,P0,,S2,task,
+Sub-task,[T-08-03] Create immutable approvals table writes,Implementation task for US-08: Create immutable approvals table writes,T-08-03,US-08,,,F-03,P0,,S2,task,
+Sub-task,[T-08-04] Handle reject without workflow advance,Implementation task for US-08: Handle reject without workflow advance,T-08-04,US-08,,,F-03,P0,,S2,task,
+Sub-task,[T-08-05] Integration test approve advances stage,Implementation task for US-08: Integration test approve advances stage,T-08-05,US-08,,,F-03,P0,,S2,task,
+Sub-task,[T-09-01] Implement regenerate endpoint,Implementation task for US-09: Implement regenerate endpoint,T-09-01,US-09,,,F-03,P0,,S2,task,
+Sub-task,[T-09-02] Pass rejection note to activity input,Implementation task for US-09: Pass rejection note to activity input,T-09-02,US-09,,,F-03,P0,,S2,task,
+Sub-task,[T-09-03] Enforce max 3 regenerations per stage,Implementation task for US-09: Enforce max 3 regenerations per stage,T-09-03,US-09,,,F-03,P0,,S2,task,
+Sub-task,[T-09-04] Increment version on regenerate,Implementation task for US-09: Increment version on regenerate,T-09-04,US-09,,,F-03,P0,,S2,task,
+Sub-task,[T-10-01] Implement dashboard API aggregation endpoint,Implementation task for US-10: Implement dashboard API aggregation endpoint,T-10-01,US-10,,,F-16,P0,,S2,task,
+Sub-task,[T-10-02] Build Dashboard screen (React),Implementation task for US-10: Build Dashboard screen (React),T-10-02,US-10,,,F-16,P0,,S2,task,
+Sub-task,[T-10-03] Add 5-stage progress stepper component,Implementation task for US-10: Add 5-stage progress stepper component,T-10-03,US-10,,,F-16,P0,,S2,task,
+Sub-task,[T-10-04] Implement status polling hook,Implementation task for US-10: Implement status polling hook,T-10-04,US-10,,,F-16,P0,,S2,task,
+Sub-task,[T-11-01] Implement POST /ideas endpoint,Implementation task for US-11: Implement POST /ideas endpoint,T-11-01,US-11,,,F-02,P0,,S3,task,
+Sub-task,[T-11-02] Build idea capture form on Dashboard,Implementation task for US-11: Build idea capture form on Dashboard,T-11-02,US-11,,,F-02,P0,,S3,task,
+Sub-task,[T-11-03] Validate input length and required fields,Implementation task for US-11: Validate input length and required fields,T-11-03,US-11,,,F-02,P0,,S3,task,
+Sub-task,[T-11-04] Store idea as asset_version stage=IDEA,Implementation task for US-11: Store idea as asset_version stage=IDEA,T-11-04,US-11,,,F-02,P0,,S3,task,
+Sub-task,[T-12-01] Implement LangGraph Story Architect graph,Implementation task for US-12: Implement LangGraph Story Architect graph,T-12-01,US-12,,,F-04,P0,,S3,task,
+Sub-task,[T-12-02] Implement run_story_agent Temporal activity,Implementation task for US-12: Implement run_story_agent Temporal activity,T-12-02,US-12,,,F-04,P0,,S3,task,
+Sub-task,[T-12-03] Create story prompt template with idea injection,Implementation task for US-12: Create story prompt template with idea injection,T-12-03,US-12,,,F-04,P0,,S3,task,
+Sub-task,[T-12-04] Store story output as asset version,Implementation task for US-12: Store story output as asset version,T-12-04,US-12,,,F-04,P0,,S3,task,
+Sub-task,[T-12-05] Log agent invocation to audit_events,Implementation task for US-12: Log agent invocation to audit_events,T-12-05,US-12,,,F-04,P0,,S3,task,
+Sub-task,[T-12-06] Integration test story generation (mock Ollama),Implementation task for US-12: Integration test story generation (mock Ollama),T-12-06,US-12,,,F-04,P0,,S3,task,
+Sub-task,[T-13-01] Build Review screen — story mode,Implementation task for US-13: Build Review screen — story mode,T-13-01,US-13,,,F-05,P0,,S3,task,
+Sub-task,[T-13-02] Implement PUT /assets/{id} text update,Implementation task for US-13: Implement PUT /assets/{id} text update,T-13-02,US-13,,,F-05,P0,,S3,task,
+Sub-task,[T-13-03] Wire Approve/Reject buttons to pipeline API,Implementation task for US-13: Wire Approve/Reject buttons to pipeline API,T-13-03,US-13,,,F-05,P0,,S3,task,
+Sub-task,[T-13-04] Display rejection note input on reject,Implementation task for US-13: Display rejection note input on reject,T-13-04,US-13,,,F-05,P0,,S3,task,
+Sub-task,[T-14-01] Implement LangGraph Screenwriter graph,Implementation task for US-14: Implement LangGraph Screenwriter graph,T-14-01,US-14,,,F-06,P0,,S3,task,
+Sub-task,[T-14-02] Implement run_script_agent Temporal activity,Implementation task for US-14: Implement run_script_agent Temporal activity,T-14-02,US-14,,,F-06,P0,,S3,task,
+Sub-task,[T-14-03] Add Fountain format validation,Implementation task for US-14: Add Fountain format validation,T-14-03,US-14,,,F-06,P0,,S3,task,
+Sub-task,[T-14-04] Record lineage edge story to script,Implementation task for US-14: Record lineage edge story to script,T-14-04,US-14,,,F-06,P0,,S3,task,
+Sub-task,[T-14-05] Store script asset version,Implementation task for US-14: Store script asset version,T-14-05,US-14,,,F-06,P0,,S3,task,
+Sub-task,[T-15-01] Build Review screen — script mode with Fountain preview,Implementation task for US-15: Build Review screen — script mode with Fountain preview,T-15-01,US-15,,,F-07,P0,,S3,task,
+Sub-task,[T-15-02] Add basic Fountain-to-HTML formatter,Implementation task for US-15: Add basic Fountain-to-HTML formatter,T-15-02,US-15,,,F-07,P0,,S3,task,
+Sub-task,[T-15-03] Wire approve/reject for script stage,Implementation task for US-15: Wire approve/reject for script stage,T-15-03,US-15,,,F-07,P0,,S3,task,
+Sub-task,[T-15-04] Mark approved script version in DB,Implementation task for US-15: Mark approved script version in DB,T-15-04,US-15,,,F-07,P0,,S3,task,
+Sub-task,[T-16-01] Implement Cinematography agent (planning via Ollama),Implementation task for US-16: Implement Cinematography agent (planning via Ollama),T-16-01,US-16,,,F-08,P0,,S4,task,
+Sub-task,[T-16-02] Implement ComfyUI tool — SDXL/Flux workflow,Implementation task for US-16: Implement ComfyUI tool — SDXL/Flux workflow,T-16-02,US-16,,,F-08,P0,,S4,task,
+Sub-task,[T-16-03] Implement run_storyboard_agent Temporal activity,Implementation task for US-16: Implement run_storyboard_agent Temporal activity,T-16-03,US-16,,,F-08,P0,,S4,task,
+Sub-task,[T-16-04] GPU sequencing: unload Ollama before ComfyUI,Implementation task for US-16: GPU sequencing: unload Ollama before ComfyUI,T-16-04,US-16,,,F-08,P0,,S4,task,
+Sub-task,[T-16-05] Store multiple frame assets per run,Implementation task for US-16: Store multiple frame assets per run,T-16-05,US-16,,,F-08,P0,,S4,task,
+Sub-task,[T-16-06] Record lineage edges script to frames,Implementation task for US-16: Record lineage edges script to frames,T-16-06,US-16,,,F-08,P0,,S4,task,
+Sub-task,[T-16-07] ComfyUI error handling and retry,Implementation task for US-16: ComfyUI error handling and retry,T-16-07,US-16,,,F-08,P0,,S4,task,
+Sub-task,[T-17-01] Build Review screen — storyboard gallery mode,Implementation task for US-17: Build Review screen — storyboard gallery mode,T-17-01,US-17,,,F-09,P0,,S4,task,
+Sub-task,[T-17-02] Implement image preview lightbox,Implementation task for US-17: Implement image preview lightbox,T-17-02,US-17,,,F-09,P0,,S4,task,
+Sub-task,[T-17-03] Wire approve-all / reject for storyboard stage,Implementation task for US-17: Wire approve-all / reject for storyboard stage,T-17-03,US-17,,,F-09,P0,,S4,task,
+Sub-task,[T-17-04] Display AI badge and model on frames,Implementation task for US-17: Display AI badge and model on frames,T-17-04,US-17,,,F-09,P0,,S4,task,
+Sub-task,[T-18-01] Implement ComfyUI image-to-video workflow,Implementation task for US-18: Implement ComfyUI image-to-video workflow,T-18-01,US-18,,,F-10,P0,,S5,task,
+Sub-task,[T-18-02] Implement run_video_agent Temporal activity,Implementation task for US-18: Implement run_video_agent Temporal activity,T-18-02,US-18,,,F-10,P0,,S5,task,
+Sub-task,[T-18-03] Implement slideshow fallback generator (FFmpeg),Implementation task for US-18: Implement slideshow fallback generator (FFmpeg),T-18-03,US-18,,,F-10,P0,,S5,task,
+Sub-task,[T-18-04] Store video asset with duration/resolution metadata,Implementation task for US-18: Store video asset with duration/resolution metadata,T-18-04,US-18,,,F-10,P0,,S5,task,
+Sub-task,[T-18-05] Record lineage frames to video,Implementation task for US-18: Record lineage frames to video,T-18-05,US-18,,,F-10,P0,,S5,task,
+Sub-task,[T-18-06] End-to-end GPU test on Olares hardware,Implementation task for US-18: End-to-end GPU test on Olares hardware,T-18-06,US-18,,,F-10,P0,,S5,task,
+Sub-task,[T-19-01] Build Review screen — video player mode,Implementation task for US-19: Build Review screen — video player mode,T-19-01,US-19,,,F-11,P0,,S5,task,
+Sub-task,[T-19-02] Wire approve/reject for video stage,Implementation task for US-19: Wire approve/reject for video stage,T-19-02,US-19,,,F-11,P0,,S5,task,
+Sub-task,[T-19-03] Set pipeline status COMPLETED on final approval,Implementation task for US-19: Set pipeline status COMPLETED on final approval,T-19-03,US-19,,,F-11,P0,,S5,task,
+Sub-task,[T-19-04] Write PipelineCompleted audit event,Implementation task for US-19: Write PipelineCompleted audit event,T-19-04,US-19,,,F-11,P0,,S5,task,
+Sub-task,[T-20-01] Implement GET /lineage/{pipeline_run_id} API,Implementation task for US-20: Implement GET /lineage/{pipeline_run_id} API,T-20-01,US-20,,,F-14,P1,,S5,task,
+Sub-task,[T-20-02] Build Lineage summary component on Export screen,Implementation task for US-20: Build Lineage summary component on Export screen,T-20-02,US-20,,,F-14,P1,,S5,task,
+Sub-task,[T-20-03] Render chain visualization (simple list/tree),Implementation task for US-20: Render chain visualization (simple list/tree),T-20-03,US-20,,,F-14,P1,,S5,task,
+Sub-task,[T-21-01] Implement finalize_export Temporal activity,Implementation task for US-21: Implement finalize_export Temporal activity,T-21-01,US-21,,,F-15,P1,,S5,task,
+Sub-task,[T-21-02] Implement GET /export/{pipeline_run_id} ZIP builder,Implementation task for US-21: Implement GET /export/{pipeline_run_id} ZIP builder,T-21-02,US-21,,,F-15,P1,,S5,task,
+Sub-task,[T-21-03] Generate manifest.json with hashes and metadata,Implementation task for US-21: Generate manifest.json with hashes and metadata,T-21-03,US-21,,,F-15,P1,,S5,task,
+Sub-task,[T-21-04] Build Export screen with download button,Implementation task for US-21: Build Export screen with download button,T-21-04,US-21,,,F-15,P1,,S5,task,
+Sub-task,[T-22-01] Implement GET /assets?project_id=&stage= API,Implementation task for US-22: Implement GET /assets?project_id=&stage= API,T-22-01,US-22,,,F-12,P0,,S4,task,
+Sub-task,[T-22-02] Build Assets screen with stage tabs,Implementation task for US-22: Build Assets screen with stage tabs,T-22-02,US-22,,,F-12,P0,,S4,task,
+Sub-task,[T-22-03] Implement version list and preview components,Implementation task for US-22: Implement version list and preview components,T-22-03,US-22,,,F-12,P0,,S4,task,
+Sub-task,[T-22-04] Add download link per version,Implementation task for US-22: Add download link per version,T-22-04,US-22,,,F-12,P0,,S4,task,
+Sub-task,[T-23-01] Implement GET /audit?pipeline_run_id= API,Implementation task for US-23: Implement GET /audit?pipeline_run_id= API,T-23-01,US-23,,,F-13,P0,,S3,task,
+Sub-task,[T-23-02] Build Audit screen table,Implementation task for US-23: Build Audit screen table,T-23-02,US-23,,,F-13,P0,,S3,task,
+Sub-task,[T-23-03] Standardize audit event schema across worker,Implementation task for US-23: Standardize audit event schema across worker,T-23-03,US-23,,,F-13,P0,,S3,task,
+Sub-task,[T-23-04] Include audit summary in export manifest,Implementation task for US-23: Include audit summary in export manifest,T-23-04,US-23,,,F-13,P0,,S3,task,
+Sub-task,[T-24-01] Configure Temporal worker graceful shutdown,Implementation task for US-24: Configure Temporal worker graceful shutdown,T-24-01,US-24,,,F-03,P0,,S2,task,
+Sub-task,[T-24-02] Test worker restart during review wait,Implementation task for US-24: Test worker restart during review wait,T-24-02,US-24,,,F-03,P0,,S2,task,
+Sub-task,[T-24-03] Test worker restart during activity execution,Implementation task for US-24: Test worker restart during activity execution,T-24-03,US-24,,,F-03,P0,,S2,task,
+Sub-task,[T-24-04] Document recovery behavior,Implementation task for US-24: Document recovery behavior,T-24-04,US-24,,,F-03,P0,,S2,task,
+Sub-task,[T-25-01] Implement Bearer token middleware,Implementation task for US-25: Implement Bearer token middleware,T-25-01,US-25,,,F-INFRA,P0,,S2,task,
+Sub-task,[T-25-02] Configure token via environment variable,Implementation task for US-25: Configure token via environment variable,T-25-02,US-25,,,F-INFRA,P0,,S2,task,
+Sub-task,[T-25-03] Wire token into React API client,Implementation task for US-25: Wire token into React API client,T-25-03,US-25,,,F-INFRA,P0,,S2,task,
+Sub-task,[T-26-01] Build app shell with React Router,Implementation task for US-26: Build app shell with React Router,T-26-01,US-26,,,F-16,P0,,S2,task,
+Sub-task,[T-26-02] Implement nav bar and route guards,Implementation task for US-26: Implement nav bar and route guards,T-26-02,US-26,,,F-16,P0,,S2,task,
+Sub-task,[T-26-03] Add empty states per screen,Implementation task for US-26: Add empty states per screen,T-26-03,US-26,,,F-16,P0,,S2,task,
+Sub-task,[T-27-01] Execute demo acceptance script,Implementation task for US-27: Execute demo acceptance script,T-27-01,US-27,,,F-15,P0,,S5,task,
+Sub-task,[T-27-02] Document success metrics results,Implementation task for US-27: Document success metrics results,T-27-02,US-27,,,F-15,P0,,S5,task,
+Sub-task,[T-27-03] Write MVP release notes,Implementation task for US-27: Write MVP release notes,T-27-03,US-27,,,F-15,P0,,S5,task,
+Sub-task,[T-27-04] Stakeholder demo and sign-off,Implementation task for US-27: Stakeholder demo and sign-off,T-27-04,US-27,,,F-15,P0,,S5,task,

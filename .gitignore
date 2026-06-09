@@ -1,0 +1,19 @@
+# Environment and secrets
+.env
+.env.*
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Import artifacts (regenerable)
+backlog/github-issue-mapping.json

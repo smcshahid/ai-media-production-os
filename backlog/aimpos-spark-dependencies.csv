@@ -1,0 +1,88 @@
+Source ID,Target ID,Dependency Type,Relationship,Notes
+US-02,US-04,Blocks,Finish-to-Start,Schema migrations require running PostgreSQL from compose stack
+US-02,US-03,Blocks,Finish-to-Start,Health probes require deployed API container
+US-02,US-05,Blocks,Finish-to-Start,MinIO client requires MinIO service from compose
+US-02,US-06,Blocks,Finish-to-Start,Ollama and ComfyUI smoke tests require compose stack
+US-02,US-26,Blocks,Finish-to-Start,Frontend needs API base URL from running stack
+US-04,US-01,Blocks,Finish-to-Start,projects table required for seed script
+US-04,US-05,Blocks,Finish-to-Start,asset_versions table required for upload metadata
+US-04,US-07,Blocks,Finish-to-Start,pipeline_runs approvals audit_events tables required
+US-04,US-23,Blocks,Finish-to-Start,audit_events table required for audit API
+US-05,US-11,Blocks,Finish-to-Start,Idea must be stored as versioned asset in MinIO
+US-05,US-12,Blocks,Finish-to-Start,Story output stored via asset service
+US-05,US-14,Blocks,Finish-to-Start,Script output stored via asset service
+US-05,US-16,Blocks,Finish-to-Start,Frame PNGs stored via asset service
+US-05,US-18,Blocks,Finish-to-Start,Video MP4 stored via asset service
+US-05,US-21,Blocks,Finish-to-Start,Export bundle reads assets from MinIO
+US-05,US-22,Blocks,Finish-to-Start,Asset history queries MinIO-backed versions
+US-06,US-12,Blocks,Finish-to-Start,Ollama must be verified before Story Architect agent
+US-06,US-16,Blocks,Finish-to-Start,ComfyUI image workflow must be verified before storyboard
+US-06,US-18,Blocks,Finish-to-Start,ComfyUI video workflow must be verified before video stage
+US-01,US-07,Blocks,Finish-to-Start,Pipeline start requires project context
+US-01,US-11,Blocks,Finish-to-Start,Idea capture requires project_id
+US-26,US-10,Blocks,Finish-to-Start,Dashboard rendered inside app shell
+US-26,US-13,Blocks,Finish-to-Start,Story review screen requires routing shell
+US-26,US-15,Blocks,Finish-to-Start,Script review screen requires routing shell
+US-26,US-17,Blocks,Finish-to-Start,Gallery review screen requires routing shell
+US-26,US-19,Blocks,Finish-to-Start,Video review screen requires routing shell
+US-26,US-22,Blocks,Finish-to-Start,Assets screen requires routing shell
+US-26,US-23,Blocks,Finish-to-Start,Audit screen requires routing shell
+US-07,US-08,Blocks,Finish-to-Start,Approve/reject signals require running workflow
+US-07,US-09,Blocks,Finish-to-Start,Regenerate requires workflow and stage context
+US-07,US-10,Blocks,Finish-to-Start,Status dashboard reads pipeline_runs from workflow
+US-07,US-12,Blocks,Finish-to-Start,Story activity invoked by workflow
+US-07,US-14,Blocks,Finish-to-Start,Script activity invoked by workflow
+US-07,US-16,Blocks,Finish-to-Start,Storyboard activity invoked by workflow
+US-07,US-18,Blocks,Finish-to-Start,Video activity invoked by workflow
+US-07,US-23,Blocks,Finish-to-Start,Audit events emitted by workflow transitions
+US-07,US-24,Blocks,Finish-to-Start,Durability tests require active workflow instances
+US-08,US-09,Blocks,Finish-to-Start,Regenerate follows reject path from approve API
+US-08,US-13,Blocks,Finish-to-Start,Story review wires to approve/reject endpoints
+US-08,US-15,Blocks,Finish-to-Start,Script review wires to approve/reject endpoints
+US-08,US-17,Blocks,Finish-to-Start,Gallery review wires to approve/reject endpoints
+US-08,US-19,Blocks,Finish-to-Start,Video review wires to approve/reject endpoints
+US-11,US-12,Blocks,Finish-to-Start,Story agent consumes idea.txt as input
+US-12,US-13,Blocks,Finish-to-Start,Story review displays generated story.md
+US-13,US-14,Blocks,Finish-to-Start,Script agent requires approved story asset
+US-14,US-15,Blocks,Finish-to-Start,Script review displays generated script.fountain
+US-15,US-16,Blocks,Finish-to-Start,Storyboard agent requires approved script
+US-16,US-17,Blocks,Finish-to-Start,Gallery displays generated frame PNGs
+US-17,US-18,Blocks,Finish-to-Start,Video agent requires approved storyboard frames
+US-18,US-19,Blocks,Finish-to-Start,Video review displays generated scene_video.mp4
+US-19,US-20,Blocks,Finish-to-Start,Lineage view meaningful only after pipeline assets exist
+US-19,US-21,Blocks,Finish-to-Start,Export requires pipeline COMPLETED status
+US-21,US-27,Blocks,Finish-to-Start,Demo validation includes export bundle step
+US-12,US-23,Requires,Finish-to-Start,Audit viewer needs AgentTaskCompleted events from story
+US-14,US-23,Requires,Finish-to-Start,Audit viewer needs AgentTaskCompleted events from script
+US-16,US-23,Requires,Finish-to-Start,Audit viewer needs AgentTaskCompleted events from storyboard
+US-18,US-23,Requires,Finish-to-Start,Audit viewer needs AgentTaskCompleted events from video
+US-14,US-20,Requires,Finish-to-Start,Lineage needs story-to-script edge
+US-16,US-20,Requires,Finish-to-Start,Lineage needs script-to-frames edges
+US-18,US-20,Requires,Finish-to-Start,Lineage needs frames-to-video edges
+US-12,US-22,Requires,Finish-to-Start,Asset history needs story versions to display
+US-16,US-22,Requires,Finish-to-Start,Asset history needs frame versions to display
+US-25,US-07,Recommends,Finish-to-Start,Auth should protect pipeline start before LAN exposure
+US-24,US-18,Recommends,Finish-to-Start,Durability should be proven before longest GPU activity
+US-03,US-07,Recommends,Finish-to-Start,Health checks aid workflow integration debugging
+US-10,US-27,Recommends,Finish-to-Start,Dashboard improves demo comprehension SC-08
+US-09,US-27,Recommends,Finish-to-Start,Regenerate supports SC-10 acceptance rate
+EPIC-01,EPIC-02,Blocks,Finish-to-Start,Orchestration requires platform infrastructure
+EPIC-01,EPIC-06,Blocks,Finish-to-Start,Governance requires storage and API foundation
+EPIC-02,EPIC-03,Blocks,Finish-to-Start,Text pipeline requires workflow and approval gates
+EPIC-03,EPIC-04,Blocks,Finish-to-Start,Storyboard requires approved script output
+EPIC-04,EPIC-05,Blocks,Finish-to-Start,Video requires approved storyboard frames
+EPIC-05,US-27,Blocks,Finish-to-Start,MVP completion epic gates demo validation
+F-INFRA,F-01,Blocks,Finish-to-Start,Project bootstrap requires infrastructure
+F-INFRA,F-03,Blocks,Finish-to-Start,Pipeline start requires infrastructure
+F-01,F-02,Blocks,Finish-to-Start,Idea capture requires project context
+F-03,F-04,Blocks,Finish-to-Start,Story generation requires workflow orchestration
+F-02,F-04,Blocks,Finish-to-Start,Story agent requires captured idea
+F-04,F-05,Blocks,Finish-to-Start,Story review requires generated story
+F-05,F-06,Blocks,Finish-to-Start,Script generation requires approved story
+F-06,F-07,Blocks,Finish-to-Start,Script review requires generated script
+F-07,F-08,Blocks,Finish-to-Start,Storyboard requires approved script
+F-08,F-09,Blocks,Finish-to-Start,Gallery review requires generated frames
+F-09,F-10,Blocks,Finish-to-Start,Video requires approved frames
+F-10,F-11,Blocks,Finish-to-Start,Video review requires generated video
+F-11,F-15,Blocks,Finish-to-Start,Export requires approved completed pipeline
+F-11,F-14,Recommends,Finish-to-Start,Lineage best shown after pipeline complete
