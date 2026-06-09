@@ -15,6 +15,7 @@ from contextlib import asynccontextmanager
 import httpx
 from aimpos_config import configure_logging, get_settings
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.infrastructure.cache.redis_client import build_redis
@@ -69,12 +70,25 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
     # Order matters: middleware added last runs outermost, so execution is
-    # RequestID -> AccessLog -> Auth -> app. RequestID must wrap AccessLog so the
-    # request_id context var is set before the access line is emitted; Auth sits
-    # innermost so rejected (401) requests are still assigned an id and logged.
+    # CORS -> RequestID -> AccessLog -> Auth -> app. CORS is outermost so it
+    # answers the browser's credential-less preflight OPTIONS before Auth would
+    # 401 it; RequestID wraps AccessLog so the request_id context var is set
+    # before the access line is emitted; Auth sits innermost so rejected (401)
+    # requests are still assigned an id and logged.
     app.add_middleware(AuthMiddleware)
     app.add_middleware(AccessLogMiddleware)
     app.add_middleware(RequestIDMiddleware)
+    settings = get_settings()
+    allowed_origins = [
+        origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()
+    ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allowed_origins,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=["X-Request-ID"],
+    )
     app.include_router(health_router)
     app.include_router(projects_router)
     app.include_router(assets_router)

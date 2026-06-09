@@ -1,0 +1,28 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import { RequireAuth } from "./components/RequireAuth";
+import { AppShell } from "./components/layout/AppShell";
+import { AssetsPage } from "./routes/AssetsPage";
+import { AuditPage } from "./routes/AuditPage";
+import { DashboardPage } from "./routes/DashboardPage";
+import { LoginPage } from "./routes/LoginPage";
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        element={
+          <RequireAuth>
+            <AppShell />
+          </RequireAuth>
+        }
+      >
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/assets" element={<AssetsPage />} />
+        <Route path="/audit" element={<AuditPage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}

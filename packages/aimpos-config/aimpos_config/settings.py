@@ -47,6 +47,10 @@ class Settings(BaseSettings):
     # --- Redis ---
     redis_url: str = "redis://redis:6379/0"
 
+    # --- Web / CORS (US-26) ---
+    # Comma-separated list of allowed browser origins for the SPA.
+    cors_origins: str = "http://localhost:5173"
+
 
 @lru_cache
 def get_settings() -> Settings:

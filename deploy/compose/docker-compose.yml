@@ -131,6 +131,33 @@ services:
     networks:
       - aimpos-spark
 
+  web:
+    # React SPA built and served by nginx. Build context is the repo root for
+    # parity with the api service. VITE_API_URL is baked at build time and must
+    # point at where the *browser* reaches the API (the host-published port),
+    # so the dev overlay publishes both web (5173) and api (8000) to localhost.
+    build:
+      context: ../..
+      dockerfile: web/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+    image: aimpos-web:dev
+    container_name: aimpos-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    # Internal network only; the dev overlay publishes 5173 -> 80 to the host.
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:80/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - aimpos-spark
+
 networks:
   aimpos-spark:
     name: aimpos-spark

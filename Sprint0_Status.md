@@ -15,10 +15,10 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 |--------|------:|
 | Sprint 0 issues (class A) | 26 |
 | Complete | 2 |
-| In progress | 19 |
-| Not started | 5 |
+| In progress | 22 |
+| Not started | 2 |
 
-*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), and **US-05** (T-05-01/02/03/04 asset storage service). FEAT-01 (#20) is the US-01 feature wrapper.*
+*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), **US-05** (T-05-01/02/03/04 + `POST`/`GET /assets`), **US-25** (Bearer middleware + React client interceptor), `GET /pipeline/status`, and the **`web/` frontend** (US-26 app shell + nav + guard, US-10 dashboard, T-25-03 client, CORS). FEAT-01 (#20) is the US-01 feature wrapper. Remaining Sprint-0 work: GPU-dependent **US-06**.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -65,11 +65,13 @@ Legend: ✅ Done · 🟡 In progress · ⬜ Not started
 ### Login + Dashboard shell
 | Issue | # | Title | Status |
 |-------|---|-------|--------|
-| US-25 | 17 | Bearer token auth | 🟡 Backend done (T-25-01/02); frontend T-25-03 deferred to US-26 |
-| US-26 | 12 | Nav shell + idle routes | ⬜ |
-| T-26-01 | 67 | App shell with React Router | ⬜ |
-| T-26-02 | 68 | Nav bar and route guards | ⬜ |
+| US-25 | 17 | Bearer token auth | 🟡 Backend (T-25-01/02) + frontend T-25-03 (client interceptor) done; pending merge |
+| US-26 | 12 | Nav shell + idle routes | 🟡 Done (app shell + 4 routes + nav + guard); pending merge |
+| US-10 | — | Dashboard (project name + idle stepper) | 🟡 Done (pending merge) |
+| T-26-01 | 67 | App shell with React Router | 🟡 Done (pending merge) |
+| T-26-02 | 68 | Nav bar and route guards | 🟡 Done (pending merge) |
 | — | — | `GET /pipeline/status` (plan §4.6/§4.7; D-27) — dashboard backend | 🟡 Done (pending merge) |
+| — | — | `CORSMiddleware` (plan §4.5; D-28, was TD-26) | 🟡 Done (pending merge) |
 
 ### Governance umbrella
 | Issue | # | Title | Status |
@@ -451,6 +453,52 @@ Adds the last Basic-Backend endpoint behind the **"View Dashboard"** success cri
 
 ---
 
+## `web/` frontend foundation — completion record (US-26 + US-10 + T-25-03 + CORS; D-28)
+
+**Issues:** #12 (US-26), US-10, T-25-03 (#17), T-26-01 (#67), T-26-02 (#68) · **Branch:** `feature/T-04-01-sqlalchemy-models`
+**Status:** 🟡 Done (pending review/merge) · First `web/` code — Vite/React/TS SPA + API CORS
+
+Scaffolds the React SPA and unblocks the cross-origin call path. Routes follow Sprint 0 plan §4.7 (`/login`, `/`, `/assets`, `/audit`) — **not** the Tasks-doc `/review` (a Sprint 1+ screen); §4.7 is higher authority.
+
+### Acceptance criteria (Sprint 0 plan §4.7)
+| AC | Result |
+|----|--------|
+| Vite React+TS SPA, `npm run dev` on `:5173` | ✅ Vite 7 / React 19 / TS strict; dev server + nginx compose service on 5173 |
+| React Router four routes `/login` `/` `/assets` `/audit` | ✅ `App.tsx`; `*` → `/` |
+| `AppShell` nav on authenticated routes (Dashboard, Assets) | ✅ Nav (Dashboard/Assets/Audit) + logout behind `RequireAuth` |
+| `api/client.ts` attaches Bearer from `localStorage` on every request | ✅ Single gateway; `request()` interceptor (unit-tested) |
+| No-token / 401 → redirect `/login` | ✅ `RequireAuth` (no token) + client 401 handler (clears token, redirects) |
+| All backend calls via `api/client.ts` only | ✅ Typed helpers; no `fetch()` in components |
+| Login: token form; valid → store + `/`; invalid → error, no redirect | ✅ Validates against `GET /projects`; 401 → inline error |
+| Dashboard: project name; idle 4-stage stepper; Start Pipeline disabled | ✅ "AIMPOS Spark Demo" + `Stepper` (all pending); button disabled "Coming in Sprint 1" |
+| Assets: upload any file → `POST /assets`; version w/ content hash appears; failure → error, form active | ✅ Stage select + file input; refresh list (hash, version, source, time) |
+
+### Delivered
+- `packages/aimpos-config/aimpos_config/settings.py` — `cors_origins` setting (env `CORS_ORIGINS`)
+- `api/app/main.py` — outermost `CORSMiddleware` (order `CORS → RequestID → AccessLog → Auth → app`)
+- `api/tests/unit/test_cors.py` — 3 tests (preflight 200+ACAO, simple-request ACAO, unknown-origin rejected); `.env.example` — `CORS_ORIGINS`
+- `web/` — Vite/React/TS scaffold: `package.json`, `vite.config.ts`, `tsconfig.json`, `eslint.config.js` (flat), `.prettierrc.json`, `index.html`
+- `web/src/api/client.ts` (gateway + Bearer interceptor + typed helpers) + `types.ts`
+- `web/src/components/` — `RequireAuth`, `layout/AppShell`, `Stepper`; `web/src/hooks/usePipelineStatus.ts` (polling)
+- `web/src/routes/` — `LoginPage`, `DashboardPage`, `AssetsPage`, `AuditPage` (placeholder); `App.tsx`, `main.tsx`, `styles.css`
+- `web/src/tests/` — `Stepper`, `RequireAuth`, `client` (7 tests) + `setup.ts`
+- `web/Dockerfile` (Node build → nginx) + `web/nginx.conf` (SPA fallback) + `web/README.md`
+- `deploy/compose/docker-compose.yml` (`web` service) + `docker-compose.dev.yml` (publish 5173)
+- `DECISIONS.md` — D-28
+
+### Verification
+**API:** `pytest tests/unit` → **47 passed** (3 CORS added); `ruff` + `ruff format` + `mypy` clean. **Web:** `npm run build` (strict `tsc` + Vite) clean; `npm run lint` clean; `npm test` → **7/7**; Prettier clean. **Live (rebuilt `aimpos-api:dev` + `aimpos-web:dev`, dev overlay up):** `GET http://127.0.0.1:5173/` → **200** (`#root`); `/audit` → **200** (history fallback); preflight `OPTIONS /projects` → **200** + `Access-Control-Allow-Origin: http://localhost:5173`; `GET /projects` (Bearer + Origin) → **200** with ACAO, returns seeded `AIMPOS Spark Demo`.
+
+### Self-review notes
+- **Single gateway enforced:** components import typed helpers; only `client.ts` calls `fetch` (coding-standards §157). Bearer + 401-redirect are interceptor concerns, unit-tested.
+- **CORS outermost** is required so Starlette short-circuits the preflight before Auth (the TD-26 failure mode); origins are config-driven, not hardcoded.
+- **Login = static-token entry** (no user store; Keycloak is Phase 1) validated against a protected route — matches D-09.
+- **Scope held:** no pipeline start/approve, no review screen, no WebSocket (polling hook only); audit is an empty-state placeholder. All Sprint 1+.
+- **`localStorage`** token is acceptable for the MVP shared static token; revisit with real OIDC (httpOnly cookie).
+- **TD-26 resolved.** T-25-03 (React client token) discharged by the interceptor.
+
+---
+
 ## Technical debt register
 
 Identified during the T-02-02 PR review. Items with a follow-up issue are tracked in the backlog; minor items are noted here for awareness.
@@ -480,7 +528,7 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | TD-21 | No CI workflow yet (`ci-api.yml` referenced by T-01-04 AC) — tests run locally only | Low | Add GitHub Actions `ci-api.yml` (ruff + mypy + pytest) — likely its own infra task/issue |
 | TD-22 | No Sprint-0 task defines the `POST /assets` + `GET /assets` HTTP surface, yet the "Upload Asset" success criterion + Week-3 frontend need it (US-05 delivers only the `store_asset` service) | Medium | ✅ **Resolved** — `POST /assets` + `GET /assets` added (D-26); image rebuilt; live upload flow verified |
 | TD-25 | `store_asset` writes the MinIO blob before the DB row flush; on a later DB failure the object is orphaned (no delete-on-failure compensation) | Low | Benign by design — content-addressed key is self-deduplicating; add compensation (or an unreferenced-object sweep) post-MVP. Matches plan §4.7 "atomic … or compensates" allowance |
-| TD-26 | No CORS handling yet — the auth middleware will 401 the browser's credential-less OPTIONS preflight once a cross-origin frontend (`localhost:5173`) calls the API | Medium | Add `CORSMiddleware` (outermost) with the web origin + exempt/short-circuit OPTIONS preflight; do it with US-26 frontend integration |
+| TD-26 | No CORS handling yet — the auth middleware will 401 the browser's credential-less OPTIONS preflight once a cross-origin frontend (`localhost:5173`) calls the API | Medium | ✅ **Resolved** — outermost `CORSMiddleware` + `cors_origins` setting (D-28); live preflight → 200 + ACAO verified |
 | TD-23 | App uses MinIO **root** credentials (`MINIO_ROOT_USER/PASSWORD`) rather than a scoped service account | Low | Mint a least-privilege MinIO access key for the api/worker (relates to #69 least-privilege theme) |
 | TD-24 | `psycopg` async rejects Windows' default `ProactorEventLoop`; integration tests need a `WindowsSelectorEventLoopPolicy` shim (added in `tests/integration/conftest.py`) | Trivial | Windows-dev-host only; no-op on Linux/CI. Revisit if `asyncpg` is adopted for the app engine |
 
@@ -522,3 +570,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.8 | 2026-06-09 | **`POST`/`GET /assets` added** (closes TD-22; D-26) — thin controllers over `store_asset`; `get_minio`/`app.state.minio`; `python-multipart`; 5 route tests (38 passed, 1 skipped) + ruff + mypy clean; **live** Upload-Asset flow verified end-to-end (201/dedup/list DESC/404/422); TD-25 (blob compensation) recorded |
 | 1.9 | 2026-06-09 | **US-25 backend done** — T-25-01 Bearer `AuthMiddleware` (all routes except `/health` → 401) + T-25-02 env token; D-09; T-25-03 (React client) deferred to US-26; TD-26 (CORS/OPTIONS) recorded; 44 tests (+1 skipped) + ruff + mypy clean; **live** 401/200 + `/health` exemption verified |
 | 1.10 | 2026-06-09 | **`GET /pipeline/status` added** (D-27) — read-only dashboard endpoint; `IDLE` + 4-stage order; `PipelineRunRepository.latest_for_project`; 5 tests (49 passed, 1 skipped) + ruff + mypy clean; **live** IDLE/401/404 verified. Backend contract for all four Sprint-0 success criteria now complete |
+| 1.11 | 2026-06-09 | **`web/` frontend foundation** (D-28) — Vite/React/TS SPA (US-26 shell + nav + guard, US-10 dashboard, US-05 assets UI, `/audit` placeholder); single `api/client.ts` gateway w/ Bearer interceptor (**T-25-03**); API gains outermost `CORSMiddleware` + `cors_origins` (**resolves TD-26**); web Dockerfile (nginx) + compose `web` service. API 47 tests + web build/lint/7 tests clean; **live** SPA 200 + CORS preflight 200/ACAO + authed `GET /projects` verified end-to-end |
