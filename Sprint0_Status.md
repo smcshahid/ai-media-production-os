@@ -7,6 +7,10 @@
 
 This tracker reflects build progress only. Scope, AC, and gates remain governed by the frozen planning documents.
 
+> **✅ Sprint 0 — COMPLETE (merged to `main` via [PR #74](https://github.com/smcshahid/ai-media-production-os/pull/74), rebase, 2026-06-09).** The platform-skeleton work below ("pending merge" in the per-issue tables) is now **merged**. The exit-gate walkthrough passes and the stack was reset to a pristine state (single seeded project, empty asset list). Reference handoff: [`docs/sprints/sprint-0-briefing.md`](./docs/sprints/sprint-0-briefing.md).
+>
+> **Remaining (process, on GitHub):** close the delivered Sprint-0 issues and **move US-02 + US-06 to the Sprint 1 milestone** (they are GPU/Olares work that does not block Sprint 0), then close milestone #10.
+
 ---
 
 ## Progress summary
@@ -18,7 +22,7 @@ This tracker reflects build progress only. Scope, AC, and gates remain governed 
 | In progress | 22 |
 | Not started | 2 |
 
-*In progress on `feature/T-04-01-sqlalchemy-models` (pending merge): **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), **US-05** (T-05-01/02/03/04 + `POST`/`GET /assets`), **US-25** (Bearer middleware + React client interceptor), `GET /pipeline/status`, and the **`web/` frontend** (US-26 app shell + nav + guard, US-10 dashboard, T-25-03 client, CORS). FEAT-01 (#20) is the US-01 feature wrapper. **No blocking Sprint-0 work remains** — the platform skeleton is functionally complete (pending merge); the [exit-gate walkthrough](#sprint-0-exit-gate--verification-record) passes. **US-02** (full 9-container Olares deploy) and **US-06** (GPU kill check — Ollama/ComfyUI) are **Sprint 1 / Phase B** per the frozen plan §3.2 and §9 ("US-02, US-06 … are Sprint 1+ and do not block Sprint 0"); they require GPU/Olares hardware and are intentionally not started here.*
+*Merged to `main` via PR #74 (rebase) — the items below are delivered: **US-04** (T-04-01/02/03, `791a94b`), **US-03** (T-03-01 `dc0bbc1`; T-03-02/03 `2948c9a`), **US-01** (T-01-01 verify-only, T-01-02 seed, T-01-03 `GET /projects`, T-01-04 tests), **US-05** (T-05-01/02/03/04 + `POST`/`GET /assets`), **US-25** (Bearer middleware + React client interceptor), `GET /pipeline/status`, and the **`web/` frontend** (US-26 app shell + nav + guard, US-10 dashboard, T-25-03 client, CORS). FEAT-01 (#20) is the US-01 feature wrapper. **No blocking Sprint-0 work remains** — the platform skeleton is functionally complete (pending merge); the [exit-gate walkthrough](#sprint-0-exit-gate--verification-record) passes. **US-02** (full 9-container Olares deploy) and **US-06** (GPU kill check — Ollama/ComfyUI) are **Sprint 1 / Phase B** per the frozen plan §3.2 and §9 ("US-02, US-06 … are Sprint 1+ and do not block Sprint 0"); they require GPU/Olares hardware and are intentionally not started here.*
 
 **Issue closure policy:** an issue is marked **Done** here when implementation is complete and PR-reviewed. The GitHub issue is **closed on merge to `main`** per [definition-of-done.md](./docs/governance/definition-of-done.md). "Done (pending merge)" means code + review are complete but the PR has not yet landed.
 
@@ -590,3 +594,4 @@ Identified during the T-02-02 PR review. Items with a follow-up issue are tracke
 | 1.10 | 2026-06-09 | **`GET /pipeline/status` added** (D-27) — read-only dashboard endpoint; `IDLE` + 4-stage order; `PipelineRunRepository.latest_for_project`; 5 tests (49 passed, 1 skipped) + ruff + mypy clean; **live** IDLE/401/404 verified. Backend contract for all four Sprint-0 success criteria now complete |
 | 1.11 | 2026-06-09 | **`web/` frontend foundation** (D-28) — Vite/React/TS SPA (US-26 shell + nav + guard, US-10 dashboard, US-05 assets UI, `/audit` placeholder); single `api/client.ts` gateway w/ Bearer interceptor (**T-25-03**); API gains outermost `CORSMiddleware` + `cors_origins` (**resolves TD-26**); web Dockerfile (nginx) + compose `web` service. API 47 tests + web build/lint/7 tests clean; **live** SPA 200 + CORS preflight 200/ACAO + authed `GET /projects` verified end-to-end |
 | 1.12 | 2026-06-09 | **Sprint 0 exit-gate verified** — full 7-step browser walkthrough recorded (login→dashboard→assets→audit→logout + `/health` all-healthy 200); web container healthcheck fixed (127.0.0.1, not localhost — IPv4/IPv6 mismatch); clarified **US-02/US-06 are Sprint 1** (GPU/Olares, do not block Sprint 0). Platform skeleton functionally complete pending merge |
+| 1.13 | 2026-06-09 | **Sprint 0 CLOSED** — merged to `main` via PR #74 (rebase, 13 commits); Sprint 0 briefing/handoff added (`docs/sprints/sprint-0-briefing.md`); stack reset to pristine (volumes wiped, re-migrated + re-seeded → single project, empty assets); working tree clean. Remaining = GitHub issue/milestone hygiene (close delivered S0 issues; move US-02/US-06 to Sprint 1) |
