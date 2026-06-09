@@ -149,8 +149,10 @@ services:
     # Internal network only; the dev overlay publishes 5173 -> 80 to the host.
     expose:
       - "80"
+    # Use 127.0.0.1 (not localhost): inside the container localhost can resolve
+    # to ::1, but nginx listens on IPv4 only, so a localhost probe is refused.
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost:80/ || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:80/ || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
