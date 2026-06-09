@@ -12,6 +12,7 @@ import uuid
 
 import httpx
 import pytest
+from aimpos_config import get_settings
 from aimpos_core.enums import ProjectStatus
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,6 +20,8 @@ from app.dependencies import get_minio, get_session
 from app.infrastructure.db.models.project import Project
 from app.infrastructure.db.repositories.project import ProjectRepository
 from app.main import create_app
+
+_AUTH = {"Authorization": f"Bearer {get_settings().api_token}"}
 
 
 class _FakeBlobStore:
@@ -58,6 +61,7 @@ async def test_post_assets_creates_version(session: AsyncSession) -> None:
             "/assets",
             data={"project_id": str(project.id), "stage": "IDEA"},
             files={"file": ("idea.txt", b"hello idea", "text/plain")},
+            headers=_AUTH,
         )
 
     assert response.status_code == 201
@@ -81,6 +85,7 @@ async def test_post_assets_unknown_project_returns_404(session: AsyncSession) ->
             "/assets",
             data={"project_id": str(uuid.uuid4()), "stage": "IDEA"},
             files={"file": ("x.txt", b"x", "text/plain")},
+            headers=_AUTH,
         )
 
     assert response.status_code == 404
@@ -99,8 +104,11 @@ async def test_get_assets_lists_versions_and_dedups(session: AsyncSession) -> No
                 "/assets",
                 data={"project_id": str(project.id), "stage": "IDEA"},
                 files={"file": ("a.txt", b"same bytes", "text/plain")},
+                headers=_AUTH,
             )
-        response = await client.get("/assets", params={"project_id": str(project.id)})
+        response = await client.get(
+            "/assets", params={"project_id": str(project.id)}, headers=_AUTH
+        )
 
     assert response.status_code == 200
     body = response.json()
@@ -114,7 +122,9 @@ async def test_get_assets_lists_versions_and_dedups(session: AsyncSession) -> No
 async def test_get_assets_empty_for_unknown_project(session: AsyncSession) -> None:
     transport = _transport(session, _FakeBlobStore())
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.get("/assets", params={"project_id": str(uuid.uuid4())})
+        response = await client.get(
+            "/assets", params={"project_id": str(uuid.uuid4())}, headers=_AUTH
+        )
 
     assert response.status_code == 200
     assert response.json() == []

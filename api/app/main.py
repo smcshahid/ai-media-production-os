@@ -20,6 +20,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.infrastructure.cache.redis_client import build_redis
 from app.infrastructure.db.session import build_engine, build_sessionmaker
 from app.infrastructure.storage.minio_client import MinioClient
+from app.middleware.auth import AuthMiddleware
 from app.middleware.logging import AccessLogMiddleware
 from app.middleware.request_id import RequestIDMiddleware
 from app.routes.assets import router as assets_router
@@ -66,9 +67,11 @@ def create_app() -> FastAPI:
         summary="Governed AI media production platform — REST surface.",
         lifespan=lifespan,
     )
-    # Order matters: middleware added last runs outermost. RequestID must wrap
-    # AccessLog so the request_id context var is set before the access line is
-    # emitted (and is available to the handler in between).
+    # Order matters: middleware added last runs outermost, so execution is
+    # RequestID -> AccessLog -> Auth -> app. RequestID must wrap AccessLog so the
+    # request_id context var is set before the access line is emitted; Auth sits
+    # innermost so rejected (401) requests are still assigned an id and logged.
+    app.add_middleware(AuthMiddleware)
     app.add_middleware(AccessLogMiddleware)
     app.add_middleware(RequestIDMiddleware)
     app.include_router(health_router)

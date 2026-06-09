@@ -48,6 +48,23 @@ make health        # GET /health (pretty-printed)  ·  make logs-api  to tail lo
 - One structured access line per request: `http_method`, `path`, `status_code`,
   `duration_ms`, `client`, `request_id` (uvicorn's plaintext access log is disabled).
 
+### Authentication (US-25)
+
+Every endpoint **except `GET /health`** requires a static Bearer token:
+
+```bash
+curl http://localhost:8000/projects                       # 401 {"detail":"Unauthorized"}
+curl -H "Authorization: Bearer $AIMPOS_API_TOKEN" \
+     http://localhost:8000/projects                       # 200
+```
+
+- The token is `AIMPOS_API_TOKEN` (`.env`); read via `aimpos-config` `Settings`.
+- Header only — no `?token=` fallback. Missing/invalid → **401** `{"detail":"Unauthorized"}`.
+- `/health` is exempt (Docker health checks); `/docs` + `/openapi.json` are
+  **protected** — pass the token to fetch the schema.
+- Keycloak/OIDC is deferred to Phase 1 (DECISIONS D-09). The React login page and
+  token interceptor (T-25-03) ship with the frontend (US-26).
+
 ### Projects & default seed (US-01)
 
 - `GET /projects` returns the project list as `[{ "id", "name", "status" }]`
