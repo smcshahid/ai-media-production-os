@@ -17,6 +17,11 @@ venv/
 build/
 dist/
 
+# Container image exports / build artifacts (never commit)
+*.tar
+*.tar.gz
+*.tgz
+
 # OS / editor
 .DS_Store
 Thumbs.db

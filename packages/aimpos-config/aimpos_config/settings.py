@@ -51,6 +51,19 @@ class Settings(BaseSettings):
     # Comma-separated list of allowed browser origins for the SPA.
     cors_origins: str = "http://localhost:5173"
 
+    # --- Temporal (US-07) ---
+    temporal_address: str = Field(default="temporal:7233", validation_alias="TEMPORAL_ADDRESS")
+    temporal_namespace: str = Field(default="default", validation_alias="TEMPORAL_NAMESPACE")
+    temporal_task_queue: str = Field(
+        default="aimpos-spark-pipeline", validation_alias="TEMPORAL_TASK_QUEUE"
+    )
+
+    # --- Ollama (US-12+) ---
+    ollama_host: str = Field(default="http://ollama:11434", validation_alias="OLLAMA_HOST")
+
+    # --- Config bundle (prompts, model pins) ---
+    config_root: str = Field(default="/srv/configs", validation_alias="AIMPOS_CONFIG_ROOT")
+
 
 @lru_cache
 def get_settings() -> Settings:

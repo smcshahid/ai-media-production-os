@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aimpos-mwayolares
+  labels:
+    app.kubernetes.io/part-of: aimpos-spark
+    aimpos.mwayolares/role: m1-dv-app-plane

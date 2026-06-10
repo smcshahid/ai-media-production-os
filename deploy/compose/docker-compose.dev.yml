@@ -1,7 +1,6 @@
 # AIMPOS-Spark Visual — local development overlay.
 # Layer on top of the base file to publish service ports to the host
-# for local tooling (psql, GUI clients). Never use this overlay in a
-# shared or production-like environment.
+# for local tooling. Never use this overlay in a shared or production-like environment.
 #
 # Usage (from repo root):
 #   docker compose -f deploy/compose/docker-compose.yml \
@@ -12,32 +11,38 @@ name: aimpos-spark
 
 services:
   postgresql:
-    # Publish 5432 to the host so a developer can connect with a local psql
-    # client. The base file keeps the database internal-only.
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
 
   minio:
-    # Publish the S3 API (9000) and console (9001) for local tooling.
-    # The base file keeps MinIO internal-only.
     ports:
       - "9000:9000"
       - "9001:9001"
 
   redis:
-    # Publish 6379 for local redis-cli / GUI tooling.
     ports:
       - "6379:6379"
 
+  temporal:
+    ports:
+      - "${TEMPORAL_PORT:-7233}:7233"
+
+  temporal-ui:
+    ports:
+      - "${TEMPORAL_UI_PORT:-8080}:8080"
+
+  ollama:
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+
+  comfyui:
+    ports:
+      - "${COMFYUI_PORT:-8188}:8188"
+
   api:
-    # Publish the API on API_PORT (default 8000) for local access:
-    #   http://localhost:8000/health  ·  http://localhost:8000/docs
     ports:
       - "${API_PORT:-8000}:8000"
 
   web:
-    # Publish the SPA on 5173 (nginx listens on 80 inside the container):
-    #   http://localhost:5173
-    # The origin (localhost:5173) must be in the API's CORS_ORIGINS.
     ports:
       - "${WEB_PORT:-5173}:80"

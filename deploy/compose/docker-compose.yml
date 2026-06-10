@@ -1,32 +1,27 @@
-# AIMPOS-Spark Visual — Sprint-0 compose stack.
-# T-02-02 lands the PostgreSQL service; T-02-03 adds MinIO + bucket init;
-# later tasks append redis and api on the same internal `aimpos-spark` network.
+# AIMPOS-Spark Visual — full 9-service compose stack (T-02-01 / Sprint 1).
+# Services: postgresql, minio, redis, api, web, worker, temporal, ollama, comfyui
+# (+ one-shot minio-init, ollama-init helpers).
 #
 # Usage (from repo root):
 #   cp .env.example .env        # first time only
 #   docker compose -f deploy/compose/docker-compose.yml --env-file .env up -d
 #
-# Or via Makefile:  make up
+# Local dev with host ports: layer docker-compose.dev.yml (see Makefile up-dev).
 name: aimpos-spark
 
 services:
   postgresql:
     image: postgres:16-alpine
-    container_name: aimpos-postgresql
     restart: unless-stopped
-    # Credentials and database name come from the repo .env (see .env.example).
-    # The official image creates POSTGRES_USER/POSTGRES_DB on first boot.
-    env_file:
-      - ../../.env
-    # Internal network only — no host port published in the base file.
-    # Other services reach the database at `postgresql:5432`.
-    # The dev overlay (docker-compose.dev.yml) publishes 5432 to the host
-    # for local psql / GUI tooling.
+    # Least-privilege: only the three vars Postgres needs (#69 / TD-01).
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     expose:
       - "5432"
     volumes:
       - aimpos-postgres-data:/var/lib/postgresql/data
-      # Scripts here run once, in lexical order, on an empty data directory.
       - ../init/postgres:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
@@ -39,21 +34,18 @@ services:
 
   minio:
     image: minio/minio:RELEASE.2025-09-07T16-13-09Z
-    container_name: aimpos-minio
     restart: unless-stopped
-    # MINIO_ROOT_USER / MINIO_ROOT_PASSWORD come from the repo .env.
-    env_file:
-      - ../../.env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":9001"
-    # Internal network only (S3 API 9000, console 9001). The dev overlay
-    # publishes these to the host for local tooling.
     expose:
       - "9000"
       - "9001"
     volumes:
       - aimpos-minio-data:/data
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:9000/minio/health/live || exit 1"]
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9000/minio/health/live || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -61,17 +53,16 @@ services:
     networks:
       - aimpos-spark
 
-  # One-shot bucket bootstrap. MinIO has no initdb hook, so a dedicated mc
-  # container creates the bucket idempotently once MinIO reports healthy,
-  # then exits. The bucket name is read from MINIO_BUCKET (.env).
   minio-init:
     image: minio/mc:RELEASE.2025-08-13T08-35-41Z
-    container_name: aimpos-minio-init
     depends_on:
       minio:
         condition: service_healthy
-    env_file:
-      - ../../.env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:-minio:9000}
+      MINIO_BUCKET: ${MINIO_BUCKET}
     entrypoint: ["/bin/sh", "/init/create-buckets.sh"]
     volumes:
       - ../init/minio:/init:ro
@@ -81,12 +72,8 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: aimpos-redis
     restart: unless-stopped
-    # Ephemeral cache/coordination for Sprint 0 — persistence disabled so a
-    # restart starts clean (no RDB/AOF). Durable state lives in PostgreSQL.
     command: ["redis-server", "--save", "", "--appendonly", "no"]
-    # Internal network only; the dev overlay publishes 6379 for local tooling.
     expose:
       - "6379"
     healthcheck:
@@ -98,32 +85,45 @@ services:
     networks:
       - aimpos-spark
 
-  api:
-    # Build context is the repo root so packages/ + api/ are both visible.
-    build:
-      context: ../..
-      dockerfile: api/Dockerfile
-    image: aimpos-api:dev
-    container_name: aimpos-api
+  temporal:
+    image: temporalio/auto-setup:1.26.2
     restart: unless-stopped
-    env_file:
-      - ../../.env
-    # Start only once the backing services report healthy so the first
-    # /health probe reflects a real stack.
     depends_on:
       postgresql:
         condition: service_healthy
-      minio:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    # Internal network only; the dev overlay publishes API_PORT for local access.
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PWD: ${POSTGRES_PASSWORD}
+      POSTGRES_SEEDS: postgresql
+      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
+    volumes:
+      - ../init/temporal/dynamicconfig:/etc/temporal/config/dynamicconfig:ro
     expose:
-      - "8000"
+      - "7233"
     healthcheck:
-      test:
-        - "CMD-SHELL"
-        - "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)\""
+      test: ["CMD-SHELL", "tctl --address temporal:7233 cluster health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    networks:
+      - aimpos-spark
+
+  temporal-ui:
+    image: temporalio/ui:2.31.2
+    restart: unless-stopped
+    depends_on:
+      temporal:
+        condition: service_healthy
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_CORS_ORIGINS: http://localhost:8080
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:8080/ || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -131,26 +131,144 @@ services:
     networks:
       - aimpos-spark
 
+  ollama:
+    image: ollama/ollama:0.30.6
+    restart: unless-stopped
+    volumes:
+      - aimpos-ollama-data:/root/.ollama
+    expose:
+      - "11434"
+    # GPU mapping is required for inference; omitted on CPU-only hosts (compose config still valid).
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:11434/api/tags || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - aimpos-spark
+
+  ollama-init:
+    image: ollama/ollama:0.30.6
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: ${OLLAMA_HOST:-ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:14b}
+    entrypoint: ["/bin/sh", "/init/pull-models.sh"]
+    volumes:
+      - ../init/ollama:/init:ro
+    networks:
+      - aimpos-spark
+    restart: "no"
+
+  comfyui:
+    image: yanwk/comfyui-boot:cu124-sdxl-20240919
+    restart: unless-stopped
+    volumes:
+      - aimpos-comfyui-data:/data
+    expose:
+      - "8188"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8188/ || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    networks:
+      - aimpos-spark
+
+  api:
+    build:
+      context: ../..
+      dockerfile: api/Dockerfile
+    image: aimpos-api:dev
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      AIMPOS_API_TOKEN: ${AIMPOS_API_TOKEN}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:-minio:9000}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      MINIO_SECURE: ${MINIO_SECURE:-false}
+      REDIS_URL: ${REDIS_URL}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    expose:
+      - "8000"
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)\""
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - aimpos-spark
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: worker/Dockerfile
+    image: aimpos-worker:dev
+    restart: unless-stopped
+    environment:
+      TEMPORAL_ADDRESS: ${TEMPORAL_ADDRESS:-temporal:7233}
+      DATABASE_URL: ${DATABASE_URL}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-aimpos}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-change-me-local-dev-password}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:-minio:9000}
+      MINIO_BUCKET: ${MINIO_BUCKET:-aimpos-hot-assets}
+      MINIO_SECURE: ${MINIO_SECURE:-false}
+      OLLAMA_HOST: ${OLLAMA_HOST:-http://ollama:11434}
+      AIMPOS_CONFIG_ROOT: /srv/configs
+    depends_on:
+      temporal:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f 'app.main' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - aimpos-spark
+
   web:
-    # React SPA built and served by nginx. Build context is the repo root for
-    # parity with the api service. VITE_API_URL is baked at build time and must
-    # point at where the *browser* reaches the API (the host-published port),
-    # so the dev overlay publishes both web (5173) and api (8000) to localhost.
     build:
       context: ../..
       dockerfile: web/Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
     image: aimpos-web:dev
-    container_name: aimpos-web
     restart: unless-stopped
     depends_on:
       - api
-    # Internal network only; the dev overlay publishes 5173 -> 80 to the host.
     expose:
       - "80"
-    # Use 127.0.0.1 (not localhost): inside the container localhost can resolve
-    # to ::1, but nginx listens on IPv4 only, so a localhost probe is refused.
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:80/ || exit 1"]
       interval: 15s
@@ -162,11 +280,10 @@ services:
 
 networks:
   aimpos-spark:
-    name: aimpos-spark
     driver: bridge
 
 volumes:
   aimpos-postgres-data:
-    name: aimpos-postgres-data
   aimpos-minio-data:
-    name: aimpos-minio-data
+  aimpos-ollama-data:
+  aimpos-comfyui-data:

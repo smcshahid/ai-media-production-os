@@ -1,0 +1,32 @@
+# US-12 verification — Temporal worker pointed at Olares shared Ollama.
+# Image imported into containerd as docker.io/library/aimpos-worker:us12.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aimpos-worker
+  namespace: aimpos-mwayolares
+  labels:
+    app: aimpos-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aimpos-worker
+  template:
+    metadata:
+      labels:
+        app: aimpos-worker
+    spec:
+      containers:
+        - name: worker
+          image: docker.io/library/aimpos-worker:us12
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: aimpos-worker-env
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 768Mi

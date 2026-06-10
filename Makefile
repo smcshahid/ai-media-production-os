@@ -20,7 +20,7 @@ COMPOSE_DEV_CMD := docker compose -f $(COMPOSE_FILE) -f $(COMPOSE_DEV) --env-fil
 # is not pip-installed (its source is on the path via alembic.ini prepend).
 MIGRATE_DEPS := sqlalchemy>=2.0,<3.0 alembic>=1.13,<2.0 psycopg[binary]>=3.2,<4.0
 define ALEMBIC_RUN
-docker run --rm --network aimpos-spark --env-file $(ENV_FILE) \
+docker run --rm --network aimpos-spark_aimpos-spark --env-file $(ENV_FILE) \
 	-v "$(CURDIR)":/repo -w /repo/api python:3.12-slim \
 	sh -c "pip install -q '$(MIGRATE_DEPS)' -e /repo/packages/aimpos-core && alembic $(1)"
 endef

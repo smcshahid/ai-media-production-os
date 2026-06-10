@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: aimpos-migrate
+  namespace: aimpos-mwayolares
+  labels:
+    app: aimpos-migrate
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        app: aimpos-migrate
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: REPLACE_AIMPOS_API_IMAGE
+          imagePullPolicy: IfNotPresent
+          workingDir: /srv/api
+          command: ["alembic", "upgrade", "head"]
+          envFrom:
+            - secretRef:
+                name: aimpos-api-env
