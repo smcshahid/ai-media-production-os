@@ -66,7 +66,7 @@ async function extractDetail(response: Response): Promise<string> {
   return `Request failed with status ${response.status}`;
 }
 
-async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+async function requestRaw(path: string, init: RequestInit = {}): Promise<Response> {
   const headers = new Headers(init.headers);
   const token = getToken();
   if (token) {
@@ -85,11 +85,20 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     throw new ApiError(response.status, await extractDetail(response));
   }
 
+  return response;
+}
+
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const response = await requestRaw(path, init);
   if (response.status === 204) {
     return undefined as T;
   }
-
   return (await response.json()) as T;
+}
+
+async function requestText(path: string, init: RequestInit = {}): Promise<string> {
+  const response = await requestRaw(path, init);
+  return response.text();
 }
 
 // --- Typed endpoint helpers ------------------------------------------------
@@ -135,6 +144,20 @@ export function submitIdea(body: IdeaCreateBody): Promise<AssetVersion> {
 
 export function listAssets(projectId: string): Promise<AssetVersion[]> {
   return request<AssetVersion[]>(`/assets?project_id=${encodeURIComponent(projectId)}`);
+}
+
+export function getAssetContent(assetId: string): Promise<string> {
+  return requestText(`/assets/${encodeURIComponent(assetId)}/content`, {
+    headers: { Accept: "text/markdown" },
+  });
+}
+
+export function updateAssetText(assetId: string, text: string): Promise<AssetVersion> {
+  return request<AssetVersion>(`/assets/${encodeURIComponent(assetId)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text }),
+  });
 }
 
 export function uploadAsset(projectId: string, stage: string, file: File): Promise<AssetVersion> {

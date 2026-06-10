@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
-import { ApiError, approvePipeline, listProjects } from "../api/client";
-import type { Project } from "../api/types";
+import {
+  ApiError,
+  approvePipeline,
+  getAssetContent,
+  listAssets,
+  listProjects,
+  updateAssetText,
+} from "../api/client";
+import type { AssetVersion, Project } from "../api/types";
 import { usePipelineStatus } from "../hooks/usePipelineStatus";
 import { toDisplayStatus } from "../lib/pipelineDisplay";
+import { selectLatestStoryAsset } from "../lib/storyReview";
 
 const STAGE_LABELS: Record<string, string> = {
   STORY: "Story",
@@ -13,14 +21,21 @@ const STAGE_LABELS: Record<string, string> = {
 };
 
 /**
- * Human review gate (US-08 / US-10). Approve or reject the current stub stage
- * output; status updates come from `GET /pipeline/status` (DB per D-32).
+ * Human review gate (US-08 / US-10 / US-13). STORY stage loads editable treatment;
+ * approve/reject via pipeline API. Regenerate execution is US-09 (affordance only).
  */
 export function ReviewPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [rejectedHint, setRejectedHint] = useState(false);
+
+  const [storyAsset, setStoryAsset] = useState<AssetVersion | null>(null);
+  const [treatmentText, setTreatmentText] = useState("");
+  const [savedText, setSavedText] = useState("");
+  const [storyLoading, setStoryLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -40,7 +55,42 @@ export function ReviewPage() {
     };
   }, []);
 
-  const { status: pipeline, refresh } = usePipelineStatus(project?.id ?? null);
+  const { status: pipeline, refresh, error: pipelineError } = usePipelineStatus(
+    project?.id ?? null,
+  );
+
+  const loadStory = useCallback(async (projectId: string) => {
+    setStoryLoading(true);
+    setActionError(null);
+    try {
+      const assets = await listAssets(projectId);
+      const latest = selectLatestStoryAsset(assets);
+      if (!latest) {
+        setStoryAsset(null);
+        setTreatmentText("");
+        setSavedText("");
+        return;
+      }
+      const content = await getAssetContent(latest.id);
+      setStoryAsset(latest);
+      setTreatmentText(content);
+      setSavedText(content);
+    } catch (err) {
+      setActionError(err instanceof ApiError ? err.message : "Failed to load story.");
+    } finally {
+      setStoryLoading(false);
+    }
+  }, []);
+
+  const reviewStage = pipeline?.current_stage;
+  const isStoryReview = reviewStage === "STORY";
+
+  useEffect(() => {
+    if (!project || !isStoryReview || pipeline?.status !== "AWAITING_APPROVAL") {
+      return;
+    }
+    void loadStory(project.id);
+  }, [project, isStoryReview, pipeline?.status, loadStory]);
 
   if (!project && !actionError) {
     return <p className="page__subtitle">Loading review…</p>;
@@ -56,7 +106,20 @@ export function ReviewPage() {
     );
   }
 
-  const apiStatus = pipeline?.status ?? "IDLE";
+  if (!pipeline) {
+    if (pipelineError) {
+      return (
+        <section className="page">
+          <p className="page__error" role="alert">
+            {pipelineError}
+          </p>
+        </section>
+      );
+    }
+    return <p className="page__subtitle">Loading review…</p>;
+  }
+
+  const apiStatus = pipeline.status;
   const displayStatus = toDisplayStatus(apiStatus);
   const stage = pipeline?.current_stage;
 
@@ -64,7 +127,27 @@ export function ReviewPage() {
     return <Navigate to="/" replace />;
   }
 
-  const reviewStage = stage;
+  const dirty = isStoryReview && treatmentText !== savedText;
+
+  async function handleSave() {
+    if (!storyAsset || !dirty) {
+      return;
+    }
+    setSaving(true);
+    setActionError(null);
+    try {
+      const updated = await updateAssetText(storyAsset.id, treatmentText);
+      setStoryAsset(updated);
+      setSavedText(treatmentText);
+      if (project) {
+        await loadStory(project.id);
+      }
+    } catch (err) {
+      setActionError(err instanceof ApiError ? err.message : "Save failed.");
+    } finally {
+      setSaving(false);
+    }
+  }
 
   async function handleApprove() {
     setSubmitting(true);
@@ -72,10 +155,11 @@ export function ReviewPage() {
     try {
       await approvePipeline({
         project_id: project!.id,
-        stage: reviewStage,
+        stage: stage!,
         decision: "GRANT",
       });
       setNote("");
+      setRejectedHint(false);
       refresh();
     } catch (err) {
       setActionError(err instanceof ApiError ? err.message : "Approval failed.");
@@ -94,10 +178,11 @@ export function ReviewPage() {
     try {
       await approvePipeline({
         project_id: project!.id,
-        stage: reviewStage,
+        stage: stage!,
         decision: "REJECT",
         note: note.trim(),
       });
+      setRejectedHint(true);
       refresh();
     } catch (err) {
       setActionError(err instanceof ApiError ? err.message : "Rejection failed.");
@@ -109,19 +194,65 @@ export function ReviewPage() {
   return (
     <section className="page">
       <header className="page__header">
-        <h1 className="page__title">Review — {STAGE_LABELS[reviewStage] ?? reviewStage}</h1>
+        <h1 className="page__title">Review — {STAGE_LABELS[stage] ?? stage}</h1>
         <span className="badge badge--review">REVIEW</span>
       </header>
 
       <div className="card">
-        <p className="review__lead">
-          Stub stage output is ready for human review. Approve to advance the pipeline, or
-          reject with a note (regenerate lands in Sprint 3).
-        </p>
+        {isStoryReview ? (
+          <>
+            <p className="review__lead">
+              Read and edit the generated story treatment. Save your changes, then approve to
+              advance to script generation, or reject with a note.
+            </p>
+            {storyAsset && (
+              <p className="review__meta">
+                Version <strong>{storyAsset.version}</strong> · branch{" "}
+                <code className="table__hash">{storyAsset.branch}</code>
+                {storyAsset.is_ai_generated ? (
+                  <span className="badge badge--generating" style={{ marginLeft: 8 }}>
+                    AI Generated
+                  </span>
+                ) : null}
+              </p>
+            )}
+            {storyLoading ? (
+              <p className="page__subtitle">Loading treatment…</p>
+            ) : storyAsset ? (
+              <label className="form-row form-row--stacked" htmlFor="story-treatment">
+                <span className="form-row__label">Story treatment</span>
+                <textarea
+                  id="story-treatment"
+                  className="review__note review__treatment"
+                  rows={16}
+                  value={treatmentText}
+                  onChange={(event) => setTreatmentText(event.target.value)}
+                />
+              </label>
+            ) : (
+              <p className="page__error" role="alert">
+                No STORY asset found for this project.
+              </p>
+            )}
+          </>
+        ) : (
+          <p className="review__lead">
+            Stage output is ready for human review. Approve to advance the pipeline, or reject
+            with a note.
+          </p>
+        )}
+
         <p className="review__meta">
           Run <code className="table__hash">{pipeline?.run_id}</code> · stage{" "}
-          <strong>{reviewStage}</strong>
+          <strong>{stage}</strong>
         </p>
+
+        {rejectedHint && isStoryReview && (
+          <p className="review__regenerate-hint" role="status">
+            Story rejected. Regeneration will be available in a future update (US-09). You can
+            edit the treatment and approve, or reject again with a new note.
+          </p>
+        )}
 
         <label className="form-row form-row--stacked" htmlFor="reject-note">
           <span className="form-row__label">Reject note</span>
@@ -142,10 +273,21 @@ export function ReviewPage() {
         )}
 
         <div className="card__actions">
+          {isStoryReview && storyAsset && (
+            <button
+              type="button"
+              className="button"
+              disabled={saving || !dirty}
+              onClick={() => void handleSave()}
+            >
+              {saving ? "Saving…" : "Save edits"}
+            </button>
+          )}
           <button
             type="button"
             className="button button--primary"
-            disabled={submitting}
+            disabled={submitting || (isStoryReview && dirty)}
+            title={dirty ? "Save edits before approving" : undefined}
             onClick={() => void handleApprove()}
           >
             Approve stage
@@ -157,6 +299,14 @@ export function ReviewPage() {
             onClick={() => void handleReject()}
           >
             Reject
+          </button>
+          <button
+            type="button"
+            className="button"
+            disabled
+            title="Regeneration is planned for US-09"
+          >
+            Regenerate (US-09)
           </button>
           <Link className="button" to="/">
             Back to dashboard

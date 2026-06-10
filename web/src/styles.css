@@ -252,6 +252,23 @@ a {
   font-size: 14px;
 }
 
+.review__treatment {
+  min-height: 280px;
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.review__regenerate-hint {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 14px;
+}
+
 .review__note {
   width: 100%;
   min-height: 88px;
