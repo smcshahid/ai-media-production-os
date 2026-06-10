@@ -4,13 +4,13 @@ Privacy-first, local-AI media production platform — **Visual MVP** scope: Idea
 
 ## Status
 
-**Architecture frozen** — June 9, 2026. Implementation begins at Sprint 0.
+**Sprint 0 complete** · **Sprint 1 in progress** (Infrastructure Validation) — June 9, 2026.
 
 | State | Detail |
 |-------|--------|
-| Backlog | 68 GitHub issues (#1–#68) imported |
-| Governance | Workflow, DoD, branching, coding standards in place |
-| Application code | Not yet started — Sprint 0 next |
+| Stack | 9-service compose authored; Sprint-0 path (`api`, `web`, `postgresql`, `minio`, `redis`) verified live |
+| CI | `.github/workflows/ci-api.yml` — ruff/mypy/pytest + web build/lint/vitest on PRs |
+| GPU / Olares | Required for Ollama + ComfyUI smoke (US-06); blocked on hardware in local Windows dev |
 
 ## Document authority (frozen)
 
@@ -63,6 +63,60 @@ Do **not** re-run `import_to_github.py --all` unless resetting the repo — it c
 
 Do **not** create new architecture documents in this planning repository. Changes require SCR per MVP Scope Freeze §11.
 
+## Quick start (local dev)
+
+Prerequisites: Docker Desktop, Node 24+, Python 3.12+ (host venv for migrations/tests).
+
+```powershell
+# from repo root
+cp .env.example .env
+docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env up -d
+```
+
+- **SPA:** http://localhost:5173 — sign in with `AIMPOS_API_TOKEN` from `.env`
+- **API:** http://localhost:8000/health (no auth) · protected routes need `Authorization: Bearer <token>`
+- **Stop:** `docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env down`
+- **Reset data:** add `-v` to `down`
+
+### Service port map (dev overlay)
+
+| Service | Host port | Purpose |
+|---------|-----------|---------|
+| `api` | 8000 | FastAPI REST + `/health` |
+| `web` | 5173 | React SPA (nginx) |
+| `postgresql` | 5432 | System of record |
+| `minio` | 9000 / 9001 | S3 API / console |
+| `redis` | 6379 | Cache |
+| `temporal` | 7233 | Workflow gRPC (Sprint 1) |
+| `temporal-ui` | 8080 | Temporal Web UI (Sprint 1) |
+| `ollama` | 11434 | Local LLM API (Sprint 1, GPU) |
+| `comfyui` | 8188 | Image diffusion API (Sprint 1, GPU) |
+| `worker` | — | Temporal worker stub (internal only) |
+
+Compose env template: [`deploy/compose/.env.compose.example`](./deploy/compose/.env.compose.example).
+
+### Smoke tests
+
+| Script | Gate | Exit codes |
+|--------|------|------------|
+| `scripts/smoke/test_postgres.py` | S1-SW (hermetic) | 0 = PASS |
+| `scripts/smoke/test_minio.py` | S1-SW (hermetic) | 0 = PASS |
+| `scripts/smoke/test_ollama.py` | M1-DV (live GPU) | 0 = PASS · **2 = SKIP** (unavailable) · 1 = FAIL |
+| `scripts/smoke/test_comfyui.py` | M1-DV (live GPU) | 0 = PASS · **2 = SKIP** · 1 = FAIL |
+
+**SKIP is not PASS.** On CPU-only dev hosts, AI smokes exit 2 by design. On Olares, use `--require-live` for M1-DV.
+
+Runbooks: [`docs/runbooks/local-development.md`](./docs/runbooks/local-development.md) · [`olares-deployment.md`](./docs/runbooks/olares-deployment.md) · [`gpu-sequencing.md`](./docs/runbooks/gpu-sequencing.md)
+
+### Quality gates (run before every PR)
+
+```powershell
+# API
+cd api; .\.venv\Scripts\python.exe -m pytest tests/unit -q; .\.venv\Scripts\python.exe -m ruff check app tests; .\.venv\Scripts\python.exe -m ruff format --check app tests; .\.venv\Scripts\python.exe -m mypy app
+# Web
+cd web; npm run build; npm run lint; npm test
+```
+
 ## Repository layout
 
-See [Repository Structure.md](./Repository%20Structure.md) for the monorepo folder plan (scaffold in Sprint 0 Day 1).
+See [Repository Structure.md](./Repository%20Structure.md) for the monorepo folder plan.

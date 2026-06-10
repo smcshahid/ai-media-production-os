@@ -570,6 +570,7 @@ Sprint 1 cannot begin until Sprint 0 exit gate passes. Sprint 2 cannot begin unt
 | 1.0 | 2026-06-09 | Product / Architecture | Initial Sprint 0 planning document — Platform Skeleton |
 | 1.1 | 2026-06-09 | Product / Architecture | Aligned with Sprint Reclassification; US-02/US-06/US-10 moved to Sprint 1+; 26 issues in S0 |
 | 1.2 | 2026-06-09 | Lead Engineer | GitHub milestones relabeled + 68 issues reassigned; S0 count corrected 24→26 (T-02-02/03 included) |
+| 1.3 | 2026-06-09 | Lead Engineer | SCR-2026-001 append-only §12 — post-S0 gate supersession (no rewrite of §7/§10.1) |
 
 **Related documents (frozen):**
 
@@ -582,5 +583,21 @@ Sprint 1 cannot begin until Sprint 0 exit gate passes. Sprint 2 cannot begin unt
 ---
 
 *This document is the execution contract for Sprint 0. When in conflict with informal discussion, this document and [MVP Scope Freeze.md](./MVP%20Scope%20Freeze.md) win.*
+
+---
+
+## 12. Post-Sprint-0 gate supersession (SCR-2026-001) — append-only
+
+**Status:** Sprint 0 is **complete**. §7 (Hard Gates), §10.1 (sprint map), and line 106 above remain the **historical Sprint 0 planning record** — they are not rewritten.
+
+**Authoritative gates for Sprint 1 onward** (per **D-31** / SCR-2026-001, approved in principle 2026-06-09):
+
+| Gate | Closes | Blocks |
+|------|--------|--------|
+| **S1-SW** — Sprint 1 software exit | Compose/CI/scripts/runbooks/decisions (see `docs/governance/definition-of-done.md`) | — |
+| **M1-DV** — Deployment validation | US-06 + US-02 live on Olares; EPIC-01/FEAT-INFRA (or US-06 failure protocol) | **Sprint 3** (US-12+) |
+| **M2** — Workflow skeleton | Stub pipeline → `COMPLETED` (Sprint 2) | Sprint 3 (with M1-DV) |
+
+**Supersedes for execution:** §7 row “Sprint 1 GPU gate → blocks Sprint 2” and §10.1 line “Sprint 2 cannot begin until Sprint 1 GPU gate passes.” **Sprint 2** may begin after **S1-SW**; **M1-DV** does not block Sprint 2. US-06, EPIC-01, and GPU/Olares validation remain **required** — see `docs/governance/development-workflow.md`.
 
 *End of document*

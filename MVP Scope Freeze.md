@@ -473,6 +473,7 @@ May **not** cut without SCR:
 | Version | Date | Change | Approved by |
 |---------|------|--------|-------------|
 | **1.0** | 2026-06-08 | Initial freeze: Idea → Story → Script → Storyboard only. Video and export Deferred. | _Pending sign-off_ |
+| **1.1** | 2026-06-09 | SCR-2026-001 (D-31): gate retiming — S1-SW + M1-DV; no scope cut; US-06/EPIC-01 remain required | PO + Lead Architect (in principle) |
 
 ### 11.4 Sign-off
 

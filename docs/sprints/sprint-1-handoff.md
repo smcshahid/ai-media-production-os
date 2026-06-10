@@ -1,5 +1,7 @@
 # Sprint 1 — Infrastructure Validation: Agent Handoff
 
+**Governance:** SCR-2026-001 approved in principle (2026-06-09); gates per **D-31** (`S1-SW` + `M1-DV`).
+
 **Audience:** the engineering agent picking up Sprint 1.
 **Read this first, in full.** Then read [`sprint-0-briefing.md`](./sprint-0-briefing.md) (what already exists), skim the tail of [`Sprint0_Status.md`](../../Sprint0_Status.md) and recent [`DECISIONS.md`](../../DECISIONS.md) entries. Scope/AC are frozen in [`Sprint 0 — Platform Skeleton.md`](../../Sprint%200%20%E2%80%94%20Platform%20Skeleton.md) §3.2/§4 (Phase B) and [`Sprint Reclassification.md`](../../Sprint%20Reclassification.md).
 
@@ -120,7 +122,12 @@ cd web ; npm run build ; npm run lint ; npm test
 
 **Definition of Done** (see `docs/governance/definition-of-done.md`): code + tests pass, ruff/format/mypy clean, live-verified, decision recorded, docs/runbook updated, no secrets, scope held.
 
-**Sprint 1 exit gate (from the frozen plan):** full 9-service stack comes up; **Ollama + ComfyUI smoke pass on Olares** (or the failure protocol is invoked and documented); zero-egress verified; EPIC-01/FEAT-INFRA closable. Sprint 1 unblocks Sprint 2 (Temporal workflow, US-07).
+**Sprint 1 exit gates (SCR-2026-001 / D-31):**
+
+- **S1-SW (software exit):** 9-service compose valid; CI; smoke scripts + runbooks authored; hermetic postgres/minio smokes pass; decisions recorded. **Unblocks Sprint 2** (Temporal workflow, US-07).
+- **M1-DV (deployment validation):** Ollama + ComfyUI smoke pass on Olares (or failure protocol on US-06); zero-egress verified; US-02/US-06/EPIC-01/FEAT-INFRA closable. **Blocks Sprint 3**, not Sprint 2.
+
+Historical wording in `Sprint 0 — Platform Skeleton.md` §7 is superseded for execution — see that doc §12 (append-only).
 
 ---
 
@@ -131,7 +138,7 @@ cd web ; npm run build ; npm run lint ; npm test
 3. **Add CI** (`.github/workflows/ci-api.yml` + web job) — resolves TD-21 and gates everything after.
 4. Knock out pure-software items (#62 GPU sequencing docs, #69/#70/#71 tech-debt) behind CI.
 5. Author the full compose (#44); validate with `docker compose config`.
-6. **Confirm GPU + Olares access.** If yes: do #47/#60/#61/#49/#48, record D-02/D-03/D-08, validate live, close US-06/US-02. If no: stop, document the blocker, propose the failure protocol, and hand back.
+6. **Confirm GPU + Olares access.** If yes: complete **M1-DV** (#47/#60/#61/#49/#48, live validation, close US-06/US-02/EPIC-01). If no: finish **S1-SW**, document M1-DV blocker, do not fabricate smokes; Sprint 2 may proceed after S1-SW per D-31.
 
 ---
 

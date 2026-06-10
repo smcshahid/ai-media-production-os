@@ -102,9 +102,10 @@ Per [Sprint Reclassification.md](../../Sprint%20Reclassification.md) and [Archit
 
 | Milestone | Sprint | Gate |
 |-----------|--------|------|
-| **M0 — Platform Skeleton** | Sprint 0 | 24 class-A issues closed; browser walkthrough: Login → Project → Upload → idle Dashboard |
-| **M1 — Infrastructure validated** | Sprint 1 | US-02, US-06, EPIC-01, FEAT-INFRA closed; GPU smoke pass on Olares |
-| **M2 — Workflow skeleton** | Sprint 2 | US-07, US-08, US-10 closed; stub pipeline → `COMPLETED` |
+| **M0 — Platform Skeleton** | Sprint 0 | 26 class-A issues closed; browser walkthrough: Login → Project → Upload → idle Dashboard |
+| **S1-SW — Sprint 1 software exit** | Sprint 1 | T-02-01 compose valid; T-02-04/05 authoring; T-06-01/02 scripts exist; T-06-03 docs; CI (TD-21); hermetic smokes pass; decisions recorded |
+| **M1-DV — Deployment validation** | Sprint 1 | US-02, US-06, EPIC-01, FEAT-INFRA closed; GPU smoke pass on Olares (or failure protocol on US-06) |
+| **M2 — Workflow skeleton** | Sprint 2 | US-07, US-08, US-10 closed; stub pipeline → `COMPLETED` (Sprint 3 also requires M1-DV) |
 | **M3 — Story pipeline** | Sprint 3 | US-11 through US-13 closed; Idea → approved story E2E |
 | **M4 — Script pipeline** | Sprint 4 | US-14, US-15 closed; approved script E2E |
 | **M5 — Visual MVP signed** | Sprint 5 | US-16, US-17, US-V01 closed; Idea → approved storyboard frames |
@@ -157,5 +158,6 @@ Do not cut US-02, US-06, US-07, US-08, US-12, US-14, US-16, US-17, or US-V01 wit
 |---------|------|---------|
 | 1.0 | 2026-06-09 | Initial Definition of Done for Visual MVP |
 | 1.1 | 2026-06-09 | M0 Platform Skeleton; milestones aligned to Sprint 0–5 |
+| 1.2 | 2026-06-09 | SCR-2026-001 (D-31): S1-SW + M1-DV; M1-DV blocks Sprint 3 |
 
 *End of document*

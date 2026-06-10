@@ -109,7 +109,7 @@ Run verification appropriate to the issue **before** opening a PR.
 After merge-sensitive changes, confirm **downstream smoke** still passes:
 
 - From Sprint 1 onward: compose stack starts cleanly
-- After US-06: Ollama + ComfyUI smoke passes
+- After M1-DV (US-06): Ollama + ComfyUI smoke passes
 - After US-07: pipeline start/status/approve APIs respond
 
 ---
@@ -121,8 +121,9 @@ These gates override normal sequencing:
 | Gate | Sprint | Condition | Blocked until |
 |------|--------|-----------|---------------|
 | **M0 — Platform Skeleton** | Sprint 0 | Browser walkthrough passes (Login, Project, Upload, Dashboard) | Sprint 1 |
-| **M1 — GPU proof** | Sprint 1 | US-06 smoke passes on Olares | Sprint 2 (US-07 Temporal) |
-| **M2 — Workflow skeleton** | Sprint 2 | Stub pipeline reaches `COMPLETED` via 4 approvals | Sprint 3 (US-12+) |
+| **S1-SW — Sprint 1 software exit** | Sprint 1 | Compose/CI/scripts/runbooks/decisions verified (see `definition-of-done.md`) | — (Sprint 1 software track close) |
+| **M1-DV — Deployment validation** | Sprint 1 | US-06 smoke passes on Olares; US-02 live; EPIC-01/FEAT-INFRA close (or failure protocol on US-06) | Sprint 3 (US-12+) |
+| **M2 — Workflow skeleton** | Sprint 2 | Stub pipeline reaches `COMPLETED` via 4 approvals | Sprint 3 (US-12+; also requires M1-DV) |
 | **Architecture freeze** | All | No new architecture docs; SCR for scope changes | N/A — permanent until US-V01 |
 | **Scope freeze** | All | No video, export, Neo4j, Keycloak in Visual MVP | N/A — permanent for this increment |
 
@@ -178,5 +179,6 @@ Weekly rhythm is defined in [Solo Founder Development Plan.md](../../Solo%20Foun
 |---------|------|---------|
 | 1.0 | 2026-06-09 | Initial development workflow for Visual MVP |
 | 1.1 | 2026-06-09 | Gates aligned to Sprint 0–5; architecture freeze references |
+| 1.2 | 2026-06-09 | SCR-2026-001 (D-31): S1-SW + M1-DV gate split; M1-DV blocks Sprint 3 |
 
 *End of document*
