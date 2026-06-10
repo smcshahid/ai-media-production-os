@@ -21,11 +21,13 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.infrastructure.cache.redis_client import build_redis
 from app.infrastructure.db.session import build_engine, build_sessionmaker
 from app.infrastructure.storage.minio_client import MinioClient
+from app.infrastructure.temporal.client import connect_temporal
 from app.middleware.auth import AuthMiddleware
 from app.middleware.logging import AccessLogMiddleware
 from app.middleware.request_id import RequestIDMiddleware
 from app.routes.assets import router as assets_router
 from app.routes.health import router as health_router
+from app.routes.ideas import router as ideas_router
 from app.routes.pipeline import router as pipeline_router
 from app.routes.projects import router as projects_router
 from app.seed.default_project import seed_default_project
@@ -42,6 +44,14 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.redis = build_redis(settings.redis_url)
     app.state.http = httpx.AsyncClient()
     app.state.minio = MinioClient.from_settings(settings)
+    try:
+        app.state.temporal = await connect_temporal(settings)
+    except Exception as exc:
+        logging.getLogger("aimpos.temporal").warning(
+            "temporal.connect.deferred",
+            extra={"error": str(exc), "address": settings.temporal_address},
+        )
+        app.state.temporal = None
 
     # Idempotent default-project seed (US-01). Tolerate a not-yet-migrated
     # schema so the API still boots and /health stays serviceable; the operator
@@ -92,6 +102,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(projects_router)
     app.include_router(assets_router)
+    app.include_router(ideas_router)
     app.include_router(pipeline_router)
     return app
 

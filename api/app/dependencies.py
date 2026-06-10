@@ -13,7 +13,7 @@ from collections.abc import AsyncIterator
 
 import httpx
 from aimpos_config import Settings
-from fastapi import Request
+from fastapi import HTTPException, Request, status
 from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
@@ -24,6 +24,7 @@ from app.infrastructure.health.probes import (
     check_redis,
 )
 from app.infrastructure.storage.minio_client import MinioClient
+from app.infrastructure.temporal.client import TemporalService
 
 
 def get_settings(request: Request) -> Settings:
@@ -56,6 +57,16 @@ def get_redis(request: Request) -> Redis:
 def get_http_client(request: Request) -> httpx.AsyncClient:
     client: httpx.AsyncClient = request.app.state.http
     return client
+
+
+def get_temporal(request: Request) -> TemporalService:
+    temporal: TemporalService | None = request.app.state.temporal
+    if temporal is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="temporal client unavailable",
+        )
+    return temporal
 
 
 async def get_health_checks(request: Request) -> dict[str, DependencyStatus]:

@@ -10,7 +10,8 @@ from aimpos_config import get_settings
 from aimpos_core.enums import PipelineRunStatus, PipelineStage, ProjectStatus
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.dependencies import get_session
+from app.dependencies import get_session, get_temporal
+from tests.unit.test_pipeline_start import FakeTemporal
 from app.infrastructure.db.models.pipeline_run import PipelineRun
 from app.infrastructure.db.models.project import Project
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
@@ -23,6 +24,7 @@ _AUTH = {"Authorization": f"Bearer {get_settings().api_token}"}
 def _transport(session: AsyncSession) -> httpx.ASGITransport:
     app = create_app()
     app.dependency_overrides[get_session] = lambda: session
+    app.dependency_overrides[get_temporal] = lambda: FakeTemporal()
     return httpx.ASGITransport(app=app)
 
 

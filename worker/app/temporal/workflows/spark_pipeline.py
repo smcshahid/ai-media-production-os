@@ -1,0 +1,132 @@
+"""SparkPipelineWorkflow — STORY agent (US-12) + stub SCRIPT/STORYBOARD + approval gates."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from datetime import timedelta
+
+from aimpos_core.enums import PipelineStage
+from temporalio import workflow
+from temporalio.common import RetryPolicy
+
+with workflow.unsafe.imports_passed_through():
+    from app.temporal.activities.pipeline_status import sync_pipeline_status
+    from app.temporal.activities.story import run_story_agent
+    from app.temporal.activities.stub import run_stub_stage
+
+_STAGE_ORDER = (
+    PipelineStage.STORY,
+    PipelineStage.SCRIPT,
+    PipelineStage.STORYBOARD,
+)
+
+
+@dataclass
+class SparkPipelineInput:
+    project_id: str
+    run_id: str
+
+
+@dataclass
+class SparkPipelineWorkflowState:
+    current_stage: str | None = None
+    awaiting_approval: bool = False
+    completed_stages: list[str] = field(default_factory=list)
+    last_rejection_note: str | None = None
+
+
+@workflow.defn(name="SparkPipelineWorkflow")
+class SparkPipelineWorkflow:
+    """Four-stage Visual MVP pipeline with stub generation and approval signals."""
+
+    def __init__(self) -> None:
+        self._state = SparkPipelineWorkflowState()
+        self._approval_granted = False
+        self._approval_rejected = False
+
+    @workflow.query
+    def get_state(self) -> SparkPipelineWorkflowState:
+        return self._state
+
+    @workflow.signal
+    def approve(self, stage: str) -> None:
+        if self._state.awaiting_approval and (
+            self._state.current_stage is None or self._state.current_stage == stage
+        ):
+            self._approval_granted = True
+            self._approval_rejected = False
+
+    @workflow.signal
+    def reject(self, stage: str, note: str = "") -> None:
+        if self._state.awaiting_approval and (
+            self._state.current_stage is None or self._state.current_stage == stage
+        ):
+            self._approval_rejected = True
+            self._approval_granted = False
+            self._state.last_rejection_note = note or None
+
+    @workflow.run
+    async def run(self, pipeline_input: SparkPipelineInput | dict[str, str]) -> str:
+        if isinstance(pipeline_input, dict):
+            pipeline_input = SparkPipelineInput(**pipeline_input)
+
+        for stage in _STAGE_ORDER:
+            self._reset_approval_flags()
+            self._state.current_stage = stage.value
+            self._state.awaiting_approval = False
+
+            await workflow.execute_activity(
+                sync_pipeline_status,
+                args=[pipeline_input.run_id, "RUNNING", stage.value],
+                start_to_close_timeout=timedelta(seconds=15),
+                retry_policy=RetryPolicy(maximum_attempts=3),
+            )
+
+            if stage == PipelineStage.STORY:
+                await workflow.execute_activity(
+                    run_story_agent,
+                    args=[pipeline_input.project_id, pipeline_input.run_id],
+                    start_to_close_timeout=timedelta(minutes=5),
+                    retry_policy=RetryPolicy(maximum_attempts=3),
+                )
+            else:
+                await workflow.execute_activity(
+                    run_stub_stage,
+                    args=[stage.value, pipeline_input.run_id],
+                    start_to_close_timeout=timedelta(seconds=30),
+                    retry_policy=RetryPolicy(maximum_attempts=3),
+                )
+
+            await workflow.execute_activity(
+                sync_pipeline_status,
+                args=[pipeline_input.run_id, "AWAITING_APPROVAL", stage.value],
+                start_to_close_timeout=timedelta(seconds=15),
+                retry_policy=RetryPolicy(maximum_attempts=3),
+            )
+
+            self._state.awaiting_approval = True
+            await workflow.wait_condition(
+                lambda: self._approval_granted or self._approval_rejected,
+                timeout=timedelta(days=30),
+            )
+
+            if self._approval_rejected:
+                # Stay at this stage until a later approve signal (US-08).
+                await workflow.wait_condition(lambda: self._approval_granted, timeout=timedelta(days=30))
+                self._approval_rejected = False
+
+            self._state.completed_stages.append(stage.value)
+            self._state.awaiting_approval = False
+
+        self._state.current_stage = None
+        await workflow.execute_activity(
+            sync_pipeline_status,
+            args=[pipeline_input.run_id, "COMPLETED", None],
+            start_to_close_timeout=timedelta(seconds=15),
+            retry_policy=RetryPolicy(maximum_attempts=3),
+        )
+        return "COMPLETED"
+
+    def _reset_approval_flags(self) -> None:
+        self._approval_granted = False
+        self._approval_rejected = False

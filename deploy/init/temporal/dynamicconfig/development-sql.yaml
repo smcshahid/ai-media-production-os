@@ -1,0 +1,5 @@
+# Temporal dynamic config for local PostgreSQL persistence (T-07-01).
+# See https://github.com/temporalio/temporal/blob/master/config/dynamicconfig/README.md
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+    constraints: {}
