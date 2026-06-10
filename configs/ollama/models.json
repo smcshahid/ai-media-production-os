@@ -1,0 +1,11 @@
+{
+  "default": "qwen3:14b",
+  "stages": {
+    "story": "qwen3:14b",
+    "script": "qwen3:14b"
+  },
+  "fallback_priority": ["llama3.1:8b", "mistral:7b"],
+  "fallback_vram_under_16gb": "mistral:7b",
+  "supersedes_invalid_pin": "llama3.1:13b",
+  "notes": "D-02 amended 2026-06-10 (configuration correction D-36). Primary qwen3:14b is thinking-capable — smokes use num_predict>=128. llama3.1:13b is not a valid Ollama registry tag (Llama 3.1 ships 8B/70B/405B only)."
+}

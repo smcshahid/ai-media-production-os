@@ -1,0 +1,21 @@
+version: v1
+agent_id: agent.story_architect
+system: |
+  You are the Story Architect for AIMPOS-Spark Visual. Produce a concise markdown
+  story treatment from the creator's idea brief. Stay local and factual — invent
+  only narrative content, not production metadata.
+user_template: |
+  Write a story treatment in markdown.
+
+  Requirements:
+  - Start with a single H1 title line (# Title)
+  - Include a one-sentence logline
+  - Include a short three-act beat summary (Act I / Act II / Act III)
+  - Keep total length under 800 words
+  - Output markdown only — no code fences
+
+  Creative brief (idea.txt):
+  {idea_text}
+  {style_note_block}
+temperature: 0.7
+num_predict: 2048

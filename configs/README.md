@@ -5,6 +5,7 @@ Version-controlled configuration. Secrets stay in `.env` (gitignored).
 | Path | Purpose | Lands in |
 |------|---------|----------|
 | `ollama/models.json` | Pinned model tags per stage | Sprint 1 (US-06) |
+| `prompts/story_architect/v1.yaml` | Story Architect system/user templates | Sprint 3B (US-12) |
 | `comfyui/workflows/*.json` | Pinned ComfyUI workflow graphs | Sprint 1 (US-06) |
 | `temporal/development.yaml` | Temporal dev settings | Sprint 2 (US-07) |
 
