@@ -1,0 +1,66 @@
+# TD-21 — API + web quality gates on every PR and push to main.
+# Mirrors the local gates documented in docs/sprints/sprint-1-handoff.md §3.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  api:
+    name: API (ruff, mypy, pytest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ../packages/aimpos-core -e ../packages/aimpos-config -e ".[dev]"
+
+      - name: Ruff check
+        run: python -m ruff check app tests
+
+      - name: Ruff format
+        run: python -m ruff format --check app tests
+
+      - name: Mypy
+        run: python -m mypy app
+
+      - name: Unit tests
+        run: python -m pytest tests/unit -q
+
+  web:
+    name: Web (build, lint, vitest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck and build
+        run: npm run build
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Vitest
+        run: npm test
