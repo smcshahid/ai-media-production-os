@@ -30,6 +30,7 @@ class StoredAsset:
     content_hash: str
     is_ai_generated: bool
     branch: str
+    metadata_json: dict | None = None
 
 
 class BlobStore(Protocol):
@@ -55,6 +56,7 @@ class AssetVersionStore(Protocol):
         content_hash: str,
         is_ai_generated: bool,
         branch: str,
+        metadata_json: dict | None = None,
     ) -> StoredAsset: ...
 
 
@@ -68,6 +70,7 @@ async def store_asset(
     content_type: str = "application/octet-stream",
     is_ai_generated: bool = False,
     branch: str = "main",
+    metadata_json: dict | None = None,
 ) -> StoredAsset:
     """Hash bytes, store the blob, and append a version row.
 
@@ -86,4 +89,5 @@ async def store_asset(
         content_hash=content_hash,
         is_ai_generated=is_ai_generated,
         branch=branch,
+        metadata_json=metadata_json,
     )

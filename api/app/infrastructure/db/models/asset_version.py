@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 
 from aimpos_core.enums import AssetStage
-from sqlalchemy import Boolean, Enum, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import JSON, Boolean, Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.infrastructure.db.base import Base, created_at_column, uuid_pk
@@ -40,4 +40,6 @@ class AssetVersion(Base):
     content_hash: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
     is_ai_generated: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     branch: Mapped[str] = mapped_column(String(64), nullable=False, default="main")
+    # Optional stage-specific metadata (US-11 style_note; future agent fields).
+    metadata_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = created_at_column()

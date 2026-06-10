@@ -43,6 +43,7 @@ class AssetRead(BaseModel):
     minio_key: str
     is_ai_generated: bool
     branch: str
+    metadata_json: dict | None = None
     created_at: datetime
 
 

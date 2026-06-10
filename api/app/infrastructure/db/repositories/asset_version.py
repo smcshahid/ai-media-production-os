@@ -26,6 +26,7 @@ class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
         content_hash: str,
         is_ai_generated: bool,
         branch: str,
+        metadata_json: dict | None = None,
     ) -> StoredAsset:
         """Persist a new asset version (port impl for ``store_asset``).
 
@@ -40,6 +41,7 @@ class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
             content_hash=content_hash,
             is_ai_generated=is_ai_generated,
             branch=branch,
+            metadata_json=metadata_json,
         )
         await self.add(row)
         return StoredAsset(
@@ -51,6 +53,7 @@ class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
             content_hash=row.content_hash,
             is_ai_generated=row.is_ai_generated,
             branch=row.branch,
+            metadata_json=row.metadata_json,
         )
 
     async def next_version(self, project_id: uuid.UUID, stage: AssetStage) -> int:
