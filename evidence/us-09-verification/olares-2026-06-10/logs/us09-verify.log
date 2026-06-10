@@ -1,0 +1,154 @@
+API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+========== SETUP: STORY review gate ==========
+RUN_ID=8c35926c-0a4e-44ed-ac5a-ea3c178902cd
+========== V1: Reject with note ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"8c35926c-0a4e-44ed-ac5a-ea3c178902cd","approval_id":"44969fec-0fbf-4747-9a42-7fa0bc007e03","decision":"REJECTED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+STORY_BEFORE
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true
+REGEN_COUNT_BEFORE=0
+BASE_STORY_VERSION=3
+========== V2: Regenerate #1 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"8c35926c-0a4e-44ed-ac5a-ea3c178902cd","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","regenerations_used":1}
+HTTP_CODE:200
+  poll story version=3 target>=4
+  poll story version=3 target>=4
+  poll story version=4 target>=4
+STORY_AFTER_1
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true
+REGEN_COUNT=1 observed=1
+========== V3: Regenerate #2 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"8c35926c-0a4e-44ed-ac5a-ea3c178902cd","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","regenerations_used":2}
+HTTP_CODE:200
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  WARN: timed out waiting for story version >= 5
+STORY_AFTER_2
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true
+REGEN_COUNT=2 observed=2
+========== V4: Regenerate #3 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"8c35926c-0a4e-44ed-ac5a-ea3c178902cd","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","regenerations_used":3}
+HTTP_CODE:200
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  poll story version=4 target>=5
+  WARN: timed out waiting for story version >= 5
+STORY_AFTER_3
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true
+REGEN_COUNT=3 observed=3
+========== V4: 4th regenerate (expect 429) ==========
+{"detail":"regeneration limit reached for stage STORY (max 3 per run)"}
+HTTP_CODE:429
+REGEN_COUNT_BEFORE=3 REGEN_COUNT_AFTER=3
+AUDIT_COUNT_BEFORE=12 AUDIT_COUNT_AFTER=12
+STORY_AFTER_429
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true
+VERSIONS_UNCHANGED=YES
+AUDIT_UNCHANGED=YES
+WORKER_LOG_TAIL_POST_429
+{"level": "INFO", "logger": "aimpos.worker", "message": "worker.registered", "temporal_address": "temporal:7233", "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflows": ["SparkPipelineWorkflow"], "activities": ["run_stub_stage", "run_story_agent", "sync_pipeline_status"]}
+{"level": "INFO", "logger": "temporalio.activity", "message": "story_agent_completed ({'activity_id': '5', 'activity_type': 'run_story_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-8c35926c-0a4e-44ed-ac5a-ea3c178902cd', 'workflow_run_id': '06896552-e211-49f3-9856-de46862e614e', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "8c35926c-0a4e-44ed-ac5a-ea3c178902cd", "asset_version_id": "b736740b-137e-4942-9151-1f44fbf500e6", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "5", "activity_type": "run_story_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-8c35926c-0a4e-44ed-ac5a-ea3c178902cd", "workflow_run_id": "06896552-e211-49f3-9856-de46862e614e", "workflow_type": "SparkPipelineWorkflow"}}
+========== V5: Approve final draft → SCRIPT ==========
+{"detail":[{"type":"enum","loc":["body","decision"],"msg":"Input should be 'APPROVED' or 'REJECTED'","input":"APPROVE","ctx":{"expected":"'APPROVED' or 'REJECTED'"}}]}
+HTTP_CODE:422
+PIPELINE_AFTER_APPROVE
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"8c35926c-0a4e-44ed-ac5a-ea3c178902cd","status":"AWAITING_APPROVAL","current_stage":"STORY","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-10T22:32:36.184628"}
+APPROVAL_ROWS
+ERROR:  column "note" does not exist
+LINE 1: SELECT stage||'|'||decision||'|'||COALESCE(note,'')||'|'||cr...
+                                                   ^
+command terminated with exit code 1
+========== V6: D-38 version chain ==========
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4af5ea72d96e11916b72f741c18c88e6369b9ae7c395d6e58|2026-06-10 18:14:09.206561
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false|a469cbdb2b9b31901ec56fd7d1cc673f8aa2f7bb13fba30a2ece2e6204e0fd35|2026-06-10 20:14:23.795776
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true|aa917060dd662003eaafc4cce2da8c0cf16656390d3bd63c2ef0d8532698527b|2026-06-10 20:15:32.387905
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true|104891e54b19011cc26be0d6e1b703dbbf8315b4ee164ed00d0bf2a822f9a835|2026-06-10 22:32:36.140925
+DONE RUN_ID=8c35926c-0a4e-44ed-ac5a-ea3c178902cd

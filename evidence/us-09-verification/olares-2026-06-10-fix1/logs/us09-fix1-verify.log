@@ -1,0 +1,110 @@
+API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+========== SETUP: fresh pipeline to STORY review gate ==========
+{"id":"a79c3334-cd36-4ebf-bf6d-0661d427735c","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":4,"content_hash":"007eba452b4fc26b68b8360ad6dcb31b0778a000b10380dc52c4135d27439344","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/007eba452b4fc26b68b8360ad6dcb31b0778a000b10380dc52c4135d27439344","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic"},"created_at":"2026-06-10T23:09:58.778469"}
+START={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","workflow_id":"spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a","status":"RUNNING","current_stage":"STORY"}
+  poll status=RUNNING stage=STORY
+  poll status=RUNNING stage=STORY
+  poll status=AWAITING_APPROVAL stage=STORY
+RUN_ID=980617a8-1f3d-46e9-9165-59ea72af742a
+STORY_BASELINE
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false|a469cbdb2b9b3190
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true|aa917060dd662003
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true|104891e54b19011c
+0a739db6-ac9f-4ab6-a8cf-3e661139bdab|5|ai-draft|true|e64d4eaa451d86dc
+========== V1: Reject with note ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","approval_id":"44243eeb-bcf3-4aaf-b2af-1f3b2e6065bf","decision":"REJECTED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+STATUS_AFTER_REJECT
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","status":"AWAITING_APPROVAL","current_stage":"STORY","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-10T23:10:17.172410"}
+REGEN_COUNT_BEFORE=0
+========== V2: Regenerate #1 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","regenerations_used":1}
+HTTP_CODE:200
+  poll story version=5 target>=6
+  poll story version=6 target>=6
+STORY_AFTER_REGEN_1
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false|a469cbdb2b9b3190
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true|aa917060dd662003
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true|104891e54b19011c
+0a739db6-ac9f-4ab6-a8cf-3e661139bdab|5|ai-draft|true|e64d4eaa451d86dc
+034ad36b-20a9-4da5-b722-33d2702fec25|6|ai-draft|true|bf9560364e673c2a
+REGEN_COUNT=1 (expect 1)
+========== V3: Regenerate #2 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","regenerations_used":2}
+HTTP_CODE:200
+  poll story version=6 target>=7
+  poll story version=7 target>=7
+STORY_AFTER_REGEN_2
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false|a469cbdb2b9b3190
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true|aa917060dd662003
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true|104891e54b19011c
+0a739db6-ac9f-4ab6-a8cf-3e661139bdab|5|ai-draft|true|e64d4eaa451d86dc
+034ad36b-20a9-4da5-b722-33d2702fec25|6|ai-draft|true|bf9560364e673c2a
+1e06e977-6012-4eda-8310-ea1827604aca|7|ai-draft|true|28b87f9ab5175de4
+REGEN_COUNT=2 (expect 2)
+========== V4: Regenerate #3 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","regenerations_used":3}
+HTTP_CODE:200
+  poll story version=7 target>=8
+  poll story version=7 target>=8
+  poll story version=8 target>=8
+STORY_AFTER_REGEN_3
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false|a469cbdb2b9b3190
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true|aa917060dd662003
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true|104891e54b19011c
+0a739db6-ac9f-4ab6-a8cf-3e661139bdab|5|ai-draft|true|e64d4eaa451d86dc
+034ad36b-20a9-4da5-b722-33d2702fec25|6|ai-draft|true|bf9560364e673c2a
+1e06e977-6012-4eda-8310-ea1827604aca|7|ai-draft|true|28b87f9ab5175de4
+9facea33-a462-45ca-9a5f-e2fe9eaf7a07|8|ai-draft|true|21dc6323e3fa32de
+REGEN_COUNT=3 (expect 3)
+========== V5: 4th regenerate (expect 429) ==========
+{"detail":"regeneration limit reached for stage STORY (max 3 per run)"}
+HTTP_CODE:429
+REGEN_COUNT_BEFORE=3 REGEN_COUNT_AFTER=3
+AUDIT_COUNT_BEFORE=17 AUDIT_COUNT_AFTER=17
+VERSIONS_UNCHANGED=YES
+AUDIT_UNCHANGED=YES
+WORKER_LOG_TAIL_POST_429
+{"level": "INFO", "logger": "temporalio.activity", "message": "story_agent_completed ({'activity_id': '5', 'activity_type': 'run_story_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a', 'workflow_run_id': 'd93b26b5-16d7-4168-91b4-f5d8d9566640', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "980617a8-1f3d-46e9-9165-59ea72af742a", "asset_version_id": "034ad36b-20a9-4da5-b722-33d2702fec25", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "5", "activity_type": "run_story_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a", "workflow_run_id": "d93b26b5-16d7-4168-91b4-f5d8d9566640", "workflow_type": "SparkPipelineWorkflow"}}
+{"level": "INFO", "logger": "temporalio.activity", "message": "story_agent_completed ({'activity_id': '8', 'activity_type': 'run_story_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a', 'workflow_run_id': 'd93b26b5-16d7-4168-91b4-f5d8d9566640', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "980617a8-1f3d-46e9-9165-59ea72af742a", "asset_version_id": "1e06e977-6012-4eda-8310-ea1827604aca", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "8", "activity_type": "run_story_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a", "workflow_run_id": "d93b26b5-16d7-4168-91b4-f5d8d9566640", "workflow_type": "SparkPipelineWorkflow"}}
+{"level": "INFO", "logger": "temporalio.activity", "message": "story_agent_completed ({'activity_id': '11', 'activity_type': 'run_story_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a', 'workflow_run_id': 'd93b26b5-16d7-4168-91b4-f5d8d9566640', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "980617a8-1f3d-46e9-9165-59ea72af742a", "asset_version_id": "9facea33-a462-45ca-9a5f-e2fe9eaf7a07", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "11", "activity_type": "run_story_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a", "workflow_run_id": "d93b26b5-16d7-4168-91b4-f5d8d9566640", "workflow_type": "SparkPipelineWorkflow"}}
+========== V6: Approve final draft -> SCRIPT ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","approval_id":"9460fc72-254d-4a8c-a80e-5210e465d717","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+HTTP_CODE:200
+PIPELINE_AFTER_APPROVE
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"980617a8-1f3d-46e9-9165-59ea72af742a","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-10T23:11:27.225726"}
+APPROVAL_ROWS
+44243eeb-bcf3-4aaf-b2af-1f3b2e6065bf|STORY|REJECTED|US-09 fix1 verify: raise the stakes in Act II.
+9460fc72-254d-4a8c-a80e-5210e465d717|STORY|APPROVED|
+========== V7: D-38 full version chain ==========
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4af5ea72d96e11916b72f741c18c88e6369b9ae7c395d6e58|2026-06-10 18:14:09.206561
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false|a469cbdb2b9b31901ec56fd7d1cc673f8aa2f7bb13fba30a2ece2e6204e0fd35|2026-06-10 20:14:23.795776
+c6a43261-ca37-413a-8fc0-2ec20448b460|3|ai-draft|true|aa917060dd662003eaafc4cce2da8c0cf16656390d3bd63c2ef0d8532698527b|2026-06-10 20:15:32.387905
+b736740b-137e-4942-9151-1f44fbf500e6|4|ai-draft|true|104891e54b19011cc26be0d6e1b703dbbf8315b4ee164ed00d0bf2a822f9a835|2026-06-10 22:32:36.140925
+0a739db6-ac9f-4ab6-a8cf-3e661139bdab|5|ai-draft|true|e64d4eaa451d86dcbfeea3012a53c5251147b1c2f09c98dbc7e2c88ce7c26d2f|2026-06-10 23:10:17.128965
+034ad36b-20a9-4da5-b722-33d2702fec25|6|ai-draft|true|bf9560364e673c2a9ca244c084814d5b2fd550622598dcbdf5bc3e5b2f94b061|2026-06-10 23:10:33.86186
+1e06e977-6012-4eda-8310-ea1827604aca|7|ai-draft|true|28b87f9ab5175de421f8a9e8eb4589482d692e9341c0f9c724a50a349ad6f150|2026-06-10 23:10:48.728432
+9facea33-a462-45ca-9a5f-e2fe9eaf7a07|8|ai-draft|true|21dc6323e3fa32de331096f9d5d0784e5db624cad6386d07d1d7e687c376b4fe|2026-06-10 23:11:06.53693
+========== AUDIT TRAIL (run) ==========
+PIPELINE_STARTED||{"task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-980617a8-1f3d-46e9-9165-59ea72af742a"}|2026-06-10 23:09:58.79242
+STAGE_STARTED||{"agent": "agent.story_architect", "stage": "STORY"}|2026-06-10 23:09:58.906856
+AGENT_TASK_COMPLETED|qwen3:14b|{"agent": "agent.story_architect", "branch": "ai-draft", "minio_key": "ba0c4636-817c-423b-9771-20100e080b76/STORY/e64d4eaa451d86dcbfeea3012a53c5251147b1c2f09c98dbc7e2c88ce7c26d2f", "duration_ms": 18197, "prompt_version": "v1", "asset_version_id": "0a739db6-ac9f-4ab6-a8cf-3e661139bdab"}|2026-06-10 23:10:17.137957
+ASSET_STORED|qwen3:14b|{"stage": "STORY", "branch": "ai-draft", "version": 5, "content_hash": "e64d4eaa451d86dcbfeea3012a53c5251147b1c2f09c98dbc7e2c88ce7c26d2f"}|2026-06-10 23:10:17.146626
+APPROVAL_RECORDED||{"note": "US-09 fix1 verify: raise the stakes in Act II.", "stage": "STORY", "decision": "REJECTED", "principal": "api-bearer-token", "approval_id": "44243eeb-bcf3-4aaf-b2af-1f3b2e6065bf"}|2026-06-10 23:10:18.979267
+REGENERATION_REQUESTED||{"stage": "STORY", "principal": "api-bearer-token", "rejection_approval_id": "44243eeb-bcf3-4aaf-b2af-1f3b2e6065bf"}|2026-06-10 23:10:19.245902
+STAGE_STARTED||{"agent": "agent.story_architect", "stage": "STORY"}|2026-06-10 23:10:19.311498
+AGENT_TASK_COMPLETED|qwen3:14b|{"agent": "agent.story_architect", "branch": "ai-draft", "minio_key": "ba0c4636-817c-423b-9771-20100e080b76/STORY/bf9560364e673c2a9ca244c084814d5b2fd550622598dcbdf5bc3e5b2f94b061", "duration_ms": 14523, "prompt_version": "v1", "asset_version_id": "034ad36b-20a9-4da5-b722-33d2702fec25"}|2026-06-10 23:10:33.870769
+ASSET_STORED|qwen3:14b|{"stage": "STORY", "branch": "ai-draft", "version": 6, "content_hash": "bf9560364e673c2a9ca244c084814d5b2fd550622598dcbdf5bc3e5b2f94b061"}|2026-06-10 23:10:33.877656
+REGENERATION_REQUESTED||{"stage": "STORY", "principal": "api-bearer-token", "rejection_approval_id": "44243eeb-bcf3-4aaf-b2af-1f3b2e6065bf"}|2026-06-10 23:10:34.916148
+STAGE_STARTED||{"agent": "agent.story_architect", "stage": "STORY"}|2026-06-10 23:10:34.97698
+AGENT_TASK_COMPLETED|qwen3:14b|{"agent": "agent.story_architect", "branch": "ai-draft", "minio_key": "ba0c4636-817c-423b-9771-20100e080b76/STORY/28b87f9ab5175de421f8a9e8eb4589482d692e9341c0f9c724a50a349ad6f150", "duration_ms": 13722, "prompt_version": "v1", "asset_version_id": "1e06e977-6012-4eda-8310-ea1827604aca"}|2026-06-10 23:10:48.738116
+ASSET_STORED|qwen3:14b|{"stage": "STORY", "branch": "ai-draft", "version": 7, "content_hash": "28b87f9ab5175de421f8a9e8eb4589482d692e9341c0f9c724a50a349ad6f150"}|2026-06-10 23:10:48.746577
+REGENERATION_REQUESTED||{"stage": "STORY", "principal": "api-bearer-token", "rejection_approval_id": "44243eeb-bcf3-4aaf-b2af-1f3b2e6065bf"}|2026-06-10 23:10:50.598484
+STAGE_STARTED||{"agent": "agent.story_architect", "stage": "STORY"}|2026-06-10 23:10:50.657925
+AGENT_TASK_COMPLETED|qwen3:14b|{"agent": "agent.story_architect", "branch": "ai-draft", "minio_key": "ba0c4636-817c-423b-9771-20100e080b76/STORY/21dc6323e3fa32de331096f9d5d0784e5db624cad6386d07d1d7e687c376b4fe", "duration_ms": 15851, "prompt_version": "v1", "asset_version_id": "9facea33-a462-45ca-9a5f-e2fe9eaf7a07"}|2026-06-10 23:11:06.545062
+ASSET_STORED|qwen3:14b|{"stage": "STORY", "branch": "ai-draft", "version": 8, "content_hash": "21dc6323e3fa32de331096f9d5d0784e5db624cad6386d07d1d7e687c376b4fe"}|2026-06-10 23:11:06.559757
+APPROVAL_RECORDED||{"note": null, "stage": "STORY", "decision": "APPROVED", "principal": "api-bearer-token", "approval_id": "9460fc72-254d-4a8c-a80e-5210e465d717"}|2026-06-10 23:11:27.14555
+DONE RUN_ID=980617a8-1f3d-46e9-9165-59ea72af742a
