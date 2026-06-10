@@ -26,4 +26,12 @@ describe("Stepper", () => {
     expect(container.querySelectorAll(".stepper__step--done")).toHaveLength(2);
     expect(container.querySelectorAll(".stepper__step--active")).toHaveLength(1);
   });
+
+  it("marks all stages done when pipeline is completed", () => {
+    const { container } = render(
+      <Stepper stages={STAGES} currentStage="STORYBOARD" status="COMPLETED" />,
+    );
+    expect(container.querySelectorAll(".stepper__step--done")).toHaveLength(4);
+    expect(container.querySelectorAll(".stepper__step--active")).toHaveLength(0);
+  });
 });

@@ -6,6 +6,7 @@ import { AssetsPage } from "./routes/AssetsPage";
 import { AuditPage } from "./routes/AuditPage";
 import { DashboardPage } from "./routes/DashboardPage";
 import { LoginPage } from "./routes/LoginPage";
+import { ReviewPage } from "./routes/ReviewPage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         }
       >
         <Route path="/" element={<DashboardPage />} />
+        <Route path="/review" element={<ReviewPage />} />
         <Route path="/assets" element={<AssetsPage />} />
         <Route path="/audit" element={<AuditPage />} />
       </Route>

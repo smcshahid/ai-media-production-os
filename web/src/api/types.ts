@@ -19,6 +19,24 @@ export interface PipelineStatus {
   updated_at: string | null;
 }
 
+export interface PipelineStartResponse {
+  project_id: string;
+  run_id: string;
+  workflow_id: string;
+  status: string;
+  current_stage: string | null;
+}
+
+export interface PipelineApproveResponse {
+  project_id: string;
+  run_id: string;
+  approval_id: string;
+  decision: string;
+  stage: string;
+  status: string;
+  current_stage: string | null;
+}
+
 export interface AssetVersion {
   id: string;
   project_id: string;
@@ -28,7 +46,15 @@ export interface AssetVersion {
   minio_key: string;
   is_ai_generated: boolean;
   branch: string;
+  metadata_json?: Record<string, string> | null;
   created_at: string;
+}
+
+export interface IdeaCreateBody {
+  project_id: string;
+  title: string;
+  paragraph: string;
+  style_note?: string;
 }
 
 /** Asset stages accepted by `POST /assets` (mirrors `AssetStage` enum). */

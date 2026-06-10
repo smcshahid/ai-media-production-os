@@ -20,6 +20,9 @@ interface StepperProps {
 }
 
 function stepState(index: number, currentIndex: number, status: string): StepState {
+  if (status === "COMPLETED") {
+    return "done";
+  }
   if (status === "IDLE" || currentIndex < 0) {
     return "pending";
   }

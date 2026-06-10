@@ -7,7 +7,14 @@
  * typed endpoint helpers below and never call `fetch()` directly.
  */
 
-import type { AssetVersion, PipelineStatus, Project } from "./types";
+import type {
+  AssetVersion,
+  IdeaCreateBody,
+  PipelineApproveResponse,
+  PipelineStartResponse,
+  PipelineStatus,
+  Project,
+} from "./types";
 
 const TOKEN_KEY = "aimpos.token";
 
@@ -93,6 +100,37 @@ export function listProjects(): Promise<Project[]> {
 
 export function getPipelineStatus(projectId: string): Promise<PipelineStatus> {
   return request<PipelineStatus>(`/pipeline/status?project_id=${encodeURIComponent(projectId)}`);
+}
+
+export function startPipeline(projectId: string): Promise<PipelineStartResponse> {
+  return request<PipelineStartResponse>("/pipeline/start", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ project_id: projectId }),
+  });
+}
+
+export interface PipelineApproveBody {
+  project_id: string;
+  stage: string;
+  decision: "GRANT" | "REJECT" | "APPROVED" | "REJECTED";
+  note?: string;
+}
+
+export function approvePipeline(body: PipelineApproveBody): Promise<PipelineApproveResponse> {
+  return request<PipelineApproveResponse>("/pipeline/approve", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+export function submitIdea(body: IdeaCreateBody): Promise<AssetVersion> {
+  return request<AssetVersion>("/ideas", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 }
 
 export function listAssets(projectId: string): Promise<AssetVersion[]> {
