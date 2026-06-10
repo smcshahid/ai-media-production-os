@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { selectLatestStoryAsset } from "../lib/storyReview";
+import { selectLatestAiDraftStoryAsset, selectLatestStoryAsset } from "../lib/storyReview";
 import type { AssetVersion } from "../api/types";
 
 function asset(partial: Partial<AssetVersion> & Pick<AssetVersion, "id" | "version" | "stage">): AssetVersion {
@@ -29,5 +29,16 @@ describe("storyReview", () => {
 
   it("returns null when no STORY assets exist", () => {
     expect(selectLatestStoryAsset([asset({ id: "i1", stage: "IDEA", version: 1 })])).toBeNull();
+  });
+
+  it("selects latest ai-draft after regenerate (D-38)", () => {
+    const assets: AssetVersion[] = [
+      asset({ id: "s1", stage: "STORY", version: 1, branch: "ai-draft" }),
+      asset({ id: "s2", stage: "STORY", version: 2, branch: "human-edit", is_ai_generated: false }),
+      asset({ id: "s3", stage: "STORY", version: 3, branch: "ai-draft" }),
+    ];
+    const latest = selectLatestAiDraftStoryAsset(assets);
+    expect(latest?.id).toBe("s3");
+    expect(latest?.version).toBe(3);
   });
 });

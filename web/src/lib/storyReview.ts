@@ -8,3 +8,12 @@ export function selectLatestStoryAsset(assets: AssetVersion[]): AssetVersion | n
   }
   return storyAssets.reduce((latest, row) => (row.version > latest.version ? row : latest));
 }
+
+/** Latest ai-draft STORY asset (D-38 — after regenerate, show new model output). */
+export function selectLatestAiDraftStoryAsset(assets: AssetVersion[]): AssetVersion | null {
+  const drafts = assets.filter((a) => a.stage === "STORY" && a.branch === "ai-draft");
+  if (drafts.length === 0) {
+    return null;
+  }
+  return drafts.reduce((latest, row) => (row.version > latest.version ? row : latest));
+}

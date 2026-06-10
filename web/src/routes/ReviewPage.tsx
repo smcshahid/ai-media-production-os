@@ -7,12 +7,13 @@ import {
   getAssetContent,
   listAssets,
   listProjects,
+  regeneratePipeline,
   updateAssetText,
 } from "../api/client";
 import type { AssetVersion, Project } from "../api/types";
 import { usePipelineStatus } from "../hooks/usePipelineStatus";
 import { toDisplayStatus } from "../lib/pipelineDisplay";
-import { selectLatestStoryAsset } from "../lib/storyReview";
+import { selectLatestAiDraftStoryAsset, selectLatestStoryAsset } from "../lib/storyReview";
 
 const STAGE_LABELS: Record<string, string> = {
   STORY: "Story",
@@ -22,7 +23,7 @@ const STAGE_LABELS: Record<string, string> = {
 
 /**
  * Human review gate (US-08 / US-10 / US-13). STORY stage loads editable treatment;
- * approve/reject via pipeline API. Regenerate execution is US-09 (affordance only).
+ * approve/reject/regenerate via pipeline API (US-09 STORY regenerate).
  */
 export function ReviewPage() {
   const [project, setProject] = useState<Project | null>(null);
@@ -59,12 +60,14 @@ export function ReviewPage() {
     project?.id ?? null,
   );
 
-  const loadStory = useCallback(async (projectId: string) => {
+  const loadStory = useCallback(async (projectId: string, opts?: { preferAiDraft?: boolean }) => {
     setStoryLoading(true);
     setActionError(null);
     try {
       const assets = await listAssets(projectId);
-      const latest = selectLatestStoryAsset(assets);
+      const latest = opts?.preferAiDraft
+        ? selectLatestAiDraftStoryAsset(assets)
+        : selectLatestStoryAsset(assets);
       if (!latest) {
         setStoryAsset(null);
         setTreatmentText("");
@@ -191,6 +194,27 @@ export function ReviewPage() {
     }
   }
 
+  async function handleRegenerate() {
+    if (!project || !stage) {
+      return;
+    }
+    setSubmitting(true);
+    setActionError(null);
+    try {
+      await regeneratePipeline({ project_id: project.id, stage });
+      refresh();
+      await loadStory(project.id, { preferAiDraft: true });
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 429) {
+        setActionError(err.message);
+      } else {
+        setActionError(err instanceof ApiError ? err.message : "Regeneration failed.");
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <section className="page">
       <header className="page__header">
@@ -249,8 +273,8 @@ export function ReviewPage() {
 
         {rejectedHint && isStoryReview && (
           <p className="review__regenerate-hint" role="status">
-            Story rejected. Regeneration will be available in a future update (US-09). You can
-            edit the treatment and approve, or reject again with a new note.
+            Story rejected. Regenerate to request a new AI draft using your note, edit and save,
+            or approve when ready. Up to 3 regenerations per run.
           </p>
         )}
 
@@ -300,14 +324,17 @@ export function ReviewPage() {
           >
             Reject
           </button>
-          <button
-            type="button"
-            className="button"
-            disabled
-            title="Regeneration is planned for US-09"
-          >
-            Regenerate (US-09)
-          </button>
+          {isStoryReview && (
+            <button
+              type="button"
+              className="button"
+              disabled={submitting || !rejectedHint || apiStatus === "RUNNING"}
+              title={!rejectedHint ? "Reject with a note first" : undefined}
+              onClick={() => void handleRegenerate()}
+            >
+              Regenerate
+            </button>
+          )}
           <Link className="button" to="/">
             Back to dashboard
           </Link>

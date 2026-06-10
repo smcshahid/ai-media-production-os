@@ -32,6 +32,7 @@ def run_story_architect_graph(
     *,
     idea_text: str,
     style_note: str | None,
+    rejection_note: str | None = None,
 ) -> StoryArchitectState:
     """Execute the Story Architect graph and return terminal state."""
     compiled = build_story_architect_graph(settings)
@@ -39,6 +40,7 @@ def run_story_architect_graph(
         {
             "idea_text": idea_text,
             "style_note": style_note,
+            "rejection_note": rejection_note,
         }
     )
     if result.get("error"):

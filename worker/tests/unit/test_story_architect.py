@@ -51,3 +51,33 @@ def test_draft_story_node_success(
     assert result["model_id"] == "qwen3:14b"
     assert "Title" in result["story_md"]
     assert result.get("error") is None
+
+
+@patch("app.agents.story_architect.nodes.generate_text")
+@patch("app.agents.story_architect.nodes.load_story_prompt")
+@patch("app.agents.story_architect.nodes.load_story_model")
+def test_draft_story_node_includes_rejection_note(
+    mock_model: object,
+    mock_prompt: object,
+    mock_generate: object,
+) -> None:
+    mock_model.return_value = "qwen3:14b"
+    mock_prompt.return_value = {
+        "system": "system",
+        "user_template": "idea={idea_text}{style_note_block}",
+        "temperature": 0.5,
+        "num_predict": 512,
+    }
+    mock_generate.return_value = ("# Title\n\n" + "x" * 100, 1.0)
+
+    settings = Settings(ollama_host="http://127.0.0.1:11434", config_root="configs")
+    draft_story_node(
+        {
+            "idea_text": "A heist on Mars.",
+            "rejection_note": "Strengthen the third act climax.",
+        },
+        settings,
+    )
+
+    prompt = mock_generate.call_args.kwargs["prompt"]
+    assert "Strengthen the third act climax." in prompt

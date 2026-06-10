@@ -28,11 +28,19 @@ def draft_story_node(state: StoryArchitectState, settings: Settings) -> StoryArc
     if style_note:
         style_block = f"\nStyle note: {style_note}\n"
 
+    rejection_note = (state.get("rejection_note") or "").strip()
+    revision_block = ""
+    if rejection_note:
+        revision_block = (
+            "\nRevision notes from reviewer (address these in the new draft):\n"
+            f"{rejection_note}\n"
+        )
+
     user_prompt = prompt_cfg["user_template"].format(
         idea_text=state["idea_text"].strip(),
         style_note_block=style_block,
     )
-    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}"
+    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}{revision_block}"
 
     model_id = load_story_model(settings)
     try:

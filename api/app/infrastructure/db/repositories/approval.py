@@ -5,6 +5,7 @@ from __future__ import annotations
 import uuid
 from collections.abc import Sequence
 
+from aimpos_core.enums import ApprovalDecision, PipelineStage
 from sqlalchemy import select
 
 from app.infrastructure.db.models.approval import Approval
@@ -21,3 +22,32 @@ class ApprovalRepository(SQLAlchemyRepository[Approval]):
             .order_by(Approval.created_at.asc())
         )
         return result.scalars().all()
+
+    async def latest_for_stage(
+        self, pipeline_run_id: uuid.UUID, stage: PipelineStage
+    ) -> Approval | None:
+        result = await self.session.execute(
+            select(Approval)
+            .where(
+                Approval.pipeline_run_id == pipeline_run_id,
+                Approval.stage == stage,
+            )
+            .order_by(Approval.created_at.desc())
+            .limit(1)
+        )
+        return result.scalar_one_or_none()
+
+    async def latest_rejected_for_stage(
+        self, pipeline_run_id: uuid.UUID, stage: PipelineStage
+    ) -> Approval | None:
+        result = await self.session.execute(
+            select(Approval)
+            .where(
+                Approval.pipeline_run_id == pipeline_run_id,
+                Approval.stage == stage,
+                Approval.decision == ApprovalDecision.REJECTED,
+            )
+            .order_by(Approval.created_at.desc())
+            .limit(1)
+        )
+        return result.scalar_one_or_none()

@@ -39,6 +39,10 @@ class TemporalService:
         handle = self._client.get_workflow_handle(workflow_id)
         await handle.signal("reject", args=[stage, note])
 
+    async def signal_regenerate(self, workflow_id: str, stage: str) -> None:
+        handle = self._client.get_workflow_handle(workflow_id)
+        await handle.signal("regenerate", stage)
+
 
 async def connect_temporal(settings: Settings) -> TemporalService:
     client = await Client.connect(

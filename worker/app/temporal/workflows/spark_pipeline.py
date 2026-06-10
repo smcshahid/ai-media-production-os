@@ -43,6 +43,7 @@ class SparkPipelineWorkflow:
         self._state = SparkPipelineWorkflowState()
         self._approval_granted = False
         self._approval_rejected = False
+        self._regenerate_requested = False
 
     @workflow.query
     def get_state(self) -> SparkPipelineWorkflowState:
@@ -55,6 +56,7 @@ class SparkPipelineWorkflow:
         ):
             self._approval_granted = True
             self._approval_rejected = False
+            self._regenerate_requested = False
 
     @workflow.signal
     def reject(self, stage: str, note: str = "") -> None:
@@ -63,7 +65,36 @@ class SparkPipelineWorkflow:
         ):
             self._approval_rejected = True
             self._approval_granted = False
+            self._regenerate_requested = False
             self._state.last_rejection_note = note or None
+
+    @workflow.signal
+    def regenerate(self, stage: str) -> None:
+        if self._state.awaiting_approval and (
+            self._state.current_stage is None or self._state.current_stage == stage
+        ):
+            self._regenerate_requested = True
+            self._approval_granted = False
+            self._approval_rejected = False
+
+    async def _run_stage_generation(
+        self, pipeline_input: SparkPipelineInput, stage: PipelineStage
+    ) -> None:
+        if stage == PipelineStage.STORY:
+            rejection_note = self._state.last_rejection_note or ""
+            await workflow.execute_activity(
+                run_story_agent,
+                args=[pipeline_input.project_id, pipeline_input.run_id, rejection_note],
+                start_to_close_timeout=timedelta(minutes=5),
+                retry_policy=RetryPolicy(maximum_attempts=3),
+            )
+        else:
+            await workflow.execute_activity(
+                run_stub_stage,
+                args=[stage.value, pipeline_input.run_id],
+                start_to_close_timeout=timedelta(seconds=30),
+                retry_policy=RetryPolicy(maximum_attempts=3),
+            )
 
     @workflow.run
     async def run(self, pipeline_input: SparkPipelineInput | dict[str, str]) -> str:
@@ -82,20 +113,7 @@ class SparkPipelineWorkflow:
                 retry_policy=RetryPolicy(maximum_attempts=3),
             )
 
-            if stage == PipelineStage.STORY:
-                await workflow.execute_activity(
-                    run_story_agent,
-                    args=[pipeline_input.project_id, pipeline_input.run_id],
-                    start_to_close_timeout=timedelta(minutes=5),
-                    retry_policy=RetryPolicy(maximum_attempts=3),
-                )
-            else:
-                await workflow.execute_activity(
-                    run_stub_stage,
-                    args=[stage.value, pipeline_input.run_id],
-                    start_to_close_timeout=timedelta(seconds=30),
-                    retry_policy=RetryPolicy(maximum_attempts=3),
-                )
+            await self._run_stage_generation(pipeline_input, stage)
 
             await workflow.execute_activity(
                 sync_pipeline_status,
@@ -111,9 +129,38 @@ class SparkPipelineWorkflow:
             )
 
             if self._approval_rejected:
-                # Stay at this stage until a later approve signal (US-08).
-                await workflow.wait_condition(lambda: self._approval_granted, timeout=timedelta(days=30))
                 self._approval_rejected = False
+                while not self._approval_granted:
+                    await workflow.wait_condition(
+                        lambda: self._approval_granted or self._regenerate_requested,
+                        timeout=timedelta(days=30),
+                    )
+                    if self._approval_granted:
+                        break
+
+                    self._regenerate_requested = False
+                    await workflow.execute_activity(
+                        sync_pipeline_status,
+                        args=[pipeline_input.run_id, "RUNNING", stage.value],
+                        start_to_close_timeout=timedelta(seconds=15),
+                        retry_policy=RetryPolicy(maximum_attempts=3),
+                    )
+                    await self._run_stage_generation(pipeline_input, stage)
+                    await workflow.execute_activity(
+                        sync_pipeline_status,
+                        args=[pipeline_input.run_id, "AWAITING_APPROVAL", stage.value],
+                        start_to_close_timeout=timedelta(seconds=15),
+                        retry_policy=RetryPolicy(maximum_attempts=3),
+                    )
+
+                    await workflow.wait_condition(
+                        lambda: self._approval_granted
+                        or self._approval_rejected
+                        or self._regenerate_requested,
+                        timeout=timedelta(days=30),
+                    )
+                    if self._approval_rejected:
+                        self._approval_rejected = False
 
             self._state.completed_stages.append(stage.value)
             self._state.awaiting_approval = False
@@ -130,3 +177,4 @@ class SparkPipelineWorkflow:
     def _reset_approval_flags(self) -> None:
         self._approval_granted = False
         self._approval_rejected = False
+        self._regenerate_requested = False

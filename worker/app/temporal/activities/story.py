@@ -16,7 +16,7 @@ from app.tools.audit import append_audit_event
 
 
 @activity.defn(name="run_story_agent")
-async def run_story_agent(project_id: str, run_id: str) -> str:
+async def run_story_agent(project_id: str, run_id: str, rejection_note: str = "") -> str:
     """Generate ``story.md`` from the latest IDEA asset and store on ``ai-draft`` branch."""
     settings = get_settings()
     project_uuid = uuid.UUID(project_id)
@@ -36,6 +36,7 @@ async def run_story_agent(project_id: str, run_id: str) -> str:
             settings,
             idea_text=idea.idea_text,
             style_note=idea.style_note,
+            rejection_note=rejection_note or None,
         )
         stored = store_story_markdown(
             settings,

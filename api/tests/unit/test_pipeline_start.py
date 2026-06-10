@@ -28,6 +28,7 @@ class FakeTemporal:
         self.calls: list[tuple[uuid.UUID, uuid.UUID]] = []
         self.approvals: list[tuple[str, str]] = []
         self.rejects: list[tuple[str, str, str]] = []
+        self.regenerates: list[tuple[str, str]] = []
 
     async def start_spark_pipeline(self, project_id: uuid.UUID, run_id: uuid.UUID) -> str:
         self.calls.append((project_id, run_id))
@@ -38,6 +39,9 @@ class FakeTemporal:
 
     async def signal_reject(self, workflow_id: str, stage: str, note: str = "") -> None:
         self.rejects.append((workflow_id, stage, note))
+
+    async def signal_regenerate(self, workflow_id: str, stage: str) -> None:
+        self.regenerates.append((workflow_id, stage))
 
     @property
     def task_queue(self) -> str:

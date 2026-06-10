@@ -304,3 +304,123 @@ async def pipeline_approve(
         status=run.status.value,
         current_stage=run.current_stage.value if run.current_stage else None,
     )
+
+
+_SUPPORTED_REGENERATE_STAGES = frozenset({PipelineStage.STORY})
+_MAX_REGENERATIONS_PER_STAGE = 3
+
+
+class PipelineRegenerateRequest(BaseModel):
+    project_id: uuid.UUID
+    stage: PipelineStage
+
+
+class PipelineRegenerateResponse(BaseModel):
+    project_id: uuid.UUID
+    run_id: uuid.UUID
+    stage: str
+    status: str
+    current_stage: str | None
+    regenerations_used: int
+
+
+@router.post(
+    "/pipeline/regenerate",
+    response_model=PipelineRegenerateResponse,
+    summary="Regenerate AI output for the current stage after rejection (US-09)",
+)
+async def pipeline_regenerate(
+    body: PipelineRegenerateRequest,
+    session: AsyncSession = Depends(get_session),
+    temporal: TemporalService = Depends(get_temporal),
+) -> PipelineRegenerateResponse:
+    project_id = body.project_id
+    if await ProjectRepository(session).get(project_id) is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"project {project_id} not found"
+        )
+
+    run = _require_active_run(await PipelineRunRepository(session).active_for_project(project_id))
+
+    if run.status != PipelineRunStatus.AWAITING_APPROVAL:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"pipeline is not awaiting approval (status={run.status.value})",
+        )
+
+    if run.current_stage != body.stage:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                f"stage mismatch: requested {body.stage.value}, "
+                f"current {run.current_stage.value if run.current_stage else None}"
+            ),
+        )
+
+    if body.stage not in _SUPPORTED_REGENERATE_STAGES:
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail=f"regenerate execution not available for stage {body.stage.value}",
+        )
+
+    if not run.temporal_workflow_id:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="pipeline run has no bound temporal workflow",
+        )
+
+    approvals = ApprovalRepository(session)
+    latest_stage_approval = await approvals.latest_for_stage(run.id, body.stage)
+    if latest_stage_approval is None or latest_stage_approval.decision != ApprovalDecision.REJECTED:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"stage {body.stage.value} is not in a post-reject state",
+        )
+
+    regen_count = await AuditEventRepository(session).count_regenerations(
+        run.id, body.stage.value
+    )
+    if regen_count >= _MAX_REGENERATIONS_PER_STAGE:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"regeneration limit reached for stage {body.stage.value} (max {_MAX_REGENERATIONS_PER_STAGE} per run)",
+        )
+
+    workflow_id = run.temporal_workflow_id
+    try:
+        await temporal.signal_regenerate(workflow_id, body.stage.value)
+    except RPCError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="temporal signal failed",
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="temporal signal failed",
+        ) from exc
+
+    await AuditEventRepository(session).append(
+        AuditEvent(
+            project_id=project_id,
+            pipeline_run_id=run.id,
+            event_type=AuditEventType.REGENERATION_REQUESTED,
+            payload={
+                "stage": body.stage.value,
+                "principal": _DECIDED_BY,
+                "rejection_approval_id": str(latest_stage_approval.id),
+            },
+        )
+    )
+
+    await session.commit()
+    await session.refresh(run)
+
+    return PipelineRegenerateResponse(
+        project_id=project_id,
+        run_id=run.id,
+        stage=body.stage.value,
+        status=run.status.value,
+        current_stage=run.current_stage.value if run.current_stage else None,
+        regenerations_used=regen_count + 1,
+    )

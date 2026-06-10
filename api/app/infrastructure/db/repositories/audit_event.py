@@ -5,6 +5,7 @@ from __future__ import annotations
 import uuid
 from collections.abc import Sequence
 
+from aimpos_core.events import AuditEventType
 from sqlalchemy import select
 
 from app.infrastructure.db.models.audit_event import AuditEvent
@@ -26,3 +27,12 @@ class AuditEventRepository(SQLAlchemyRepository[AuditEvent]):
             .order_by(AuditEvent.created_at.asc())
         )
         return result.scalars().all()
+
+    async def count_regenerations(self, pipeline_run_id: uuid.UUID, stage: str) -> int:
+        events = await self.list_for_run(pipeline_run_id)
+        return sum(
+            1
+            for event in events
+            if event.event_type == AuditEventType.REGENERATION_REQUESTED
+            and (event.payload or {}).get("stage") == stage
+        )

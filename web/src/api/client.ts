@@ -11,6 +11,7 @@ import type {
   AssetVersion,
   IdeaCreateBody,
   PipelineApproveResponse,
+  PipelineRegenerateResponse,
   PipelineStartResponse,
   PipelineStatus,
   Project,
@@ -128,6 +129,17 @@ export interface PipelineApproveBody {
 
 export function approvePipeline(body: PipelineApproveBody): Promise<PipelineApproveResponse> {
   return request<PipelineApproveResponse>("/pipeline/approve", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+export function regeneratePipeline(body: {
+  project_id: string;
+  stage: string;
+}): Promise<PipelineRegenerateResponse> {
+  return request<PipelineRegenerateResponse>("/pipeline/regenerate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

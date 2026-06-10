@@ -1,6 +1,6 @@
 # Sprint 3D — US-09 Regenerate After Rejection (governance brief)
 
-**Status:** RATIFIED for planning — **not authorized for implementation** until this brief is accepted.  
+**Status:** **CLOSED** — formally accepted 2026-06-10 (`v0.3.2-us09`).  
 **Story:** US-09 "Regenerate after rejection" · FEAT-03 Pipeline Orchestration · EPIC-02 · P0 · 3 SP · Sprint S2 (deferred to post-US-13).  
 **Prerequisites (closed):** US-07 ✅ · US-08 ✅ · US-12 ✅ (`run_story_agent`) · US-13 ✅ (reject affordance + human-edit path).  
 **Unblocks:** Full reject→regenerate→approve loop at STORY gate; later stages inherit the same contract when real agents land (US-14, US-16).

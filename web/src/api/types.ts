@@ -37,6 +37,15 @@ export interface PipelineApproveResponse {
   current_stage: string | null;
 }
 
+export interface PipelineRegenerateResponse {
+  project_id: string;
+  run_id: string;
+  stage: string;
+  status: string;
+  current_stage: string | null;
+  regenerations_used: number;
+}
+
 export interface AssetVersion {
   id: string;
   project_id: string;
