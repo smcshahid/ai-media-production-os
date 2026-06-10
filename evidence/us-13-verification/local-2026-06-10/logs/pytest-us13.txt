@@ -1,0 +1,16 @@
+US-13 API unit tests — local run 2026-06-10
+Command: python -m pytest tests/unit/test_assets_us13.py -v
+Result: 8 passed
+
+test_get_asset_content_returns_story_bytes PASSED
+test_get_asset_content_rejects_non_story_stage PASSED
+test_get_asset_content_unknown_id_returns_404 PASSED
+test_get_asset_content_requires_auth PASSED
+test_put_asset_creates_human_edit_version PASSED
+  - asserts version==2, branch=human-edit, is_ai_generated=false
+test_put_asset_does_not_change_pipeline_status PASSED
+  - asserts status=AWAITING_APPROVAL, current_stage=STORY unchanged
+test_put_asset_emits_asset_stored_audit PASSED
+test_put_asset_empty_text_returns_422 PASSED
+
+Full API unit suite: 72 passed

@@ -1,0 +1,70 @@
+API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+========== SETUP: ensure STORY review gate ==========
+CURRENT_STATUS={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"7e8699d1-35c6-4135-9a2b-404a737ad622","status":"AWAITING_APPROVAL","current_stage":"STORY","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-10T18:14:09.252741"}
+RUN_ID=7e8699d1-35c6-4135-9a2b-404a737ad622
+
+========== V1: Load STORY asset into editor (API) ==========
+ASSET_ID=b87c4c5b-1f66-4699-b07c-f6c43d408723
+--- GET /assets (metadata) ---
+[{"id":"b87c4c5b-1f66-4699-b07c-f6c43d408723","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"STORY","version":1,"content_hash":"52f69b19da0449b4af5ea72d96e11916b72f741c18c88e6369b9ae7c395d6e58","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/STORY/52f69b19da0449b4af5ea72d96e11916b72f741c18c88e6369b9ae7c395d6e58","is_ai_generated":true,"branch":"ai-draft","metadata_json":null,"created_at":"2026-06-10T18:14:09.206561"},{"id":"d585b232-ad5f-4d82-b822-c3ff1336d12d","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":1,"content_hash":"bd1c1b241b3205218f873817ad4104c5324f4552ecdd574fbf91353d848212aa","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/bd1c1b241b3205218f873817ad4104c5324f4552ecdd574fbf91353d848212aa","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic sci-fi"},"created_at":"2026-06-10T17:57:47.961173"}]
+--- GET /assets/b87c4c5b-1f66-4699-b07c-f6c43d408723/content ---
+# Mars Garden US-12  
+
+**Logline:** A lone astronaut discovers a hidden garden on Mars and must decide whether to share its miraculous secrets with Earth before the colony council arrives to claim the discovery.  
+
+---
+
+### **Act I: The Discovery**  
+Commander Elara Voss, a seasoned but disillusioned astronaut, is tasked with a solo survey mission near the Valles Marineris. After her rover malfunctions, she treks on foot and stumbles upon an impossible sight: a lush, bioluminescent garden thriving in a geothermal crevice, untouched by human hands. The garden’s flora reacts to her presence, emitting soothing light and an aroma reminiscent of Earth’s forgotten ecosystems. Elara documents the find, torn between scientific awe and the instinct to protect it from exploitation. Her comms crackle with a warning—colony council members are en route to assess her mission, unaware of the garden’s existence.  
+
+---
+
+### **Act II: The Dilemma**  
+Elara secretly returns to the garden daily, studying its symbiotic ecosystem and discovering evidence of ancient microbial life. She records her findings, but the garden’s strange sentience—its plants seemingly responding to her emotions—deepens her moral conflict. When the colony council arrives, their leader, the pragmatic Dr. Kael, demands full transparency, hinting that the garden could be weaponized or monetized. Elara’s superiors pressure her to report the discovery, but her growing bond with the garden convinces her to hide it. Tension escalates as Kael’s team begins drilling nearby, risking the garden’s destruction. Elara must choose: reveal the garden and risk its exploitation, or lie to protect it—potentially sacrificing her career and credibility.  
+
+---
+
+### **Act III: The Choice**  
+In a final confrontation, Elara confronts Kael with evidence of the garden’s irreplaceable value, arguing that its preservation could redefine humanity’s relationship with Mars. Kael dismisses her, prioritizing Earth’
+... (truncated preview above)
+HTTP_CODE:200
+
+========== V2: Save edited story (before rows) ==========
+STORY_ROWS_BEFORE
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4
+RUN_BEFORE
+7e8699d1-35c6-4135-9a2b-404a737ad622|AWAITING_APPROVAL|STORY
+--- PUT /assets/b87c4c5b-1f66-4699-b07c-f6c43d408723 ---
+{"id":"d02b1e64-4d71-44dd-b0a1-8fddd078310a","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"STORY","version":2,"content_hash":"a469cbdb2b9b31901ec56fd7d1cc673f8aa2f7bb13fba30a2ece2e6204e0fd35","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/STORY/a469cbdb2b9b31901ec56fd7d1cc673f8aa2f7bb13fba30a2ece2e6204e0fd35","is_ai_generated":false,"branch":"human-edit","metadata_json":null,"created_at":"2026-06-10T20:14:23.795776"}
+NEW_ASSET_ID=d02b1e64-4d71-44dd-b0a1-8fddd078310a
+STORY_ROWS_AFTER
+b87c4c5b-1f66-4699-b07c-f6c43d408723|1|ai-draft|true|52f69b19da0449b4
+d02b1e64-4d71-44dd-b0a1-8fddd078310a|2|human-edit|false|a469cbdb2b9b3190
+RUN_AFTER_SAVE
+7e8699d1-35c6-4135-9a2b-404a737ad622|AWAITING_APPROVAL|STORY
+
+========== V4: Reject story ==========
+--- POST /pipeline/approve REJECT ---
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"7e8699d1-35c6-4135-9a2b-404a737ad622","approval_id":"62e1bc50-9120-4f7f-b716-cef32144767e","decision":"REJECTED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+RUN_AFTER_REJECT
+7e8699d1-35c6-4135-9a2b-404a737ad622|AWAITING_APPROVAL|STORY
+APPROVALS_REJECT
+STORY|REJECTED|US-13 Olares verify: treatment needs stronger third act.
+AUDIT_REJECT
+APPROVAL_RECORDED|{"note": "US-13 Olares verify: treatment needs stronger third act.", "stage": "STORY", "decision": "REJECTED", "principa
+STATUS_AFTER_REJECT
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"7e8699d1-35c6-4135-9a2b-404a737ad622","status":"AWAITING_APPROVAL","current_stage":"STORY","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-10T18:14:09.252741"}
+
+========== V3: Approve story (after reject, same run) ==========
+--- POST /pipeline/approve GRANT ---
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"7e8699d1-35c6-4135-9a2b-404a737ad622","approval_id":"2a6dcf29-94f9-424d-98e2-b6ea9b2e79e3","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+RUN_AFTER_APPROVE
+7e8699d1-35c6-4135-9a2b-404a737ad622|AWAITING_APPROVAL|SCRIPT
+APPROVALS_GRANT
+STORY|APPROVED
+AUDIT_APPROVE
+APPROVAL_RECORDED|{"note": null, "stage": "STORY", "decision": "APPROVED", "principal": "api-bearer-token", "approval_id": "2a6dcf29-94f9-
+APPROVAL_RECORDED|{"note": "US-13 Olares verify: treatment needs stronger third act.", "stage": "STORY", "decision": "REJECTED", "principa
+STATUS_AFTER_APPROVE
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"7e8699d1-35c6-4135-9a2b-404a737ad622","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-10T20:14:24.626114"}
+DONE RUN_ID=7e8699d1-35c6-4135-9a2b-404a737ad622 ASSET_ID=b87c4c5b-1f66-4699-b07c-f6c43d408723 NEW_ASSET_ID=d02b1e64-4d71-44dd-b0a1-8fddd078310a
