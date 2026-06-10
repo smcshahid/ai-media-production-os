@@ -1,0 +1,26 @@
+minio pod=aimpos-minio-5fddf9db6b-r6c2v key=ba0c4636-817c-423b-9771-20100e080b76/STORY/52f69b19da0449b4af5ea72d96e11916b72f741c18c88e6369b9ae7c395d6e58
+--- mc stat ---
+Name      : 52f69b19da0449b4af5ea72d96e11916b72f741c18c88e6369b9ae7c395d6e58
+Date      : 2026-06-10 18:14:09 UTC 
+Size      : 2.8 KiB 
+ETag      : 09a45950391a443388c8698f14bd5a5a 
+Type      : file 
+Metadata  :
+  Content-Type: text/markdown 
+
+--- head of object ---
+# Mars Garden US-12  
+
+**Logline:** A lone astronaut discovers a hidden garden on Mars and must decide whether to share its miraculous secrets with Earth before the colony council arrives to claim the discovery.  
+
+---
+
+### **Act I: The Discovery**  
+Commander Elara Voss, a seasoned but disillusioned astronaut, is tasked with a solo survey mission near the Valles Marineris. After her rover malfunctions, she treks on foot and stumbles upon an impossible sight: a lush, bioluminescent garden thriving in a geothermal crevice, untouched by human hands. The garden’s flora reacts to her presence, emitting soothing light and an aroma reminiscent of Earth’s forgotten ecosystems. Elara documents the find, torn between scientific awe and the instinct to protect it from exploitation. Her comms crackle with a warning—colony council members are en route to assess her mission, unaware of the garden’s existence.  
+
+---
+
+### **Act II: The Dilemma**  
+Elara secretly returns to the garden daily, studying its symbiotic ecosystem and discovering evidence of ancient microbial life. She records her findings, but the garden’s strange sentience—its plants seemingly responding to her emotions—deepens her moral conflict. When the colony council arrives, their leader, the pragmatic Dr. Kael, demands full transparency, hinting that the garden could be weaponized or monetized. Elara’s superiors pressure her to report the discovery, but her growing bond with the garden convinces her to hide it. Tension escalates as Kael’s team begins drilling nearby, risking the garden’s destruction. Elara must choose: reveal the garden and risk its exploitation, or lie to protect it—potentially sacrificing her career and credibility.  
+
+---

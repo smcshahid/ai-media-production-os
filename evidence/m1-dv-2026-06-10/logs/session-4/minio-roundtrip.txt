@@ -1,0 +1,7 @@
+[evidence] MinIO round-trip (put + stat via mc pod)
+Added `local` successfully.
+ 16 bytes -> `local/aimpos-hot-assets/smoke/m1-dv-roundtrip.txt`
+Name      : m1-dv-roundtrip.txt
+ETag      : e5fd4d5836a8b38fc485eea6555531f6-1
+m1-dv-roundtrip
+PASS

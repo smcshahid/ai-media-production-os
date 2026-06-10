@@ -1,0 +1,5 @@
+﻿NAME                            READY   STATUS    RESTARTS   AGE
+aimpos-api-7645f4cdcc-2wqzz     1/1     Running   0          33m
+aimpos-minio-5fddf9db6b-r6c2v   1/1     Running   0          50m
+aimpos-postgres-0               1/1     Running   0          51m
+aimpos-redis-master-0           1/1     Running   0          34m

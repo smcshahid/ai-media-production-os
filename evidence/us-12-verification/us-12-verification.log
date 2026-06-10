@@ -1,0 +1,43 @@
+US-12 verification session — 2026-06-10 (local compose: aimpos-spark)
+
+project_id: "aa40cf32-f806-4f76-9ba0-4942d19e72e4"
+environment: Windows + Docker Compose (NVIDIA T500 4GB)
+ollama_image: 0.30.6 (upgraded during session from 0.5.7)
+model: qwen3:14b
+
+=== AC results (summary) ===
+POST /ideas creates IDEA asset: PASS
+POST /pipeline/start triggers run_story_agent: PASS (STAGE_STARTED audit)
+qwen3:14b generates story output: FAIL (local full treatment >600s; short prompt PASS 293s warm)
+story.md stored stage=STORY branch=ai-draft: FAIL (no STORY asset_versions row)
+asset_versions row exists: FAIL (STORY)
+AGENT_TASK_COMPLETED audit exists: FAIL
+Pipeline reaches AWAITING_APPROVAL: FAIL
+current_stage remains STORY on failure: PASS (FAILED/STORY)
+Dashboard status resolves to REVIEW: NOT REACHED (mapping verified in code only)
+
+=== Run 5ba1a907-2912-4beb-bdde-b9813c73e44a (FAILED) ===
+pipeline_status: {"status":"FAILED","current_stage":"STORY"}
+audit: PIPELINE_STARTED, STAGE_STARTED (agent.story_architect), PIPELINE_FAILED x3
+error: "ollama unreachable at http://ollama:11434: timed out"
+
+=== Run 4101de51-5dfa-4a7a-bdd2-b3841bf847f2 (FAILED) ===
+pipeline_status: {"status":"FAILED","current_stage":"STORY","updated_at":"2026-06-10T16:47:42.869090"}
+audit: PIPELINE_STARTED, STAGE_STARTED, PIPELINE_FAILED, STAGE_STARTED (retry)
+ollama_log: POST /api/generate 500 after 3m0s (cold load)
+
+=== IDEA assets (PASS) ===
+asset_versions: 3 IDEA rows on branch=main for project_id
+
+=== Direct probes ===
+worker ollama short generate (80 tokens): OK 356 chars in 293.2s (warm)
+worker full story graph (num_predict=2048): FAIL timeout at 600s
+unit tests test_story_architect.py: 4 passed
+
+=== M1-DV supplementary (Olares RTX 5090) ===
+evidence/m1-dv-2026-06-10/logs/session-4/test_ollama.txt: qwen3:14b OK in 1.6s (num_predict=128)
+
+=== Worker registration ===
+activities: run_stub_stage, run_story_agent, sync_pipeline_status
+
+VERDICT: US-12 E2E NOT PASS — do not close formally until green run on GPU-capable host.

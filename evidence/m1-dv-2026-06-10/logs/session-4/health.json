@@ -1,0 +1,2 @@
+{"status":"healthy","dependencies":{"postgresql":{"status":"ok","detail":null},"redis":{"status":"ok","detail":null},"minio":{"status":"ok","detail":null}}}
+http_code:200

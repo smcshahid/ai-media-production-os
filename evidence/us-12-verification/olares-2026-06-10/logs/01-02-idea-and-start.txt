@@ -1,0 +1,28 @@
+US-12 AC-1 / AC-2 evidence — Olares (aimpos-mwayolares), 2026-06-10
+
+Worker registration (deploy/aimpos-worker):
+{"level": "INFO", "logger": "aimpos.worker", "message": "worker.registered",
+ "temporal_address": "temporal:7233", "namespace": "default",
+ "task_queue": "aimpos-spark-pipeline", "workflows": ["SparkPipelineWorkflow"],
+ "activities": ["run_stub_stage", "run_story_agent", "sync_pipeline_status"]}
+Worker OLLAMA_HOST (aimpos-worker-env secret) = http://ollama.ollamaserver-shared:11434
+
+AC-1  POST /ideas  -> HTTP 201
+{"id":"d585b232-ad5f-4d82-b822-c3ff1336d12d",
+ "project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":1,
+ "content_hash":"bd1c1b241b3205218f873817ad4104c5324f4552ecdd574fbf91353d848212aa",
+ "minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/bd1c1b...",
+ "is_ai_generated":false,"branch":"main",
+ "metadata_json":{"style_note":"cinematic sci-fi"},
+ "created_at":"2026-06-10T17:57:47.961173"}
+
+AC-2  POST /pipeline/start  -> HTTP 201  (after API restart to bind Temporal)
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76",
+ "run_id":"7e8699d1-35c6-4135-9a2b-404a737ad622",
+ "workflow_id":"spark-pipeline-7e8699d1-35c6-4135-9a2b-404a737ad622",
+ "status":"RUNNING","current_stage":"STORY"}
+
+Note: the first start attempt returned {"detail":"temporal client unavailable"}
+because the API pod (8h old) was started before Temporal existed and binds
+app.state.temporal once at lifespan startup. `kubectl rollout restart deploy/aimpos-api`
+re-bound the Temporal client; start then succeeded. Pure runtime/ordering, no code change.

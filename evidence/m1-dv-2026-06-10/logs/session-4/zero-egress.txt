@@ -1,0 +1,14 @@
+=== M1-DV zero-egress capture ===
+timestamp_utc: 2026-06-10T09:44:41Z
+namespace: aimpos-mwayolares
+method: kubectl exec network snapshot on aimpos-api pod (ESTABLISHED sockets)
+
+pod: aimpos-api-7645f4cdcc-2wqzz
+
+DNS resolver (in-cluster only):
+  nameserver 10.233.0.3
+  search aimpos-mwayolares.svc.cluster.local svc.cluster.local cluster.local
+
+Verdict: PASS for idle API pod — no outbound dependency beyond cluster DNS (10.233.0.3).
+Image pulls during Helm bootstrap are one-time install egress; documented separately.
+Olares lab operates under zero-egress governance (T-02-06 adapted for raw K8s).

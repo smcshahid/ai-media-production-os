@@ -1,0 +1,7 @@
+Command: docker compose up -d ollama ollama-init comfyui
+Result: FAILED
+
+Image yanwk/comfyui-boot:cu124-sdxl-20240919 Error: not found
+Image ollama/ollama:0.5.7 Pulling — Interrupted
+
+Error response from daemon: failed to resolve reference "docker.io/yanwk/comfyui-boot:cu124-sdxl-20240919": not found

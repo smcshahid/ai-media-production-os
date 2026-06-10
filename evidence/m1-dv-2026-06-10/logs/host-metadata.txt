@@ -1,0 +1,16 @@
+M1-DV Session — 2026-06-10
+Host: Windows 10 (Docker Desktop) — NOT Olares
+Commit: 207f80ac116d7f7551a2dbc7670550d5a30d661e (207f80a)
+Model (configured): llama3.1:13b (configs/ollama/models.json)
+
+PRE-FLIGHT RESULTS:
+- Olares access: NO — Windows dev workstation session
+- nvidia-smi: not available (no GPU CLI output on host)
+- Disk: not formally measured; compose volumes present
+- Model selection: llama3.1:13b (default, not changed)
+- GPU services at start: ollama, comfyui NOT running
+
+DEPLOYMENT OBSERVATIONS:
+- API container DATABASE_URL empty inside container (compose env interpolation)
+- API status: Restarting — SQLAlchemy URL parse error
+- Attempt to start ollama/comfyui: ComfyUI image pull failed (yanwk/comfyui-boot:cu124-sdxl-20240919 not found)

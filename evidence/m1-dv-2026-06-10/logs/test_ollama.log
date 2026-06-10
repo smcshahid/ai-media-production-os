@@ -1,0 +1,6 @@
+Target: http://127.0.0.1:11434  model=llama3.1:13b  require_live=True
+
+[check] Ollama API reachable...
+FAIL: --require-live set; cannot reach Ollama at http://127.0.0.1:11434 ([WinError 10061] No connection could be made because the target machine actively refused it). Start the dev stack with GPU services or use a GPU/Olares host.
+
+Exit code: 1
