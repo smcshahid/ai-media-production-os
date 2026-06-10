@@ -22,7 +22,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `f1e3138` (latest; includes closure report + US-09 brief) |
+| **HEAD** | `eb5e0ed` (latest; includes closure report + US-09 brief) |
 | **US-13 release tag** | `v0.3.1-us13` → `4c01ebaac43ff7b3fa846db3bdbcc992f7eed281` |
 | **Remote** | `origin/main` — up to date |
 | **Tag remote** | `origin/v0.3.1-us13` — pushed |
