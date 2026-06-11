@@ -20,6 +20,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dependencies import get_minio, get_session
+from app.domain.asset_history.service import ProjectNotFoundError, get_asset_history
+from app.domain.asset_history.types import AssetHistoryResponse
 from app.domain.assets.service import store_asset
 from app.infrastructure.db.models.asset_version import AssetVersion
 from app.infrastructure.db.models.audit_event import AuditEvent
@@ -144,6 +146,36 @@ async def list_assets(
 ) -> list[AssetRead]:
     assets = await AssetVersionRepository(session).list_for_project(project_id)
     return [AssetRead.model_validate(asset) for asset in assets]
+
+
+@router.get(
+    "/assets/history",
+    response_model=AssetHistoryResponse,
+    summary="Read asset version history grouped by stage (US-22)",
+    responses={
+        401: {"description": "Unauthorized"},
+        404: {"description": "Project not found"},
+    },
+)
+async def read_asset_history(
+    project_id: uuid.UUID,
+    stage: AssetStage | None = None,
+    pipeline_run_id: uuid.UUID | None = None,
+    session: AsyncSession = Depends(get_session),
+) -> AssetHistoryResponse:
+    """Return read-only version history. Fetch bytes via ``GET /assets/{asset_id}/content``."""
+    try:
+        return await get_asset_history(
+            project_id,
+            session=session,
+            stage=stage,
+            pipeline_run_id=pipeline_run_id,
+        )
+    except ProjectNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"project {exc.args[0]} not found",
+        ) from exc
 
 
 @router.get(

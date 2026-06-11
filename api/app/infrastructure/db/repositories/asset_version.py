@@ -116,3 +116,51 @@ class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
         rows = list(result.scalars().all())
         rows.sort(key=lambda row: int((row.metadata_json or {}).get("frame_index", 0)))
         return rows
+
+    async def list_history_for_project(
+        self,
+        project_id: uuid.UUID,
+        *,
+        stage: AssetStage | None = None,
+        pipeline_run_id: uuid.UUID | None = None,
+    ) -> Sequence[AssetVersion]:
+        """Read-only history query for US-22 (SELECT only — no writes)."""
+        query = select(AssetVersion).where(AssetVersion.project_id == project_id)
+        if stage is not None:
+            query = query.where(AssetVersion.stage == stage)
+        if pipeline_run_id is not None:
+            from sqlalchemy import or_
+
+            query = query.where(
+                or_(
+                    AssetVersion.pipeline_run_id == pipeline_run_id,
+                    AssetVersion.stage == AssetStage.IDEA,
+                )
+            )
+        result = await self.session.execute(query)
+        return result.scalars().all()
+
+    async def count_for_project(
+        self,
+        project_id: uuid.UUID,
+        *,
+        stage: AssetStage | None = None,
+        pipeline_run_id: uuid.UUID | None = None,
+    ) -> int:
+        """Count rows matching history filters (verify / tests)."""
+        from sqlalchemy import func, or_
+
+        query = select(func.count()).select_from(AssetVersion).where(
+            AssetVersion.project_id == project_id
+        )
+        if stage is not None:
+            query = query.where(AssetVersion.stage == stage)
+        if pipeline_run_id is not None:
+            query = query.where(
+                or_(
+                    AssetVersion.pipeline_run_id == pipeline_run_id,
+                    AssetVersion.stage == AssetStage.IDEA,
+                )
+            )
+        result = await self.session.execute(query)
+        return int(result.scalar_one())

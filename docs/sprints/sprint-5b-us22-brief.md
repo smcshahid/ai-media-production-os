@@ -1,6 +1,7 @@
 # Sprint 5B — US-22 Asset History API (governance brief)
 
-**Status:** **SUBMITTED** — awaiting governance ACCEPT. Implementation **not authorized**.  
+**Status:** **CLOSED** — governance ACCEPT 2026-06-11 · tag `v0.9.0-us22`  
+**Closure report:** `docs/sprints/sprint-5b-us22-closure-report.md`
 **Parent program:** Spark Full Phase 2 ([spark-full-phase2-governance-brief.md](./spark-full-phase2-governance-brief.md) **ACCEPT**)  
 **Story:** US-22 Browse asset versions · FEAT-12 · EPIC-06 · **P1** · 3 SP  
 **Prerequisites (closed):** US-V02 ✅ · US-20 ✅ · US-05 ✅ · US-12 ✅ · US-16 ✅  
@@ -194,8 +195,8 @@ Scripts: `deploy/k8s/us22-verify/` (to be authored at implementation).
 | Stage | Status |
 |---|---|
 | Phase 2 program brief | **ACCEPT** |
-| **US-22 brief** | **SUBMITTED** |
-| Implementation plan | Not started |
+| **US-22 brief** | **ACCEPT** |
+| Implementation plan | **SUBMITTED** — awaiting ACCEPT |
 | Code / deploy | **Not authorized** |
 
 Upon brief ACCEPT: author implementation plan → governance review → D-57 → implement.
@@ -207,3 +208,4 @@ Upon brief ACCEPT: author implementation plan → governance review → D-57 →
 | Version | Date | Changes |
 |---|---|---|
 | 1.0 | 2026-06-11 | Initial submission — Phase 2 story 2A-2 |
+| **1.1** | **2026-06-11** | **ACCEPT; implementation plan authorized** |

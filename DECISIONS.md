@@ -314,3 +314,9 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** Lineage UI is a **vertical list/tree** (HTML/CSS only) on the **Export** page and optional **`/lineage`** route when `pipeline.status === COMPLETED`. Data from `GET /lineage/{run_id}`. Click row opens a **metadata panel** (stage, version, `content_hash`, `frame_index`, `synthetic` badge on IDEA). **Forbidden:** graph libraries, lineage edit/repair, asset history browser, workflow changes. IDEA row labeled as presentation root with tooltip: not stored as a lineage edge.
 **Rationale:** Minimal creator-facing provenance view; defers US-22/23 and graph viz.
 **Verification:** US-20 web vitest + Olares S-20-02/S-20-04.
+
+### D-57 — US-22 — Asset history read API contract
+**Date:** 2026-06-11
+**Decision:** `GET /assets/history?project_id={uuid}` returns **read-only** JSON with `project_id` and `stages[]` grouped in pipeline order (IDEA → STORY → SCRIPT → STORYBOARD → VIDEO). Each stage's `versions[]` lists **all** matching `asset_versions` rows, **newest first** (`version DESC`; STORYBOARD then `frame_index ASC`). Optional filters: `stage`, `pipeline_run_id` (IDEA rows with null `pipeline_run_id` remain when run filter applied). **GET only** — no restore, promote, or mutation routes. Content bytes via existing **`GET /assets/{asset_id}/content`**. `GET /assets` flat list **unchanged**.
+**Rationale:** US-22 visibility-only version history; defers UI to US-23.
+**Verification:** US-22 unit tests + Olares S-22-03 SQL row parity.

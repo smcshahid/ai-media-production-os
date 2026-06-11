@@ -1,0 +1,22 @@
+US-22 verify start 2026-06-11T21:37:20+00:00
+API=http://10.233.21.231:8000 PROJECT_ID=76aa4418-d92d-45f7-954c-a10383ea511a RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625
+ASSET_VERSIONS_BEFORE=125
+========== S-22-01: GET /assets/history ==========
+HISTORY http=200
+========== S-22-02: stage groups ==========
+STAGES=PASS ['IDEA', 'STORY', 'SCRIPT', 'STORYBOARD', 'VIDEO']
+========== S-22-03: API vs SQL row parity ==========
+SQL_ROW_COUNT=15 API_ROW_COUNT=15
+========== S-22-04: STORY newest first + regen history ==========
+STORY_REGEN=PASS count= 2 versions= [2, 1]
+========== S-22-05: STORYBOARD frame_index ==========
+STORYBOARD_FRAMES=PASS count= 8
+========== S-22-06: content-read spot check ==========
+CONTENT_READ id=60146f1a-331d-40f2-b919-bcd92f72f0d7 http=200
+========== S-22-07: lineage regression ==========
+LINEAGE http=200
+========== S-22-08: export regression ==========
+EXPORT http=200
+========== V-22-L05: no asset_versions writes ==========
+ASSET_VERSIONS_AFTER=125
+DONE PROJECT_ID=76aa4418-d92d-45f7-954c-a10383ea511a FAIL=0
