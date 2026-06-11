@@ -16,6 +16,7 @@
 | 2 | `15e8ecd` | `docs(us18): sync closure report with commit SHA` |
 | 3 | `275acd2` | `docs(us18): complete push log in closure report` |
 | 4 | `56ed7cf` | `docs(us18): final closure report HEAD sync` |
+| 5 | `6a6c156` | `docs(us18): align closure report with pushed HEAD` |
 
 **Prior baseline:** `v0.4.0-usv01` (`93214fc`)
 
@@ -26,7 +27,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `56ed7cf` · **tag** `v0.5.0-us18` → `e764f5d` |
+| **HEAD** | `6a6c156` · **tag** `v0.5.0-us18` → `e764f5d` |
 | **Tag** | `v0.5.0-us18` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.5.0-us18` — pushed |
@@ -111,6 +112,7 @@ US-19 implementation is **not authorized** until governance brief is accepted.
 git push origin main          → 1974acc..15e8ecd  main -> main
 git push origin v0.5.0-us18   → [new tag] v0.5.0-us18 -> v0.5.0-us18
 git push origin main          → 15e8ecd..275acd2  main -> main
+git push origin main          → 275acd2..56ed7cf  main -> main
 ```
 
 Repository: `https://github.com/smcshahid/ai-media-production-os`
