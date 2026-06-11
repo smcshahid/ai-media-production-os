@@ -1,20 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 import {
   ApiError,
   approvePipeline,
   getAssetContent,
+  getAssetContentBlob,
   listAssets,
   listProjects,
   regeneratePipeline,
   updateAssetText,
 } from "../api/client";
 import type { AssetVersion, Project } from "../api/types";
+import { StoryboardLightbox } from "../components/StoryboardLightbox";
 import { usePipelineStatus } from "../hooks/usePipelineStatus";
 import { formatFountainHtml } from "../lib/fountainFormat";
 import { toDisplayStatus } from "../lib/pipelineDisplay";
 import { selectLatestAiDraftScriptAsset } from "../lib/scriptReview";
+import { batchVersion, selectLatestStoryboardBatch } from "../lib/storyboardReview";
 import { selectLatestAiDraftStoryAsset, selectLatestStoryAsset } from "../lib/storyReview";
 
 const STAGE_LABELS: Record<string, string> = {
@@ -24,8 +27,8 @@ const STAGE_LABELS: Record<string, string> = {
 };
 
 /**
- * Human review gate (US-08 / US-10 / US-13 / US-15). STORY: editable treatment.
- * SCRIPT: Fountain preview. Approve/reject/regenerate via pipeline API.
+ * Human review gate (US-08 / US-10 / US-13 / US-15 / US-17). STORY: editable treatment.
+ * SCRIPT: Fountain preview. STORYBOARD: PNG gallery. Approve/reject/regenerate via pipeline API.
  */
 export function ReviewPage() {
   const [project, setProject] = useState<Project | null>(null);
@@ -43,6 +46,12 @@ export function ReviewPage() {
   const [scriptAsset, setScriptAsset] = useState<AssetVersion | null>(null);
   const [scriptPreviewHtml, setScriptPreviewHtml] = useState("");
   const [scriptLoading, setScriptLoading] = useState(false);
+
+  const [storyboardFrames, setStoryboardFrames] = useState<AssetVersion[]>([]);
+  const [storyboardImageUrls, setStoryboardImageUrls] = useState<Record<string, string>>({});
+  const [storyboardLoading, setStoryboardLoading] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const storyboardImageUrlsRef = useRef<Record<string, string>>({});
 
   useEffect(() => {
     let active = true;
@@ -112,9 +121,56 @@ export function ReviewPage() {
     }
   }, []);
 
+  const revokeStoryboardUrls = useCallback((urls: Record<string, string>) => {
+    Object.values(urls).forEach((url) => URL.revokeObjectURL(url));
+  }, []);
+
+  const loadStoryboard = useCallback(async (projectId: string) => {
+    setStoryboardLoading(true);
+    setActionError(null);
+    try {
+      const assets = await listAssets(projectId);
+      const batch = selectLatestStoryboardBatch(assets);
+      if (!batch) {
+        setStoryboardFrames([]);
+        setStoryboardImageUrls((prev) => {
+          revokeStoryboardUrls(prev);
+          return {};
+        });
+        return;
+      }
+      const urls: Record<string, string> = {};
+      for (const frame of batch) {
+        const blob = await getAssetContentBlob(frame.id);
+        urls[frame.id] = URL.createObjectURL(blob);
+      }
+      setStoryboardImageUrls((prev) => {
+        revokeStoryboardUrls(prev);
+        return urls;
+      });
+      storyboardImageUrlsRef.current = urls;
+      setStoryboardFrames(batch);
+    } catch (err) {
+      setActionError(err instanceof ApiError ? err.message : "Failed to load storyboard.");
+    } finally {
+      setStoryboardLoading(false);
+    }
+  }, [revokeStoryboardUrls]);
+
+  useEffect(() => {
+    storyboardImageUrlsRef.current = storyboardImageUrls;
+  }, [storyboardImageUrls]);
+
+  useEffect(() => {
+    return () => {
+      revokeStoryboardUrls(storyboardImageUrlsRef.current);
+    };
+  }, [revokeStoryboardUrls]);
+
   const reviewStage = pipeline?.current_stage;
   const isStoryReview = reviewStage === "STORY";
   const isScriptReview = reviewStage === "SCRIPT";
+  const isStoryboardReview = reviewStage === "STORYBOARD";
 
   useEffect(() => {
     if (!project || !isStoryReview || pipeline?.status !== "AWAITING_APPROVAL") {
@@ -129,6 +185,13 @@ export function ReviewPage() {
     }
     void loadScript(project.id);
   }, [project, isScriptReview, pipeline?.status, loadScript]);
+
+  useEffect(() => {
+    if (!project || !isStoryboardReview || pipeline?.status !== "AWAITING_APPROVAL") {
+      return;
+    }
+    void loadStoryboard(project.id);
+  }, [project, isStoryboardReview, pipeline?.status, loadStoryboard]);
 
   if (!project && !actionError) {
     return <p className="page__subtitle">Loading review…</p>;
@@ -167,7 +230,9 @@ export function ReviewPage() {
 
   const dirty = isStoryReview && treatmentText !== savedText;
   const canRegenerate =
-    (isStoryReview || isScriptReview) && rejectedHint && apiStatus !== "RUNNING";
+    (isStoryReview || isScriptReview || isStoryboardReview) &&
+    rejectedHint &&
+    apiStatus !== "RUNNING";
 
   async function handleSave() {
     if (!storyAsset || !dirty) {
@@ -244,6 +309,8 @@ export function ReviewPage() {
         await loadStory(project.id, { preferAiDraft: true });
       } else if (isScriptReview) {
         await loadScript(project.id);
+      } else if (isStoryboardReview) {
+        await loadStoryboard(project.id);
       }
     } catch (err) {
       if (err instanceof ApiError && err.status === 429) {
@@ -330,6 +397,68 @@ export function ReviewPage() {
               </p>
             )}
           </>
+        ) : isStoryboardReview ? (
+          <>
+            <p className="review__lead">
+              Review all four storyboard frames as a batch. Approve to complete the pipeline, or
+              reject with a note to regenerate a new frame set.
+            </p>
+            {storyboardFrames.length > 0 && (
+              <p className="review__meta">
+                Batch version <strong>{batchVersion(storyboardFrames)}</strong> ·{" "}
+                {storyboardFrames.length} frames · branch{" "}
+                <code className="table__hash">{storyboardFrames[0]?.branch}</code>
+              </p>
+            )}
+            {storyboardLoading ? (
+              <p className="page__subtitle">Loading storyboard…</p>
+            ) : storyboardFrames.length > 0 ? (
+              <div className="storyboard-grid">
+                {storyboardFrames.map((frame, idx) => {
+                  const meta = frame.metadata_json ?? {};
+                  const frameNum =
+                    typeof meta.frame_index === "number"
+                      ? meta.frame_index
+                      : typeof meta.frame_index === "string"
+                        ? meta.frame_index
+                        : idx + 1;
+                  const shotLabel =
+                    typeof meta.shot_label === "string" ? meta.shot_label : null;
+                  return (
+                    <button
+                      key={frame.id}
+                      type="button"
+                      className="storyboard-grid__tile"
+                      onClick={() => setLightboxIndex(idx)}
+                    >
+                      {storyboardImageUrls[frame.id] ? (
+                        <img
+                          className="storyboard-grid__thumb"
+                          src={storyboardImageUrls[frame.id]}
+                          alt={`Storyboard frame ${frameNum}`}
+                        />
+                      ) : (
+                        <span className="storyboard-grid__placeholder">No preview</span>
+                      )}
+                      <span className="storyboard-grid__caption">
+                        Frame {frameNum}
+                        {shotLabel ? ` · ${shotLabel}` : ""}
+                      </span>
+                      {frame.is_ai_generated ? (
+                        <span className="badge badge--generating storyboard-grid__badge">
+                          AI Generated
+                        </span>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="page__error" role="alert">
+                Storyboard batch incomplete or missing. Expected 4 frames at the latest version.
+              </p>
+            )}
+          </>
         ) : (
           <p className="review__lead">
             Stage output is ready for human review. Approve to advance the pipeline, or reject
@@ -353,6 +482,13 @@ export function ReviewPage() {
           <p className="review__regenerate-hint" role="status">
             Script rejected. Regenerate to request a new AI draft using your note, or approve when
             ready. Up to 3 regenerations per run.
+          </p>
+        )}
+
+        {rejectedHint && isStoryboardReview && (
+          <p className="review__regenerate-hint" role="status">
+            Storyboard batch rejected. Regenerate to request a new 4-frame set using your note, or
+            approve all frames when ready. Up to 3 regenerations per run.
           </p>
         )}
 
@@ -392,7 +528,7 @@ export function ReviewPage() {
             title={dirty ? "Save edits before approving" : undefined}
             onClick={() => void handleApprove()}
           >
-            Approve stage
+            Approve{isStoryboardReview ? " all frames" : " stage"}
           </button>
           <button
             type="button"
@@ -402,7 +538,7 @@ export function ReviewPage() {
           >
             Reject
           </button>
-          {(isStoryReview || isScriptReview) && (
+          {(isStoryReview || isScriptReview || isStoryboardReview) && (
             <button
               type="button"
               className="button"
@@ -418,6 +554,16 @@ export function ReviewPage() {
           </Link>
         </div>
       </div>
+
+      {lightboxIndex !== null && storyboardFrames.length > 0 && (
+        <StoryboardLightbox
+          frames={storyboardFrames}
+          imageUrls={storyboardImageUrls}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={setLightboxIndex}
+        />
+      )}
     </section>
   );
 }

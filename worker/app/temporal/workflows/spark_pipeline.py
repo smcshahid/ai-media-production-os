@@ -98,9 +98,10 @@ class SparkPipelineWorkflow:
                 retry_policy=RetryPolicy(maximum_attempts=3),
             )
         elif stage == PipelineStage.STORYBOARD:
+            rejection_note = self._state.last_rejection_note or ""
             await workflow.execute_activity(
                 run_storyboard_agent,
-                args=[pipeline_input.project_id, pipeline_input.run_id],
+                args=[pipeline_input.project_id, pipeline_input.run_id, rejection_note],
                 start_to_close_timeout=timedelta(minutes=15),
                 retry_policy=RetryPolicy(maximum_attempts=2),
             )

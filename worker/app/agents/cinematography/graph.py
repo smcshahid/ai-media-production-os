@@ -28,10 +28,15 @@ def run_cinematography_graph(
     *,
     script_fountain: str,
     style_note: str | None = None,
+    rejection_note: str | None = None,
 ) -> CinematographyState:
     compiled = build_cinematography_graph(settings)
     result: CinematographyState = compiled.invoke(
-        {"script_fountain": script_fountain, "style_note": style_note}
+        {
+            "script_fountain": script_fountain,
+            "style_note": style_note,
+            "rejection_note": rejection_note,
+        }
     )
     if result.get("error"):
         raise RuntimeError(f"{AGENT_ID} failed: {result['error']}")

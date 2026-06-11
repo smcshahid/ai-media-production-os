@@ -35,11 +35,20 @@ def plan_shots_node(state: CinematographyState, settings: Settings) -> Cinematog
     if len(excerpt) > 6000:
         excerpt = excerpt[:6000] + "\n..."
 
+    rejection_note = (state.get("rejection_note") or "").strip()
+    revision_block = ""
+    if rejection_note:
+        revision_block = (
+            "\nRevision notes from reviewer (address these in the new 4-shot storyboard; "
+            "do not reference prior frame images):\n"
+            f"{rejection_note}\n"
+        )
+
     user_prompt = prompt_cfg["user_template"].format(
         script_excerpt=excerpt,
         style_note_block=style_block,
     )
-    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}"
+    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}{revision_block}"
 
     model_id = load_storyboard_model(settings)
     try:

@@ -192,3 +192,26 @@ async def test_fourth_regenerate_returns_429_without_side_effects(session: Async
         )
     ).scalar_one()
     assert audit_count_after == audit_count_before == 3
+
+
+@pytest.mark.asyncio
+async def test_regenerate_storyboard_stage_happy_path(session: AsyncSession) -> None:
+    project_id = await _seed_project(session)
+    run = await _seed_awaiting_run(session, project_id, stage=PipelineStage.STORYBOARD)
+    await _seed_rejected(session, run, PipelineStage.STORYBOARD)
+    fake = FakeTemporal()
+    transport = _transport(session, fake)
+
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/pipeline/regenerate",
+            json={"project_id": str(project_id), "stage": "STORYBOARD"},
+            headers=_AUTH,
+        )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["stage"] == "STORYBOARD"
+    assert body["regenerations_used"] == 1
+    assert len(fake.regenerates) == 1
+    assert fake.regenerates[0] == (run.temporal_workflow_id, "STORYBOARD")

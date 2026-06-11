@@ -311,6 +311,35 @@ def fetch_latest_script_rejection_rationale(
     return str(row[0]).strip()
 
 
+def fetch_latest_storyboard_rejection_rationale(
+    settings: Settings,
+    *,
+    pipeline_run_id: uuid.UUID,
+) -> str | None:
+    """Return latest STORYBOARD rejection note for regeneration (D-47)."""
+    engine = _engine(settings)
+    try:
+        with engine.begin() as conn:
+            row = conn.execute(
+                text(
+                    """
+                    SELECT rationale FROM approvals
+                    WHERE pipeline_run_id = :run_id
+                      AND stage = 'STORYBOARD'
+                      AND decision = 'REJECTED'
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                    """
+                ),
+                {"run_id": str(pipeline_run_id)},
+            ).first()
+    finally:
+        engine.dispose()
+    if row is None or not row[0]:
+        return None
+    return str(row[0]).strip()
+
+
 def fetch_approved_script(
     settings: Settings,
     *,

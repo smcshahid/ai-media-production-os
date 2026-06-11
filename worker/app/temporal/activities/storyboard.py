@@ -27,6 +27,7 @@ from app.tools.assets import (
     StoryboardFrameInput,
     fetch_approved_script,
     fetch_latest_idea,
+    fetch_latest_storyboard_rejection_rationale,
     store_storyboard_batch,
 )
 from app.tools.audit import append_audit_event
@@ -34,7 +35,9 @@ from app.tools.comfyui import ComfyUIError, generate_storyboard_png
 
 
 @activity.defn(name="run_storyboard_agent")
-async def run_storyboard_agent(project_id: str, run_id: str) -> str:
+async def run_storyboard_agent(
+    project_id: str, run_id: str, rejection_note: str = ""
+) -> str:
     """Generate 4 storyboard PNG frames from approved script (D-41 / D-45)."""
     settings = get_settings()
     project_uuid = uuid.UUID(project_id)
@@ -59,10 +62,16 @@ async def run_storyboard_agent(project_id: str, run_id: str) -> str:
         except Exception:
             style_note = None
 
+        db_rationale = fetch_latest_storyboard_rejection_rationale(
+            settings, pipeline_run_id=run_uuid
+        )
+        effective_note = (rejection_note or "").strip() or (db_rationale or "")
+
         graph_result = run_cinematography_graph(
             settings,
             script_fountain=script.script_fountain,
             style_note=style_note,
+            rejection_note=effective_note or None,
         )
         shots = graph_result["shots"]
         validate_shot_plan(shots)

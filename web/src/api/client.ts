@@ -102,6 +102,11 @@ async function requestText(path: string, init: RequestInit = {}): Promise<string
   return response.text();
 }
 
+async function requestBlob(path: string, init: RequestInit = {}): Promise<Blob> {
+  const response = await requestRaw(path, init);
+  return response.blob();
+}
+
 // --- Typed endpoint helpers ------------------------------------------------
 
 export function listProjects(): Promise<Project[]> {
@@ -160,7 +165,13 @@ export function listAssets(projectId: string): Promise<AssetVersion[]> {
 
 export function getAssetContent(assetId: string): Promise<string> {
   return requestText(`/assets/${encodeURIComponent(assetId)}/content`, {
-    headers: { Accept: "text/markdown" },
+    headers: { Accept: "text/markdown, text/plain" },
+  });
+}
+
+export function getAssetContentBlob(assetId: string): Promise<Blob> {
+  return requestBlob(`/assets/${encodeURIComponent(assetId)}/content`, {
+    headers: { Accept: "image/png" },
   });
 }
 

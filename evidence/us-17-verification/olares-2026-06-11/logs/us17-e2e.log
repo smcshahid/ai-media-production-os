@@ -1,0 +1,38 @@
+API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+========== SETUP: idea + pipeline start ==========
+{"id":"d146d3c5-344a-439f-a822-0c3b012095a7","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":15,"content_hash":"4f0bf4bde60fe4ca72b897d5a358d7daa0b9efdd53c773c249905c08851679a6","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4f0bf4bde60fe4ca72b897d5a358d7daa0b9efdd53c773c249905c08851679a6","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic"},"created_at":"2026-06-11T05:29:56.599899"}
+START={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"806b671a-29fe-4b62-8229-d57009a0792e","workflow_id":"spark-pipeline-806b671a-29fe-4b62-8229-d57009a0792e","status":"RUNNING","current_stage":"STORY"}
+HTTP_CODE:201
+STORYBOARD_BEFORE=1 RUN_ID=806b671a-29fe-4b62-8229-d57009a0792e
+========== Approve STORY ==========
+  poll status=RUNNING stage=STORY
+  poll status=RUNNING stage=STORY
+  poll status=AWAITING_APPROVAL stage=STORY
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"806b671a-29fe-4b62-8229-d57009a0792e","approval_id":"fa71b378-12e0-494d-92c7-a2dba544f2f4","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+========== Approve SCRIPT → STORYBOARD v1 ==========
+  poll status=AWAITING_APPROVAL stage=STORY
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"806b671a-29fe-4b62-8229-d57009a0792e","approval_id":"60184805-e3ce-4e7f-808f-eecefe930ecc","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT"}
+  poll v1 status=RUNNING stage=STORYBOARD storyboard_version=1 target>=2
+  poll v1 status=RUNNING stage=STORYBOARD storyboard_version=1 target>=2
+  poll v1 status=AWAITING_APPROVAL stage=STORYBOARD storyboard_version=2 target>=2
+========== V-01: 4 frames at v2 ==========
+========== V-02: PNG content-read ==========
+CONTENT_READ http=200
+========== V-03: reject + regen → v3 (AC-4, D-47) ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"806b671a-29fe-4b62-8229-d57009a0792e","approval_id":"105d1116-e5df-4ecc-8f53-52285e80e7ac","decision":"REJECTED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD"}
+REGEN={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"806b671a-29fe-4b62-8229-d57009a0792e","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","regenerations_used":1}
+HTTP_CODE:200
+  poll regen status=RUNNING stage=STORYBOARD version=2 target>=3
+  poll regen status=RUNNING stage=STORYBOARD version=2 target>=3
+  poll regen status=AWAITING_APPROVAL stage=STORYBOARD version=3 target>=3
+PRIOR_V2=4 NEW_V3=4
+========== V-04: approve batch → COMPLETED (AC-3) ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"806b671a-29fe-4b62-8229-d57009a0792e","approval_id":"4c7b2039-b7cd-4104-a27a-c91836ec8c9f","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD"}
+  poll status=AWAITING_APPROVAL stage=STORYBOARD
+  poll status=COMPLETED stage=null
+FINAL={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"806b671a-29fe-4b62-8229-d57009a0792e","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T05:32:03.246679"}
+========== V-05: approvals audit ==========
+STORYBOARD|REJECTED|US-17 Olares: increase contrast and wide
+STORYBOARD|APPROVED|
+DONE RUN_ID=806b671a-29fe-4b62-8229-d57009a0792e V1=2 V2=3
