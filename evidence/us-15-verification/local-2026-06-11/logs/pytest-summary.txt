@@ -1,0 +1,5 @@
+US-15 local test gates (2026-06-11)
+
+API unit:  78 passed (+2 US-15: test_assets_us15.py)
+Worker unit: 21 passed (+5 US-15: test_script_approved.py, rejection note test)
+Web unit:  20 passed (+6 US-15: fountainFormat.test.ts, scriptReview.test.ts)

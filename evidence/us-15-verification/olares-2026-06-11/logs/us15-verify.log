@@ -1,0 +1,186 @@
+API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+========== SETUP: fresh pipeline to SCRIPT gate ==========
+{"id":"e6f1da51-ebb3-4bb1-9095-54006dff1473","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":8,"content_hash":"1d6beddc922535d2955d9642e8be361a78c04155dcd44f7a645394c2fc22ac8d","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/1d6beddc922535d2955d9642e8be361a78c04155dcd44f7a645394c2fc22ac8d","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic"},"created_at":"2026-06-11T00:55:41.460179"}
+START={"detail":"a pipeline run is already active for this project"}
+RUN_ID=
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+========== Approve STORY → SCRIPT ==========
+{"detail":"stage mismatch: requested STORY, current SCRIPT"}
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+SCRIPT_V1=1 ASSET=e96cae0b-29f5-4bdb-b26b-f95efeee175b
+========== V-01: SCRIPT content (Fountain sample) ==========
+Added `local` successfully.
+Title: US-14 OLARES VERIFY  
+Author: [YOUR NAME]  
+Credit: AIMPOS-Spark Visual  
+
+INT. RESEARCH LAB - DAWN  
+
+The lab is dimly lit, equipment humming. DR. ELARA VOSS (30s, weary but focused) stands over a bioluminescent coral sample, its glow casting eerie patterns on the walls. A satellite feed flickers on a nearby screen—three corporate ships loom on the horizon.  
+
+DR. ELARA VOSS  
+(whispering)  
+If I send this... they’ll come. But if I don’t—  
+
+A holographic projection of DR. MARCUS HALE (60s, stern) materializes.  
+
+DR. MARCUS HALE  
+(voiceover)  
+You think silence protects them? It protects *you*.  
+
+Elara clenches her fists. The coral’s glow intensifies.  
+
+DR. ELARA VOSS  
+(bitter)  
+And if I stay silent, I’m no better than them.  
+
+She grabs a transmitter, hesitates, then slams it onto the table. The screen flashes: "DATA TRANSMISSION INITIATED."  
+
+DR. MARCUS HALE  
+(voiceover)  
+You’ve already lost.  
+
+========== V-02-prep: Reject SCRIPT ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","approval_id":"287c88b6-9bed-4d9f-a18d-75240eb95f9a","decision":"REJECTED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT"}
+HTTP_CODE:200
+========== V-2: Regenerate SCRIPT #1 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","regenerations_used":1}
+HTTP_CODE:200
+  poll script version=1 target>=2
+  poll script version=1 target>=2
+  poll script version=2 target>=2
+e96cae0b-29f5-4bdb-b26b-f95efeee175b|1|79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d
+a12e7212-b456-4f0e-81b5-14c9fa6bbfa9|2|a38558ad974a79f62307aa352e81ba378c962dd05016fe20882b0f809daebf77
+========== V-3: Regenerate SCRIPT #2 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","regenerations_used":2}
+HTTP_CODE:200
+  poll script version=2 target>=3
+  poll script version=2 target>=3
+  poll script version=3 target>=3
+e96cae0b-29f5-4bdb-b26b-f95efeee175b|1|79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d
+a12e7212-b456-4f0e-81b5-14c9fa6bbfa9|2|a38558ad974a79f62307aa352e81ba378c962dd05016fe20882b0f809daebf77
+4ba320d7-4b7f-418b-962d-fa6227eae9e7|3|87b3529d30a76cb41da68d066ffe8aaaeb5f0c00ebb264c9e913892ddf5227c8
+========== V-4: Regenerate SCRIPT #3 ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","regenerations_used":3}
+HTTP_CODE:200
+  poll script version=3 target>=4
+  poll script version=3 target>=4
+  poll script version=4 target>=4
+e96cae0b-29f5-4bdb-b26b-f95efeee175b|1|79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d
+a12e7212-b456-4f0e-81b5-14c9fa6bbfa9|2|a38558ad974a79f62307aa352e81ba378c962dd05016fe20882b0f809daebf77
+4ba320d7-4b7f-418b-962d-fa6227eae9e7|3|87b3529d30a76cb41da68d066ffe8aaaeb5f0c00ebb264c9e913892ddf5227c8
+45bc3ede-2ac7-4b58-aad8-bae8a5debf2d|4|e7ece1ea235102fe97f088cb4e58a5f2c94294a7e902b6ebda96213b0b84c18a
+========== V-05: 4th SCRIPT regenerate (expect 429) ==========
+{"detail":"regeneration limit reached for stage SCRIPT (max 3 per run)"}
+HTTP_CODE:429
+========== V-06: Approve SCRIPT → STORYBOARD ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","approval_id":"6b54f2c5-03b2-4a0c-bdb6-f970b7ab8093","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT"}
+HTTP_CODE:200
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T01:12:15.440224"}
+========== V-07: D-41 approved script resolution ==========
+ERROR:  invalid input syntax for type uuid: ""
+LINE 1: ...nale,'') FROM approvals a WHERE a.pipeline_run_id='' AND a.s...
+                                                             ^
+command terminated with exit code 1
+45bc3ede-2ac7-4b58-aad8-bae8a5debf2d|4|e7ece1ea235102fe97f088cb4e58a5f2c94294a7e902b6ebda96213b0b84c18a
+========== V-08: D-42 regen audit + worker log ==========
+ERROR:  invalid input syntax for type uuid: ""
+LINE 1: ...:text,'') FROM audit_events WHERE pipeline_run_id='' AND pay...
+                                                             ^
+command terminated with exit code 1
+{"level": "INFO", "logger": "aimpos.worker", "message": "worker.registered", "temporal_address": "temporal:7233", "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflows": ["SparkPipelineWorkflow"], "activities": ["run_stub_stage", "run_story_agent", "run_script_agent", "sync_pipeline_status"]}
+{"level": "INFO", "logger": "temporalio.activity", "message": "script_agent_completed ({'activity_id': '8', 'activity_type': 'run_script_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1', 'workflow_run_id': '5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "ad45f3a7-e772-437b-be00-c62a9121cec1", "asset_version_id": "a12e7212-b456-4f0e-81b5-14c9fa6bbfa9", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "8", "activity_type": "run_script_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1", "workflow_run_id": "5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5", "workflow_type": "SparkPipelineWorkflow"}}
+{"level": "INFO", "logger": "temporalio.activity", "message": "pipeline_status_synced ({'activity_id': '11', 'activity_type': 'run_script_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1', 'workflow_run_id': '5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5', 'workflow_type': 'SparkPipelineWorkflow'})", "run_id": "ad45f3a7-e772-437b-be00-c62a9121cec1", "status": "FAILED", "current_stage": "SCRIPT", "temporal_activity": {"activity_id": "11", "activity_type": "run_script_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1", "workflow_run_id": "5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5", "workflow_type": "SparkPipelineWorkflow"}}
+{"level": "WARNING", "logger": "temporalio.activity", "message": "Completing activity as failed ({'activity_id': '11', 'activity_type': 'run_script_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1', 'workflow_run_id': '5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5', 'workflow_type': 'SparkPipelineWorkflow'})", "exc_info": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.12/site-packages/temporalio/worker/_activity.py\", line 359, in _handle_start_activity_task\n    result = await self._execute_activity(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/temporalio/worker/_activity.py\", line 714, in _execute_activity\n    return await impl.execute_activity(input)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/temporalio/worker/_activity.py\", line 909, in execute_activity\n    return await input.fn(*input.args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/app/temporal/activities/script.py\", line 54, in run_script_agent\n    graph_result = run_screenwriter_graph(\n                   ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/app/agents/screenwriter/graph.py\", line 46, in run_screenwriter_graph\n    raise RuntimeError(f\"{AGENT_ID} failed: {result['error']}\")\nRuntimeError: agent.screenwriter failed: dialogue_count == 0", "__temporal_error_identifier": "ActivityFailure", "temporal_activity": {"activity_id": "11", "activity_type": "run_script_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1", "workflow_run_id": "5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5", "workflow_type": "SparkPipelineWorkflow"}}
+{"level": "INFO", "logger": "temporalio.activity", "message": "script_agent_completed ({'activity_id': '11', 'activity_type': 'run_script_agent', 'attempt': 2, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1', 'workflow_run_id': '5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "ad45f3a7-e772-437b-be00-c62a9121cec1", "asset_version_id": "4ba320d7-4b7f-418b-962d-fa6227eae9e7", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "11", "activity_type": "run_script_agent", "attempt": 2, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1", "workflow_run_id": "5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5", "workflow_type": "SparkPipelineWorkflow"}}
+{"level": "INFO", "logger": "temporalio.activity", "message": "script_agent_completed ({'activity_id': '14', 'activity_type': 'run_script_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1', 'workflow_run_id': '5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "ad45f3a7-e772-437b-be00-c62a9121cec1", "asset_version_id": "45bc3ede-2ac7-4b58-aad8-bae8a5debf2d", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "14", "activity_type": "run_script_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1", "workflow_run_id": "5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5", "workflow_type": "SparkPipelineWorkflow"}}
+DONE RUN_ID=
