@@ -14,6 +14,7 @@
 |---|---|---|
 | 1 | `f5967cb` | `docs(usv01): submit governance brief v1.1 for review` |
 | 2 | `93214fc` | `docs(usv01): Visual MVP acceptance verification package and Olares evidence` |
+| 3 | `6df60a3` | `docs(usv01): repository closure report and Visual MVP completion summary` |
 
 **Prior baseline:** `v0.3.6-us17` (`4604e5f`)
 
@@ -24,11 +25,11 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `93214fc` · **tag** `v0.4.0-usv01` → `93214fc` |
+| **HEAD** | `6df60a3` · **tag** `v0.4.0-usv01` → `93214fc` |
 | **Tag** | `v0.4.0-usv01` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.4.0-usv01` — pushed |
-| **Working tree** | **Clean** (post-closure sync pending) |
+| **Working tree** | **Clean** |
 | **Product code delta** | **None** (verification-only milestone) |
 
 ---
