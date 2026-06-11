@@ -13,7 +13,7 @@
 |---|---|---|
 | 1 | `ef877de` | `docs(us16): governance brief for storyboard frame generation` |
 | 2 | `778f5bf` | `feat(us16): storyboard agent, ComfyUI batch store, and migration 0003` |
-| 3 | *(this commit)* | `docs(us16): repository closure report` |
+| 3 | `40116c9` | `docs(us16): repository closure report` |
 
 **Prior baseline:** `v0.3.4-us15` (`7efd89c`)
 
@@ -24,9 +24,10 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | *(updated post-push — see § 7)* |
-| **US-16 release tag** | `v0.3.5-us16` → closure commit |
-| **Remote** | `origin/main` |
+| **HEAD** | `40116c9` · **tag** `v0.3.5-us16` |
+| **US-16 release tag** | `v0.3.5-us16` → `40116c9` |
+| **Remote** | `origin/main` — pushed 2026-06-11 |
+| **Tag remote** | `origin/v0.3.5-us16` — pushed |
 | **Working tree** | **Clean** (post-closure) |
 
 ---
@@ -96,13 +97,18 @@ US-17 implementation is **not authorized** until governance brief is accepted.
 | `v0.3.2-us09` | US-09 Regenerate | `f80278d` | 2026-06-10 |
 | `v0.3.3-us14` | US-14 Screenwriter | `db9370c` | 2026-06-10 |
 | `v0.3.4-us15` | US-15 Script review | `7efd89c` | 2026-06-11 |
-| **`v0.3.5-us16`** | **US-16 Storyboard frames** | **`778f5bf`** (+ closure docs) | **2026-06-11** |
+| **`v0.3.5-us16`** | **US-16 Storyboard frames** | **`40116c9`** | **2026-06-11** |
 
 ---
 
 ## 8. Push confirmation
 
-*(Updated after push — see git log below.)*
+```
+git push origin main     → 25d22bf..40116c9  main -> main
+git push origin v0.3.5-us16 → [new tag] v0.3.5-us16 -> v0.3.5-us16
+```
+
+Repository: `https://github.com/smcshahid/ai-media-production-os`
 
 ---
 

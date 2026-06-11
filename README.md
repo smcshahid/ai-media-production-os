@@ -4,13 +4,13 @@ Privacy-first, local-AI media production platform — **Visual MVP** scope: Idea
 
 ## Status
 
-**Sprint 0 complete** · **Sprint 1 in progress** (Infrastructure Validation) — June 9, 2026.
+**Visual MVP execution:** Sprint 5 in progress · **US-16 CLOSED** (`v0.3.5-us16`) · **Current frontier: US-17** Storyboard Review.
 
 | State | Detail |
 |-------|--------|
-| Stack | 9-service compose authored; Sprint-0 path (`api`, `web`, `postgresql`, `minio`, `redis`) verified live |
+| Latest release | `v0.3.5-us16` — US-16 storyboard frame generation |
+| Stack | 9-service compose; Olares GPU path verified for STORYBOARD |
 | CI | `.github/workflows/ci-api.yml` — ruff/mypy/pytest + web build/lint/vitest on PRs |
-| GPU / Olares | Required for Ollama + ComfyUI smoke (US-06); blocked on hardware in local Windows dev |
 
 ## Document authority (frozen)
 
