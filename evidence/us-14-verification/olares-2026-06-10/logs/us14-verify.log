@@ -1,0 +1,78 @@
+API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+========== PREP: clear active run if present ==========
+========== SETUP: fresh pipeline to STORY gate ==========
+{"id":"1addbfde-c2f6-47d6-8cad-d00916a8bbc2","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":7,"content_hash":"0938a024c97f417ed6b5138bfe2d7fd5cc359e237e5f838572c52961a677c5d4","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/0938a024c97f417ed6b5138bfe2d7fd5cc359e237e5f838572c52961a677c5d4","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic"},"created_at":"2026-06-11T00:04:21.053610"}
+START={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","workflow_id":"spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1","status":"RUNNING","current_stage":"STORY"}
+RUN_ID=ad45f3a7-e772-437b-be00-c62a9121cec1
+  poll status=RUNNING stage=STORY
+  poll status=RUNNING stage=STORY
+  poll status=AWAITING_APPROVAL stage=STORY
+STORY_ASSET=c2fc462f-a92e-43e8-bcdd-2110de40b351
+========== V6-prep: Approve STORY → SCRIPT generation ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","approval_id":"1a9390c1-febc-407b-b28c-9718019555a4","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+HTTP_CODE:200
+========== V6: Poll SCRIPT review gate ==========
+  poll status=AWAITING_APPROVAL stage=STORY
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+SCRIPT_GATE={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ad45f3a7-e772-437b-be00-c62a9121cec1","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T00:04:52.551693"}
+========== V2: SCRIPT asset_versions ==========
+e96cae0b-29f5-4bdb-b26b-f95efeee175b|1|ai-draft|true|79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d|ba0c4636-817c-423b-9771-20100e080b76/SCRIPT/79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d|2026-06-11 00:04:52.503601
+========== V5: lineage_edges (story → script) ==========
+c2fc462f-a92e-43e8-bcdd-2110de40b351|e96cae0b-29f5-4bdb-b26b-f95efeee175b|STORY|SCRIPT
+========== V3: MinIO stat ==========
+MINIO_KEY=ba0c4636-817c-423b-9771-20100e080b76/SCRIPT/79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d
+Added `local` successfully.
+Name      : 79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d
+Date      : 2026-06-11 00:04:52 UTC 
+Size      : 1.0 KiB 
+ETag      : ad8eb849d1c9f3a0de2fd7f555af57d3 
+Type      : file 
+Metadata  :
+  Content-Type: text/plain; charset=utf-8 
+
+========== V1: Fountain sample (first 40 lines) ==========
+Title: US-14 OLARES VERIFY  
+Author: [YOUR NAME]  
+Credit: AIMPOS-Spark Visual  
+
+INT. RESEARCH LAB - DAWN  
+
+The lab is dimly lit, equipment humming. DR. ELARA VOSS (30s, weary but focused) stands over a bioluminescent coral sample, its glow casting eerie patterns on the walls. A satellite feed flickers on a nearby screen—three corporate ships loom on the horizon.  
+
+DR. ELARA VOSS  
+(whispering)  
+If I send this... they’ll come. But if I don’t—  
+
+A holographic projection of DR. MARCUS HALE (60s, stern) materializes.  
+
+DR. MARCUS HALE  
+(voiceover)  
+You think silence protects them? It protects *you*.  
+
+Elara clenches her fists. The coral’s glow intensifies.  
+
+DR. ELARA VOSS  
+(bitter)  
+And if I stay silent, I’m no better than them.  
+
+She grabs a transmitter, hesitates, then slams it onto the table. The screen flashes: "DATA TRANSMISSION INITIATED."  
+
+DR. MARCUS HALE  
+(voiceover)  
+You’ve already lost.  
+
+The coral’s light pulses—faint, defiant—as the first ship’s horn blares outside.========== V7: Worker log (script agent) ==========
+{"level": "INFO", "logger": "aimpos.worker", "message": "worker.registered", "temporal_address": "temporal:7233", "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflows": ["SparkPipelineWorkflow"], "activities": ["run_stub_stage", "run_story_agent", "run_script_agent", "sync_pipeline_status"]}
+[2m2026-06-10T23:48:34.016827Z[0m [33m WARN[0m [2mtemporalio_sdk_core::worker::workflow[0m[2m:[0m Failing workflow task [3mrun_id[0m[2m=[0md93b26b5-16d7-4168-91b4-f5d8d9566640 [3mfailure[0m[2m=[0mFailure { failure: Some(Failure { message: "[TMPRL1100] Nondeterminism error: Activity type of scheduled event 'run_stub_stage' does not match activity type of activity command 'run_script_agent'", source: "", stack_trace: "", encoded_attributes: None, cause: None, failure_info: Some(ApplicationFailureInfo(ApplicationFailureInfo { r#type: "", non_retryable: false, details: None, next_retry_delay: None, category: Unspecified })) }), force_cause: NonDeterministicError }
+{"level": "INFO", "logger": "temporalio.activity", "message": "story_agent_completed ({'activity_id': '2', 'activity_type': 'run_story_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1', 'workflow_run_id': '5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "ad45f3a7-e772-437b-be00-c62a9121cec1", "asset_version_id": "c2fc462f-a92e-43e8-bcdd-2110de40b351", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "2", "activity_type": "run_story_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1", "workflow_run_id": "5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5", "workflow_type": "SparkPipelineWorkflow"}}
+{"level": "INFO", "logger": "temporalio.activity", "message": "script_agent_completed ({'activity_id': '5', 'activity_type': 'run_script_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1', 'workflow_run_id': '5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "ad45f3a7-e772-437b-be00-c62a9121cec1", "asset_version_id": "e96cae0b-29f5-4bdb-b26b-f95efeee175b", "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "5", "activity_type": "run_script_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-ad45f3a7-e772-437b-be00-c62a9121cec1", "workflow_run_id": "5c5ef3f9-fe0e-4a08-873c-3f9721d1c7d5", "workflow_type": "SparkPipelineWorkflow"}}
+========== AUDIT EVENTS (SCRIPT) ==========
+STAGE_STARTED||{"agent": "agent.story_architect", "stage": "STORY"}|2026-06-11 00:04:21.204987
+AGENT_TASK_COMPLETED|qwen3:14b|{"agent": "agent.story_architect", "branch": "ai-draft", "minio_key": "ba0c4636-817c-423b-9771-20100e080b76/STORY/87f96f3b556a327c58107456c160b0b13da4e97f6110aa1f53e66e10c7b37df5", "duration_ms": 16053, "prompt_version": "v1", "asset_version_id": "c2fc462f-a92e-43e8-bcdd-2110de40b351"}|2026-06-11 00:04:37.301798
+ASSET_STORED|qwen3:14b|{"stage": "STORY", "branch": "ai-draft", "version": 9, "content_hash": "87f96f3b556a327c58107456c160b0b13da4e97f6110aa1f53e66e10c7b37df5"}|2026-06-11 00:04:37.308448
+STAGE_STARTED||{"agent": "agent.screenwriter", "stage": "SCRIPT"}|2026-06-11 00:04:41.295476
+AGENT_TASK_COMPLETED|qwen3:14b|{"agent": "agent.screenwriter", "branch": "ai-draft", "minio_key": "ba0c4636-817c-423b-9771-20100e080b76/SCRIPT/79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d", "duration_ms": 11179, "prompt_version": "v1", "asset_version_id": "e96cae0b-29f5-4bdb-b26b-f95efeee175b"}|2026-06-11 00:04:52.519608
+ASSET_STORED|qwen3:14b|{"stage": "SCRIPT", "branch": "ai-draft", "version": 1, "content_hash": "79528e514e83d547e2ec35687c02c625ceb69ce80996716596770ffc9e5c2a4d"}|2026-06-11 00:04:52.527084
+========== APPROVALS ==========
+STORY|APPROVED||2026-06-11 00:04:41.237566
+DONE RUN_ID=ad45f3a7-e772-437b-be00-c62a9121cec1

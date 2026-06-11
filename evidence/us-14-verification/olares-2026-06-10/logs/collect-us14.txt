@@ -1,0 +1,7 @@
+﻿ssh : /tmp/collect_us14.sh: line 7: PROJECT: set PROJECT
+At C:\Users\shahid85\AppData\Local\Temp\ps-script-4fe1d6bf-5f77-483b-9959-5da397018990.ps1:118 char:159
++ ... | Out-Null; ssh olares@10.0.0.34 'export PGPW=$(sudo k3s kubectl get  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (/tmp/collect_us...CT: set PROJECT:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
