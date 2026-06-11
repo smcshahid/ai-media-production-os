@@ -1,16 +1,21 @@
-# AIMPOS-Spark Visual
+# AIMPOS-Spark
 
-Privacy-first, local-AI media production platform — **Visual MVP** scope: Idea → Story → Script → Storyboard.
+Privacy-first, local-AI media production platform.
 
 ## Status
 
-**Visual MVP:** **COMPLETE** (M5 signed 2026-06-11) · Sprint 5 closed · US-V01 accepted.
+| Program | Status | Frontier |
+|---------|--------|----------|
+| **Visual MVP** | **CLOSED** (M5 · `v0.4.0-usv01`) | — |
+| **Spark Full** | **ACTIVE** | **US-18** — Generate short video clip |
 
 | State | Detail |
 |-------|--------|
-| Latest release | `v0.4.0-usv01` — US-V01 Visual MVP acceptance (`93214fc`) |
-| Completion summary | `docs/sprints/visual-mvp-completion-summary.md` |
-| Stack | 9-service compose; Olares GPU path verified for STORYBOARD |
+| Visual MVP release | `v0.4.0-usv01` — US-V01 acceptance (`93214fc`) |
+| Visual MVP summary | `docs/sprints/visual-mvp-completion-summary.md` |
+| Spark Full governance | `docs/sprints/spark-full-governance-brief.md` (**ACCEPT**) |
+| US-18 brief | `docs/sprints/sprint-4a-us18-brief.md` (**SUBMITTED FOR REVIEW**) |
+| Stack | 9-service compose; Olares GPU path verified through STORYBOARD |
 | CI | `.github/workflows/ci-api.yml` — ruff/mypy/pytest + web build/lint/vitest on PRs |
 
 ## Document authority (frozen)
@@ -37,8 +42,8 @@ Privacy-first, local-AI media production platform — **Visual MVP** scope: Idea
 | **Sprint 2** | Workflow Foundation — Temporal skeleton | 6 |
 | **Sprint 3** | Idea → Story | 7 |
 | **Sprint 4** | Story → Script | 7 |
-| **Sprint 5** | Script → Storyboard + sign-off | 9 |
-| **Future Release** | Deferred (P1 cuts) | 2 |
+| **Sprint 5** | Script → Storyboard + Visual MVP sign-off | 9 |
+| **Spark Full** | Video → export → lineage (active) | US-18+ |
 
 See [Sprint Reclassification.md](./Sprint%20Reclassification.md) for full issue mapping.
 
@@ -46,7 +51,7 @@ See [Sprint Reclassification.md](./Sprint%20Reclassification.md) for full issue 
 
 - **Repository:** https://github.com/smcshahid/ai-media-production-os
 - **Project board:** AI Media Production OS (AIMPOS)
-- **Codename:** `AIMPOS-Spark-Visual`
+- **Codename:** `AIMPOS-Spark` (Visual MVP: `AIMPOS-Spark-Visual` · closed)
 - **First implementation issue:** T-02-02 (PostgreSQL init) or US-04 (database schema) — Sprint 0
 
 ### Backlog maintenance
