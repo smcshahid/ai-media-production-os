@@ -61,6 +61,9 @@ class Settings(BaseSettings):
     # --- Ollama (US-12+) ---
     ollama_host: str = Field(default="http://ollama:11434", validation_alias="OLLAMA_HOST")
 
+    # --- ComfyUI (US-16+) ---
+    comfyui_host: str = Field(default="http://comfyui:8188", validation_alias="COMFYUI_HOST")
+
     # --- Config bundle (prompts, model pins) ---
     config_root: str = Field(default="/srv/configs", validation_alias="AIMPOS_CONFIG_ROOT")
 

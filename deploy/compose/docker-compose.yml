@@ -244,6 +244,7 @@ services:
       MINIO_BUCKET: ${MINIO_BUCKET:-aimpos-hot-assets}
       MINIO_SECURE: ${MINIO_SECURE:-false}
       OLLAMA_HOST: ${OLLAMA_HOST:-http://ollama:11434}
+      COMFYUI_HOST: ${COMFYUI_HOST:-http://comfyui:8188}
       AIMPOS_CONFIG_ROOT: /srv/configs
     depends_on:
       temporal:

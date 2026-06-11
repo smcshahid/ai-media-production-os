@@ -1,0 +1,53 @@
+﻿API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+========== SETUP: pipeline to STORYBOARD gate ==========
+{"id":"fae6e405-435c-40f8-b3a1-32613238f597","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":13,"content_hash":"ecd6deb455a5922451cdcbd958106fd683b612cf04a4bdb7cd4a9b3eca71b380","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/ecd6deb455a5922451cdcbd958106fd683b612cf04a4bdb7cd4a9b3eca71b380","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic"},"created_at":"2026-06-11T04:08:28.935073"}
+START={"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"9949bb3a-d0f1-4e2c-a23d-2aae813a5b47","workflow_id":"spark-pipeline-9949bb3a-d0f1-4e2c-a23d-2aae813a5b47","status":"RUNNING","current_stage":"STORY"}
+HTTP_CODE:201
+STORYBOARD_VERSION_BEFORE=0 RUN_ID=9949bb3a-d0f1-4e2c-a23d-2aae813a5b47
+  poll status=RUNNING stage=STORY
+  poll status=RUNNING stage=STORY
+  poll status=AWAITING_APPROVAL stage=STORY
+========== Approve STORY ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"9949bb3a-d0f1-4e2c-a23d-2aae813a5b47","approval_id":"2baa9b81-7c20-443a-8339-8f6c0b47023d","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+  poll status=AWAITING_APPROVAL stage=STORY
+  poll status=AWAITING_APPROVAL stage=SCRIPT
+========== Approve SCRIPT ΓåÆ STORYBOARD generation ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"9949bb3a-d0f1-4e2c-a23d-2aae813a5b47","approval_id":"e8179758-618f-43cc-8951-e3aa885b3a73","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT"}
+  poll status=AWAITING_APPROVAL stage=SCRIPT storyboard_version=0 target>=1
+  poll status=RUNNING stage=STORYBOARD storyboard_version=0 target>=1
+  poll status=AWAITING_APPROVAL stage=STORYBOARD storyboard_version=1 target>=1
+========== V-01: frame count (D-45 = 4) ==========
+FRAME_COUNT=4
+========== V-02: STORYBOARD rows ==========
+92a9f9e6-4a50-4acd-85ce-5d91b01bd703|1|c5701f87ffcf49aa1690bda7a3175fe03cd93e12aaf65d3d00471e780aa91bb6|1
+0fbe5b1a-162a-4ab9-bb8b-c3461e1b6733|1|6b74839de4d95bfc52be83a72c4b3a6d7025b7a7e213e6fe2afbc2ff8bdfcbbc|2
+c47d166c-e8d3-43aa-bfa4-2f02aa68565b|1|7df896171f6be0d1ebc8191f522cd0361bc30474c674244c4311d2cf8ab63ba6|3
+9ad9898c-33d2-4ba4-900f-0b4457049d96|1|d762fedbca8112e71881c6bdd42544b947ce2a07d577f15d3918db39bd8064d5|4
+========== V-03: lineage script ΓåÆ frames ==========
+SCRIPT_ID=ec74bae1-7638-4496-a454-42df7f749142 LINEAGE_COUNT=4
+========== V-04: pipeline status ==========
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"9949bb3a-d0f1-4e2c-a23d-2aae813a5b47","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T04:09:36.290468"}
+========== V-05: worker log (GPU + storyboard) ==========
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 46}
+{"level": "INFO", "logger": "aimpos.worker.gpu", "message": "ollama_unloaded", "model": "qwen3:14b"}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 43}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 44}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 45}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 46}
+{"level": "INFO", "logger": "aimpos.worker.gpu", "message": "ollama_unloaded", "model": "qwen3:14b"}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 43}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 44}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 45}
+{"level": "INFO", "logger": "aimpos.worker.comfyui", "message": "comfyui_queued", "seed": 46}
+{"level": "INFO", "logger": "temporalio.activity", "message": "storyboard_agent_completed ({'activity_id': '8', 'activity_type': 'run_storyboard_agent', 'attempt': 1, 'namespace': 'default', 'task_queue': 'aimpos-spark-pipeline', 'workflow_id': 'spark-pipeline-9949bb3a-d0f1-4e2c-a23d-2aae813a5b47', 'workflow_run_id': 'bf22ada8-2c67-458a-988d-b7b07b187fc0', 'workflow_type': 'SparkPipelineWorkflow'})", "project_id": "ba0c4636-817c-423b-9771-20100e080b76", "run_id": "9949bb3a-d0f1-4e2c-a23d-2aae813a5b47", "frame_count": 4, "frame_asset_version_ids": ["92a9f9e6-4a50-4acd-85ce-5d91b01bd703", "0fbe5b1a-162a-4ab9-bb8b-c3461e1b6733", "c47d166c-e8d3-43aa-bfa4-2f02aa68565b", "9ad9898c-33d2-4ba4-900f-0b4457049d96"], "model_id": "qwen3:14b", "temporal_activity": {"activity_id": "8", "activity_type": "run_storyboard_agent", "attempt": 1, "namespace": "default", "task_queue": "aimpos-spark-pipeline", "workflow_id": "spark-pipeline-9949bb3a-d0f1-4e2c-a23d-2aae813a5b47", "workflow_run_id": "bf22ada8-2c67-458a-988d-b7b07b187fc0", "workflow_type": "SparkPipelineWorkflow"}}
+========== V-06: MinIO PNG sample ==========
+Added `local` successfully.
+Name      : c5701f87ffcf49aa1690bda7a3175fe03cd93e12aaf65d3d00471e780aa91bb6
+Date      : 2026-06-11 04:09:36 UTC 
+Size      : 391 KiB 
+ETag      : 01ea0731bc1dda849a959df7afd9d38f 
+Type      : file 
+Metadata  :
+  Content-Type: image/png 
+
+DONE RUN_ID=9949bb3a-d0f1-4e2c-a23d-2aae813a5b47

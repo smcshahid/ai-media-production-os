@@ -44,3 +44,18 @@ def load_script_prompt(settings: Settings, *, version: str = "v1") -> dict:
     """Load Screenwriter prompt template YAML."""
     path = resolve_config_root(settings) / "prompts" / "screenwriter" / f"{version}.yaml"
     return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def load_storyboard_model(settings: Settings) -> str:
+    """Pinned Ollama model for storyboard planning (``configs/ollama/models.json``)."""
+    models_path = resolve_config_root(settings) / "ollama" / "models.json"
+    data = json.loads(models_path.read_text(encoding="utf-8"))
+    return str(
+        data.get("stages", {}).get("storyboard") or data.get("default") or "qwen3:14b"
+    )
+
+
+def load_storyboard_prompt(settings: Settings, *, version: str = "v1") -> dict:
+    """Load Cinematography prompt template YAML."""
+    path = resolve_config_root(settings) / "prompts" / "cinematography" / f"{version}.yaml"
+    return yaml.safe_load(path.read_text(encoding="utf-8"))

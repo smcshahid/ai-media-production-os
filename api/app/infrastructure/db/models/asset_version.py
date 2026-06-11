@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 
 from aimpos_core.enums import AssetStage
-from sqlalchemy import JSON, Boolean, Enum, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import JSON, Boolean, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.infrastructure.db.base import Base, created_at_column, uuid_pk
@@ -18,11 +18,10 @@ from app.infrastructure.db.base import Base, created_at_column, uuid_pk
 
 class AssetVersion(Base):
     __tablename__ = "asset_versions"
-    __table_args__ = (
-        # Version chain is unique per (project, stage). T-05-03 increments
-        # ``version`` along this chain.
-        UniqueConstraint("project_id", "stage", "version"),
-    )
+    # Uniqueness: single-row stages use (project_id, stage, version); STORYBOARD
+    # batches share version with per-frame ``metadata_json.frame_index`` (D-43).
+    # Enforced by partial indexes in migration 0003 — not declarable on SQLite.
+    __table_args__ = ()
 
     id: Mapped[uuid.UUID] = uuid_pk()
     project_id: Mapped[uuid.UUID] = mapped_column(

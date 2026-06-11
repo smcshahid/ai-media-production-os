@@ -2,7 +2,8 @@
   "default": "qwen3:14b",
   "stages": {
     "story": "qwen3:14b",
-    "script": "qwen3:14b"
+    "script": "qwen3:14b",
+    "storyboard": "qwen3:14b"
   },
   "fallback_priority": ["llama3.1:8b", "mistral:7b"],
   "fallback_vram_under_16gb": "mistral:7b",

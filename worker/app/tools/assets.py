@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import json
 import uuid
 from dataclasses import dataclass
 
@@ -28,6 +29,10 @@ class ApprovedStoryNotFoundError(AssetStoreError):
 
 class ApprovedScriptNotFoundError(AssetStoreError):
     """No approved SCRIPT asset exists for the pipeline run (D-41)."""
+
+
+class StoryboardBatchStoreError(AssetStoreError):
+    """Storyboard batch persistence failed (D-44)."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -68,6 +73,24 @@ class ApprovedScriptAsset:
     script_fountain: str
     minio_key: str
     version: int
+
+
+@dataclass(frozen=True, slots=True)
+class StoryboardFrameInput:
+    frame_index: int
+    png_bytes: bytes
+    prompt: str
+    seed: int
+    shot_label: str
+
+
+@dataclass(frozen=True, slots=True)
+class StoredStoryboardFrame:
+    asset_version_id: uuid.UUID
+    content_hash: str
+    minio_key: str
+    version: int
+    frame_index: int
 
 
 def _engine(settings: Settings) -> Engine:
@@ -414,6 +437,138 @@ def store_script_fountain(
         minio_key=key,
         version=int(version),
     )
+
+
+def _rollback_minio_keys(settings: Settings, keys: list[str]) -> None:
+    """Best-effort delete of MinIO objects from a failed batch attempt (D-44)."""
+    if not keys:
+        return
+    client = _minio_client(settings)
+    for key in keys:
+        try:
+            client.remove_object(settings.minio_bucket, key)
+        except Exception:
+            pass
+
+
+def store_storyboard_batch(
+    settings: Settings,
+    *,
+    project_id: uuid.UUID,
+    pipeline_run_id: uuid.UUID,
+    script_parent_id: uuid.UUID,
+    frames: list[StoryboardFrameInput],
+    branch: str = "ai-draft",
+    workflow_name: str = "sdxl_storyboard_production_v1",
+) -> list[StoredStoryboardFrame]:
+    """Persist exactly one storyboard batch atomically (D-43 / D-44).
+
+    Ordering: validate in memory → MinIO puts → DB transaction (assets + lineage).
+    On DB failure, compensating MinIO deletes run for keys written in this attempt.
+    """
+    if not frames:
+        raise StoryboardBatchStoreError("empty frame batch")
+
+    from app.agents.cinematography.validate import validate_storyboard_frame
+
+    prepared: list[tuple[StoryboardFrameInput, str, str, uuid.UUID]] = []
+    for frame in frames:
+        validate_storyboard_frame(frame.png_bytes)
+        content_hash = compute_content_hash(frame.png_bytes)
+        key = build_object_key(project_id, AssetStage.STORYBOARD, content_hash)
+        prepared.append((frame, content_hash, key, uuid.uuid4()))
+
+    client = _minio_client(settings)
+    keys_written: list[str] = []
+    try:
+        for frame, _content_hash, key, _asset_id in prepared:
+            client.put_object(
+                settings.minio_bucket,
+                key,
+                io.BytesIO(frame.png_bytes),
+                length=len(frame.png_bytes),
+                content_type="image/png",
+            )
+            keys_written.append(key)
+
+        engine = _engine(settings)
+        try:
+            with engine.begin() as conn:
+                batch_version = conn.execute(
+                    text(
+                        """
+                        SELECT COALESCE(MAX(version), 0) + 1 AS next_version
+                        FROM asset_versions
+                        WHERE project_id = :project_id AND stage = 'STORYBOARD'
+                        """
+                    ),
+                    {"project_id": str(project_id)},
+                ).scalar_one()
+
+                stored: list[StoredStoryboardFrame] = []
+                frame_count = len(frames)
+                for frame, content_hash, key, asset_id in prepared:
+                    metadata = {
+                        "frame_index": frame.frame_index,
+                        "frame_count": frame_count,
+                        "prompt": frame.prompt,
+                        "shot_label": frame.shot_label,
+                        "workflow": workflow_name,
+                        "seed": frame.seed,
+                    }
+                    conn.execute(
+                        text(
+                            """
+                            INSERT INTO asset_versions (
+                                id, project_id, pipeline_run_id, stage, version,
+                                minio_key, content_hash, is_ai_generated, branch, metadata_json
+                            ) VALUES (
+                                :id, :project_id, :pipeline_run_id, 'STORYBOARD', :version,
+                                :minio_key, :content_hash, TRUE, :branch, CAST(:metadata AS jsonb)
+                            )
+                            """
+                        ),
+                        {
+                            "id": str(asset_id),
+                            "project_id": str(project_id),
+                            "pipeline_run_id": str(pipeline_run_id),
+                            "version": batch_version,
+                            "minio_key": key,
+                            "content_hash": content_hash,
+                            "branch": branch,
+                            "metadata": json.dumps(metadata),
+                        },
+                    )
+                    conn.execute(
+                        text(
+                            """
+                            INSERT INTO lineage_edges (id, parent_id, child_id)
+                            VALUES (:id, :parent_id, :child_id)
+                            ON CONFLICT (parent_id, child_id) DO NOTHING
+                            """
+                        ),
+                        {
+                            "id": str(uuid.uuid4()),
+                            "parent_id": str(script_parent_id),
+                            "child_id": str(asset_id),
+                        },
+                    )
+                    stored.append(
+                        StoredStoryboardFrame(
+                            asset_version_id=asset_id,
+                            content_hash=content_hash,
+                            minio_key=key,
+                            version=int(batch_version),
+                            frame_index=frame.frame_index,
+                        )
+                    )
+        finally:
+            engine.dispose()
+    except Exception as exc:
+        _rollback_minio_keys(settings, keys_written)
+        raise StoryboardBatchStoreError(str(exc)) from exc
+
+    return stored
 
 
 def insert_lineage_edge(

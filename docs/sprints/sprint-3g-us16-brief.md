@@ -1,6 +1,6 @@
 # Sprint 3G — US-16 Generate Storyboard Frames (governance brief)
 
-**Status:** RATIFIED for planning — **not authorized for implementation** until this brief is accepted.  
+**Status:** **CLOSED** — formally accepted 2026-06-11 (`v0.3.5-us16`, Olares verification PASS).  
 **Story:** US-16 "Generate storyboard frames" · FEAT-08 AI Storyboard Generation · EPIC-04 · P0 · 8 SP · Sprint S4.  
 **Prerequisites (all closed):** US-05 ✅ (MinIO/assets) · US-06 ✅ (ComfyUI smoke, `D-03`) · US-07 ✅ (workflow) · US-14 ✅ (`script.fountain`, `D-39`/`D-40`) · US-15 ✅ (SCRIPT gate, `D-41`/`D-42`, `fetch_approved_script`).  
 **Blocks:** US-17 (storyboard gallery review), US-20 (lineage viewer), US-V01 (Visual MVP E2E).
@@ -113,7 +113,7 @@ US-16 does **not** add new `PipelineRunStatus` or stage enum values.
 
 ## 3. Storyboard Asset Contract
 
-**To be recorded as `D-43` in `DECISIONS.md` at implementation start** (governance pin for US-16, US-17).
+**Recorded as `D-43` in `DECISIONS.md`** (plan authorization). Batch completeness: **`D-44`**.
 
 ### 3.1 Frame filename convention
 
@@ -188,7 +188,7 @@ Raises `ApprovedScriptNotFoundError` if approval gate or SCRIPT row missing.
 |---|---|---|
 | Fountain screenplay text | `ApprovedScriptAsset.script_fountain` | Prior rejected SCRIPT drafts |
 | Style context (optional) | IDEA `metadata_json.style_note` via existing fetch | Raw STORY bytes (script is canonical for shots) |
-| Rejection note | **Not in US-16** — first generation only; US-17 regen may add **`D-44`** later | N/A |
+| Rejection note | **Not in US-16** — first generation only; US-17 regen contract deferred | N/A |
 
 ### 4.4 Timing gate
 

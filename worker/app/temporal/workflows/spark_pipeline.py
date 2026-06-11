@@ -1,4 +1,4 @@
-"""SparkPipelineWorkflow — STORY (US-12) + SCRIPT (US-14) agents + stub STORYBOARD + approval gates."""
+"""SparkPipelineWorkflow — STORY + SCRIPT + STORYBOARD agents + approval gates."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ with workflow.unsafe.imports_passed_through():
     from app.temporal.activities.pipeline_status import sync_pipeline_status
     from app.temporal.activities.script import run_script_agent
     from app.temporal.activities.story import run_story_agent
-    from app.temporal.activities.stub import run_stub_stage
+    from app.temporal.activities.storyboard import run_storyboard_agent
 
 _STAGE_ORDER = (
     PipelineStage.STORY,
@@ -97,12 +97,12 @@ class SparkPipelineWorkflow:
                 start_to_close_timeout=timedelta(minutes=5),
                 retry_policy=RetryPolicy(maximum_attempts=3),
             )
-        else:
+        elif stage == PipelineStage.STORYBOARD:
             await workflow.execute_activity(
-                run_stub_stage,
-                args=[stage.value, pipeline_input.run_id],
-                start_to_close_timeout=timedelta(seconds=30),
-                retry_policy=RetryPolicy(maximum_attempts=3),
+                run_storyboard_agent,
+                args=[pipeline_input.project_id, pipeline_input.run_id],
+                start_to_close_timeout=timedelta(minutes=15),
+                retry_policy=RetryPolicy(maximum_attempts=2),
             )
 
     @workflow.run
