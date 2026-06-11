@@ -55,7 +55,7 @@ export interface AssetVersion {
   minio_key: string;
   is_ai_generated: boolean;
   branch: string;
-  metadata_json?: Record<string, string> | null;
+  metadata_json?: Record<string, string | number | boolean> | null;
   created_at: string;
 }
 
@@ -92,4 +92,26 @@ export interface LineageResponse {
   project_id: string;
   nodes: LineageNode[];
   edges: LineageEdge[];
+}
+
+/** D-57 asset history version row (US-23 consumes only). */
+export interface AssetHistoryVersion {
+  asset_id: string;
+  version: number;
+  content_hash: string;
+  is_ai_generated: boolean;
+  branch: string;
+  pipeline_run_id: string | null;
+  metadata: Record<string, string | number | boolean>;
+  created_at: string;
+}
+
+export interface AssetHistoryStage {
+  stage: string;
+  versions: AssetHistoryVersion[];
+}
+
+export interface AssetHistoryResponse {
+  project_id: string;
+  stages: AssetHistoryStage[];
 }

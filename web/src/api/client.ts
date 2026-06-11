@@ -8,6 +8,7 @@
  */
 
 import type {
+  AssetHistoryResponse,
   AssetVersion,
   IdeaCreateBody,
   LineageResponse,
@@ -200,4 +201,10 @@ export function downloadExport(pipelineRunId: string): Promise<Blob> {
 
 export function getLineage(pipelineRunId: string): Promise<LineageResponse> {
   return request<LineageResponse>(`/lineage/${encodeURIComponent(pipelineRunId)}`);
+}
+
+export function getAssetHistory(projectId: string): Promise<AssetHistoryResponse> {
+  return request<AssetHistoryResponse>(
+    `/assets/history?project_id=${encodeURIComponent(projectId)}`,
+  );
 }

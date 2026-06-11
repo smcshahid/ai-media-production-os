@@ -1,0 +1,30 @@
+﻿node.exe : npm warn Unknown cli config "--run". This will stop working in the next major version of npm.
+At C:\nvm4w\nodejs\npm.ps1:16 char:5
++     & "$basedir/node$exe"  "$basedir/node_modules/npm/bin/npm-cli.js" ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...version of npm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> aimpos-web@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.6 C:/Users/shahid85/02_Personnal/AI Production Media/web
+
+ Γ£ô src/tests/pipelineDisplay.test.ts (3 tests) 6ms
+ Γ£ô src/tests/storyboardReview.test.ts (3 tests) 6ms
+ Γ£ô src/tests/historyDisplay.test.ts (6 tests) 52ms
+ Γ£ô src/tests/fountainFormat.test.ts (3 tests) 6ms
+ Γ£ô src/tests/client.test.ts (2 tests) 21ms
+ Γ£ô src/tests/Stepper.test.tsx (4 tests) 169ms
+ Γ£ô src/tests/RequireAuth.test.tsx (2 tests) 128ms
+ Γ£ô src/tests/lineageDisplay.test.ts (3 tests) 7ms
+ Γ£ô src/tests/storyReview.test.ts (3 tests) 5ms
+ Γ£ô src/tests/scriptReview.test.ts (3 tests) 6ms
+
+ Test Files  10 passed (10)
+      Tests  32 passed (32)
+   Start at  15:06:47
+   Duration  19.67s (transform 4.37s, setup 4.33s, collect 5.43s, tests 406ms, environment 64.78s, prepare 10.74s)
+

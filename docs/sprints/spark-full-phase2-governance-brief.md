@@ -208,7 +208,7 @@ Recommended order after governance **ACCEPT**. Dependencies reflect read-path la
 
 | Order | Story | SP | Depends on | Delivers |
 |---|---|---|---|---|
-| **2B-1** | **US-23** Asset History UI | 3 | US-22 ✅ | Stage browser + preview — **brief SUBMITTED** |
+| **2B-1** | **US-23** Asset History UI | 3 | US-22 ✅ | `/history` browser — **brief ACCEPT C-01; plan SUBMITTED** |
 | **2B-2** | **US-21** Realtime Updates | 5 | US-10 ✅, US-26 ✅ | WebSocket hub; subscribe by `project_id`; push `pipeline/status` shape |
 
 **US-21 note:** Polling remains **fallback** if WebSocket unavailable; dashboard must not regress when socket drops.

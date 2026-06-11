@@ -320,3 +320,9 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** `GET /assets/history?project_id={uuid}` returns **read-only** JSON with `project_id` and `stages[]` grouped in pipeline order (IDEA → STORY → SCRIPT → STORYBOARD → VIDEO). Each stage's `versions[]` lists **all** matching `asset_versions` rows, **newest first** (`version DESC`; STORYBOARD then `frame_index ASC`). Optional filters: `stage`, `pipeline_run_id` (IDEA rows with null `pipeline_run_id` remain when run filter applied). **GET only** — no restore, promote, or mutation routes. Content bytes via existing **`GET /assets/{asset_id}/content`**. `GET /assets` flat list **unchanged**.
 **Rationale:** US-22 visibility-only version history; defers UI to US-23.
 **Verification:** US-22 unit tests + Olares S-22-03 SQL row parity.
+
+### D-58 — US-23 — Asset history UI scope
+**Date:** 2026-06-11
+**Decision:** Asset history UI is a **read-only** browser at route **`/history`** (AppShell nav link **History**). Data **exclusively** from **`GET /assets/history?project_id=`** (D-57); content preview via existing **`GET /assets/{asset_id}/content`** only. Layout: **stage-grouped vertical sections** preserving API stage and version order (no client re-sort). Click row opens **metadata panel** (stage, version, `content_hash`, branch, `is_ai_generated`, `created_at`, `pipeline_run_id`, STORYBOARD `frame_index`). Optional **Preview** / **Download** for STORY, SCRIPT, STORYBOARD, VIDEO; IDEA metadata only. v1 uses **`project_id` only** (no run/stage filter UI). **Forbidden:** restore, rollback, promote, asset editing, version diff UI, graph libraries, backend/API/schema/workflow changes.
+**Rationale:** Creator-facing version transparency consuming frozen D-57; defers mutation and diff to future stories.
+**Verification:** US-23 web vitest + Olares S-23-02..S-23-08 API regression + local bundle route check S-23-01.

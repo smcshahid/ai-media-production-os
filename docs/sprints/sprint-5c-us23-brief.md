@@ -1,6 +1,7 @@
 # Sprint 5C — US-23 Asset History UI (governance brief)
 
-**Status:** **SUBMITTED** — awaiting governance ACCEPT. Implementation **not authorized**.  
+**Status:** **CLOSED** — `v0.10.0-us23` · governance ACCEPT 2026-06-10.  
+**Implementation plan:** `docs/sprints/sprint-5c-us23-implementation-plan.md` (**ACCEPT**)
 **Parent program:** Spark Full Phase 2 ([spark-full-phase2-governance-brief.md](./spark-full-phase2-governance-brief.md) **ACCEPT**)  
 **Story:** US-23 Asset History UI · FEAT-12 · EPIC-06 · **P1** · 3 SP  
 **Prerequisites (closed):** US-22 ✅ · US-20 ✅ · US-V02 ✅ · US-26 ✅  
@@ -159,8 +160,8 @@ Scripts: `deploy/k8s/us23-verify/` (to be authored at implementation).
 | Stage | Status |
 |---|---|
 | Phase 2 program brief | **ACCEPT** |
-| **US-23 brief** | **SUBMITTED** |
-| Implementation plan | Not started |
+| **US-23 brief** | **ACCEPT WITH CONDITION** |
+| Implementation plan | **SUBMITTED** — awaiting ACCEPT |
 | Code / deploy | **Not authorized** |
 
 Upon brief ACCEPT: author implementation plan → governance review → D-58 → implement.
@@ -172,3 +173,4 @@ Upon brief ACCEPT: author implementation plan → governance review → D-58 →
 | Version | Date | Changes |
 |---|---|---|
 | 1.0 | 2026-06-11 | Initial submission — Phase 2 story 2B-1 |
+| **1.1** | **2026-06-11** | **ACCEPT WITH CONDITION; implementation plan authorized** |

@@ -19,7 +19,8 @@ Privacy-first, local-AI media production platform.
 | Spark Full Phase 1 summary | `docs/sprints/spark-full-completion-summary.md` |
 | US-20 | **CLOSED** — `v0.8.0-us20` · `docs/sprints/sprint-5a-us20-closure-report.md` |
 | US-22 | **CLOSED** — `v0.9.0-us22` · `docs/sprints/sprint-5b-us22-closure-report.md` |
-| US-23 brief | `docs/sprints/sprint-5c-us23-brief.md` (**SUBMITTED**) |
+| US-23 brief | `docs/sprints/sprint-5c-us23-brief.md` (**ACCEPT WITH CONDITION**) |
+| US-23 | **CLOSED** — `v0.10.0-us23` · `docs/sprints/sprint-5c-us23-closure-report.md` |
 | Spark Full governance | `docs/sprints/spark-full-governance-brief.md` (**ACCEPT — Phase 1 closed**) |
 | US-18 | **CLOSED** — `v0.5.0-us18` · `docs/sprints/sprint-4a-us18-closure-report.md` |
 | US-19 | **CLOSED** — `v0.6.0-us19` · `docs/sprints/sprint-4b-us19-closure-report.md` |
