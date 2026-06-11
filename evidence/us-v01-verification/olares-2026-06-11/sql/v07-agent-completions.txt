@@ -1,0 +1,7 @@
+-- V-07 local model invocations (AC-7, SC-02, SC-V05)
+event_type|agent|model_id
+AGENT_TASK_COMPLETED|agent.story_architect|qwen3:14b
+AGENT_TASK_COMPLETED|agent.screenwriter|qwen3:14b
+AGENT_TASK_COMPLETED|agent.screenwriter|qwen3:14b
+AGENT_TASK_COMPLETED|agent.cinematography|qwen3:14b
+AGENT_TASK_COMPLETED|agent.cinematography|qwen3:14b

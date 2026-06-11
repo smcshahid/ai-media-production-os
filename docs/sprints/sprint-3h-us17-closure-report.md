@@ -95,13 +95,16 @@ US-V01 implementation is **not authorized** until governance brief is accepted.
 | `v0.3.3-us14` | US-14 Screenwriter | `db9370c` | 2026-06-10 |
 | `v0.3.4-us15` | US-15 Script review | `7efd89c` | 2026-06-11 |
 | `v0.3.5-us16` | US-16 Storyboard frames | `40116c9` | 2026-06-11 |
-| **`v0.3.6-us17`** | **US-17 Storyboard gallery review** | *(pending)* | **2026-06-11** |
+| **`v0.3.6-us17`** | **US-17 Storyboard gallery review** | **`4604e5f`** | **2026-06-11** |
 
 ---
 
 ## 8. Push confirmation
 
-*(Updated after push.)*
+```
+git push origin main          → 4f52bb5..4604e5f  main -> main
+git push origin v0.3.6-us17   → [new tag] v0.3.6-us17 -> v0.3.6-us17
+```
 
 Repository: `https://github.com/smcshahid/ai-media-production-os`
 

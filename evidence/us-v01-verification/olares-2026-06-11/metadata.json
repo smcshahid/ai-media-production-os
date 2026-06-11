@@ -1,0 +1,20 @@
+{
+  "story": "US-V01",
+  "date": "2026-06-11",
+  "baseline_tag": "v0.3.6-us17",
+  "project_id": "fa5485c3-05d3-4b71-b9ef-39ca7339da47",
+  "run_id": "efdc8200-f5a4-448a-be83-6e05c05586fd",
+  "api_image": "docker.io/library/aimpos-api:us17",
+  "worker_image": "docker.io/library/aimpos-worker:us17",
+  "api_cluster_ip": "10.233.21.231:8000",
+  "amendment_a01": true,
+  "storyboard_v1_version": 1,
+  "storyboard_v2_version": 2,
+  "storyboard_v1_frames": 4,
+  "storyboard_v2_frames": 4,
+  "final_status": "COMPLETED",
+  "sc_v07_delta_start_to_story_gate_seconds": 30,
+  "verify_script_exit_code": 1,
+  "verify_script_note": "False FAIL on S-14 poll timing; platform reached COMPLETED within ~5s (see DR-06 polls)",
+  "infra_defects_resolved": ["INFRA-V01-001"]
+}

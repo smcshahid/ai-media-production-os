@@ -1,0 +1,7 @@
+-- V-02 human gate decisions (AC-7, SC-V03)
+stage|decision|rationale
+STORY|APPROVED|
+SCRIPT|REJECTED|US-V01: tighten dialogue in the second scene.
+SCRIPT|APPROVED|
+STORYBOARD|REJECTED|US-V01 A-01: increase contrast and wider establishing shots.
+STORYBOARD|APPROVED|

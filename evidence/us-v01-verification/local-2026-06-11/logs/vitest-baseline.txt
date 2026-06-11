@@ -1,0 +1,29 @@
+﻿node.exe : npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm 
+help npmrc` for supported config options.
+At C:\nvm4w\nodejs\npm.ps1:16 char:5
++     & "$basedir/node$exe"  "$basedir/node_modules/npm/bin/npm-cli.js" ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...config options.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> aimpos-web@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.6 C:/Users/shahid85/02_Personnal/AI Production Media/web
+
+ Γ£ô src/tests/fountainFormat.test.ts (3 tests) 7ms
+ Γ£ô src/tests/pipelineDisplay.test.ts (3 tests) 7ms
+ Γ£ô src/tests/scriptReview.test.ts (3 tests) 9ms
+ Γ£ô src/tests/client.test.ts (2 tests) 21ms
+ Γ£ô src/tests/storyboardReview.test.ts (3 tests) 7ms
+ Γ£ô src/tests/Stepper.test.tsx (4 tests) 199ms
+ Γ£ô src/tests/RequireAuth.test.tsx (2 tests) 83ms
+ Γ£ô src/tests/storyReview.test.ts (3 tests) 7ms
+
+ Test Files  8 passed (8)
+      Tests  23 passed (23)
+   Start at  23:18:28
+   Duration  11.49s (transform 4.17s, setup 6.30s, collect 4.98s, tests 339ms, environment 28.49s, prepare 2.52s)
+

@@ -1,0 +1,15 @@
+-- V-47 D-47 extension (Amendment A-01)
+-- v1 batch intact (4 frames)
+version|frame_index|content_hash
+1|1|aed341b1534d8ff6f8c7a32b357eaa2c30256fc1877dc9b5660e3757ade400e6
+1|2|8137fd91bca0595d059529dc0bb9cad96bf68fd0e2461421ed7e73b2767ad822
+1|3|73add35208e8f5a2053eec4547452307f4bc349bda1ae7398325532a3e85d3ca
+1|4|b4ad91c40e64e4f630e39b54d494be2ccf9408b26a59ed4681e408713db495cc
+
+-- STORYBOARD regen audit count
+regeneration_requested_count
+1
+
+-- STORYBOARD rows before/after S-14 approve (D-46)
+rows_before_s14=8
+rows_after_s14=8

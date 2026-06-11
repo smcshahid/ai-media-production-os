@@ -1,0 +1,4 @@
+-- V-05 storyboard batch structure (D-43, D-45)
+version|frame_count
+1|4
+2|4

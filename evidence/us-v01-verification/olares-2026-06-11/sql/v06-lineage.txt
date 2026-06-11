@@ -1,0 +1,4 @@
+-- V-06 lineage chain (AC-8)
+parent_stage|child_stage|edges
+SCRIPT|STORYBOARD|8
+STORY|SCRIPT|2

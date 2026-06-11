@@ -1,0 +1,115 @@
+========== PF-03 ComfyUI ==========
+========== PF-03: ComfyUI launcher ==========
+WARN: launcher POST failed
+comfyui_probe=unreachable
+comfyui_ready
+========== PF-05 Fresh project ==========
+Using PROJECT=fa5485c3-05d3-4b71-b9ef-39ca7339da47
+US-V01 verify start 2026-06-11T06:19:47+00:00
+API=http://10.233.21.231:8000 PROJECT=fa5485c3-05d3-4b71-b9ef-39ca7339da47
+API_IMAGE=docker.io/library/aimpos-api:us17 WORKER_IMAGE=docker.io/library/aimpos-worker:us17
+========== PF-01: deploy images ==========
+API_IMAGE=docker.io/library/aimpos-api:us17
+WORKER_IMAGE=docker.io/library/aimpos-worker:us17
+========== PF-04: health ==========
+{"status":"healthy","dependencies":{"postgresql":{"status":"ok","detail":null},"redis":{"status":"ok","detail":null},"minio":{"status":"ok","detail":null}}}
+========== PF-06: no active run ==========
+========== S-02: POST /ideas ==========
+{"id":"470ba63f-ee2c-4d32-8a49-359352a81fb0","project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","stage":"IDEA","version":1,"content_hash":"6cdd9cf0507bd9178df88aaa797d9e62015f567877a40e0975f6cd258e98e37c","minio_key":"fa5485c3-05d3-4b71-b9ef-39ca7339da47/IDEA/6cdd9cf0507bd9178df88aaa797d9e62015f567877a40e0975f6cd258e98e37c","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic"},"created_at":"2026-06-11T06:19:47.222570"}
+========== S-03: POST /pipeline/start ==========
+START={"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","workflow_id":"spark-pipeline-efdc8200-f5a4-448a-be83-6e05c05586fd","status":"RUNNING","current_stage":"STORY"}
+HTTP_CODE:201
+RUN_ID=efdc8200-f5a4-448a-be83-6e05c05586fd
+========== S-04: poll STORY gate ==========
+  poll status=RUNNING stage=STORY want=STORY
+  poll status=RUNNING stage=STORY want=STORY
+  poll status=AWAITING_APPROVAL stage=STORY want=STORY
+T_STORY_GATE=1781158817 delta_start=30s
+========== S-05: human edit STORY ==========
+STORY_ID=be29b449-96b9-4162-95aa-b3be08dd6e8a
+{"id":"a1a8ddcf-9a92-4859-b7d2-057a25eea709","project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","stage":"STORY","version":2,"content_hash":"309b1efc13c465624ecdbdf585345fc849228c62f996dad92cda2cc05ccff7fa","minio_key":"fa5485c3-05d3-4b71-b9ef-39ca7339da47/STORY/309b1efc13c465624ecdbdf585345fc849228c62f996dad92cda2cc05ccff7fa","is_ai_generated":false,"branch":"human-edit","metadata_json":null,"created_at":"2026-06-11T06:20:17.417518"}
+========== S-06: approve STORY ==========
+{"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","approval_id":"0417eda4-9726-4f76-8ad0-079dde3a979f","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+========== S-07: poll SCRIPT gate ==========
+  poll status=AWAITING_APPROVAL stage=STORY want=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT want=SCRIPT
+========== S-08: reject SCRIPT ==========
+{"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","approval_id":"b42dc5b7-7606-444d-b994-060f5a643633","decision":"REJECTED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT"}
+========== S-09: regenerate SCRIPT ==========
+{"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","regenerations_used":1}
+========== S-10: poll SCRIPT gate (post-regen) ==========
+  poll status=AWAITING_APPROVAL stage=SCRIPT want=SCRIPT
+========== S-11: approve SCRIPT ==========
+{"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","approval_id":"795a812a-b664-48ac-8120-99caf8105155","decision":"APPROVED","stage":"SCRIPT","status":"RUNNING","current_stage":"SCRIPT"}
+========== S-12: poll STORYBOARD gate (batch v1) ==========
+  poll sb_version=0 status=RUNNING stage=SCRIPT
+  poll sb_version=0 status=RUNNING stage=STORYBOARD
+  poll sb_version=1 status=AWAITING_APPROVAL stage=STORYBOARD
+SB_V1=1 frames=4
+1|1|aed341b1534d8ff6f8c7a32b357eaa2c30256fc1877dc9b5660e3757ade400e6
+1|2|8137fd91bca0595d059529dc0bb9cad96bf68fd0e2461421ed7e73b2767ad822
+1|3|73add35208e8f5a2053eec4547452307f4bc349bda1ae7398325532a3e85d3ca
+1|4|b4ad91c40e64e4f630e39b54d494be2ccf9408b26a59ed4681e408713db495cc
+========== S-12a: reject STORYBOARD (A-01) ==========
+{"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","approval_id":"eb9f563c-2385-40f4-8d69-f773159995f4","decision":"REJECTED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD"}
+========== S-12b: regenerate STORYBOARD (A-01 / D-47) ==========
+{"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","regenerations_used":1}
+========== S-12c: poll STORYBOARD gate (batch v2) ==========
+  poll sb_version=1 target>=2 status=RUNNING stage=STORYBOARD
+  poll sb_version=1 target>=2 status=RUNNING stage=STORYBOARD
+  poll sb_version=2 target>=2 status=AWAITING_APPROVAL stage=STORYBOARD
+SB_V2=2 frames=4
+STORYBOARD_ROWS_BEFORE_S14=8
+========== V-47 inline: v1 intact ==========
+V-47 v1 batch count=4: PASS
+1|1|aed341b1534d8ff6f8c7a32b357eaa2c30256fc1877dc9b5660e3757ade400e6
+1|2|8137fd91bca0595d059529dc0bb9cad96bf68fd0e2461421ed7e73b2767ad822
+1|3|73add35208e8f5a2053eec4547452307f4bc349bda1ae7398325532a3e85d3ca
+1|4|b4ad91c40e64e4f630e39b54d494be2ccf9408b26a59ed4681e408713db495cc
+========== S-13: PNG content-read ==========
+CONTENT_READ id=2b7e22a5-bc49-45f8-ab59-c3b02270cfbd http=200 bytes=333051
+========== S-14: approve STORYBOARD → COMPLETED ==========
+{"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","approval_id":"d7b31ff4-67a9-49ee-9b7e-90c10d13e345","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD"}
+FINAL={"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T06:21:49.457054"}
+FAIL: expected COMPLETED got AWAITING_APPROVAL
+STORYBOARD_ROWS_AFTER_S14=8
+========== S-15: worker restart durability (SC-V06) ==========
+DR-01 baseline={"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T06:21:49.457054"}
+deployment.apps/aimpos-worker restarted
+Waiting for deployment "aimpos-worker" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "aimpos-worker" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "aimpos-worker" rollout to finish: 1 old replicas are pending termination...
+deployment "aimpos-worker" successfully rolled out
+DR-06 poll_1={"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T06:21:54.781196"}
+DR-06 poll_2={"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T06:21:54.781196"}
+DR-06 poll_3={"project_id":"fa5485c3-05d3-4b71-b9ef-39ca7339da47","run_id":"efdc8200-f5a4-448a-be83-6e05c05586fd","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD"],"updated_at":"2026-06-11T06:21:54.781196"}
+SC-V06 worker restart: PASS
+========== S-16: inline SQL attestation ==========
+--- V-01 terminal ---
+efdc8200-f5a4-448a-be83-6e05c05586fd|COMPLETED|
+--- V-02 approvals ---
+STORY|APPROVED|
+SCRIPT|REJECTED|US-V01: tighten dialogue in the second scene.
+SCRIPT|APPROVED|
+STORYBOARD|REJECTED|US-V01 A-01: increase contrast and wider establishing shots.
+STORYBOARD|APPROVED|
+--- V-04 SCRIPT versions ---
+1|ai-draft|acd7dea1e50739a5dedc64c867132a8ea3af86a53849d698649d03da7d94de81
+2|ai-draft|3d4a937abc050201c38a6505192644c83d49de9f9b9019eca2416e4dbc013a4c
+--- V-05 STORYBOARD batches ---
+1|4
+2|4
+--- V-06 lineage ---
+SCRIPT|STORYBOARD|8
+STORY|SCRIPT|2
+--- V-07 agent completions ---
+AGENT_TASK_COMPLETED|agent.story_architect|qwen3:14b
+AGENT_TASK_COMPLETED|agent.screenwriter|qwen3:14b
+AGENT_TASK_COMPLETED|agent.screenwriter|qwen3:14b
+AGENT_TASK_COMPLETED|agent.cinematography|qwen3:14b
+AGENT_TASK_COMPLETED|agent.cinematography|qwen3:14b
+--- V-47 STORYBOARD regen audit ---
+1
+========== worker log excerpt (storyboard) ==========
+DONE RUN_ID=efdc8200-f5a4-448a-be83-6e05c05586fd PROJECT=fa5485c3-05d3-4b71-b9ef-39ca7339da47 SB_V1=1 SB_V2=2 FAIL=1
+SC-V07 delta_start_to_story_gate=30s

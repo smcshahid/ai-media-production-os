@@ -4,7 +4,7 @@ Privacy-first, local-AI media production platform — **Visual MVP** scope: Idea
 
 ## Status
 
-**Visual MVP execution:** Sprint 5 · **US-17 CLOSED** (`v0.3.6-us17`) · **Current frontier: US-V01** Visual MVP E2E acceptance.
+**Visual MVP execution:** Sprint 5 · **US-V01 IN PROGRESS** (verify scripts ready; Olares E2E pending) · M5 sign-off blocked.
 
 | State | Detail |
 |-------|--------|

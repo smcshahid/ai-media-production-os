@@ -1,0 +1,4 @@
+-- V-01 terminal state (SC-V01, AC-6)
+-- PROJECT=fa5485c3-05d3-4b71-b9ef-39ca7339da47 RUN_ID=efdc8200-f5a4-448a-be83-6e05c05586fd
+id|status|current_stage
+efdc8200-f5a4-448a-be83-6e05c05586fd|COMPLETED|

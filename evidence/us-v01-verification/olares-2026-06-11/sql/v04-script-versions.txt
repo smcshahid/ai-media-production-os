@@ -1,0 +1,4 @@
+-- V-04 SCRIPT regen immutability (D-38, D-42)
+version|branch|content_hash
+1|ai-draft|acd7dea1e50739a5dedc64c867132a8ea3af86a53849d698649d03da7d94de81
+2|ai-draft|3d4a937abc050201c38a6505192644c83d49de9f9b9019eca2416e4dbc013a4c
