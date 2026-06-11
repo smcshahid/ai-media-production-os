@@ -29,6 +29,7 @@ from app.routes.assets import router as assets_router
 from app.routes.export import router as export_router
 from app.routes.health import router as health_router
 from app.routes.ideas import router as ideas_router
+from app.routes.lineage import router as lineage_router
 from app.routes.pipeline import router as pipeline_router
 from app.routes.projects import router as projects_router
 from app.seed.default_project import seed_default_project
@@ -106,6 +107,7 @@ def create_app() -> FastAPI:
     app.include_router(ideas_router)
     app.include_router(pipeline_router)
     app.include_router(export_router)
+    app.include_router(lineage_router)
     return app
 
 

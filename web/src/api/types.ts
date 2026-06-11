@@ -69,3 +69,27 @@ export interface IdeaCreateBody {
 /** Asset stages accepted by `POST /assets` (mirrors `AssetStage` enum). */
 export const ASSET_STAGES = ["IDEA", "STORY", "SCRIPT", "STORYBOARD"] as const;
 export type AssetStage = (typeof ASSET_STAGES)[number];
+
+export interface LineageNode {
+  asset_id: string;
+  stage: string;
+  version: number;
+  content_hash: string;
+  is_ai_generated: boolean;
+  branch: string;
+  metadata: Record<string, string | number | boolean>;
+  parent_asset_ids: string[];
+  synthetic?: boolean | null;
+}
+
+export interface LineageEdge {
+  parent_asset_id: string;
+  child_asset_id: string;
+}
+
+export interface LineageResponse {
+  pipeline_run_id: string;
+  project_id: string;
+  nodes: LineageNode[];
+  edges: LineageEdge[];
+}

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ApiError, downloadExport, listProjects } from "../api/client";
+import { LineageViewer } from "../components/LineageViewer";
 import type { Project } from "../api/types";
 import { usePipelineStatus } from "../hooks/usePipelineStatus";
 import { badgeClassForStatus, toDisplayStatus } from "../lib/pipelineDisplay";
@@ -117,6 +118,17 @@ export function ExportPage() {
           </p>
         )}
       </div>
+
+      {isCompleted && runId && (
+        <div className="card">
+          <h2 className="card__title">Asset lineage</h2>
+          <p className="card__hint">
+            Read-only provenance chain from idea through video.{" "}
+            <Link to="/lineage">Open full lineage view</Link>
+          </p>
+          <LineageViewer runId={runId} />
+        </div>
+      )}
     </section>
   );
 }

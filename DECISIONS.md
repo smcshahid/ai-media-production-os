@@ -302,3 +302,15 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** Each successful export appends `audit_events` row `event_type=BUNDLE_EXPORTED` with payload: `pipeline_run_id`, `project_id`, `file_count` (8), `manifest_hash`, `zip_size_bytes`, `exported_at`, `manifest_version`. Re-exports append new rows. No worker/Temporal involvement.
 **Rationale:** Auditable delivery without pipeline state mutation.
 **Verification:** US-19 Olares SQL V-19-03.
+
+### D-55 — US-20 — Lineage API read contract
+**Date:** 2026-06-11
+**Decision:** `GET /lineage/{pipeline_run_id}` returns **read-only** JSON with `pipeline_run_id`, `project_id`, `nodes[]`, and `edges[]`. **GET only** — no mutation routes. `edges[]` **MUST** mirror run-scoped `lineage_edges` rows (SQL join on `asset_versions`; both endpoints same `project_id`; either endpoint references the run). Display-chain `nodes[]` uses the same approved-version resolution as export (`resolve_export_files`). The IDEA node **MUST** include `synthetic: true` and `parent_asset_ids: []`; it **MUST NOT** appear in `edges[]` unless a real row exists (none today — C-01). Valid runs return **200** regardless of status; **404** when run missing.
+**Rationale:** US-20 read-path visibility without provenance mutation (C-01).
+**Verification:** US-20 unit tests + Olares S-20-03 API/SQL edge parity.
+
+### D-56 — US-20 — Lineage UI scope
+**Date:** 2026-06-11
+**Decision:** Lineage UI is a **vertical list/tree** (HTML/CSS only) on the **Export** page and optional **`/lineage`** route when `pipeline.status === COMPLETED`. Data from `GET /lineage/{run_id}`. Click row opens a **metadata panel** (stage, version, `content_hash`, `frame_index`, `synthetic` badge on IDEA). **Forbidden:** graph libraries, lineage edit/repair, asset history browser, workflow changes. IDEA row labeled as presentation root with tooltip: not stored as a lineage edge.
+**Rationale:** Minimal creator-facing provenance view; defers US-22/23 and graph viz.
+**Verification:** US-20 web vitest + Olares S-20-02/S-20-04.

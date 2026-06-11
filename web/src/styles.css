@@ -637,3 +637,85 @@ input[type="file"],
 .login__submit:not(:disabled):hover {
   background: var(--primary-press);
 }
+
+/* US-20 lineage viewer (list/tree — no graph libs) */
+.lineage__tree {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.lineage__row {
+  margin: 0 0 4px;
+}
+
+.lineage__row-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.lineage__row--selected .lineage__row-button {
+  border-color: var(--primary);
+  background: rgba(79, 124, 255, 0.1);
+}
+
+.lineage__label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.lineage__hash {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: ui-monospace, monospace;
+}
+
+.lineage__synthetic {
+  font-size: 10px;
+}
+
+.lineage__panel {
+  margin-top: 18px;
+  padding: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.lineage__panel-title {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.lineage__meta {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.lineage__meta dt {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.lineage__meta dd {
+  margin: 2px 0 0;
+}
+
+.lineage__mono {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}

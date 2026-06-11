@@ -10,6 +10,7 @@
 import type {
   AssetVersion,
   IdeaCreateBody,
+  LineageResponse,
   PipelineApproveResponse,
   PipelineRegenerateResponse,
   PipelineStartResponse,
@@ -195,4 +196,8 @@ export function downloadExport(pipelineRunId: string): Promise<Blob> {
   return requestBlob(`/export/${encodeURIComponent(pipelineRunId)}`, {
     headers: { Accept: "application/zip" },
   });
+}
+
+export function getLineage(pipelineRunId: string): Promise<LineageResponse> {
+  return request<LineageResponse>(`/lineage/${encodeURIComponent(pipelineRunId)}`);
 }

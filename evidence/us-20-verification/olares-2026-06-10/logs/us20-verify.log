@@ -1,0 +1,20 @@
+US-20 verify start 2026-06-11T20:53:34+00:00
+API=http://10.233.21.231:8000 RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625 PROJECT=76aa4418-d92d-45f7-954c-a10383ea511a STATUS=COMPLETED
+LINEAGE_EDGES_BEFORE=94
+========== S-20-01: GET /lineage ==========
+LINEAGE http=200
+========== S-20-02: display chain stages ==========
+DISPLAY_CHAIN=PASS stages= ['IDEA', 'STORY', 'SCRIPT', 'STORYBOARD', 'STORYBOARD', 'STORYBOARD', 'STORYBOARD', 'VIDEO']
+========== S-20-03: API vs SQL edge parity ==========
+SQL_EDGE_COUNT=18 API_EDGE_COUNT=18
+========== S-20-04: synthetic IDEA ==========
+SYNTHETIC_IDEA=PASS
+========== S-20-05: STORYBOARD→VIDEO edges ==========
+STORYBOARD_TO_VIDEO=4 (expect 4)
+========== S-20-06: unknown run 404 ==========
+UNKNOWN http=404
+========== S-20-07: export regression ==========
+EXPORT http=200
+========== V-20-L04: no lineage writes ==========
+LINEAGE_EDGES_AFTER=94
+DONE RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625 PROJECT=76aa4418-d92d-45f7-954c-a10383ea511a FAIL=0

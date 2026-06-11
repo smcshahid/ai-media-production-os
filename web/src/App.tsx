@@ -6,6 +6,7 @@ import { AssetsPage } from "./routes/AssetsPage";
 import { AuditPage } from "./routes/AuditPage";
 import { DashboardPage } from "./routes/DashboardPage";
 import { ExportPage } from "./routes/ExportPage";
+import { LineagePage } from "./routes/LineagePage";
 import { LoginPage } from "./routes/LoginPage";
 import { ReviewPage } from "./routes/ReviewPage";
 
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/review" element={<ReviewPage />} />
         <Route path="/assets" element={<AssetsPage />} />
         <Route path="/export" element={<ExportPage />} />
+        <Route path="/lineage" element={<LineagePage />} />
         <Route path="/audit" element={<AuditPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

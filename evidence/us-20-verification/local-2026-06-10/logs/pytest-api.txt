@@ -1,0 +1,16 @@
+﻿........................................................................ [ 76%]
+......................                                                   [100%]
+============================== warnings summary ===============================
+tests/unit/test_assets_us13.py::test_get_asset_content_rejects_non_story_stage
+tests/unit/test_assets_us15.py::test_content_read_rejects_idea_stage
+  C:\Users\shahid85\02_Personnal\AI Production Media\api\app\routes\assets.py:169: DeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    row = _require_readable_asset(await versions.get(asset_id), asset_id)
+
+tests/unit/test_assets_us13.py::test_put_asset_empty_text_returns_422
+tests/unit/test_ideas_route.py::test_post_ideas_missing_title_returns_422
+tests/unit/test_pipeline_approve.py::test_reject_without_note_returns_422
+  C:\Users\shahid85\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py:316: DeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    return await dependant.call(**values)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+94 passed, 5 warnings in 27.91s
