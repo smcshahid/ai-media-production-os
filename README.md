@@ -14,7 +14,8 @@ Privacy-first, local-AI media production platform.
 | Visual MVP release | `v0.4.0-usv01` — US-V01 acceptance (`93214fc`) |
 | Visual MVP summary | `docs/sprints/visual-mvp-completion-summary.md` |
 | Spark Full governance | `docs/sprints/spark-full-governance-brief.md` (**ACCEPT**) |
-| US-18 brief | `docs/sprints/sprint-4a-us18-brief.md` (**SUBMITTED FOR REVIEW**) |
+| US-18 brief | `docs/sprints/sprint-4a-us18-brief.md` (**ACCEPT**) |
+| US-18 implementation plan | `docs/sprints/sprint-4a-us18-implementation-plan.md` (**SUBMITTED FOR REVIEW**) |
 | Stack | 9-service compose; Olares GPU path verified through STORYBOARD |
 | CI | `.github/workflows/ci-api.yml` — ruff/mypy/pytest + web build/lint/vitest on PRs |
 

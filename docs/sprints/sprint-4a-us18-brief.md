@@ -1,16 +1,7 @@
 # Sprint 4A — US-18 Generate Short Video Clip (governance brief)
 
-**Status:** **SUBMITTED FOR REVIEW**  
-**Parent program:** [Spark Full Governance Brief](./spark-full-governance-brief.md) (**ACCEPT**)  
-**Story:** US-18 "Generate short video clip" · FEAT-10 AI Short Video Generation · EPIC-05 · P0 · 8 SP  
-**Prerequisites (all closed):** US-05 ✅ · US-06 ✅ · US-07 ✅ · US-08 ✅ · US-09 ✅ · US-16 ✅ · US-17 ✅ · US-V01 ✅  
-**Blocks:** US-19 (video review UI + formal COMPLETED UX) · US-20 (lineage to video) · US-V02 (Spark Full acceptance)  
-**Does not authorize:** US-19 web player · US-20/21 UI · export ZIP · implementation code
-
-**Canonical source:** `GitHub Issues - Full MVP (Superseded).md` → Issue 46 `[US-18]`  
-**Baseline:** `v0.4.0-usv01` (`93214fc`)
-
-**Implementation remains unauthorized** until this brief receives governance **ACCEPT**.
+**Status:** **ACCEPT** — governance review 2026-06-11. Implementation plan authorized; **code not authorized** until plan ACCEPT.  
+**Implementation plan:** `docs/sprints/sprint-4a-us18-implementation-plan.md` (**SUBMITTED FOR REVIEW**)
 
 ---
 
