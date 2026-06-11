@@ -7,7 +7,7 @@ Privacy-first, local-AI media production platform.
 | Program | Status | Frontier |
 |---------|--------|----------|
 | **Visual MVP** | **CLOSED** (M5 · `v0.4.0-usv01`) | — |
-| **Spark Full** | **Phase 2 ACTIVE** (M7 in progress) | **US-23** — Asset History UI |
+| **Spark Full** | **Phase 2 ACTIVE** (M7 in progress) | **US-V03** — Phase 2 acceptance |
 
 | State | Detail |
 |-------|--------|
@@ -21,6 +21,7 @@ Privacy-first, local-AI media production platform.
 | US-22 | **CLOSED** — `v0.9.0-us22` · `docs/sprints/sprint-5b-us22-closure-report.md` |
 | US-23 brief | `docs/sprints/sprint-5c-us23-brief.md` (**ACCEPT WITH CONDITION**) |
 | US-23 | **CLOSED** — `v0.10.0-us23` · `docs/sprints/sprint-5c-us23-closure-report.md` |
+| US-21 | **CLOSED** — `v0.11.0-us21` · `docs/sprints/sprint-5d-us21-closure-report.md` |
 | Spark Full governance | `docs/sprints/spark-full-governance-brief.md` (**ACCEPT — Phase 1 closed**) |
 | US-18 | **CLOSED** — `v0.5.0-us18` · `docs/sprints/sprint-4a-us18-closure-report.md` |
 | US-19 | **CLOSED** — `v0.6.0-us19` · `docs/sprints/sprint-4b-us19-closure-report.md` |

@@ -8,6 +8,7 @@ packages.
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -22,6 +23,8 @@ from app.infrastructure.cache.redis_client import build_redis
 from app.infrastructure.db.session import build_engine, build_sessionmaker
 from app.infrastructure.storage.minio_client import MinioClient
 from app.infrastructure.temporal.client import connect_temporal
+from app.infrastructure.realtime.hub import PipelineHub
+from app.infrastructure.realtime.listener import PipelineRealtimeListener
 from app.middleware.auth import AuthMiddleware
 from app.middleware.logging import AccessLogMiddleware
 from app.middleware.request_id import RequestIDMiddleware
@@ -31,6 +34,7 @@ from app.routes.health import router as health_router
 from app.routes.ideas import router as ideas_router
 from app.routes.lineage import router as lineage_router
 from app.routes.pipeline import router as pipeline_router
+from app.routes.pipeline_ws import router as pipeline_ws_router
 from app.routes.projects import router as projects_router
 from app.seed.default_project import seed_default_project
 
@@ -66,9 +70,36 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
             "seed.default_project.deferred", extra={"error": str(exc)}
         )
 
+    hub: PipelineHub = app.state.pipeline_hub
+    heartbeat_task: asyncio.Task[None] | None = None
+    listener: PipelineRealtimeListener | None = None
+
+    try:
+        await app.state.redis.ping()
+        listener = PipelineRealtimeListener(
+            app.state.redis,
+            app.state.sessionmaker,
+            hub,
+        )
+        listener.start()
+        heartbeat_task = await hub.start_heartbeat()
+    except Exception as exc:
+        logging.getLogger("aimpos.realtime").warning(
+            "realtime.startup.deferred",
+            extra={"error": str(exc)},
+        )
+
     try:
         yield
     finally:
+        if heartbeat_task is not None:
+            heartbeat_task.cancel()
+            try:
+                await heartbeat_task
+            except asyncio.CancelledError:
+                pass
+        if listener is not None:
+            await listener.stop()
         await app.state.http.aclose()
         await app.state.redis.aclose()
         await app.state.engine.dispose()
@@ -106,8 +137,10 @@ def create_app() -> FastAPI:
     app.include_router(assets_router)
     app.include_router(ideas_router)
     app.include_router(pipeline_router)
+    app.include_router(pipeline_ws_router)
     app.include_router(export_router)
     app.include_router(lineage_router)
+    app.state.pipeline_hub = PipelineHub()
     return app
 
 

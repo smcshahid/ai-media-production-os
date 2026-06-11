@@ -48,6 +48,11 @@ export function pipelinePollIntervalMs(apiStatus: string | null): number {
   return 15000;
 }
 
+/** Slow sanity poll while WebSocket is live (US-21 D-59). */
+export function pipelineLivePollIntervalMs(): number {
+  return 30000;
+}
+
 export function badgeClassForStatus(displayStatus: PipelineDisplayStatus): string {
   if (displayStatus === "IDLE") {
     return "badge--idle";

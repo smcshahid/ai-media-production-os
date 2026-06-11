@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ApiError, listAssets, startPipeline, listProjects } from "../api/client";
 import type { AssetVersion, Project } from "../api/types";
 import { IdeaCaptureForm } from "../components/IdeaCaptureForm";
+import { PipelineConnectionIndicator } from "../components/PipelineConnectionIndicator";
 import { Stepper } from "../components/Stepper";
 import { usePipelineStatus } from "../hooks/usePipelineStatus";
 import {
@@ -70,7 +71,7 @@ export function DashboardPage() {
     };
   }, [refreshIdea]);
 
-  const { status: pipeline, error: statusError, loading, refresh } = usePipelineStatus(
+  const { status: pipeline, error: statusError, loading, connectionMode, refresh } = usePipelineStatus(
     project?.id ?? null,
   );
 
@@ -119,7 +120,10 @@ export function DashboardPage() {
     <section className="page">
       <header className="page__header">
         <h1 className="page__title">{project?.name ?? "AIMPOS Spark Demo"}</h1>
-        <span className={`badge ${badgeClassForStatus(displayStatus)}`}>{displayStatus}</span>
+        <div className="page__header-badges">
+          <span className={`badge ${badgeClassForStatus(displayStatus)}`}>{displayStatus}</span>
+          {project && <PipelineConnectionIndicator mode={connectionMode} />}
+        </div>
       </header>
 
       {projectError && (

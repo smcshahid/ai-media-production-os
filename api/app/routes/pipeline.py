@@ -9,7 +9,6 @@ Run status is synchronized by worker ``sync_pipeline_status`` (T-07-04).
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
 from typing import Literal
 
 from aimpos_core.enums import ApprovalDecision, PipelineRunStatus, PipelineStage
@@ -20,6 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from temporalio.service import RPCError
 
 from app.dependencies import get_session, get_temporal
+from app.domain.pipeline.status_read import PipelineStatusRead, build_pipeline_status_read
 from app.infrastructure.db.models.approval import Approval
 from app.infrastructure.db.models.audit_event import AuditEvent
 from app.infrastructure.db.models.pipeline_run import PipelineRun
@@ -33,9 +33,6 @@ _DECIDED_BY = "api-bearer-token"
 
 router = APIRouter(tags=["pipeline"])
 
-_IDLE_STATUS = "IDLE"
-_STAGE_ORDER = [stage.value for stage in PipelineStage]
-
 
 class PipelineStartRequest(BaseModel):
     project_id: uuid.UUID
@@ -47,15 +44,6 @@ class PipelineStartResponse(BaseModel):
     workflow_id: str
     status: str
     current_stage: str | None
-
-
-class PipelineStatusRead(BaseModel):
-    project_id: uuid.UUID
-    run_id: uuid.UUID | None
-    status: str
-    current_stage: str | None
-    stages: list[str]
-    updated_at: datetime | None
 
 
 class PipelineApproveRequest(BaseModel):
@@ -101,24 +89,7 @@ async def pipeline_status(
         )
 
     run = await PipelineRunRepository(session).latest_for_project(project_id)
-    if run is None:
-        return PipelineStatusRead(
-            project_id=project_id,
-            run_id=None,
-            status=_IDLE_STATUS,
-            current_stage=None,
-            stages=_STAGE_ORDER,
-            updated_at=None,
-        )
-
-    return PipelineStatusRead(
-        project_id=project_id,
-        run_id=run.id,
-        status=run.status.value,
-        current_stage=run.current_stage.value if run.current_stage else None,
-        stages=_STAGE_ORDER,
-        updated_at=run.updated_at,
-    )
+    return build_pipeline_status_read(project_id, run)
 
 
 @router.post(

@@ -1,0 +1,20 @@
+﻿US-21 verify start 2026-06-11T22:51:05+00:00
+API=http://10.233.21.231:8000 PROJECT_ID=76aa4418-d92d-45f7-954c-a10383ea511a RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625
+========== S-21-07: API image us21 ==========
+API_IMAGE=docker.io/library/aimpos-api:us21 WORKER_IMAGE=docker.io/library/aimpos-worker:us21
+========== S-21-01/02: WebSocket smoke + REST parity ==========
+WS_SMOKE=PASS status= COMPLETED
+REST status=COMPLETED
+========== S-21-03: latency spot-check (REST updated_at present) ==========
+SQL_UPDATED_AT=2026-06-11 18:21:52.122535
+LATENCY_NOTE=full gate timing requires active transition; WS smoke confirms push path
+========== S-21-05: REST poll fallback (GET /pipeline/status) ==========
+POLL http=200
+========== S-21-06: Redis regression (/health) ==========
+HEALTH http=200
+REDIS_HEALTH=PASS
+========== S-21-07 regressions: history, lineage, export ==========
+HISTORY=200 LINEAGE=200 EXPORT=200
+========== S-21-08: asset_versions unchanged ==========
+ASSET_VERSIONS_BEFORE=125 AFTER=125
+DONE FAIL=0

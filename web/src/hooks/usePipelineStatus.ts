@@ -1,27 +1,34 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { getPipelineStatus } from "../api/client";
+import {
+  connectPipelineSocket,
+  type PipelineConnectionMode,
+} from "../api/pipelineSocket";
 import type { PipelineStatus } from "../api/types";
-import { pipelinePollIntervalMs } from "../lib/pipelineDisplay";
+import { pipelineLivePollIntervalMs, pipelinePollIntervalMs } from "../lib/pipelineDisplay";
 
 interface UsePipelineStatusResult {
   status: PipelineStatus | null;
   error: string | null;
   loading: boolean;
+  connectionMode: PipelineConnectionMode;
   /** Trigger an immediate refresh (e.g. after start/approve). */
   refresh: () => void;
 }
 
 /**
- * Polls `GET /pipeline/status` (DB source of truth per D-32). Interval is 5s
- * while the run is active; slower when idle or completed (US-10).
+ * Pipeline status from REST (authoritative) with optional WebSocket push (US-21 D-59).
+ * Polling fallback always active — faster when not live.
  */
 export function usePipelineStatus(projectId: string | null): UsePipelineStatusResult {
   const [status, setStatus] = useState<PipelineStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(projectId !== null);
+  const [connectionMode, setConnectionMode] = useState<PipelineConnectionMode>("polling");
   const [refreshToken, setRefreshToken] = useState(0);
   const statusRef = useRef<PipelineStatus | null>(null);
+  const connectionModeRef = useRef<PipelineConnectionMode>("polling");
 
   const refresh = useCallback(() => {
     setRefreshToken((value) => value + 1);
@@ -30,6 +37,10 @@ export function usePipelineStatus(projectId: string | null): UsePipelineStatusRe
   useEffect(() => {
     statusRef.current = status;
   }, [status]);
+
+  useEffect(() => {
+    connectionModeRef.current = connectionMode;
+  }, [connectionMode]);
 
   useEffect(() => {
     if (!projectId) {
@@ -60,7 +71,10 @@ export function usePipelineStatus(projectId: string | null): UsePipelineStatusRe
     }
 
     function scheduleNext() {
-      const interval = pipelinePollIntervalMs(statusRef.current?.status ?? null);
+      const interval =
+        connectionModeRef.current === "live"
+          ? pipelineLivePollIntervalMs()
+          : pipelinePollIntervalMs(statusRef.current?.status ?? null);
       timer = window.setTimeout(async () => {
         await poll();
         if (active) {
@@ -81,7 +95,34 @@ export function usePipelineStatus(projectId: string | null): UsePipelineStatusRe
         window.clearTimeout(timer);
       }
     };
-  }, [projectId, refreshToken]);
+  }, [projectId, refreshToken, connectionMode]);
 
-  return { status, error, loading, refresh };
+  useEffect(() => {
+    if (!projectId) {
+      setConnectionMode("polling");
+      return;
+    }
+
+    const handle = connectPipelineSocket(
+      projectId,
+      {
+        onStatus: (next) => {
+          setStatus(next);
+          setError(null);
+          setLoading(false);
+        },
+        onModeChange: (mode) => {
+          setConnectionMode(mode);
+        },
+      },
+      () => statusRef.current,
+    );
+
+    return () => {
+      handle.close();
+      setConnectionMode("polling");
+    };
+  }, [projectId]);
+
+  return { status, error, loading, connectionMode, refresh };
 }

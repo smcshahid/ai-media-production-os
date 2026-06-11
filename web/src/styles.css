@@ -121,6 +121,17 @@ a {
   margin-bottom: 24px;
 }
 
+.page__header-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.pipeline-connection {
+  font-size: 11px;
+}
+
 .page__title {
   margin: 0;
   font-size: 24px;

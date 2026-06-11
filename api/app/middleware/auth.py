@@ -34,7 +34,11 @@ class AuthMiddleware:
         self._app = app
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        if scope["type"] != "http" or scope["path"] in _EXEMPT_PATHS:
+        if scope["type"] not in {"http", "websocket"}:
+            await self._app(scope, receive, send)
+            return
+
+        if scope["type"] == "websocket" or scope["path"] in _EXEMPT_PATHS:
             await self._app(scope, receive, send)
             return
 
