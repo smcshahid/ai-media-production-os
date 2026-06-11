@@ -109,7 +109,12 @@ US-22 implementation is **not authorized** until governance brief ACCEPT.
 
 ## 8. Push confirmation
 
-*(Populated after push.)*
+```
+git push origin main          → ffbe499..5a32610  main -> main
+git push origin v0.8.0-us20   → [new tag] v0.8.0-us20 -> v0.8.0-us20
+```
+
+Repository: `https://github.com/smcshahid/ai-media-production-os`
 
 ---
 
