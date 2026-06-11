@@ -11,6 +11,7 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from app.temporal.activities.pipeline_status import sync_pipeline_status
+from app.temporal.activities.script import run_script_agent
 from app.temporal.activities.story import run_story_agent
 from app.temporal.activities.stub import run_stub_stage
 from app.temporal.workflows.spark_pipeline import SparkPipelineWorkflow
@@ -29,7 +30,7 @@ async def run_worker() -> None:
         client,
         task_queue=settings.temporal_task_queue,
         workflows=[SparkPipelineWorkflow],
-        activities=[run_stub_stage, run_story_agent, sync_pipeline_status],
+        activities=[run_stub_stage, run_story_agent, run_script_agent, sync_pipeline_status],
     )
     logger.info(
         "worker.registered",
@@ -38,7 +39,12 @@ async def run_worker() -> None:
             "namespace": settings.temporal_namespace,
             "task_queue": settings.temporal_task_queue,
             "workflows": ["SparkPipelineWorkflow"],
-            "activities": ["run_stub_stage", "run_story_agent", "sync_pipeline_status"],
+            "activities": [
+                "run_stub_stage",
+                "run_story_agent",
+                "run_script_agent",
+                "sync_pipeline_status",
+            ],
         },
     )
     await worker.run()

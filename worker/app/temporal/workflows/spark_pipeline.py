@@ -1,4 +1,4 @@
-"""SparkPipelineWorkflow — STORY agent (US-12) + stub SCRIPT/STORYBOARD + approval gates."""
+"""SparkPipelineWorkflow — STORY (US-12) + SCRIPT (US-14) agents + stub STORYBOARD + approval gates."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from temporalio.common import RetryPolicy
 
 with workflow.unsafe.imports_passed_through():
     from app.temporal.activities.pipeline_status import sync_pipeline_status
+    from app.temporal.activities.script import run_script_agent
     from app.temporal.activities.story import run_story_agent
     from app.temporal.activities.stub import run_stub_stage
 
@@ -85,6 +86,13 @@ class SparkPipelineWorkflow:
             await workflow.execute_activity(
                 run_story_agent,
                 args=[pipeline_input.project_id, pipeline_input.run_id, rejection_note],
+                start_to_close_timeout=timedelta(minutes=5),
+                retry_policy=RetryPolicy(maximum_attempts=3),
+            )
+        elif stage == PipelineStage.SCRIPT:
+            await workflow.execute_activity(
+                run_script_agent,
+                args=[pipeline_input.project_id, pipeline_input.run_id],
                 start_to_close_timeout=timedelta(minutes=5),
                 retry_policy=RetryPolicy(maximum_attempts=3),
             )
