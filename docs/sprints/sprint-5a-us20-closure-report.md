@@ -12,7 +12,7 @@
 
 | # | SHA (short) | Message |
 |---|---|---|
-| 1 | *(see §2 HEAD)* | `feat(us20): lineage viewer, Olares verification, and repository closure` |
+| 1 | `db54981` | `feat(us20): lineage viewer, Olares verification, and repository closure` |
 
 **Prior baseline:** `v0.7.0-usv02` (`905f1f1`)
 
@@ -23,7 +23,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | *(populated after commit — tag `v0.8.0-us20`)* |
+| **HEAD** | `db54981` · **tag** `v0.8.0-us20` → `db54981` |
 | **Tag** | `v0.8.0-us20` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.8.0-us20` — pushed |
@@ -103,7 +103,7 @@ US-22 implementation is **not authorized** until governance brief ACCEPT.
 | `v0.5.0-us18` | US-18 Generate short video clip | `e764f5d` | 2026-06-11 |
 | `v0.6.0-us19` | US-19 Export production bundle | `8caf81b` | 2026-06-11 |
 | `v0.7.0-usv02` | US-V02 Spark Full acceptance | `905f1f1` | 2026-06-11 |
-| **`v0.8.0-us20`** | **US-20 Lineage Viewer** | ***(closure commit)*** | **2026-06-11** |
+| **`v0.8.0-us20`** | **US-20 Lineage Viewer** | **`db54981`** | **2026-06-11** |
 
 ---
 
