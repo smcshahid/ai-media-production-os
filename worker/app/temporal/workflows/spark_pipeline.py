@@ -1,4 +1,4 @@
-"""SparkPipelineWorkflow — STORY + SCRIPT + STORYBOARD agents + approval gates."""
+"""SparkPipelineWorkflow — STORY through STORYBOARD + VIDEO (US-18)."""
 
 from __future__ import annotations
 
@@ -14,11 +14,13 @@ with workflow.unsafe.imports_passed_through():
     from app.temporal.activities.script import run_script_agent
     from app.temporal.activities.story import run_story_agent
     from app.temporal.activities.storyboard import run_storyboard_agent
+    from app.temporal.activities.video import run_video_agent
 
 _STAGE_ORDER = (
     PipelineStage.STORY,
     PipelineStage.SCRIPT,
     PipelineStage.STORYBOARD,
+    PipelineStage.VIDEO,
 )
 
 
@@ -38,7 +40,7 @@ class SparkPipelineWorkflowState:
 
 @workflow.defn(name="SparkPipelineWorkflow")
 class SparkPipelineWorkflow:
-    """Four-stage Visual MVP pipeline with stub generation and approval signals."""
+    """Spark pipeline with human approval gates through VIDEO (D-51)."""
 
     def __init__(self) -> None:
         self._state = SparkPipelineWorkflowState()
@@ -103,6 +105,14 @@ class SparkPipelineWorkflow:
                 run_storyboard_agent,
                 args=[pipeline_input.project_id, pipeline_input.run_id, rejection_note],
                 start_to_close_timeout=timedelta(minutes=15),
+                retry_policy=RetryPolicy(maximum_attempts=2),
+            )
+        elif stage == PipelineStage.VIDEO:
+            rejection_note = self._state.last_rejection_note or ""
+            await workflow.execute_activity(
+                run_video_agent,
+                args=[pipeline_input.project_id, pipeline_input.run_id, rejection_note],
+                start_to_close_timeout=timedelta(minutes=10),
                 retry_policy=RetryPolicy(maximum_attempts=2),
             )
 

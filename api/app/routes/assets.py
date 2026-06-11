@@ -35,7 +35,10 @@ _MAX_STORY_TEXT_CHARS = 50_000
 _STORY_CONTENT_TYPE = "text/markdown; charset=utf-8"
 _SCRIPT_CONTENT_TYPE = "text/plain; charset=utf-8"
 _STORYBOARD_CONTENT_TYPE = "image/png"
-_READABLE_STAGES = frozenset({AssetStage.STORY, AssetStage.SCRIPT, AssetStage.STORYBOARD})
+_VIDEO_CONTENT_TYPE = "video/mp4"
+_READABLE_STAGES = frozenset(
+    {AssetStage.STORY, AssetStage.SCRIPT, AssetStage.STORYBOARD, AssetStage.VIDEO}
+)
 
 
 class AssetRead(BaseModel):
@@ -67,7 +70,7 @@ def _require_readable_asset(row: AssetVersion | None, asset_id: uuid.UUID) -> As
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=(
-                f"content read is limited to STORY, SCRIPT, and STORYBOARD assets "
+                f"content read is limited to STORY, SCRIPT, STORYBOARD, and VIDEO assets "
                 f"(got {row.stage.value})"
             ),
         )
@@ -145,13 +148,14 @@ async def list_assets(
 
 @router.get(
     "/assets/{asset_id}/content",
-    summary="Download STORY, SCRIPT, or STORYBOARD asset bytes (US-13 / US-15 / US-17)",
+    summary="Download STORY, SCRIPT, STORYBOARD, or VIDEO asset bytes (US-13 / US-15 / US-17 / US-18)",
     responses={
         200: {
             "content": {
                 _STORY_CONTENT_TYPE: {},
                 _SCRIPT_CONTENT_TYPE: {},
                 _STORYBOARD_CONTENT_TYPE: {},
+                _VIDEO_CONTENT_TYPE: {},
             }
         }
     },
@@ -179,6 +183,8 @@ async def get_asset_content(
         media_type = _SCRIPT_CONTENT_TYPE
     elif row.stage == AssetStage.STORYBOARD:
         media_type = _STORYBOARD_CONTENT_TYPE
+    elif row.stage == AssetStage.VIDEO:
+        media_type = _VIDEO_CONTENT_TYPE
     else:
         media_type = _STORY_CONTENT_TYPE
     return Response(content=data, media_type=media_type)

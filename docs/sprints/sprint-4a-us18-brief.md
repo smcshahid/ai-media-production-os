@@ -1,7 +1,7 @@
 # Sprint 4A — US-18 Generate Short Video Clip (governance brief)
 
-**Status:** **ACCEPT** — governance review 2026-06-11. Implementation plan authorized; **code not authorized** until plan ACCEPT.  
-**Implementation plan:** `docs/sprints/sprint-4a-us18-implementation-plan.md` (**SUBMITTED FOR REVIEW**)
+**Status:** **CLOSED** — formally accepted 2026-06-11 (`v0.5.0-us18`, Olares verification PASS).  
+**Implementation plan:** `docs/sprints/sprint-4a-us18-implementation-plan.md` (**ACCEPT**)
 
 ---
 

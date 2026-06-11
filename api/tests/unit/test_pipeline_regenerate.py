@@ -215,3 +215,27 @@ async def test_regenerate_storyboard_stage_happy_path(session: AsyncSession) -> 
     assert body["regenerations_used"] == 1
     assert len(fake.regenerates) == 1
     assert fake.regenerates[0] == (run.temporal_workflow_id, "STORYBOARD")
+
+
+@pytest.mark.asyncio
+async def test_regenerate_video_stage_happy_path(session: AsyncSession) -> None:
+    project_id = await _seed_project(session)
+    run = await _seed_awaiting_run(session, project_id, stage=PipelineStage.VIDEO)
+    await _seed_rejected(session, run, PipelineStage.VIDEO)
+    fake = FakeTemporal()
+    transport = _transport(session, fake)
+
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/pipeline/regenerate",
+            json={"project_id": str(project_id), "stage": "VIDEO"},
+            headers=_AUTH,
+        )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["stage"] == "VIDEO"
+    assert body["regenerations_used"] == 1
+    assert len(fake.regenerates) == 1
+    assert fake.regenerates[0] == (run.temporal_workflow_id, "VIDEO")
+

@@ -1,0 +1,14 @@
+"""US-18 video stage constants (D-48)."""
+
+AGENT_ID = "agent.video_generator"
+VIDEO_BRANCH = "ai-draft"
+LOGICAL_FILENAME = "scene_video.mp4"
+STORYBOARD_FRAME_COUNT = 4
+MIN_DURATION_SEC = 15.0
+MAX_DURATION_SEC = 30.0
+DEFAULT_DURATION_SEC = 20.0
+DEFAULT_FPS = 24
+MAX_WIDTH = 854
+MAX_HEIGHT = 480
+SOURCE_SLIDESHOW = "slideshow"
+SOURCE_COMFYUI_I2V = "comfyui_i2v"

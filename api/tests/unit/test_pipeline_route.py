@@ -49,7 +49,7 @@ async def test_status_is_idle_when_no_runs(session: AsyncSession) -> None:
     assert body["status"] == "IDLE"
     assert body["run_id"] is None
     assert body["current_stage"] is None
-    assert body["stages"] == ["IDEA", "STORY", "SCRIPT", "STORYBOARD"]
+    assert body["stages"] == ["IDEA", "STORY", "SCRIPT", "STORYBOARD", "VIDEO"]
     assert body["updated_at"] is None
 
 

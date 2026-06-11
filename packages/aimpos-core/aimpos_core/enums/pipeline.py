@@ -4,16 +4,17 @@ from enum import StrEnum
 
 
 class PipelineStage(StrEnum):
-    """Stages of the SparkPipelineWorkflow for the Visual MVP.
+    """Stages of the SparkPipelineWorkflow.
 
-    Idea -> Story -> Script -> Storyboard. Video/export are deferred per
-    MVP Scope Freeze; do not add here without an SCR.
+    Visual MVP: Idea -> Story -> Script -> Storyboard.
+    Spark Full (US-18): adds VIDEO after approved storyboard (D-51).
     """
 
     IDEA = "IDEA"
     STORY = "STORY"
     SCRIPT = "SCRIPT"
     STORYBOARD = "STORYBOARD"
+    VIDEO = "VIDEO"
 
 
 class PipelineRunStatus(StrEnum):

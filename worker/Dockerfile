@@ -19,6 +19,11 @@ COPY worker ./worker
 ENV AIMPOS_CONFIG_ROOT=/srv/configs
 RUN pip install ./worker
 
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN useradd --create-home --uid 10002 worker
 USER worker
 

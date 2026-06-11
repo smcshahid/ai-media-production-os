@@ -7,15 +7,16 @@ Privacy-first, local-AI media production platform.
 | Program | Status | Frontier |
 |---------|--------|----------|
 | **Visual MVP** | **CLOSED** (M5 · `v0.4.0-usv01`) | — |
-| **Spark Full** | **ACTIVE** | **US-18** — Generate short video clip |
+| **Spark Full** | **ACTIVE** | **US-19** — Export production bundle |
 
 | State | Detail |
 |-------|--------|
 | Visual MVP release | `v0.4.0-usv01` — US-V01 acceptance (`93214fc`) |
+| Spark Full release | `v0.5.0-us18` — US-18 video stage |
 | Visual MVP summary | `docs/sprints/visual-mvp-completion-summary.md` |
 | Spark Full governance | `docs/sprints/spark-full-governance-brief.md` (**ACCEPT**) |
-| US-18 brief | `docs/sprints/sprint-4a-us18-brief.md` (**ACCEPT**) |
-| US-18 implementation plan | `docs/sprints/sprint-4a-us18-implementation-plan.md` (**SUBMITTED FOR REVIEW**) |
+| US-18 | **CLOSED** — `v0.5.0-us18` · `docs/sprints/sprint-4a-us18-closure-report.md` |
+| US-19 brief | `docs/sprints/sprint-4b-us19-brief.md` (**SUBMITTED**) |
 | Stack | 9-service compose; Olares GPU path verified through STORYBOARD |
 | CI | `.github/workflows/ci-api.yml` — ruff/mypy/pytest + web build/lint/vitest on PRs |
 
@@ -44,7 +45,7 @@ Privacy-first, local-AI media production platform.
 | **Sprint 3** | Idea → Story | 7 |
 | **Sprint 4** | Story → Script | 7 |
 | **Sprint 5** | Script → Storyboard + Visual MVP sign-off | 9 |
-| **Spark Full** | Video → export → lineage (active) | US-18+ |
+| **Spark Full** | Video → export → lineage (active) | US-19+ |
 
 See [Sprint Reclassification.md](./Sprint%20Reclassification.md) for full issue mapping.
 

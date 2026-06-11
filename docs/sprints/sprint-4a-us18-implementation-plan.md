@@ -1,6 +1,6 @@
 # Sprint 4A — US-18 Implementation Plan
 
-**Status:** **AUTHORIZED FOR PLANNING** — implementation code **not authorized** until governance ACCEPT of this plan  
+**Status:** **AUTHORIZED — implementation complete (pending Olares evidence)**  
 **Parent brief:** `docs/sprints/sprint-4a-us18-brief.md` (**ACCEPT** 2026-06-11)  
 **Story:** US-18 Generate short video clip · FEAT-10 · EPIC-05 · P0 · 8 SP  
 **Baseline:** `v0.4.0-usv01` (`93214fc`)  

@@ -260,3 +260,27 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** STORYBOARD-stage regeneration (`POST /pipeline/regenerate` with `stage=STORYBOARD`) **MUST** supply the Cinematography agent with exactly two inputs: (1) the **approved script** per **`D-41`** (`fetch_approved_script`), and (2) the **latest rejected STORYBOARD rationale** — the `rationale` from the most recent `approvals` row where `stage=STORYBOARD` and `decision=REJECTED` for the run. **Prior STORYBOARD `asset_versions` rows, MinIO PNG objects, or frame bytes MUST NOT** be read, concatenated, or passed into the planning prompt. Each regeneration produces a **fresh 4-frame batch** at **`version+1`** shared across all frames (`D-43`/`D-38` append-only). Prior batches remain immutable.
 **Rationale:** Mirrors **`D-42`** — rejection note guides revision without contaminating the prompt with superseded frames. Batch-level regen preserves lineage script→frames on each new batch.
 **Verification:** US-17 closure — worker unit test asserting prompt contains script + DB rationale but no prior frame references; Olares regen SQL shows batch version increment; prior batch rows unchanged.
+
+### D-48 — US-18 — VIDEO asset contract
+**Date:** 2026-06-11
+**Decision:** Each successful `run_video_agent` invocation stores **exactly one** new `asset_versions` row: `stage=VIDEO`, `branch=ai-draft`, `is_ai_generated=true`, `content_type=video/mp4`, logical name **`scene_video.mp4`**, MinIO key `{project_id}/VIDEO/{content_hash}`. Required `metadata_json`: `duration_sec` (15–30), `width`, `height` (≤480p band), `codec`, `source` (`slideshow` | `comfyui_i2v`), `frame_count=4`. Version monotonic per `(project_id, VIDEO)`; append-only — no UPDATE of prior VIDEO rows.
+**Rationale:** Spark Full US-18 minimal VIDEO stage (D-48 implementation plan).
+**Verification:** US-18 unit + Olares SQL single VIDEO row per generation; content-read MP4 `ftyp`.
+
+### D-49 — US-18 — Approved storyboard as video input
+**Date:** 2026-06-11
+**Decision:** `run_video_agent` **MUST** load inputs only from the **approved storyboard batch** per **D-46**: STORYBOARD `APPROVED` approval on run + exactly **4** frames at `MAX(version)` ordered by `frame_index`, PNG bytes from MinIO. Prior batches and prior VIDEO MP4 bytes **MUST NOT** be generation inputs.
+**Rationale:** Mirrors D-41/D-42 input hygiene for the VIDEO stage.
+**Verification:** US-18 worker tests + Olares lineage STORYBOARD→VIDEO (4 edges).
+
+### D-50 — US-18 — VIDEO regeneration input contract
+**Date:** 2026-06-11
+**Decision:** VIDEO-stage regeneration supplies `run_video_agent` with (1) **approved storyboard batch** per **D-49** (unchanged frames — no storyboard re-run) and (2) **latest VIDEO rejection rationale** from `approvals`. Each regen appends one new VIDEO row at `version+1` (**D-38**). Prior VIDEO assets immutable.
+**Rationale:** Mirrors **D-47** at VIDEO scope; whole-video reject/regen semantics.
+**Verification:** US-18 regen test + Olares `REGENERATION_REQUESTED` stage=VIDEO.
+
+### D-51 — US-18 — Pipeline terminal at VIDEO approval
+**Date:** 2026-06-11
+**Decision:** `pipeline_runs.status=COMPLETED` **MUST NOT** be set at STORYBOARD approve. Workflow **MUST** include `PipelineStage.VIDEO` after STORYBOARD; **`COMPLETED` only after VIDEO approve signal** (SCR-2026-002).
+**Rationale:** Spark Full governance ACCEPT; reverses Visual MVP STORYBOARD terminal (US-V01 historical).
+**Verification:** US-18 Olares: post-STORYBOARD approve status is `AWAITING_APPROVAL`/`VIDEO`; COMPLETED only after VIDEO approve.

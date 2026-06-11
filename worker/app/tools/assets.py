@@ -35,6 +35,14 @@ class StoryboardBatchStoreError(AssetStoreError):
     """Storyboard batch persistence failed (D-44)."""
 
 
+class ApprovedStoryboardNotFoundError(AssetStoreError):
+    """No approved storyboard batch exists for the pipeline run (D-49)."""
+
+
+class VideoStoreError(AssetStoreError):
+    """VIDEO asset persistence failed (D-48)."""
+
+
 @dataclass(frozen=True, slots=True)
 class IdeaAsset:
     project_id: uuid.UUID
@@ -91,6 +99,29 @@ class StoredStoryboardFrame:
     minio_key: str
     version: int
     frame_index: int
+
+
+@dataclass(frozen=True, slots=True)
+class ApprovedStoryboardFrame:
+    asset_version_id: uuid.UUID
+    content_hash: str
+    minio_key: str
+    frame_index: int
+    png_bytes: bytes
+
+
+@dataclass(frozen=True, slots=True)
+class ApprovedStoryboardBatch:
+    batch_version: int
+    frames: tuple[ApprovedStoryboardFrame, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class StoredVideoAsset:
+    asset_version_id: uuid.UUID
+    content_hash: str
+    minio_key: str
+    version: int
 
 
 def _engine(settings: Settings) -> Engine:
@@ -309,6 +340,125 @@ def fetch_latest_script_rejection_rationale(
     if row is None or not row[0]:
         return None
     return str(row[0]).strip()
+
+
+def fetch_latest_video_rejection_rationale(
+    settings: Settings,
+    *,
+    pipeline_run_id: uuid.UUID,
+) -> str | None:
+    """Return latest VIDEO rejection note for regeneration (D-50)."""
+    engine = _engine(settings)
+    try:
+        with engine.begin() as conn:
+            row = conn.execute(
+                text(
+                    """
+                    SELECT rationale FROM approvals
+                    WHERE pipeline_run_id = :run_id
+                      AND stage = 'VIDEO'
+                      AND decision = 'REJECTED'
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                    """
+                ),
+                {"run_id": str(pipeline_run_id)},
+            ).first()
+    finally:
+        engine.dispose()
+    if row is None or not row[0]:
+        return None
+    return str(row[0]).strip()
+
+
+def fetch_approved_storyboard_batch(
+    settings: Settings,
+    *,
+    project_id: uuid.UUID,
+    pipeline_run_id: uuid.UUID,
+) -> ApprovedStoryboardBatch:
+    """Return approved storyboard batch PNG bytes ordered by frame_index (D-49)."""
+    from app.agents.cinematography.constants import STORYBOARD_FRAME_COUNT
+    from app.agents.cinematography.validate import validate_storyboard_frame
+
+    engine = _engine(settings)
+    try:
+        with engine.begin() as conn:
+            approved = conn.execute(
+                text(
+                    """
+                    SELECT 1 FROM approvals
+                    WHERE pipeline_run_id = :run_id
+                      AND stage = 'STORYBOARD'
+                      AND decision = 'APPROVED'
+                    LIMIT 1
+                    """
+                ),
+                {"run_id": str(pipeline_run_id)},
+            ).first()
+            if approved is None:
+                raise ApprovedStoryboardNotFoundError(
+                    f"no APPROVED STORYBOARD approval for run {pipeline_run_id}"
+                )
+
+            batch_version = conn.execute(
+                text(
+                    """
+                    SELECT COALESCE(MAX(version), 0) AS v
+                    FROM asset_versions
+                    WHERE project_id = :project_id AND stage = 'STORYBOARD'
+                    """
+                ),
+                {"project_id": str(project_id)},
+            ).scalar_one()
+
+            rows = conn.execute(
+                text(
+                    """
+                    SELECT id, content_hash, minio_key,
+                           (metadata_json->>'frame_index')::int AS frame_index
+                    FROM asset_versions
+                    WHERE project_id = :project_id
+                      AND stage = 'STORYBOARD'
+                      AND version = :version
+                    ORDER BY frame_index
+                    """
+                ),
+                {"project_id": str(project_id), "version": batch_version},
+            ).mappings().all()
+    finally:
+        engine.dispose()
+
+    if len(rows) != STORYBOARD_FRAME_COUNT:
+        raise ApprovedStoryboardNotFoundError(
+            f"expected {STORYBOARD_FRAME_COUNT} storyboard frames at version "
+            f"{batch_version}, got {len(rows)}"
+        )
+
+    client = _minio_client(settings)
+    frames: list[ApprovedStoryboardFrame] = []
+    try:
+        for row in rows:
+            response = client.get_object(settings.minio_bucket, row["minio_key"])
+            try:
+                png_bytes = response.read()
+            finally:
+                response.close()
+                response.release_conn()
+            validate_storyboard_frame(png_bytes)
+            frames.append(
+                ApprovedStoryboardFrame(
+                    asset_version_id=uuid.UUID(str(row["id"])),
+                    content_hash=row["content_hash"],
+                    minio_key=row["minio_key"],
+                    frame_index=int(row["frame_index"]),
+                    png_bytes=png_bytes,
+                )
+            )
+    except Exception as exc:
+        raise ApprovedStoryboardNotFoundError(str(exc)) from exc
+
+    return ApprovedStoryboardBatch(batch_version=int(batch_version), frames=tuple(frames))
 
 
 def fetch_latest_storyboard_rejection_rationale(
@@ -598,6 +748,104 @@ def store_storyboard_batch(
         raise StoryboardBatchStoreError(str(exc)) from exc
 
     return stored
+
+
+def store_video_asset(
+    settings: Settings,
+    *,
+    project_id: uuid.UUID,
+    pipeline_run_id: uuid.UUID,
+    mp4_bytes: bytes,
+    frame_parent_ids: list[uuid.UUID],
+    metadata: dict,
+    branch: str = "ai-draft",
+) -> StoredVideoAsset:
+    """Persist exactly one VIDEO asset and frame→video lineage (D-48)."""
+    if not frame_parent_ids:
+        raise VideoStoreError("video lineage requires at least one frame parent")
+
+    content_hash = compute_content_hash(mp4_bytes)
+    key = build_object_key(project_id, AssetStage.VIDEO, content_hash)
+    asset_id = uuid.uuid4()
+    client = _minio_client(settings)
+
+    try:
+        client.put_object(
+            settings.minio_bucket,
+            key,
+            io.BytesIO(mp4_bytes),
+            length=len(mp4_bytes),
+            content_type="video/mp4",
+        )
+
+        engine = _engine(settings)
+        try:
+            with engine.begin() as conn:
+                next_version = conn.execute(
+                    text(
+                        """
+                        SELECT COALESCE(MAX(version), 0) + 1 AS next_version
+                        FROM asset_versions
+                        WHERE project_id = :project_id AND stage = 'VIDEO'
+                        """
+                    ),
+                    {"project_id": str(project_id)},
+                ).scalar_one()
+
+                conn.execute(
+                    text(
+                        """
+                        INSERT INTO asset_versions (
+                            id, project_id, pipeline_run_id, stage, version,
+                            minio_key, content_hash, is_ai_generated, branch, metadata_json
+                        ) VALUES (
+                            :id, :project_id, :pipeline_run_id, 'VIDEO', :version,
+                            :minio_key, :content_hash, TRUE, :branch, CAST(:metadata AS jsonb)
+                        )
+                        """
+                    ),
+                    {
+                        "id": str(asset_id),
+                        "project_id": str(project_id),
+                        "pipeline_run_id": str(pipeline_run_id),
+                        "version": next_version,
+                        "minio_key": key,
+                        "content_hash": content_hash,
+                        "branch": branch,
+                        "metadata": json.dumps(metadata),
+                    },
+                )
+
+                for parent_id in frame_parent_ids:
+                    conn.execute(
+                        text(
+                            """
+                            INSERT INTO lineage_edges (id, parent_id, child_id)
+                            VALUES (:id, :parent_id, :child_id)
+                            ON CONFLICT (parent_id, child_id) DO NOTHING
+                            """
+                        ),
+                        {
+                            "id": str(uuid.uuid4()),
+                            "parent_id": str(parent_id),
+                            "child_id": str(asset_id),
+                        },
+                    )
+        finally:
+            engine.dispose()
+    except Exception as exc:
+        try:
+            client.remove_object(settings.minio_bucket, key)
+        except Exception:
+            pass
+        raise VideoStoreError(str(exc)) from exc
+
+    return StoredVideoAsset(
+        asset_version_id=asset_id,
+        content_hash=content_hash,
+        minio_key=key,
+        version=int(next_version),
+    )
 
 
 def insert_lineage_edge(
