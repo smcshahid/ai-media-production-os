@@ -22,7 +22,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `db9370c` (tagged) |
+| **HEAD** | `7710030` (latest; US-15 brief) · **tag** `db9370c` |
 | **US-14 release tag** | `v0.3.3-us14` → `db9370cac43ff7b3fa846db3bdbcc992f7eed281` |
 | **Prior baseline** | `v0.3.2-us09` (`f80278d`) |
 | **Remote** | `origin/main` |
