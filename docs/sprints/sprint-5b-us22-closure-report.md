@@ -12,7 +12,7 @@
 
 | # | SHA (short) | Message |
 |---|---|---|
-| 1 | *(see §2 HEAD)* | `feat(us22): asset history API, Olares verification, and repository closure` |
+| 1 | `d04736e` | `feat(us22): asset history API, Olares verification, and repository closure` |
 
 **Prior baseline:** `v0.8.0-us20` (`db54981`)
 
@@ -23,7 +23,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | *(populated after commit — tag `v0.9.0-us22`)* |
+| **HEAD** | `d04736e` · **tag** `v0.9.0-us22` → `d04736e` |
 | **Tag** | `v0.9.0-us22` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.9.0-us22` — pushed |
@@ -95,7 +95,7 @@ US-23 implementation is **not authorized** until governance brief ACCEPT.
 |---|---|---|---|
 | `v0.7.0-usv02` | US-V02 Spark Full acceptance | `905f1f1` | 2026-06-11 |
 | `v0.8.0-us20` | US-20 Lineage Viewer | `db54981` | 2026-06-11 |
-| **`v0.9.0-us22`** | **US-22 Asset History API** | ***(closure commit)*** | **2026-06-11** |
+| **`v0.9.0-us22`** | **US-22 Asset History API** | **`d04736e`** | **2026-06-11** |
 
 *(Prior tags: `v0.3.0-us12` … `v0.6.0-us19` — see US-19/US-20 closure reports.)*
 
