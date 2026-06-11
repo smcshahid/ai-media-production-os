@@ -3,7 +3,7 @@
 **Date:** 2026-06-11  
 **Milestone:** M6 Spark Full  
 **Acceptance gate:** US-V02  
-**Release tag:** `v0.7.0-usv02` → commit *(see closure report)*  
+**Release tag:** `v0.7.0-usv02` → commit `905f1f1`  
 **Governance:** **ACCEPT** — US-V02 closed, M6 complete
 
 ---
@@ -74,7 +74,7 @@ Authority: `docs/sprints/spark-full-governance-brief.md` (**ACCEPT**)
 |---|---|---|
 | `v0.5.0-us18` | Generate short video clip | `e764f5d` |
 | `v0.6.0-us19` | Export production bundle | `8caf81b` |
-| **`v0.7.0-usv02`** | **Spark Full acceptance** | *(closure commit)* |
+| **`v0.7.0-usv02`** | **Spark Full acceptance** | `905f1f1` |
 
 Visual MVP tags (`v0.3.0`..`v0.4.0-usv01`) remain frozen under M5.
 
