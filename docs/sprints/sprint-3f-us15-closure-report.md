@@ -25,7 +25,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `7efd89c` · **tag** `v0.3.4-us15` |
+| **HEAD** | `ef877de` · **tag** `7efd89c` |
 | **US-15 release tag** | `v0.3.4-us15` → `7efd89c` |
 | **Remote** | `origin/main` |
 | **Working tree** | **Clean** (post-closure) |
