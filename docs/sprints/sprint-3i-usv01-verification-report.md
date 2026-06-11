@@ -1,7 +1,7 @@
 # Sprint 3I — US-V01 Verification Report
 
 **Date:** 2026-06-11  
-**Status:** **PASS — Olares E2E complete**  
+**Status:** **CLOSED — PASS** (governance ACCEPT 2026-06-11 · tag `v0.4.0-usv01`)  
 **Parent brief:** `docs/sprints/sprint-3i-usv01-brief.md` (ACCEPTED WITH AMENDMENT A-01)  
 **Verification plan:** `docs/sprints/sprint-3i-usv01-verification-plan.md` (APPROVED)  
 **Baseline:** `v0.3.6-us17`  

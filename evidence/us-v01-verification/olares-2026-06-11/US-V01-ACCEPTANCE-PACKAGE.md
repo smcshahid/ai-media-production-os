@@ -150,6 +150,4 @@ No product defects discovered. No platform changes required.
 
 ## 11. M5 sign-off
 
-**M5 Visual MVP signed:** **RECOMMENDED ACCEPT**
-
-All Issue 43 ACs, SC-V01..SC-V08, and D-37..D-47 (including Amendment A-01 / V-47) are satisfied on Olares with baseline `v0.3.6-us17`. Proposed release tag: **`v0.4.0-usv01`**.
+**M5 Visual MVP signed:** **YES** — governance ACCEPT 2026-06-11 · tag `v0.4.0-usv01` → `93214fc`

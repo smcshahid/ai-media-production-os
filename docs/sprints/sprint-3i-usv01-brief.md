@@ -1,6 +1,6 @@
 # Sprint 3I — US-V01 Visual MVP Demo Acceptance (governance brief)
 
-**Status:** **ACCEPTED WITH AMENDMENT** — governance review 2026-06-11. Amendment **A-01** (D-47 extension) incorporated.  
+**Status:** **CLOSED** — governance ACCEPT 2026-06-11 · tag `v0.4.0-usv01` · M5 complete. Amendment **A-01** (D-47 extension) incorporated.  
 **Verification plan:** `docs/sprints/sprint-3i-usv01-verification-plan.md` (**AUTHORIZED** — Olares execution only; no product code).  
 **Story type:** **Verification / attestation** — not a feature story.  
 **Story:** US-V01 "Visual MVP demo acceptance validation" · FEAT-09 · EPIC-04 · P0 · 2 SP · Sprint S4/S5.  

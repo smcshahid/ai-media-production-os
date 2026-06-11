@@ -1,6 +1,6 @@
 # Sprint 3I — US-V01 Verification Plan
 
-**Status:** **EXECUTED — Olares PASS** (2026-06-11).  
+**Status:** **CLOSED** — executed Olares PASS 2026-06-11 · governance ACCEPT · tag `v0.4.0-usv01`.  
 **Parent brief:** `docs/sprints/sprint-3i-usv01-brief.md`  
 **Story:** US-V01 Visual MVP demo acceptance validation · P0 · 2 SP  
 **Baseline:** `v0.3.6-us17` (`aimpos-api:us17`, `aimpos-worker:us17`)  
@@ -420,7 +420,7 @@ Document in acceptance package §8 — **not in Visual MVP scope**:
 | 6 | Run collect_usv01.sh SQL attestation | Ops | ✅ (inline S-16 + sql/) |
 | 7 | Write US-V01-ACCEPTANCE-PACKAGE.md | Dev | ✅ |
 | 8 | Write verification report | Dev | ✅ |
-| 9 | Governance closure review | PO | ☐ |
+| 9 | Governance closure review | PO | ✅ |
 
 ---
 

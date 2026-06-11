@@ -4,11 +4,12 @@ Privacy-first, local-AI media production platform — **Visual MVP** scope: Idea
 
 ## Status
 
-**Visual MVP execution:** Sprint 5 · **US-V01 IN PROGRESS** (verify scripts ready; Olares E2E pending) · M5 sign-off blocked.
+**Visual MVP:** **COMPLETE** (M5 signed 2026-06-11) · Sprint 5 closed · US-V01 accepted.
 
 | State | Detail |
 |-------|--------|
-| Latest release | `v0.3.6-us17` — US-17 storyboard gallery review |
+| Latest release | `v0.4.0-usv01` — US-V01 Visual MVP acceptance (`93214fc`) |
+| Completion summary | `docs/sprints/visual-mvp-completion-summary.md` |
 | Stack | 9-service compose; Olares GPU path verified for STORYBOARD |
 | CI | `.github/workflows/ci-api.yml` — ruff/mypy/pytest + web build/lint/vitest on PRs |
 
