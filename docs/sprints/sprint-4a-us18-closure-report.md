@@ -12,7 +12,8 @@
 
 | # | SHA (short) | Message |
 |---|---|---|
-| 1 | *(see §2 HEAD)* | `feat(us18): VIDEO pipeline stage, Olares verification, and closure` |
+| 1 | `e764f5d` | `feat(us18): VIDEO pipeline stage, Olares verification, and repository closure` |
+| 2 | *(see §2 HEAD)* | `docs(us18): sync closure report with SHA and push confirmation` |
 
 **Prior baseline:** `v0.4.0-usv01` (`93214fc`)
 
@@ -23,7 +24,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | *(populated after commit — tag `v0.5.0-us18`)* |
+| **HEAD** | `e764f5d` · **tag** `v0.5.0-us18` → `e764f5d` |
 | **Tag** | `v0.5.0-us18` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.5.0-us18` — pushed |
@@ -98,7 +99,7 @@ US-19 implementation is **not authorized** until governance brief is accepted.
 | `v0.3.5-us16` | US-16 Storyboard frames | `40116c9` | 2026-06-11 |
 | `v0.3.6-us17` | US-17 Storyboard gallery review | `4604e5f` | 2026-06-11 |
 | `v0.4.0-usv01` | US-V01 Visual MVP acceptance | `93214fc` | 2026-06-11 |
-| **`v0.5.0-us18`** | **US-18 Generate short video clip** | ***(HEAD)*** | **2026-06-11** |
+| **`v0.5.0-us18`** | **US-18 Generate short video clip** | **`e764f5d`** | **2026-06-11** |
 
 ---
 
