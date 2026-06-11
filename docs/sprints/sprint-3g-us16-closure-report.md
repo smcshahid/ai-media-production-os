@@ -24,8 +24,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `40116c9` · **tag** `v0.3.5-us16` |
-| **US-16 release tag** | `v0.3.5-us16` → `40116c9` |
+| **HEAD** | `6e1b936` (post-closure docs sync) · **tag** `v0.3.5-us16` → `40116c9` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.3.5-us16` — pushed |
 | **Working tree** | **Clean** (post-closure) |
