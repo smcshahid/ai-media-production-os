@@ -12,7 +12,7 @@
 | # | SHA (short) | Message |
 |---|---|---|
 | 1 | `310dec1` | `feat(us17): storyboard gallery review, STORYBOARD regen, and verify package` |
-| 2 | *(this commit)* | `docs(us17): repository closure report and US-V01 governance brief` |
+| 2 | `4604e5f` | `docs(us17): repository closure report and US-V01 governance brief` |
 
 **Prior baseline:** `v0.3.5-us16` (`4f52bb5`)
 
@@ -23,10 +23,10 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | *(updated post-push)* |
+| **HEAD** | `4604e5f` · **tag** `v0.3.6-us17` → `4604e5f` |
 | **Tag** | `v0.3.6-us17` |
-| **Remote** | `origin/main` — push pending |
-| **Tag remote** | `origin/v0.3.6-us17` — push pending |
+| **Remote** | `origin/main` — pushed 2026-06-11 |
+| **Tag remote** | `origin/v0.3.6-us17` — pushed |
 | **Working tree** | **Clean** (post-closure) |
 
 ---
