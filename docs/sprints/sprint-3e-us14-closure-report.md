@@ -11,9 +11,9 @@
 
 | # | SHA (short) | Message |
 |---|---|---|
-| 1 | *(see git log)* | `feat(us14): Screenwriter agent, Fountain validator, and SCRIPT workflow swap` |
-| 2 | *(see git log)* | `docs(us14): governance brief, plan, and implementation report` |
-| 3 | *(see git log)* | `docs(us14): Olares verification package and acceptance evidence` |
+| 1 | `1df091d` | `feat(us14): Screenwriter agent, Fountain validator, and SCRIPT workflow swap` |
+| 2 | `ef61606` | `docs(us14): governance brief, plan, implementation report, and closure report` |
+| 3 | `db9370c` | `docs(us14): Olares verification package and acceptance evidence` |
 
 ---
 
@@ -22,8 +22,8 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | *(updated after push — see §6)* |
-| **US-14 release tag** | `v0.3.3-us14` |
+| **HEAD** | `db9370c` (tagged) |
+| **US-14 release tag** | `v0.3.3-us14` → `db9370cac43ff7b3fa846db3bdbcc992f7eed281` |
 | **Prior baseline** | `v0.3.2-us09` (`f80278d`) |
 | **Remote** | `origin/main` |
 | **Working tree** | **Clean** (post-closure) |
