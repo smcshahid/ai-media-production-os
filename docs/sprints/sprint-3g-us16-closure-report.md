@@ -14,6 +14,8 @@
 | 1 | `ef877de` | `docs(us16): governance brief for storyboard frame generation` |
 | 2 | `778f5bf` | `feat(us16): storyboard agent, ComfyUI batch store, and migration 0003` |
 | 3 | `40116c9` | `docs(us16): repository closure report` |
+| 4 | `6e1b936` | `docs(us16): sync closure report and README after push` |
+| 5 | `8c0cec2` | `docs(us16): fix closure report HEAD pointer after sync` |
 
 **Prior baseline:** `v0.3.4-us15` (`7efd89c`)
 
@@ -24,7 +26,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `6e1b936` (post-closure docs sync) · **tag** `v0.3.5-us16` → `40116c9` |
+| **HEAD** | `8c0cec2` · **tag** `v0.3.5-us16` → `40116c9` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.3.5-us16` — pushed |
 | **Working tree** | **Clean** (post-closure) |
@@ -103,8 +105,9 @@ US-17 implementation is **not authorized** until governance brief is accepted.
 ## 8. Push confirmation
 
 ```
-git push origin main     → 25d22bf..40116c9  main -> main
+git push origin main     → 25d22bf..40116c9  main -> main  (initial closure)
 git push origin v0.3.5-us16 → [new tag] v0.3.5-us16 -> v0.3.5-us16
+git push origin main     → 40116c9..8c0cec2  main -> main  (post-closure docs sync)
 ```
 
 Repository: `https://github.com/smcshahid/ai-media-production-os`
