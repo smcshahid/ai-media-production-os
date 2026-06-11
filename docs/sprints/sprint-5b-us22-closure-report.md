@@ -23,7 +23,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `d04736e` · **tag** `v0.9.0-us22` → `d04736e` |
+| **HEAD** | `90cef6c` · **tag** `v0.9.0-us22` → `d04736e` |
 | **Tag** | `v0.9.0-us22` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.9.0-us22` — pushed |
@@ -103,7 +103,12 @@ US-23 implementation is **not authorized** until governance brief ACCEPT.
 
 ## 8. Push confirmation
 
-*(Populated after push.)*
+```
+git push origin main          → f6959bd..90cef6c  main -> main
+git push origin v0.9.0-us22   → [new tag] v0.9.0-us22 -> v0.9.0-us22
+```
+
+Repository: `https://github.com/smcshahid/ai-media-production-os`
 
 ---
 
