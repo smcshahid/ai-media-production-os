@@ -1,0 +1,12 @@
+========== v02-approvals ==========
+   stage    | decision |                             left                             |         created_at         
+------------+----------+--------------------------------------------------------------+----------------------------
+ STORY      | APPROVED |                                                              | 2026-06-11 18:19:44.03672
+ SCRIPT     | REJECTED | US-V02: tighten dialogue in the second scene.                | 2026-06-11 18:19:59.073394
+ SCRIPT     | APPROVED |                                                              | 2026-06-11 18:19:59.120362
+ STORYBOARD | REJECTED | US-V02 A-01: increase contrast and wider establishing shots. | 2026-06-11 18:20:39.929517
+ STORYBOARD | APPROVED |                                                              | 2026-06-11 18:21:21.112756
+ VIDEO      | REJECTED | US-V02: slightly longer hold on frame 2.                     | 2026-06-11 18:21:41.66964
+ VIDEO      | APPROVED |                                                              | 2026-06-11 18:21:52.09676
+(7 rows)
+

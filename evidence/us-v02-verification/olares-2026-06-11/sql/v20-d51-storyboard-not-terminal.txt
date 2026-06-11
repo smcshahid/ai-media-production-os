@@ -1,0 +1,6 @@
+========== v20-d51-storyboard-not-terminal ==========
+   stage    | decision |         created_at         
+------------+----------+----------------------------
+ STORYBOARD | APPROVED | 2026-06-11 18:21:21.112756
+(1 row)
+

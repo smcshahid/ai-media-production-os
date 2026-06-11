@@ -1,0 +1,6 @@
+========== v11-lineage-video ==========
+   stage    | stage | count 
+------------+-------+-------
+ STORYBOARD | VIDEO |     8
+(1 row)
+

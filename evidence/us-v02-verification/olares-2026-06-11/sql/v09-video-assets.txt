@@ -1,0 +1,7 @@
+========== v09-video-assets ==========
+ version |                           content_hash                           |    filename     | duration_sec | width | height |  source   
+---------+------------------------------------------------------------------+-----------------+--------------+-------+--------+-----------
+       1 | 29ac0f633210d473d05f51f0b1172daf08e6704896310ba795b6fd1677d32df3 | scene_video.mp4 | 20.0         | 480   | 480    | slideshow
+       2 | 29ac0f633210d473d05f51f0b1172daf08e6704896310ba795b6fd1677d32df3 | scene_video.mp4 | 20.0         | 480   | 480    | slideshow
+(2 rows)
+

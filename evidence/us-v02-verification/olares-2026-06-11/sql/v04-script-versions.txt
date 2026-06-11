@@ -1,0 +1,7 @@
+========== v04-script-versions ==========
+ version |  branch  |                           content_hash                           
+---------+----------+------------------------------------------------------------------
+       1 | ai-draft | 54064dd641c2ee20fe2e86ff34d0a0d7172a59c82f1c59bece3be2d17bc1a451
+       2 | ai-draft | 0958a47041acbca24b8dbf2643ee197a8d78173cff8f52a9e1d1b70bdbda8e74
+(2 rows)
+

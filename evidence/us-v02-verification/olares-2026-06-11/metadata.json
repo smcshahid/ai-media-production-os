@@ -1,0 +1,22 @@
+{
+  "story": "US-V02",
+  "date": "2026-06-11",
+  "baseline_tag": "v0.6.0-us19",
+  "project_id": "76aa4418-d92d-45f7-954c-a10383ea511a",
+  "run_id": "042983f7-0f55-48c3-9d65-fce89a684625",
+  "api_image": "aimpos-api:us19",
+  "worker_image": "aimpos-worker:us18",
+  "amendment_a01": true,
+  "storyboard_v1_version": 1,
+  "storyboard_v2_version": 2,
+  "video_v1_version": 1,
+  "video_v2_version": 2,
+  "export_file_count": 9,
+  "export_bytes": 1445355,
+  "manifest_hash_verify": "PASS",
+  "bundle_exported_count": 1,
+  "post_sb_status": "AWAITING_APPROVAL",
+  "final_status": "COMPLETED",
+  "verify_rc": 0,
+  "sc_v07_delta_sec": 45
+}

@@ -1,0 +1,174 @@
+========== v01-terminal ==========
+                  id                  |  status   | current_stage |         updated_at         
+--------------------------------------+-----------+---------------+----------------------------
+ 042983f7-0f55-48c3-9d65-fce89a684625 | COMPLETED |               | 2026-06-11 18:21:52.122535
+(1 row)
+
+========== v02-approvals ==========
+   stage    | decision |                             left                             |         created_at         
+------------+----------+--------------------------------------------------------------+----------------------------
+ STORY      | APPROVED |                                                              | 2026-06-11 18:19:44.03672
+ SCRIPT     | REJECTED | US-V02: tighten dialogue in the second scene.                | 2026-06-11 18:19:59.073394
+ SCRIPT     | APPROVED |                                                              | 2026-06-11 18:19:59.120362
+ STORYBOARD | REJECTED | US-V02 A-01: increase contrast and wider establishing shots. | 2026-06-11 18:20:39.929517
+ STORYBOARD | APPROVED |                                                              | 2026-06-11 18:21:21.112756
+ VIDEO      | REJECTED | US-V02: slightly longer hold on frame 2.                     | 2026-06-11 18:21:41.66964
+ VIDEO      | APPROVED |                                                              | 2026-06-11 18:21:52.09676
+(7 rows)
+
+========== v03-asset-counts ==========
+   stage    | count 
+------------+-------
+ IDEA       |     1
+ SCRIPT     |     2
+ STORY      |     2
+ STORYBOARD |     8
+ VIDEO      |     2
+(5 rows)
+
+========== v04-script-versions ==========
+ version |  branch  |                           content_hash                           
+---------+----------+------------------------------------------------------------------
+       1 | ai-draft | 54064dd641c2ee20fe2e86ff34d0a0d7172a59c82f1c59bece3be2d17bc1a451
+       2 | ai-draft | 0958a47041acbca24b8dbf2643ee197a8d78173cff8f52a9e1d1b70bdbda8e74
+(2 rows)
+
+========== v05-storyboard-batches ==========
+ version | frame_count | array_agg 
+---------+-------------+-----------
+       1 |           4 | {1,2,3,4}
+       2 |           4 | {1,2,3,4}
+(2 rows)
+
+========== v06-lineage ==========
+   stage    |   stage    | count 
+------------+------------+-------
+ SCRIPT     | STORYBOARD |     8
+ STORY      | SCRIPT     |     2
+ STORYBOARD | VIDEO      |     8
+(3 rows)
+
+========== v07-agent-completions ==========
+      event_type      |       ?column?        |  ?column?  | model_id  |         created_at         
+----------------------+-----------------------+------------+-----------+----------------------------
+ STAGE_STARTED        | agent.story_architect | STORY      |           | 2026-06-11 18:18:58.892004
+ AGENT_TASK_COMPLETED | agent.story_architect |            | qwen3:14b | 2026-06-11 18:19:28.98321
+ STAGE_STARTED        | agent.screenwriter    | SCRIPT     |           | 2026-06-11 18:19:44.087923
+ AGENT_TASK_COMPLETED | agent.screenwriter    |            | qwen3:14b | 2026-06-11 18:19:56.295665
+ STAGE_STARTED        | agent.screenwriter    | SCRIPT     |           | 2026-06-11 18:19:59.152431
+ AGENT_TASK_COMPLETED | agent.screenwriter    |            | qwen3:14b | 2026-06-11 18:20:07.74055
+ STAGE_STARTED        | agent.cinematography  | STORYBOARD |           | 2026-06-11 18:20:07.919889
+ AGENT_TASK_COMPLETED | agent.cinematography  |            | qwen3:14b | 2026-06-11 18:20:38.527474
+ STAGE_STARTED        | agent.cinematography  | STORYBOARD |           | 2026-06-11 18:20:40.010976
+ AGENT_TASK_COMPLETED | agent.cinematography  |            | qwen3:14b | 2026-06-11 18:21:11.791787
+ STAGE_STARTED        | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:21.163884
+ AGENT_TASK_COMPLETED | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:22.067534
+ STAGE_STARTED        | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:41.739175
+ AGENT_TASK_COMPLETED | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:42.682834
+(14 rows)
+
+========== v08-story-timing ==========
+       event_type       |  ?column?  |         created_at         
+------------------------+------------+----------------------------
+ PIPELINE_STARTED       |            | 2026-06-11 18:18:58.831218
+ STAGE_STARTED          | STORY      | 2026-06-11 18:18:58.892004
+ AGENT_TASK_COMPLETED   |            | 2026-06-11 18:19:28.98321
+ ASSET_STORED           | STORY      | 2026-06-11 18:19:28.990655
+ ASSET_STORED           | STORY      | 2026-06-11 18:19:44.021113
+ APPROVAL_RECORDED      | STORY      | 2026-06-11 18:19:44.03672
+ STAGE_STARTED          | SCRIPT     | 2026-06-11 18:19:44.087923
+ AGENT_TASK_COMPLETED   |            | 2026-06-11 18:19:56.295665
+ ASSET_STORED           | SCRIPT     | 2026-06-11 18:19:56.302556
+ APPROVAL_RECORDED      | SCRIPT     | 2026-06-11 18:19:59.073394
+ REGENERATION_REQUESTED | SCRIPT     | 2026-06-11 18:19:59.092379
+ APPROVAL_RECORDED      | SCRIPT     | 2026-06-11 18:19:59.120362
+ STAGE_STARTED          | SCRIPT     | 2026-06-11 18:19:59.152431
+ AGENT_TASK_COMPLETED   |            | 2026-06-11 18:20:07.74055
+ ASSET_STORED           | SCRIPT     | 2026-06-11 18:20:07.747099
+ STAGE_STARTED          | STORYBOARD | 2026-06-11 18:20:07.919889
+ AGENT_TASK_COMPLETED   |            | 2026-06-11 18:20:38.527474
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:20:38.538023
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:20:38.545113
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:20:38.551486
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:20:38.558047
+ APPROVAL_RECORDED      | STORYBOARD | 2026-06-11 18:20:39.929517
+ REGENERATION_REQUESTED | STORYBOARD | 2026-06-11 18:20:39.94786
+ STAGE_STARTED          | STORYBOARD | 2026-06-11 18:20:40.010976
+ AGENT_TASK_COMPLETED   |            | 2026-06-11 18:21:11.791787
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:21:11.801748
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:21:11.80795
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:21:11.814637
+ ASSET_STORED           | STORYBOARD | 2026-06-11 18:21:11.821732
+ APPROVAL_RECORDED      | STORYBOARD | 2026-06-11 18:21:21.112756
+ STAGE_STARTED          | VIDEO      | 2026-06-11 18:21:21.163884
+ AGENT_TASK_COMPLETED   | VIDEO      | 2026-06-11 18:21:22.067534
+ ASSET_STORED           | VIDEO      | 2026-06-11 18:21:22.074845
+ APPROVAL_RECORDED      | VIDEO      | 2026-06-11 18:21:41.66964
+ REGENERATION_REQUESTED | VIDEO      | 2026-06-11 18:21:41.685376
+ STAGE_STARTED          | VIDEO      | 2026-06-11 18:21:41.739175
+ AGENT_TASK_COMPLETED   | VIDEO      | 2026-06-11 18:21:42.682834
+ ASSET_STORED           | VIDEO      | 2026-06-11 18:21:42.689295
+ APPROVAL_RECORDED      | VIDEO      | 2026-06-11 18:21:52.09676
+ BUNDLE_EXPORTED        |            | 2026-06-11 18:21:57.36392
+(40 rows)
+
+========== v09-video-assets ==========
+ version |                           content_hash                           |    filename     | duration_sec | width | height |  source   
+---------+------------------------------------------------------------------+-----------------+--------------+-------+--------+-----------
+       1 | 29ac0f633210d473d05f51f0b1172daf08e6704896310ba795b6fd1677d32df3 | scene_video.mp4 | 20.0         | 480   | 480    | slideshow
+       2 | 29ac0f633210d473d05f51f0b1172daf08e6704896310ba795b6fd1677d32df3 | scene_video.mp4 | 20.0         | 480   | 480    | slideshow
+(2 rows)
+
+========== v10-video-regen ==========
+ version |                           content_hash                           |         created_at         
+---------+------------------------------------------------------------------+----------------------------
+       1 | 29ac0f633210d473d05f51f0b1172daf08e6704896310ba795b6fd1677d32df3 | 2026-06-11 18:21:22.058343
+       2 | 29ac0f633210d473d05f51f0b1172daf08e6704896310ba795b6fd1677d32df3 | 2026-06-11 18:21:42.674171
+(2 rows)
+
+========== v11-lineage-video ==========
+   stage    | stage | count 
+------------+-------+-------
+ STORYBOARD | VIDEO |     8
+(1 row)
+
+========== v12-bundle-exported ==========
+   event_type    |                          manifest_hash                           | file_count | zip_size_bytes |         exported_at         |        created_at         
+-----------------+------------------------------------------------------------------+------------+----------------+-----------------------------+---------------------------
+ BUNDLE_EXPORTED | ea43d95a9da72b77ffed44dc78dffa12308be920031325002482e07899037542 | 8          | 1445355        | 2026-06-11T18:21:57.371030Z | 2026-06-11 18:21:57.36392
+(1 row)
+
+========== v20-d51-storyboard-not-terminal ==========
+   stage    | decision |         created_at         
+------------+----------+----------------------------
+ STORYBOARD | APPROVED | 2026-06-11 18:21:21.112756
+(1 row)
+
+========== v47-d47-extension ==========
+ version | fi |                           content_hash                           
+---------+----+------------------------------------------------------------------
+       1 | 1  | 8dc90aabbaf743a3acbcf94e88584df4949ea5d74b538b0106676d08763376a3
+       1 | 2  | 2f81aedb3120d9fe6cc4ccb49334c560f3f86b402c3e37a86db87967161f7554
+       1 | 3  | d7fa3a0230ad52354e3154619dd36affcf4a10e00ff7bec3235da312579d4c99
+       1 | 4  | cc8a04b664713c1101dca36cb50597cc9d1322d7e5001b97bc31f11b6d5a5748
+(4 rows)
+
+ version | fi |                           content_hash                           
+---------+----+------------------------------------------------------------------
+       2 | 1  | a182cd602aa233d0ca35d0d423a954b4e61b644f664350d4bf3898d3a2503c4d
+       2 | 2  | d699e95e4c172ffcdd9c3ce9a9974107e2054054aa1e793b81bebc7c8727837b
+       2 | 3  | ba81fbc082249836c37a82d1714ee4d729af263e430ea15b2a3df78bd4365b88
+       2 | 4  | a60a23b0bb2ef6b5d57f871a8cb26015a91b0c023fc5ce4cd997d353c55e74f6
+(4 rows)
+
+ decision |                          rationale                           
+----------+--------------------------------------------------------------
+ REJECTED | US-V02 A-01: increase contrast and wider establishing shots.
+(1 row)
+
+                                                          payload                                                          |        created_at         
+---------------------------------------------------------------------------------------------------------------------------+---------------------------
+ {"stage": "STORYBOARD", "principal": "api-bearer-token", "rejection_approval_id": "cda540bf-f4e4-4136-858c-17f08c24784e"} | 2026-06-11 18:20:39.94786
+(1 row)
+
+COLLECTED_SQL=/tmp/usv02-sql-20260611

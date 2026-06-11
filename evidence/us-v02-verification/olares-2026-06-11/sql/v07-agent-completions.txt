@@ -1,0 +1,19 @@
+========== v07-agent-completions ==========
+      event_type      |       ?column?        |  ?column?  | model_id  |         created_at         
+----------------------+-----------------------+------------+-----------+----------------------------
+ STAGE_STARTED        | agent.story_architect | STORY      |           | 2026-06-11 18:18:58.892004
+ AGENT_TASK_COMPLETED | agent.story_architect |            | qwen3:14b | 2026-06-11 18:19:28.98321
+ STAGE_STARTED        | agent.screenwriter    | SCRIPT     |           | 2026-06-11 18:19:44.087923
+ AGENT_TASK_COMPLETED | agent.screenwriter    |            | qwen3:14b | 2026-06-11 18:19:56.295665
+ STAGE_STARTED        | agent.screenwriter    | SCRIPT     |           | 2026-06-11 18:19:59.152431
+ AGENT_TASK_COMPLETED | agent.screenwriter    |            | qwen3:14b | 2026-06-11 18:20:07.74055
+ STAGE_STARTED        | agent.cinematography  | STORYBOARD |           | 2026-06-11 18:20:07.919889
+ AGENT_TASK_COMPLETED | agent.cinematography  |            | qwen3:14b | 2026-06-11 18:20:38.527474
+ STAGE_STARTED        | agent.cinematography  | STORYBOARD |           | 2026-06-11 18:20:40.010976
+ AGENT_TASK_COMPLETED | agent.cinematography  |            | qwen3:14b | 2026-06-11 18:21:11.791787
+ STAGE_STARTED        | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:21.163884
+ AGENT_TASK_COMPLETED | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:22.067534
+ STAGE_STARTED        | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:41.739175
+ AGENT_TASK_COMPLETED | agent.video_generator | VIDEO      |           | 2026-06-11 18:21:42.682834
+(14 rows)
+
