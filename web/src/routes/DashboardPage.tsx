@@ -183,7 +183,12 @@ export function DashboardPage() {
           )}
 
           {displayStatus === "COMPLETED" && (
-            <span className="card__hint dashboard__completed">All stages approved (M2)</span>
+            <>
+              <Link className="button button--primary" to="/export">
+                Export bundle
+              </Link>
+              <span className="card__hint dashboard__completed">All stages approved</span>
+            </>
           )}
 
           {startError && (

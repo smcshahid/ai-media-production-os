@@ -190,3 +190,9 @@ export function uploadAsset(projectId: string, stage: string, file: File): Promi
   form.append("file", file);
   return request<AssetVersion>("/assets", { method: "POST", body: form });
 }
+
+export function downloadExport(pipelineRunId: string): Promise<Blob> {
+  return requestBlob(`/export/${encodeURIComponent(pipelineRunId)}`, {
+    headers: { Accept: "application/zip" },
+  });
+}

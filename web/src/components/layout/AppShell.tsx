@@ -24,6 +24,7 @@ export function AppShell() {
             Dashboard
           </NavLink>
           <NavLink to="/assets">Assets</NavLink>
+          <NavLink to="/export">Export</NavLink>
           <NavLink to="/audit">Audit</NavLink>
         </nav>
         <button type="button" className="app-shell__logout" onClick={handleLogout}>

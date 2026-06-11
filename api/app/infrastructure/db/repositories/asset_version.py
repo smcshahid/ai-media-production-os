@@ -78,3 +78,41 @@ class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
             .order_by(AssetVersion.created_at.desc())
         )
         return result.scalars().all()
+
+    async def max_version(self, project_id: uuid.UUID, stage: AssetStage) -> int:
+        result = await self.session.execute(
+            select(func.max(AssetVersion.version)).where(
+                AssetVersion.project_id == project_id,
+                AssetVersion.stage == stage,
+            )
+        )
+        return int(result.scalar_one_or_none() or 0)
+
+    async def get_at_version(
+        self, project_id: uuid.UUID, stage: AssetStage, version: int
+    ) -> AssetVersion | None:
+        result = await self.session.execute(
+            select(AssetVersion)
+            .where(
+                AssetVersion.project_id == project_id,
+                AssetVersion.stage == stage,
+                AssetVersion.version == version,
+            )
+            .limit(1)
+        )
+        return result.scalar_one_or_none()
+
+    async def list_storyboard_batch(
+        self, project_id: uuid.UUID, version: int
+    ) -> Sequence[AssetVersion]:
+        result = await self.session.execute(
+            select(AssetVersion)
+            .where(
+                AssetVersion.project_id == project_id,
+                AssetVersion.stage == AssetStage.STORYBOARD,
+                AssetVersion.version == version,
+            )
+        )
+        rows = list(result.scalars().all())
+        rows.sort(key=lambda row: int((row.metadata_json or {}).get("frame_index", 0)))
+        return rows

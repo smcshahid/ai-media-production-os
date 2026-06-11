@@ -284,3 +284,21 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** `pipeline_runs.status=COMPLETED` **MUST NOT** be set at STORYBOARD approve. Workflow **MUST** include `PipelineStage.VIDEO` after STORYBOARD; **`COMPLETED` only after VIDEO approve signal** (SCR-2026-002).
 **Rationale:** Spark Full governance ACCEPT; reverses Visual MVP STORYBOARD terminal (US-V01 historical).
 **Verification:** US-18 Olares: post-STORYBOARD approve status is `AWAITING_APPROVAL`/`VIDEO`; COMPLETED only after VIDEO approve.
+
+### D-52 — US-19 — Export bundle contract
+**Date:** 2026-06-11
+**Decision:** `GET /export/{pipeline_run_id}` **MUST** return `application/zip` only when `pipeline_runs.status=COMPLETED`; otherwise **409**. ZIP contains exactly 9 entries in fixed order: `manifest.json`, `idea.txt`, `story.md`, `script.fountain`, `frames/frame_01.png`…`frame_04.png`, `scene_video.mp4`. Bytes loaded from MinIO via `asset_versions.minio_key` at approved/latest versions per stage. No MinIO persistence of bundle.
+**Rationale:** US-19 portable delivery (D-52 implementation plan).
+**Verification:** US-19 unit + Olares ZIP entry count and PK magic.
+
+### D-53 — US-19 — Manifest contract v1
+**Date:** 2026-06-11
+**Decision:** `manifest.json` **MUST** include `manifest_version="1"`, `pipeline_run_id`, `project_id`, `exported_at` (ISO8601 UTC), and `files[]` with `path`, `stage`, `version`, `content_hash`, `approval_at`, `asset_id`, `size_bytes` per asset. Hashes **MUST** match SHA-256 of ZIP file bytes.
+**Rationale:** SC-11 export integrity.
+**Verification:** US-19 hash verify script step S-19-05.
+
+### D-54 — US-19 — Export audit contract
+**Date:** 2026-06-11
+**Decision:** Each successful export appends `audit_events` row `event_type=BUNDLE_EXPORTED` with payload: `pipeline_run_id`, `project_id`, `file_count` (8), `manifest_hash`, `zip_size_bytes`, `exported_at`, `manifest_version`. Re-exports append new rows. No worker/Temporal involvement.
+**Rationale:** Auditable delivery without pipeline state mutation.
+**Verification:** US-19 Olares SQL V-19-03.

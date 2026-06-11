@@ -1,7 +1,8 @@
 # Sprint 4B — US-19 Export Production Bundle (governance brief)
 
-**Status:** **SUBMITTED** — governance review pending  
-**Baseline:** `v0.5.0-us18` (US-18 CLOSED)  
+**Status:** **CLOSED** — governance ACCEPT 2026-06-11 · tag `v0.6.0-us19` · M6a export complete.  
+**Implementation plan:** `docs/sprints/sprint-4b-us19-implementation-plan.md` (**ACCEPT**)  
+**Implementation report:** `docs/sprints/sprint-4b-us19-implementation-report.md` (**Olares PASS**)  
 **Parent program:** Spark Full (`docs/sprints/spark-full-governance-brief.md` **ACCEPT**)
 
 ---

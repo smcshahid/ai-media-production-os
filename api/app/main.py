@@ -26,6 +26,7 @@ from app.middleware.auth import AuthMiddleware
 from app.middleware.logging import AccessLogMiddleware
 from app.middleware.request_id import RequestIDMiddleware
 from app.routes.assets import router as assets_router
+from app.routes.export import router as export_router
 from app.routes.health import router as health_router
 from app.routes.ideas import router as ideas_router
 from app.routes.pipeline import router as pipeline_router
@@ -104,6 +105,7 @@ def create_app() -> FastAPI:
     app.include_router(assets_router)
     app.include_router(ideas_router)
     app.include_router(pipeline_router)
+    app.include_router(export_router)
     return app
 
 
