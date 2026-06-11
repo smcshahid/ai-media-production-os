@@ -13,6 +13,7 @@
 | # | SHA (short) | Message |
 |---|---|---|
 | 1 | `905f1f1` | `docs(usv02): Spark Full acceptance verification, Olares evidence, and repository closure` |
+| 2 | `122cb53` | `docs(usv02): final closure report and Spark Full completion summary` |
 
 **Prior baseline:** `v0.6.0-us19` (`8caf81b`)
 
@@ -23,7 +24,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `905f1f1` · **tag** `v0.7.0-usv02` → `905f1f1` |
+| **HEAD** | `122cb53` · **tag** `v0.7.0-usv02` → `905f1f1` |
 | **Tag** | `v0.7.0-usv02` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.7.0-usv02` — pushed |
