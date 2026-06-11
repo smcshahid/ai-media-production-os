@@ -76,4 +76,4 @@ US-23 adds a **read-only asset history browser** at **`/history`** consuming **D
 |---|---|
 | Baseline tag | `v0.9.0-us22` |
 | Story | US-23 |
-| Pending | Commit · tag · push · closure report |
+| Closure | **CLOSED** — `v0.10.0-us23` |

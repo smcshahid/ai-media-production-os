@@ -12,7 +12,7 @@
 
 | # | SHA (short) | Message |
 |---|---|---|
-| 1 | *(pending)* | `feat(us23): asset history UI, Olares verification, and repository closure` |
+| 1 | `e01c6ab` | `feat(us23): asset history UI, Olares verification, and repository closure` |
 
 **Prior baseline:** `v0.9.0-us22` (`d04736e`)
 
@@ -23,8 +23,9 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **Tag** | `v0.10.0-us23` |
-| **Remote** | `origin/main` — push pending |
+| **HEAD** | `e01c6ab` · **tag** `v0.10.0-us23` → `e01c6ab` |
+| **Remote** | `origin/main` — pushed 2026-06-10 |
+| **Tag remote** | `origin/v0.10.0-us23` — pushed |
 | **Working tree** | Clean (post-closure) |
 
 ---
