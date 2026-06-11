@@ -25,7 +25,16 @@ def draft_script_node(state: ScreenwriterState, settings: Settings) -> Screenwri
 
     prompt_cfg = load_script_prompt(settings, version=PROMPT_VERSION)
     user_prompt = prompt_cfg["user_template"].format(story_text=state["story_text"].strip())
-    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}"
+
+    rejection_note = (state.get("rejection_note") or "").strip()
+    revision_block = ""
+    if rejection_note:
+        revision_block = (
+            "\nRevision notes from reviewer (address these in the new draft):\n"
+            f"{rejection_note}\n"
+        )
+
+    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}{revision_block}"
 
     model_id = load_script_model(settings)
     try:

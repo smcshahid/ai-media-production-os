@@ -35,10 +35,13 @@ def run_screenwriter_graph(
     settings: Settings,
     *,
     story_text: str,
+    rejection_note: str | None = None,
 ) -> ScreenwriterState:
     """Execute the Screenwriter graph and return terminal state."""
     compiled = build_screenwriter_graph(settings)
-    result: ScreenwriterState = compiled.invoke({"story_text": story_text})
+    result: ScreenwriterState = compiled.invoke(
+        {"story_text": story_text, "rejection_note": rejection_note}
+    )
     if result.get("error"):
         raise RuntimeError(f"{AGENT_ID} failed: {result['error']}")
     if not result.get("script_fountain"):

@@ -1,6 +1,6 @@
 # Sprint 3F — US-15 Review and Approve Script (governance brief)
 
-**Status:** RATIFIED for planning — **not authorized for implementation** until this brief is accepted.  
+**Status:** **CLOSED** — formally accepted 2026-06-11 (Olares verification PASS).  
 **Story:** US-15 "Review and approve script" · FEAT-07 Script Review & Approval · EPIC-03 · P0 · 3 SP · Sprint S3.  
 **Prerequisites (all closed):** US-08 ✅ (approve/reject) · US-14 ✅ (`script.fountain`, SCRIPT gate, `D-39`/`D-40`) · US-09 ✅ (regenerate pattern at STORY) · US-26 ✅ (Review route shell).  
 **Blocks:** US-16 (storyboard consumes approved script per `D-37`-style resolution).

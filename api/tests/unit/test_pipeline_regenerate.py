@@ -128,7 +128,7 @@ async def test_regenerate_requires_post_reject_state(session: AsyncSession) -> N
 
 
 @pytest.mark.asyncio
-async def test_regenerate_script_stage_returns_501(session: AsyncSession) -> None:
+async def test_regenerate_script_stage_happy_path(session: AsyncSession) -> None:
     project_id = await _seed_project(session)
     run = await _seed_awaiting_run(session, project_id, stage=PipelineStage.SCRIPT)
     await _seed_rejected(session, run, PipelineStage.SCRIPT)
@@ -142,8 +142,12 @@ async def test_regenerate_script_stage_returns_501(session: AsyncSession) -> Non
             headers=_AUTH,
         )
 
-    assert response.status_code == 501
-    assert len(fake.regenerates) == 0
+    assert response.status_code == 200
+    body = response.json()
+    assert body["stage"] == "SCRIPT"
+    assert body["regenerations_used"] == 1
+    assert len(fake.regenerates) == 1
+    assert fake.regenerates[0] == (run.temporal_workflow_id, "SCRIPT")
 
 
 @pytest.mark.asyncio

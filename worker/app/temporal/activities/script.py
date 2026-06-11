@@ -1,4 +1,4 @@
-"""SCRIPT stage Screenwriter activity (US-14)."""
+"""SCRIPT stage Screenwriter activity (US-14 / US-15)."""
 
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ from app.tools.assets import (
     ApprovedStoryNotFoundError,
     AssetStoreError,
     fetch_approved_story,
+    fetch_latest_script_rejection_rationale,
     insert_lineage_edge,
     store_script_fountain,
 )
@@ -22,8 +23,10 @@ from app.tools.audit import append_audit_event
 
 
 @activity.defn(name="run_script_agent")
-async def run_script_agent(project_id: str, run_id: str) -> str:
-    """Generate ``script.fountain`` from the approved story (D-37 / D-39)."""
+async def run_script_agent(
+    project_id: str, run_id: str, rejection_note: str = ""
+) -> str:
+    """Generate ``script.fountain`` from approved story (D-37 / D-42)."""
     settings = get_settings()
     project_uuid = uuid.UUID(project_id)
     run_uuid = uuid.UUID(run_id)
@@ -37,10 +40,22 @@ async def run_script_agent(project_id: str, run_id: str) -> str:
     )
 
     try:
+        # D-42: story input always from approved STORY; never prior SCRIPT drafts.
         story = fetch_approved_story(
             settings, project_id=project_uuid, pipeline_run_id=run_uuid
         )
-        graph_result = run_screenwriter_graph(settings, story_text=story.story_text)
+        db_rationale = fetch_latest_script_rejection_rationale(
+            settings, pipeline_run_id=run_uuid
+        )
+        regen_note = (db_rationale or "").strip()
+        if not regen_note and rejection_note.strip():
+            regen_note = rejection_note.strip()
+
+        graph_result = run_screenwriter_graph(
+            settings,
+            story_text=story.story_text,
+            rejection_note=regen_note or None,
+        )
         stored = store_script_fountain(
             settings,
             project_id=project_uuid,

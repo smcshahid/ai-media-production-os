@@ -306,7 +306,7 @@ async def pipeline_approve(
     )
 
 
-_SUPPORTED_REGENERATE_STAGES = frozenset({PipelineStage.STORY})
+_SUPPORTED_REGENERATE_STAGES = frozenset({PipelineStage.STORY, PipelineStage.SCRIPT})
 _MAX_REGENERATIONS_PER_STAGE = 3
 
 

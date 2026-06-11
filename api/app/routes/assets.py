@@ -33,6 +33,8 @@ router = APIRouter(tags=["assets"])
 _HUMAN_EDIT_BRANCH = "human-edit"
 _MAX_STORY_TEXT_CHARS = 50_000
 _STORY_CONTENT_TYPE = "text/markdown; charset=utf-8"
+_SCRIPT_CONTENT_TYPE = "text/plain; charset=utf-8"
+_READABLE_STAGES = frozenset({AssetStage.STORY, AssetStage.SCRIPT})
 
 
 class AssetRead(BaseModel):
@@ -54,16 +56,29 @@ class AssetTextUpdateRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=_MAX_STORY_TEXT_CHARS)
 
 
-def _require_story_asset(row: AssetVersion | None, asset_id: uuid.UUID) -> AssetVersion:
+def _require_readable_asset(row: AssetVersion | None, asset_id: uuid.UUID) -> AssetVersion:
     if row is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"asset {asset_id} not found",
         )
+    if row.stage not in _READABLE_STAGES:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"content read is limited to STORY and SCRIPT assets "
+                f"(got {row.stage.value})"
+            ),
+        )
+    return row
+
+
+def _require_story_asset(row: AssetVersion | None, asset_id: uuid.UUID) -> AssetVersion:
+    row = _require_readable_asset(row, asset_id)
     if row.stage != AssetStage.STORY:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"content read is limited to STORY assets (got {row.stage.value})",
+            detail=f"text update is limited to STORY assets (got {row.stage.value})",
         )
     return row
 
@@ -129,8 +144,15 @@ async def list_assets(
 
 @router.get(
     "/assets/{asset_id}/content",
-    summary="Download STORY asset text (US-13)",
-    responses={200: {"content": {_STORY_CONTENT_TYPE: {}}}},
+    summary="Download STORY or SCRIPT asset text (US-13 / US-15)",
+    responses={
+        200: {
+            "content": {
+                _STORY_CONTENT_TYPE: {},
+                _SCRIPT_CONTENT_TYPE: {},
+            }
+        }
+    },
 )
 async def get_asset_content(
     asset_id: uuid.UUID,
@@ -138,7 +160,7 @@ async def get_asset_content(
     minio: MinioClient = Depends(get_minio),
 ) -> Response:
     versions = AssetVersionRepository(session)
-    row = _require_story_asset(await versions.get(asset_id), asset_id)
+    row = _require_readable_asset(await versions.get(asset_id), asset_id)
     try:
         data = await minio.download_bytes(row.minio_key)
     except ObjectNotFoundError as exc:
@@ -151,7 +173,10 @@ async def get_asset_content(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail="asset storage unavailable",
         ) from exc
-    return Response(content=data, media_type=_STORY_CONTENT_TYPE)
+    media_type = (
+        _SCRIPT_CONTENT_TYPE if row.stage == AssetStage.SCRIPT else _STORY_CONTENT_TYPE
+    )
+    return Response(content=data, media_type=media_type)
 
 
 @router.put(

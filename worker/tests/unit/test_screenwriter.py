@@ -59,3 +59,34 @@ def test_draft_script_node_success(
     assert result.get("error") is None
     assert result.get("model_id") == "qwen3:14b"
     assert "INT. LAB" in result.get("script_fountain", "")
+
+
+@patch("app.agents.screenwriter.nodes.generate_text")
+@patch("app.agents.screenwriter.nodes.load_script_prompt")
+@patch("app.agents.screenwriter.nodes.load_script_model")
+def test_draft_script_node_includes_rejection_note(
+    mock_model: object,
+    mock_prompt: object,
+    mock_generate: object,
+) -> None:
+    mock_model.return_value = "qwen3:14b"
+    mock_prompt.return_value = {
+        "system": "system",
+        "user_template": "story={story_text}",
+        "temperature": 0.7,
+        "num_predict": 1024,
+    }
+    mock_generate.return_value = (VALID_SCRIPT, 1.0)
+
+    settings = Settings()
+    draft_script_node(
+        {
+            "story_text": "A hero finds a garden.",
+            "rejection_note": "Add more tension in the dialogue.",
+        },
+        settings,
+    )
+
+    prompt = mock_generate.call_args.kwargs["prompt"]
+    assert "Add more tension in the dialogue." in prompt
+    assert "Revision notes from reviewer" in prompt

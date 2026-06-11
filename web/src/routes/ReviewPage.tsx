@@ -12,7 +12,9 @@ import {
 } from "../api/client";
 import type { AssetVersion, Project } from "../api/types";
 import { usePipelineStatus } from "../hooks/usePipelineStatus";
+import { formatFountainHtml } from "../lib/fountainFormat";
 import { toDisplayStatus } from "../lib/pipelineDisplay";
+import { selectLatestAiDraftScriptAsset } from "../lib/scriptReview";
 import { selectLatestAiDraftStoryAsset, selectLatestStoryAsset } from "../lib/storyReview";
 
 const STAGE_LABELS: Record<string, string> = {
@@ -22,8 +24,8 @@ const STAGE_LABELS: Record<string, string> = {
 };
 
 /**
- * Human review gate (US-08 / US-10 / US-13). STORY stage loads editable treatment;
- * approve/reject/regenerate via pipeline API (US-09 STORY regenerate).
+ * Human review gate (US-08 / US-10 / US-13 / US-15). STORY: editable treatment.
+ * SCRIPT: Fountain preview. Approve/reject/regenerate via pipeline API.
  */
 export function ReviewPage() {
   const [project, setProject] = useState<Project | null>(null);
@@ -37,6 +39,10 @@ export function ReviewPage() {
   const [savedText, setSavedText] = useState("");
   const [storyLoading, setStoryLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const [scriptAsset, setScriptAsset] = useState<AssetVersion | null>(null);
+  const [scriptPreviewHtml, setScriptPreviewHtml] = useState("");
+  const [scriptLoading, setScriptLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -85,8 +91,30 @@ export function ReviewPage() {
     }
   }, []);
 
+  const loadScript = useCallback(async (projectId: string) => {
+    setScriptLoading(true);
+    setActionError(null);
+    try {
+      const assets = await listAssets(projectId);
+      const latest = selectLatestAiDraftScriptAsset(assets);
+      if (!latest) {
+        setScriptAsset(null);
+        setScriptPreviewHtml("");
+        return;
+      }
+      const content = await getAssetContent(latest.id);
+      setScriptAsset(latest);
+      setScriptPreviewHtml(formatFountainHtml(content));
+    } catch (err) {
+      setActionError(err instanceof ApiError ? err.message : "Failed to load script.");
+    } finally {
+      setScriptLoading(false);
+    }
+  }, []);
+
   const reviewStage = pipeline?.current_stage;
   const isStoryReview = reviewStage === "STORY";
+  const isScriptReview = reviewStage === "SCRIPT";
 
   useEffect(() => {
     if (!project || !isStoryReview || pipeline?.status !== "AWAITING_APPROVAL") {
@@ -94,6 +122,13 @@ export function ReviewPage() {
     }
     void loadStory(project.id);
   }, [project, isStoryReview, pipeline?.status, loadStory]);
+
+  useEffect(() => {
+    if (!project || !isScriptReview || pipeline?.status !== "AWAITING_APPROVAL") {
+      return;
+    }
+    void loadScript(project.id);
+  }, [project, isScriptReview, pipeline?.status, loadScript]);
 
   if (!project && !actionError) {
     return <p className="page__subtitle">Loading review…</p>;
@@ -131,6 +166,8 @@ export function ReviewPage() {
   }
 
   const dirty = isStoryReview && treatmentText !== savedText;
+  const canRegenerate =
+    (isStoryReview || isScriptReview) && rejectedHint && apiStatus !== "RUNNING";
 
   async function handleSave() {
     if (!storyAsset || !dirty) {
@@ -203,7 +240,11 @@ export function ReviewPage() {
     try {
       await regeneratePipeline({ project_id: project.id, stage });
       refresh();
-      await loadStory(project.id, { preferAiDraft: true });
+      if (isStoryReview) {
+        await loadStory(project.id, { preferAiDraft: true });
+      } else if (isScriptReview) {
+        await loadScript(project.id);
+      }
     } catch (err) {
       if (err instanceof ApiError && err.status === 429) {
         setActionError(err.message);
@@ -259,6 +300,36 @@ export function ReviewPage() {
               </p>
             )}
           </>
+        ) : isScriptReview ? (
+          <>
+            <p className="review__lead">
+              Preview the generated Fountain script. Approve to advance to storyboard generation,
+              or reject with a note to regenerate.
+            </p>
+            {scriptAsset && (
+              <p className="review__meta">
+                Version <strong>{scriptAsset.version}</strong> · branch{" "}
+                <code className="table__hash">{scriptAsset.branch}</code>
+                {scriptAsset.is_ai_generated ? (
+                  <span className="badge badge--generating" style={{ marginLeft: 8 }}>
+                    AI Generated
+                  </span>
+                ) : null}
+              </p>
+            )}
+            {scriptLoading ? (
+              <p className="page__subtitle">Loading script…</p>
+            ) : scriptAsset ? (
+              <div
+                className="fountain-preview"
+                dangerouslySetInnerHTML={{ __html: scriptPreviewHtml }}
+              />
+            ) : (
+              <p className="page__error" role="alert">
+                No SCRIPT asset found for this project.
+              </p>
+            )}
+          </>
         ) : (
           <p className="review__lead">
             Stage output is ready for human review. Approve to advance the pipeline, or reject
@@ -275,6 +346,13 @@ export function ReviewPage() {
           <p className="review__regenerate-hint" role="status">
             Story rejected. Regenerate to request a new AI draft using your note, edit and save,
             or approve when ready. Up to 3 regenerations per run.
+          </p>
+        )}
+
+        {rejectedHint && isScriptReview && (
+          <p className="review__regenerate-hint" role="status">
+            Script rejected. Regenerate to request a new AI draft using your note, or approve when
+            ready. Up to 3 regenerations per run.
           </p>
         )}
 
@@ -324,11 +402,11 @@ export function ReviewPage() {
           >
             Reject
           </button>
-          {isStoryReview && (
+          {(isStoryReview || isScriptReview) && (
             <button
               type="button"
               className="button"
-              disabled={submitting || !rejectedHint || apiStatus === "RUNNING"}
+              disabled={submitting || !canRegenerate}
               title={!rejectedHint ? "Reject with a note first" : undefined}
               onClick={() => void handleRegenerate()}
             >

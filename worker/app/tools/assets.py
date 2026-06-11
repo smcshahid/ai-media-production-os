@@ -26,6 +26,10 @@ class ApprovedStoryNotFoundError(AssetStoreError):
     """No approved STORY asset exists for the pipeline run (D-37)."""
 
 
+class ApprovedScriptNotFoundError(AssetStoreError):
+    """No approved SCRIPT asset exists for the pipeline run (D-41)."""
+
+
 @dataclass(frozen=True, slots=True)
 class IdeaAsset:
     project_id: uuid.UUID
@@ -54,6 +58,14 @@ class ApprovedStoryAsset:
 class StoredScriptAsset:
     asset_version_id: uuid.UUID
     content_hash: str
+    minio_key: str
+    version: int
+
+
+@dataclass(frozen=True, slots=True)
+class ApprovedScriptAsset:
+    asset_version_id: uuid.UUID
+    script_fountain: str
     minio_key: str
     version: int
 
@@ -242,6 +254,95 @@ def fetch_approved_story(
     return ApprovedStoryAsset(
         asset_version_id=uuid.UUID(str(row["id"])),
         story_text=data.decode("utf-8"),
+        minio_key=row["minio_key"],
+        version=int(row["version"]),
+    )
+
+
+def fetch_latest_script_rejection_rationale(
+    settings: Settings,
+    *,
+    pipeline_run_id: uuid.UUID,
+) -> str | None:
+    """Return latest SCRIPT rejection note for regeneration (D-42)."""
+    engine = _engine(settings)
+    try:
+        with engine.begin() as conn:
+            row = conn.execute(
+                text(
+                    """
+                    SELECT rationale FROM approvals
+                    WHERE pipeline_run_id = :run_id
+                      AND stage = 'SCRIPT'
+                      AND decision = 'REJECTED'
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                    """
+                ),
+                {"run_id": str(pipeline_run_id)},
+            ).first()
+    finally:
+        engine.dispose()
+    if row is None or not row[0]:
+        return None
+    return str(row[0]).strip()
+
+
+def fetch_approved_script(
+    settings: Settings,
+    *,
+    project_id: uuid.UUID,
+    pipeline_run_id: uuid.UUID,
+) -> ApprovedScriptAsset:
+    """Return latest SCRIPT version gated by APPROVED approval (D-41)."""
+    engine = _engine(settings)
+    try:
+        with engine.begin() as conn:
+            approved = conn.execute(
+                text(
+                    """
+                    SELECT 1 FROM approvals
+                    WHERE pipeline_run_id = :run_id
+                      AND stage = 'SCRIPT'
+                      AND decision = 'APPROVED'
+                    LIMIT 1
+                    """
+                ),
+                {"run_id": str(pipeline_run_id)},
+            ).first()
+            if approved is None:
+                raise ApprovedScriptNotFoundError(
+                    f"no APPROVED SCRIPT approval for run {pipeline_run_id}"
+                )
+
+            row = conn.execute(
+                text(
+                    """
+                    SELECT id, minio_key, version
+                    FROM asset_versions
+                    WHERE project_id = :project_id AND stage = 'SCRIPT'
+                    ORDER BY version DESC
+                    LIMIT 1
+                    """
+                ),
+                {"project_id": str(project_id)},
+            ).mappings().first()
+        if row is None:
+            raise ApprovedScriptNotFoundError(f"no SCRIPT asset for project {project_id}")
+
+        client = _minio_client(settings)
+        response = client.get_object(settings.minio_bucket, row["minio_key"])
+        try:
+            data = response.read()
+        finally:
+            response.close()
+            response.release_conn()
+    finally:
+        engine.dispose()
+
+    return ApprovedScriptAsset(
+        asset_version_id=uuid.UUID(str(row["id"])),
+        script_fountain=data.decode("utf-8"),
         minio_key=row["minio_key"],
         version=int(row["version"]),
     )
