@@ -14,7 +14,7 @@
 | 1 | `6619c9a` | `feat(us15): SCRIPT review mode, Fountain preview, regen, and D-41/D-42` |
 | 2 | `1872f0d` | `docs(us15): implementation report` |
 | 3 | `e51af8c` | `docs(us15): Olares verification package and acceptance evidence` |
-| 4 | *(this commit)* | `docs(us15): repository closure report` |
+| 4 | `7efd89c` | `docs(us15): repository closure report` |
 
 **Prior baseline:** `v0.3.3-us14` (`db9370c`)
 
@@ -25,8 +25,8 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | *(this commit)* · **tag** `e51af8c` |
-| **US-15 release tag** | `v0.3.4-us15` → *(set on this commit)* |
+| **HEAD** | `7efd89c` · **tag** `v0.3.4-us15` |
+| **US-15 release tag** | `v0.3.4-us15` → `7efd89c` |
 | **Remote** | `origin/main` |
 | **Working tree** | **Clean** (post-closure) |
 
