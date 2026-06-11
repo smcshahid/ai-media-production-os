@@ -16,6 +16,7 @@
 | 2 | `93214fc` | `docs(usv01): Visual MVP acceptance verification package and Olares evidence` |
 | 3 | `6df60a3` | `docs(usv01): repository closure report and Visual MVP completion summary` |
 | 4 | `37854f5` | `docs(usv01): sync closure report after push` |
+| 5 | `d7dbfb4` | `docs(usv01): final closure report HEAD sync` |
 
 **Prior baseline:** `v0.3.6-us17` (`4604e5f`)
 
@@ -26,7 +27,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `37854f5` · **tag** `v0.4.0-usv01` → `93214fc` |
+| **HEAD** | `d7dbfb4` · **tag** `v0.4.0-usv01` → `93214fc` |
 | **Tag** | `v0.4.0-usv01` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.4.0-usv01` — pushed |
@@ -111,6 +112,7 @@ Future work must not modify Visual MVP closure records. Deferred items (US-18 vi
 git push origin main          → 69c40b3..93214fc  main -> main  (US-V01 package)
 git push origin v0.4.0-usv01  → [new tag] v0.4.0-usv01 -> v0.4.0-usv01
 git push origin main          → 93214fc..6df60a3  main -> main  (closure sync)
+git push origin main          → 6df60a3..37854f5  main -> main  (closure report sync)
 ```
 
 Repository: `https://github.com/smcshahid/ai-media-production-os`
