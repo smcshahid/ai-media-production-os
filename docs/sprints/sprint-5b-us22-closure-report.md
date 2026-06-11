@@ -23,7 +23,7 @@
 | Field | Value |
 |---|---|
 | **Branch** | `main` |
-| **HEAD** | `90cef6c` · **tag** `v0.9.0-us22` → `d04736e` |
+| **HEAD** | `0563fd0` · **tag** `v0.9.0-us22` → `d04736e` |
 | **Tag** | `v0.9.0-us22` |
 | **Remote** | `origin/main` — pushed 2026-06-11 |
 | **Tag remote** | `origin/v0.9.0-us22` — pushed |
@@ -104,7 +104,7 @@ US-23 implementation is **not authorized** until governance brief ACCEPT.
 ## 8. Push confirmation
 
 ```
-git push origin main          → f6959bd..90cef6c  main -> main
+git push origin main          → 90cef6c..0563fd0  main -> main
 git push origin v0.9.0-us22   → [new tag] v0.9.0-us22 -> v0.9.0-us22
 ```
 
