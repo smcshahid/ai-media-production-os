@@ -3,7 +3,7 @@
 **Date:** 2026-06-15  
 **Milestone:** M7 Spark Full Phase 2  
 **Acceptance gate:** US-V03  
-**Release tag:** `v0.12.0-usv03`  
+**Release tag:** `v0.12.0-usv03` → commit `80724ab`  
 **Governance:** **ACCEPT** — US-V03 closed, M7 complete  
 **Product baseline:** `v0.11.0-us21` (US-V03 is verification-only; no product delta)
 
@@ -56,7 +56,7 @@ Full attestation: `evidence/us-v03-verification/olares-2026-06-15/US-V03-ACCEPTA
 | `v0.9.0-us22` | US-22 | Asset History API |
 | `v0.10.0-us23` | US-23 | Asset History UI |
 | `v0.11.0-us21` | US-21 | Realtime Updates |
-| **`v0.12.0-usv03`** | **US-V03** | **Phase 2 integrated acceptance** |
+| **`v0.12.0-usv03`** | **US-V03** | **Phase 2 integrated acceptance** | `80724ab` |
 
 Phase 1 acceptance remains **`v0.7.0-usv02`** (M6).
 

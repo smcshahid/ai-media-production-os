@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-15  
 **Governance decision:** **ACCEPT** — US-V03 closed · **M7 Spark Full Phase 2 ACCEPTED**  
-**Release tag:** `v0.12.0-usv03`  
+**Release tag:** `v0.12.0-usv03` → commit `80724ab`  
 **Branch:** `main` → `origin/main`
 
 ---

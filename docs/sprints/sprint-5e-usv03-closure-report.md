@@ -76,7 +76,8 @@ US-V03 integrated Phase 2 acceptance verification completed on Olares with **FAI
 |---|---|
 | Branch | `main` |
 | Tag | `v0.12.0-usv03` |
-| Remote | Pushed to `origin` |
+| Commit | `80724ab` |
+| Remote | Pushed to `origin` 2026-06-15 |
 | Product code delta (US-V03) | **None** (verification-only) |
 
 ---
