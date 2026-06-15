@@ -64,6 +64,39 @@ class Settings(BaseSettings):
     # --- ComfyUI (US-16+) ---
     comfyui_host: str = Field(default="http://comfyui:8188", validation_alias="COMFYUI_HOST")
 
+    # --- ComfyUI storyboard image generation (quality upgrade) ---
+    # Production workflow JSON (relative to configs/comfyui/workflows/).
+    comfyui_workflow: str = Field(
+        default="sdxl_storyboard_v2.json", validation_alias="COMFYUI_WORKFLOW"
+    )
+    # SDXL is trained at ~1MP; 1344x768 is the 16:9 sweet spot for video-bound stills.
+    comfyui_width: int = Field(default=1344, validation_alias="COMFYUI_WIDTH")
+    comfyui_height: int = Field(default=768, validation_alias="COMFYUI_HEIGHT")
+    comfyui_steps: int = Field(default=28, validation_alias="COMFYUI_STEPS")
+    comfyui_cfg: float = Field(default=7.0, validation_alias="COMFYUI_CFG")
+    comfyui_sampler: str = Field(default="dpmpp_2m_sde", validation_alias="COMFYUI_SAMPLER")
+    comfyui_scheduler: str = Field(default="karras", validation_alias="COMFYUI_SCHEDULER")
+    # Hi-res fix second pass (only applied when the workflow declares a hires node).
+    comfyui_hires_steps: int = Field(default=12, validation_alias="COMFYUI_HIRES_STEPS")
+    comfyui_generate_timeout_s: float = Field(
+        default=180.0, validation_alias="COMFYUI_GENERATE_TIMEOUT_S"
+    )
+
+    # --- ComfyUI WAN 2.2 image-to-video (US-18 phase 2) ---
+    video_i2v_enabled: bool = Field(default=False, validation_alias="VIDEO_I2V_ENABLED")
+    video_i2v_workflow: str = Field(
+        default="wan22_i2v.json", validation_alias="VIDEO_I2V_WORKFLOW"
+    )
+    video_i2v_width: int = Field(default=832, validation_alias="VIDEO_I2V_WIDTH")
+    video_i2v_height: int = Field(default=480, validation_alias="VIDEO_I2V_HEIGHT")
+    # 81 frames @ 16fps ~= 5s of motion per storyboard frame.
+    video_i2v_frames: int = Field(default=81, validation_alias="VIDEO_I2V_FRAMES")
+    video_i2v_fps: int = Field(default=16, validation_alias="VIDEO_I2V_FPS")
+    video_i2v_steps: int = Field(default=20, validation_alias="VIDEO_I2V_STEPS")
+    video_i2v_timeout_s: float = Field(
+        default=600.0, validation_alias="VIDEO_I2V_TIMEOUT_S"
+    )
+
     # --- Config bundle (prompts, model pins) ---
     config_root: str = Field(default="/srv/configs", validation_alias="AIMPOS_CONFIG_ROOT")
 

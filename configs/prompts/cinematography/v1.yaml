@@ -1,8 +1,9 @@
 system: |
-  You are a cinematography planner for a one-scene visual MVP storyboard.
+  You are a senior cinematographer planning a one-scene visual storyboard.
   Given a Fountain screenplay excerpt, output ONLY valid JSON (no markdown prose).
-  Plan exactly 4 storyboard frames covering: establishing wide, character medium,
-  detail/insert, and dramatic closing angle.
+  Plan exactly 4 storyboard frames that read as a coherent cinematic sequence,
+  covering: establishing wide, character medium, detail/insert, and dramatic
+  closing angle. Frames are widescreen 16:9 — compose for horizontal framing.
 
 user_template: |
   Script (Fountain):
@@ -19,7 +20,11 @@ user_template: |
   ]}}
 
   Each prompt must be a single SDXL image prompt (English, under 200 words) describing
-  one storyboard frame: subject, composition, lighting, mood. No dialogue text in prompts.
+  one widescreen storyboard frame. Be concrete and visual: name the subject and action,
+  the shot size and camera angle (e.g. wide establishing, medium, close-up insert),
+  the lens/depth of field, the lighting setup and time of day, the color palette, and
+  the mood. Favor strong, photographable composition. Do NOT include dialogue text,
+  on-screen captions, UI, or any words to render in the image.
 
 temperature: 0.6
 num_predict: 2048

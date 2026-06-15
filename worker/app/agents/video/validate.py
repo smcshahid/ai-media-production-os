@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import tempfile
@@ -78,10 +79,18 @@ def validate_video_mp4(mp4_bytes: bytes) -> VideoProbeResult:
     if len(mp4_bytes) < 12 or mp4_bytes[4:8] != b"ftyp":
         raise VideoValidationError("invalid mp4: missing ftyp box")
 
-    with tempfile.NamedTemporaryFile(suffix=".mp4", delete=True) as tmp:
-        path = Path(tmp.name)
-        path.write_bytes(mp4_bytes)
-        probe = _probe_file(path)
+    # delete=False + manual cleanup so the file can be reopened by ffprobe on
+    # Windows (where an open NamedTemporaryFile cannot be reopened).
+    fd, tmp_name = tempfile.mkstemp(suffix=".mp4")
+    try:
+        with os.fdopen(fd, "wb") as handle:
+            handle.write(mp4_bytes)
+        probe = _probe_file(Path(tmp_name))
+    finally:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
 
     if not (MIN_DURATION_SEC <= probe.duration_sec <= MAX_DURATION_SEC):
         raise VideoValidationError(

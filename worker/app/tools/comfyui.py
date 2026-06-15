@@ -6,7 +6,6 @@ import copy
 import json
 import logging
 import time
-from pathlib import Path
 
 import httpx
 from aimpos_config import Settings
@@ -16,10 +15,13 @@ from app.tools.ollama import normalize_host
 
 logger = logging.getLogger("aimpos.worker.comfyui")
 
-PRODUCTION_WORKFLOW = "sdxl_storyboard_production.json"
+# Default workflow used when settings.comfyui_workflow is unset.
+PRODUCTION_WORKFLOW = "sdxl_storyboard_v2.json"
 PROMPT_NODE_ID = "2"
 SEED_NODE_ID = "5"
-GENERATE_TIMEOUT_S = 180
+# Optional hi-res-fix second sampler; absent in the legacy single-pass workflow.
+HIRES_SAMPLER_NODE_ID = "9"
+DEFAULT_GENERATE_TIMEOUT_S = 180.0
 
 
 class ComfyUIError(Exception):
@@ -27,18 +29,85 @@ class ComfyUIError(Exception):
 
 
 def load_production_workflow(settings: Settings) -> dict:
-    path = resolve_config_root(settings) / "comfyui" / "workflows" / PRODUCTION_WORKFLOW
+    workflow_name = getattr(settings, "comfyui_workflow", None) or PRODUCTION_WORKFLOW
+    path = resolve_config_root(settings) / "comfyui" / "workflows" / workflow_name
     if not path.is_file():
         raise ComfyUIError(f"workflow not found: {path}")
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def patch_workflow_prompt(workflow: dict, *, positive_text: str, seed: int) -> dict:
+def _patch_latent_dims(node: dict, *, width: int | None, height: int | None) -> None:
+    if node.get("class_type") != "EmptyLatentImage":
+        return
+    if width:
+        node["inputs"]["width"] = int(width)
+    if height:
+        node["inputs"]["height"] = int(height)
+
+
+def _patch_sampler(
+    node: dict,
+    *,
+    seed: int,
+    steps: int | None,
+    cfg: float | None,
+    sampler: str | None,
+    scheduler: str | None,
+) -> None:
+    if node.get("class_type") != "KSampler":
+        return
+    node["inputs"]["seed"] = int(seed)
+    if steps:
+        node["inputs"]["steps"] = int(steps)
+    if cfg is not None:
+        node["inputs"]["cfg"] = float(cfg)
+    if sampler:
+        node["inputs"]["sampler_name"] = sampler
+    if scheduler:
+        node["inputs"]["scheduler"] = scheduler
+
+
+def patch_workflow_prompt(
+    workflow: dict,
+    *,
+    positive_text: str,
+    seed: int,
+    width: int | None = None,
+    height: int | None = None,
+    steps: int | None = None,
+    cfg: float | None = None,
+    sampler: str | None = None,
+    scheduler: str | None = None,
+    hires_steps: int | None = None,
+) -> dict:
+    """Patch prompt, seed, and (when present) resolution + sampler params.
+
+    Resolution is applied to every ``EmptyLatentImage`` node and sampler params
+    to every ``KSampler`` node, so both the legacy single-pass workflow and the
+    hi-res-fix v2 workflow are supported. The hi-res sampler keeps its own
+    (lower) step count unless ``hires_steps`` is provided.
+    """
     patched = copy.deepcopy(workflow)
     if PROMPT_NODE_ID not in patched or SEED_NODE_ID not in patched:
         raise ComfyUIError("production workflow missing prompt or seed nodes")
     patched[PROMPT_NODE_ID]["inputs"]["text"] = positive_text
-    patched[SEED_NODE_ID]["inputs"]["seed"] = int(seed)
+
+    for node_id, node in patched.items():
+        if not isinstance(node, dict):
+            continue
+        _patch_latent_dims(node, width=width, height=height)
+        if node.get("class_type") == "KSampler":
+            node_steps = steps
+            if node_id == HIRES_SAMPLER_NODE_ID:
+                node_steps = hires_steps if hires_steps else None
+            _patch_sampler(
+                node,
+                seed=seed,
+                steps=node_steps,
+                cfg=cfg,
+                sampler=sampler,
+                scheduler=scheduler,
+            )
     return patched
 
 
@@ -47,7 +116,7 @@ def generate_storyboard_png(
     *,
     positive_prompt: str,
     seed: int,
-    timeout_s: float = GENERATE_TIMEOUT_S,
+    timeout_s: float | None = None,
 ) -> bytes:
     """Queue production workflow and return PNG bytes for one frame."""
     host = normalize_host(settings.comfyui_host)
@@ -55,10 +124,24 @@ def generate_storyboard_png(
         load_production_workflow(settings),
         positive_text=positive_prompt,
         seed=seed,
+        width=getattr(settings, "comfyui_width", None),
+        height=getattr(settings, "comfyui_height", None),
+        steps=getattr(settings, "comfyui_steps", None),
+        cfg=getattr(settings, "comfyui_cfg", None),
+        sampler=getattr(settings, "comfyui_sampler", None),
+        scheduler=getattr(settings, "comfyui_scheduler", None),
+        hires_steps=getattr(settings, "comfyui_hires_steps", None),
+    )
+    effective_timeout = (
+        timeout_s
+        if timeout_s is not None
+        else getattr(settings, "comfyui_generate_timeout_s", DEFAULT_GENERATE_TIMEOUT_S)
     )
     logger.info("comfyui_queued", extra={"seed": seed})
     prompt_id = _queue_prompt(host, workflow)
-    filename, subfolder, image_type = _wait_for_image(host, prompt_id, timeout_s=timeout_s)
+    filename, subfolder, image_type = _wait_for_image(
+        host, prompt_id, timeout_s=effective_timeout
+    )
     png = _fetch_image_bytes(host, filename, subfolder, image_type)
     if png[:8] != b"\x89PNG\r\n\x1a\n":
         raise ComfyUIError("comfyui output is not a PNG")

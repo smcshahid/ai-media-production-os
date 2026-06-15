@@ -15,6 +15,7 @@ from app.agents.cinematography.constants import (
     STORYBOARD_BRANCH,
     STORYBOARD_FRAME_COUNT,
     WORKFLOW_NAME,
+    apply_quality_suffix,
 )
 from app.agents.cinematography.graph import run_cinematography_graph
 from app.agents.cinematography.validate import validate_shot_plan, validate_storyboard_frame
@@ -83,7 +84,7 @@ async def run_storyboard_agent(
             seed = BASE_SEED + int(shot["frame_index"])
             png = generate_storyboard_png(
                 settings,
-                positive_prompt=shot["prompt"],
+                positive_prompt=apply_quality_suffix(shot["prompt"]),
                 seed=seed,
             )
             validate_storyboard_frame(png)

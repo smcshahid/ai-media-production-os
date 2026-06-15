@@ -16,6 +16,10 @@ from app.agents.video.constants import (
 )
 from app.agents.video.slideshow import SlideshowRenderError, render_slideshow_mp4
 from app.agents.video.validate import VideoValidationError, validate_video_mp4
+from app.infrastructure.gpu.sequencer import (
+    GpuSequencerError,
+    unload_ollama_before_comfyui,
+)
 from app.temporal.activities.pipeline_status import sync_pipeline_status
 from app.tools.assets import (
     ApprovedStoryboardNotFoundError,
@@ -64,11 +68,14 @@ async def run_video_agent(
         mp4_bytes: bytes
 
         try:
+            if getattr(settings, "video_i2v_enabled", False):
+                # WAN 2.2 is VRAM-heavy; free the GPU from Ollama first (D-08).
+                unload_ollama_before_comfyui(settings)
             candidate = try_comfyui_i2v(settings, png_frames)
             probe = validate_video_mp4(candidate)
             mp4_bytes = candidate
             source = SOURCE_COMFYUI_I2V
-        except (VideoI2VError, VideoValidationError) as exc:
+        except (VideoI2VError, VideoValidationError, GpuSequencerError) as exc:
             activity.logger.warning(
                 "video_i2v_failed",
                 extra={"project_id": project_id, "run_id": run_id, "error": str(exc)},
@@ -85,7 +92,11 @@ async def run_video_agent(
             "codec": probe.codec,
             "source": source,
             "frame_count": len(frame_ids),
-            "fps": 24,
+            "fps": (
+                int(getattr(settings, "video_i2v_fps", 24))
+                if source == SOURCE_COMFYUI_I2V
+                else 24
+            ),
             "file_size_bytes": len(mp4_bytes),
             "logical_filename": "scene_video.mp4",
         }

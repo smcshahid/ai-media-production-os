@@ -14,7 +14,13 @@ from app.tools.assets import ApprovedStoryboardBatch, ApprovedStoryboardFrame, S
 from app.tools.video_i2v import VideoI2VError
 
 PNG = b"\x89PNG\r\n\x1a\n" + b"\x00" * 64
-PROBE = VideoProbeResult(duration_sec=20.0, width=854, height=480, codec="h264")
+PROBE = VideoProbeResult(duration_sec=20.0, width=1280, height=720, codec="h264")
+
+
+def _settings() -> MagicMock:
+    settings = MagicMock()
+    settings.video_i2v_enabled = False
+    return settings
 
 
 def _batch() -> ApprovedStoryboardBatch:
@@ -41,7 +47,7 @@ def test_run_video_agent_happy_path_slideshow() -> None:
         version=1,
     )
 
-    with patch("app.temporal.activities.video.get_settings", return_value=MagicMock()):
+    with patch("app.temporal.activities.video.get_settings", return_value=_settings()):
         with patch(
             "app.temporal.activities.video.fetch_approved_storyboard_batch",
             return_value=_batch(),
@@ -83,7 +89,7 @@ def test_run_video_agent_uses_rejection_note_from_db() -> None:
         store_kwargs.update(kwargs)
         return stored
 
-    with patch("app.temporal.activities.video.get_settings", return_value=MagicMock()):
+    with patch("app.temporal.activities.video.get_settings", return_value=_settings()):
         with patch(
             "app.temporal.activities.video.fetch_approved_storyboard_batch",
             return_value=_batch(),
