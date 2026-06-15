@@ -1,0 +1,21 @@
+# AIMPOS-Spark — Olares hybrid overlay.
+# App/data plane runs locally; Ollama + ComfyUI stay on Olares shared services.
+#
+# Prerequisite: SSH tunnels from desktop (scripts/dev/start-olares-tunnels.ps1):
+#   localhost:11434 → Olares shared Ollama
+#   localhost:8190  → Olares shared ComfyUI
+#
+# Usage (from repo root):
+#   docker compose -f deploy/compose/docker-compose.yml \
+#     -f deploy/compose/docker-compose.dev.yml \
+#     -f deploy/compose/docker-compose.olares-hybrid.yml \
+#     --env-file .env up -d
+name: aimpos-spark
+
+services:
+  worker:
+    environment:
+      OLLAMA_HOST: ${OLLAMA_HOST:-http://host.docker.internal:11434}
+      COMFYUI_HOST: ${COMFYUI_HOST:-http://host.docker.internal:8190}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

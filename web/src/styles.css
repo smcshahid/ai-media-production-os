@@ -280,6 +280,15 @@ a {
   font-size: 14px;
 }
 
+.review__video {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 12px 0 16px;
+  border-radius: var(--radius);
+  background: #000;
+}
+
 .fountain-preview {
   max-height: 420px;
   overflow-y: auto;

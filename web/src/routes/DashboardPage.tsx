@@ -13,13 +13,14 @@ import {
   toDisplayStatus,
 } from "../lib/pipelineDisplay";
 
-const IDLE_STAGES = ["IDEA", "STORY", "SCRIPT", "STORYBOARD"];
+const IDLE_STAGES = ["IDEA", "STORY", "SCRIPT", "STORYBOARD", "VIDEO"];
 
 const STAGE_LABELS: Record<string, string> = {
   IDEA: "Idea",
   STORY: "Story",
   SCRIPT: "Script",
   STORYBOARD: "Storyboard",
+  VIDEO: "Video",
 };
 
 function latestIdeaVersion(assets: AssetVersion[]): AssetVersion | null {

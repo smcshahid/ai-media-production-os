@@ -18,6 +18,7 @@ $K create secret generic aimpos-worker-env -n "$NS" \
   --from-literal=MINIO_SECURE="false" \
   --from-literal=OLLAMA_HOST="http://ollama.ollamaserver-shared:11434" \
   --from-literal=COMFYUI_HOST="${COMFYUI_HOST}" \
+  --from-literal=REDIS_URL="redis://aimpos-redis-master:6379/0" \
   --from-literal=TEMPORAL_ADDRESS="temporal:7233" \
   --from-literal=AIMPOS_CONFIG_ROOT="/srv/configs" \
   --dry-run=client -o yaml | $K apply -f -

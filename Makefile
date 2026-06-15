@@ -8,9 +8,9 @@ COMPOSE_FILE := deploy/compose/docker-compose.yml
 COMPOSE_DEV  := deploy/compose/docker-compose.dev.yml
 ENV_FILE     := .env
 COMPOSE      := docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE)
-COMPOSE_DEV_CMD := docker compose -f $(COMPOSE_FILE) -f $(COMPOSE_DEV) --env-file $(ENV_FILE)
+COMPOSE_HYBRID := docker compose -f $(COMPOSE_FILE) -f $(COMPOSE_DEV) -f deploy/compose/docker-compose.olares-hybrid.yml --env-file $(ENV_FILE)
 
-.PHONY: help env up up-dev down logs logs-api db-shell db-smoke minio-smoke health migrate migrate-down seed
+.PHONY: help env up up-dev up-dev-ai down logs logs-api db-shell db-smoke minio-smoke health migrate migrate-down seed olares-desktop olares-hybrid-app
 
 # US-04 / T-04-02: until the API image lands (US-03), run Alembic in a one-off
 # python container attached to the compose network so DATABASE_URL
@@ -29,7 +29,9 @@ help:
 	@echo "AIMPOS-Spark Visual - make targets"
 	@echo "  make env       Create .env from .env.example if missing"
 	@echo "  make up        Start Sprint-0 compose stack (internal network)"
-	@echo "  make up-dev    Start stack with host ports published (local dev)"
+	@echo "  make up-dev-ai   Start stack including local Ollama + ComfyUI (GPU profile)"
+	@echo "  make olares-hybrid-app  Local app + Olares shared AI (see scripts/dev/)"
+	@echo "  make olares-desktop     Hint: run scripts/dev/start-olares-desktop.ps1"
 	@echo "  make down      Stop the compose stack"
 	@echo "  make logs      Tail logs for all services"
 	@echo "  make logs-api  Tail API container logs (available after API service lands)"
@@ -49,6 +51,15 @@ up: env
 
 up-dev: env
 	$(COMPOSE_DEV_CMD) up -d
+
+up-dev-ai: env
+	$(COMPOSE_DEV_CMD) --profile local-ai up -d
+
+olares-hybrid-app: env
+	powershell -ExecutionPolicy Bypass -File scripts/dev/start-local-app-olares-ai.ps1
+
+olares-desktop:
+	@echo "Run: powershell -ExecutionPolicy Bypass -File scripts/dev/start-olares-desktop.ps1"
 
 down:
 	$(COMPOSE) down

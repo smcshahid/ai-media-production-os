@@ -19,11 +19,13 @@ import { toDisplayStatus } from "../lib/pipelineDisplay";
 import { selectLatestAiDraftScriptAsset } from "../lib/scriptReview";
 import { batchVersion, selectLatestStoryboardBatch } from "../lib/storyboardReview";
 import { selectLatestAiDraftStoryAsset, selectLatestStoryAsset } from "../lib/storyReview";
+import { selectLatestAiDraftVideoAsset, videoSourceLabel } from "../lib/videoReview";
 
 const STAGE_LABELS: Record<string, string> = {
   STORY: "Story",
   SCRIPT: "Script",
   STORYBOARD: "Storyboard",
+  VIDEO: "Video",
 };
 
 /**
@@ -52,6 +54,11 @@ export function ReviewPage() {
   const [storyboardLoading, setStoryboardLoading] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const storyboardImageUrlsRef = useRef<Record<string, string>>({});
+
+  const [videoAsset, setVideoAsset] = useState<AssetVersion | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const videoUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -157,6 +164,51 @@ export function ReviewPage() {
     }
   }, [revokeStoryboardUrls]);
 
+  const revokeVideoUrl = useCallback((url: string | null) => {
+    if (url) {
+      URL.revokeObjectURL(url);
+    }
+  }, []);
+
+  const loadVideo = useCallback(async (projectId: string) => {
+    setVideoLoading(true);
+    setActionError(null);
+    try {
+      const assets = await listAssets(projectId);
+      const latest = selectLatestAiDraftVideoAsset(assets);
+      if (!latest) {
+        setVideoAsset(null);
+        setVideoUrl((prev) => {
+          revokeVideoUrl(prev);
+          return null;
+        });
+        return;
+      }
+      const blob = await getAssetContentBlob(latest.id);
+      const url = URL.createObjectURL(blob);
+      setVideoAsset(latest);
+      setVideoUrl((prev) => {
+        revokeVideoUrl(prev);
+        return url;
+      });
+      videoUrlRef.current = url;
+    } catch (err) {
+      setActionError(err instanceof ApiError ? err.message : "Failed to load video.");
+    } finally {
+      setVideoLoading(false);
+    }
+  }, [revokeVideoUrl]);
+
+  useEffect(() => {
+    videoUrlRef.current = videoUrl;
+  }, [videoUrl]);
+
+  useEffect(() => {
+    return () => {
+      revokeVideoUrl(videoUrlRef.current);
+    };
+  }, [revokeVideoUrl]);
+
   useEffect(() => {
     storyboardImageUrlsRef.current = storyboardImageUrls;
   }, [storyboardImageUrls]);
@@ -171,6 +223,7 @@ export function ReviewPage() {
   const isStoryReview = reviewStage === "STORY";
   const isScriptReview = reviewStage === "SCRIPT";
   const isStoryboardReview = reviewStage === "STORYBOARD";
+  const isVideoReview = reviewStage === "VIDEO";
 
   useEffect(() => {
     if (!project || !isStoryReview || pipeline?.status !== "AWAITING_APPROVAL") {
@@ -192,6 +245,13 @@ export function ReviewPage() {
     }
     void loadStoryboard(project.id);
   }, [project, isStoryboardReview, pipeline?.status, loadStoryboard]);
+
+  useEffect(() => {
+    if (!project || !isVideoReview || pipeline?.status !== "AWAITING_APPROVAL") {
+      return;
+    }
+    void loadVideo(project.id);
+  }, [project, isVideoReview, pipeline?.status, loadVideo]);
 
   if (!project && !actionError) {
     return <p className="page__subtitle">Loading review…</p>;
@@ -230,7 +290,7 @@ export function ReviewPage() {
 
   const dirty = isStoryReview && treatmentText !== savedText;
   const canRegenerate =
-    (isStoryReview || isScriptReview || isStoryboardReview) &&
+    (isStoryReview || isScriptReview || isStoryboardReview || isVideoReview) &&
     rejectedHint &&
     apiStatus !== "RUNNING";
 
@@ -311,6 +371,8 @@ export function ReviewPage() {
         await loadScript(project.id);
       } else if (isStoryboardReview) {
         await loadStoryboard(project.id);
+      } else if (isVideoReview) {
+        await loadVideo(project.id);
       }
     } catch (err) {
       if (err instanceof ApiError && err.status === 429) {
@@ -400,8 +462,8 @@ export function ReviewPage() {
         ) : isStoryboardReview ? (
           <>
             <p className="review__lead">
-              Review all four storyboard frames as a batch. Approve to complete the pipeline, or
-              reject with a note to regenerate a new frame set.
+              Review all four storyboard frames as a batch. Approve to advance to video
+              generation, or reject with a note to regenerate a new frame set.
             </p>
             {storyboardFrames.length > 0 && (
               <p className="review__meta">
@@ -459,6 +521,37 @@ export function ReviewPage() {
               </p>
             )}
           </>
+        ) : isVideoReview ? (
+          <>
+            <p className="review__lead">
+              Preview the generated scene video. Approve to complete the pipeline, or reject with
+              a note to regenerate.
+            </p>
+            {videoAsset && (
+              <p className="review__meta">
+                Version <strong>{videoAsset.version}</strong> ·{" "}
+                {videoSourceLabel(videoAsset)} · branch{" "}
+                <code className="table__hash">{videoAsset.branch}</code>
+                {typeof videoAsset.metadata_json?.duration_sec === "number" ? (
+                  <>
+                    {" "}
+                    · {videoAsset.metadata_json.duration_sec}s
+                  </>
+                ) : null}
+              </p>
+            )}
+            {videoLoading ? (
+              <p className="page__subtitle">Loading video…</p>
+            ) : videoAsset && videoUrl ? (
+              <video className="review__video" controls src={videoUrl}>
+                Scene video preview
+              </video>
+            ) : (
+              <p className="page__error" role="alert">
+                No VIDEO asset found for this run. If generation is still running, wait and refresh.
+              </p>
+            )}
+          </>
         ) : (
           <p className="review__lead">
             Stage output is ready for human review. Approve to advance the pipeline, or reject
@@ -489,6 +582,13 @@ export function ReviewPage() {
           <p className="review__regenerate-hint" role="status">
             Storyboard batch rejected. Regenerate to request a new 4-frame set using your note, or
             approve all frames when ready. Up to 3 regenerations per run.
+          </p>
+        )}
+
+        {rejectedHint && isVideoReview && (
+          <p className="review__regenerate-hint" role="status">
+            Video rejected. Regenerate to request a new MP4 using your note, or approve when ready.
+            Up to 3 regenerations per run.
           </p>
         )}
 
@@ -538,7 +638,7 @@ export function ReviewPage() {
           >
             Reject
           </button>
-          {(isStoryReview || isScriptReview || isStoryboardReview) && (
+          {(isStoryReview || isScriptReview || isStoryboardReview || isVideoReview) && (
             <button
               type="button"
               className="button"

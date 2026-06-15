@@ -2,6 +2,51 @@
 
 Lightweight guide for day-to-day dev on Docker Desktop. For M1-DV (GPU/Olares), see [olares-deployment.md](./olares-deployment.md).
 
+## Architecture (Olares hybrid)
+
+| Component | Where it runs |
+|-----------|---------------|
+| **Web** | Local desktop (Vite dev server) |
+| **API, Worker, Postgres, MinIO, Redis, Temporal** | Olares `aimpos-mwayolares` *(or local compose for isolated testing)* |
+| **Ollama, ComfyUI** | Olares shared services (`ollamaserver-shared`, `comfyuisharev2server-shared`) |
+
+**Recommended daily setup** — local web only, full backend on Olares:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/dev/start-olares-desktop.ps1
+```
+
+Sign in with the Olares API token (printed by the script, from secret `aimpos-api-env`).
+
+Manual equivalent:
+
+```powershell
+# 1. Stop local Docker (avoids port 8000 conflict)
+docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env down
+
+# 2. API tunnel
+powershell -ExecutionPolicy Bypass -File scripts/dev/start-olares-tunnels.ps1 -ApiOnly
+
+# 3. Web
+cd web
+$env:VITE_API_URL = "http://localhost:18000"
+npm run dev
+```
+
+**Local app + Olares shared AI** (Postgres/MinIO/Redis/API/Worker on desktop, GPU on Olares):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/dev/start-local-app-olares-ai.ps1
+```
+
+Uses `docker-compose.olares-hybrid.yml` (no local Ollama/ComfyUI) and SSH tunnels for shared AI.
+
+**Full local stack with GPU** (only if you have sufficient VRAM):
+
+```powershell
+docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env --profile local-ai up -d
+```
+
 ## Prerequisites
 
 - Docker Desktop, Node 24+, Python 3.12+
