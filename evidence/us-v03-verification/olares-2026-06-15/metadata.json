@@ -1,0 +1,22 @@
+{
+  "story": "US-V03",
+  "date": "2026-06-15",
+  "baseline_tag": "v0.11.0-us21",
+  "path_authoritative": "A",
+  "project_id": "0c98583a-0520-43c9-b811-8bbdf936cc34",
+  "run_id": "0728f2d6-b53b-48f1-ad6f-1cd32f56057e",
+  "reference_project_id": "76aa4418-d92d-45f7-954c-a10383ea511a",
+  "reference_run_id": "042983f7-0f55-48c3-9d65-fce89a684625",
+  "api_image": "aimpos-api:us21",
+  "worker_image": "aimpos-worker:us21",
+  "verify_fail_count": 0,
+  "xf_matrix": "PASS",
+  "path_b_fail": 0,
+  "export_file_count": 9,
+  "manifest_hash_verify": "PASS",
+  "final_status": "COMPLETED",
+  "story_gate_seconds": 30,
+  "e2e_wall_clock_minutes": 4,
+  "unresolved_s1": 0,
+  "unresolved_s2": 0
+}

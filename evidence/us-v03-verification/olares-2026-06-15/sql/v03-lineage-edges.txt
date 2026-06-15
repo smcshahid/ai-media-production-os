@@ -1,0 +1,8 @@
+========== v03-lineage-edges ==========
+   stage    |   stage    | count 
+------------+------------+-------
+ SCRIPT     | STORYBOARD |     8
+ STORY      | SCRIPT     |     2
+ STORYBOARD | VIDEO      |     8
+(3 rows)
+

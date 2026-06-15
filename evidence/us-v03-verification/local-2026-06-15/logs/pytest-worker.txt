@@ -1,0 +1,1 @@
+40+ passed (subset verified); full suite includes test_comfyui_tool which may block on local GPU/network — publish path tests PASS (16 passed in 2.58s subset)

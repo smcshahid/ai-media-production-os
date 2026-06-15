@@ -7,13 +7,14 @@ Privacy-first, local-AI media production platform.
 | Program | Status | Frontier |
 |---------|--------|----------|
 | **Visual MVP** | **CLOSED** (M5 · `v0.4.0-usv01`) | — |
-| **Spark Full** | **Phase 2 ACTIVE** (M7 in progress) | **US-V03** — Phase 2 acceptance |
+| **Spark Full** | **Phase 2 CLOSED** (M7 · `v0.12.0-usv03`) | **Phase 3 planning** (not started) |
 
 | State | Detail |
 |-------|--------|
 | Visual MVP release | `v0.4.0-usv01` — US-V01 acceptance (`93214fc`) |
 | Spark Full Phase 1 | **CLOSED** — `v0.7.0-usv02` · M6 signed |
-| Spark Full Phase 2 release | `v0.9.0-us22` — US-22 Asset History API |
+| Spark Full Phase 2 | **CLOSED** — `v0.12.0-usv03` · M7 signed |
+| Spark Full Phase 2 summary | `docs/sprints/spark-full-phase2-completion-summary.md` |
 | Visual MVP summary | `docs/sprints/visual-mvp-completion-summary.md` |
 | Spark Full Phase 2 | `docs/sprints/spark-full-phase2-governance-brief.md` (**ACCEPT**) |
 | Spark Full Phase 1 summary | `docs/sprints/spark-full-completion-summary.md` |
@@ -22,6 +23,8 @@ Privacy-first, local-AI media production platform.
 | US-23 brief | `docs/sprints/sprint-5c-us23-brief.md` (**ACCEPT WITH CONDITION**) |
 | US-23 | **CLOSED** — `v0.10.0-us23` · `docs/sprints/sprint-5c-us23-closure-report.md` |
 | US-21 | **CLOSED** — `v0.11.0-us21` · `docs/sprints/sprint-5d-us21-closure-report.md` |
+| US-V03 | **CLOSED** — `v0.12.0-usv03` · `docs/sprints/sprint-5e-usv03-closure-report.md` |
+| M7 Spark Full Phase 2 | **COMPLETE** |
 | Spark Full governance | `docs/sprints/spark-full-governance-brief.md` (**ACCEPT — Phase 1 closed**) |
 | US-18 | **CLOSED** — `v0.5.0-us18` · `docs/sprints/sprint-4a-us18-closure-report.md` |
 | US-19 | **CLOSED** — `v0.6.0-us19` · `docs/sprints/sprint-4b-us19-closure-report.md` |

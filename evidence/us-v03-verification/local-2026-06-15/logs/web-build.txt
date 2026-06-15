@@ -1,0 +1,4 @@
+vite v7.3.5 building client environment for production...
+✓ 68 modules transformed.
+✓ built in 2.07s
+BUILD=PASS

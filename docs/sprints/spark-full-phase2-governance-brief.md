@@ -311,12 +311,11 @@ Phase 2 is **observability only**. The following remain **out of scope** even if
 | Item | Status |
 |---|---|
 | **Spark Full Phase 1** | **COMPLETE** (`v0.7.0-usv02` · M6) |
+| **Spark Full Phase 2** | **COMPLETE** (`v0.12.0-usv03` · M7) |
 | **Phase 2 brief** | **ACCEPT** |
-| **US-20 brief** | **SUBMITTED** — `docs/sprints/sprint-5a-us20-brief.md` |
-| **Frontier** | **US-20** — Lineage Viewer |
-| **Implementation** | **Not authorized** (awaiting US-20 brief ACCEPT) |
-
-**Next step:** Governance review of this brief. Upon ACCEPT, author **US-20 governance brief** first (recommended 2A-1 entry point). **No product code until story-level ACCEPT.**
+| US-20 / US-22 / US-23 / US-21 | **CLOSED** |
+| US-V03 | **CLOSED** |
+| **Frontier** | **Phase 3 planning** (not started) |
 
 ---
 

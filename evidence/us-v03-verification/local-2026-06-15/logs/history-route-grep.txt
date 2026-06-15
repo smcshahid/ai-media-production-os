@@ -1,0 +1,2 @@
+EC-23-01: /history route defined in web/src/App.tsx
+HISTORY_ROUTE=PASS (source attestation; bundle includes history module per dist build)

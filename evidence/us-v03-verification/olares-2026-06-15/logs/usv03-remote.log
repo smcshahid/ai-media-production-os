@@ -1,0 +1,335 @@
+========== PF-03 ComfyUI ==========
+========== PF-03: ComfyUI launcher ==========
+WARN: launcher POST failed
+comfyui_probe=unreachable
+comfyui_ready
+LOG=/tmp/usv03-verify-20260615-013123.log
+US-V03 verify start 2026-06-15T01:31:23+00:00
+API=http://10.233.21.231:8000
+========== PF-01: deploy images (us21 baseline) ==========
+API_IMAGE=docker.io/library/aimpos-api:us21 WORKER_IMAGE=docker.io/library/aimpos-worker:us21
+========== PF-04: health ==========
+{"status":"healthy","dependencies":{"postgresql":{"status":"ok","detail":null},"redis":{"status":"ok","detail":null},"minio":{"status":"ok","detail":null}}}
+========== PF-07: ffmpeg ==========
+ffmpeg version 7.1.4-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers
+========== PF-05: fresh project ==========
+PROJECT=0c98583a-0520-43c9-b811-8bbdf936cc34
+========== Phase B: US-V02 normative E2E (Path A authoritative) ==========
+US-V02 verify start 2026-06-15T01:31:24+00:00
+API=http://10.233.21.231:8000 PROJECT=0c98583a-0520-43c9-b811-8bbdf936cc34
+API_IMAGE=docker.io/library/aimpos-api:us21 WORKER_IMAGE=docker.io/library/aimpos-worker:us21
+========== PF-01: deploy images ==========
+API_IMAGE=docker.io/library/aimpos-api:us21 WORKER_IMAGE=docker.io/library/aimpos-worker:us21
+========== PF-07: ffmpeg in worker ==========
+ffmpeg version 7.1.4-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers
+========== PF-04: health ==========
+{"status":"healthy","dependencies":{"postgresql":{"status":"ok","detail":null},"redis":{"status":"ok","detail":null},"minio":{"status":"ok","detail":null}}}
+========== PF-06: no active run ==========
+========== S-02: POST /ideas ==========
+{"id":"717baae6-5bc5-4be6-8a69-8cb68d3baecd","project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","stage":"IDEA","version":1,"content_hash":"7a5fb31ca28f8e0708bb67a05748febc44f06e449f40f4209bd99da1e01b5b2e","minio_key":"0c98583a-0520-43c9-b811-8bbdf936cc34/IDEA/7a5fb31ca28f8e0708bb67a05748febc44f06e449f40f4209bd99da1e01b5b2e","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"cinematic"},"created_at":"2026-06-15T01:31:24.710304"}
+========== S-03: POST /pipeline/start ==========
+START={"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","workflow_id":"spark-pipeline-0728f2d6-b53b-48f1-ad6f-1cd32f56057e","status":"RUNNING","current_stage":"STORY"}
+HTTP_CODE:201
+RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e
+========== S-04: poll STORY gate ==========
+  poll status=RUNNING stage=STORY want=STORY
+  poll status=RUNNING stage=STORY want=STORY
+  poll status=AWAITING_APPROVAL stage=STORY want=STORY
+T_STORY_GATE=1781487114 delta_start=30s
+========== S-05: human edit STORY ==========
+STORY_ID=f45b4378-d421-4059-81b3-36ef62a45191
+{"id":"5beb6db6-416e-462b-af9c-b12acd902e10","project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","stage":"STORY","version":2,"content_hash":"37fa7a064a960bdaa6cc48474d95db67763a24ca0e68323f3e1aeca838c3f0c3","minio_key":"0c98583a-0520-43c9-b811-8bbdf936cc34/STORY/37fa7a064a960bdaa6cc48474d95db67763a24ca0e68323f3e1aeca838c3f0c3","is_ai_generated":false,"branch":"human-edit","metadata_json":null,"created_at":"2026-06-15T01:31:54.910185"}
+========== S-06: approve STORY ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","approval_id":"39accdd7-d8b8-4588-b651-44656f5d243c","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY"}
+
+========== S-07: poll SCRIPT gate ==========
+  poll status=AWAITING_APPROVAL stage=STORY want=SCRIPT
+  poll status=AWAITING_APPROVAL stage=SCRIPT want=SCRIPT
+========== S-08: reject SCRIPT ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","approval_id":"11660f0c-4b0f-4926-8f1c-00deda2d0b91","decision":"REJECTED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT"}
+
+========== S-09: regenerate SCRIPT ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","regenerations_used":1}
+========== S-10: poll SCRIPT gate (post-regen) ==========
+  poll status=AWAITING_APPROVAL stage=SCRIPT want=SCRIPT
+========== S-11: approve SCRIPT ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","approval_id":"1b25a5fc-3dd8-41d8-bfc4-0514f32d81d4","decision":"APPROVED","stage":"SCRIPT","status":"RUNNING","current_stage":"SCRIPT"}
+
+========== S-12: poll STORYBOARD gate (batch v1) ==========
+  poll sb_version=0 status=RUNNING stage=SCRIPT
+  poll sb_version=0 status=RUNNING stage=STORYBOARD
+  poll sb_version=1 status=AWAITING_APPROVAL stage=STORYBOARD
+SB_V1=1 frames=4
+========== S-12a: reject STORYBOARD (A-01) ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","approval_id":"a046ae0b-ef07-4733-8190-95fa69763adc","decision":"REJECTED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD"}
+
+========== S-12b: regenerate STORYBOARD (D-47) ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","regenerations_used":1}
+========== S-12c: poll STORYBOARD gate (batch v2) ==========
+  poll sb_version=1 target>=2 status=RUNNING stage=STORYBOARD
+  poll sb_version=1 target>=2 status=RUNNING stage=STORYBOARD
+  poll sb_version=2 target>=2 status=AWAITING_APPROVAL stage=STORYBOARD
+SB_V2=2 frames=4
+STORYBOARD_ROWS_BEFORE_S14=8
+========== V-47 inline: v1 intact ==========
+V-47 v1 batch count=4: PASS
+========== S-13: PNG content-read ==========
+CONTENT_READ id=f5a84482-46be-4cd7-8bd4-aa08f9de0f60 http=200 bytes=379876
+========== S-14: approve STORYBOARD (D-51 — NOT terminal) ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","approval_id":"4044231b-64fd-4284-9d0c-5f7ef4d7214a","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD"}
+
+POST_SB_STATUS=AWAITING_APPROVAL
+STORYBOARD_ROWS_AFTER_S14=8
+========== S-15: poll VIDEO gate ==========
+  poll status=RUNNING stage=VIDEO want=VIDEO
+  poll status=AWAITING_APPROVAL stage=VIDEO want=VIDEO
+T_VIDEO_GATE=1781487232
+========== S-16: VIDEO asset + metadata (D-48) ==========
+VIDEO_ID=e5d618f9-fb64-43d7-b843-3451df44737c VIDEO_V1=1 META={"fps": 24, "codec": "h264", "width": 480, "height": 480, "source": "slideshow", "frame_count": 4, "duration_sec": 20.0, "fallback_from": "comfyui_i2v", "fallback_reason": "comfyui i2v disabled (video_i2v_enabled=false)", "file_size_bytes": 168945, "logical_filename": "scene_video.mp4", "rejection_note_used": "US-V02 A-01: increase contrast and wider establishing shots."}
+========== S-17: MP4 content-read (SC-F02) ==========
+CONTENT_READ http=200 bytes=168945
+MP4_MAGIC=PASS
+========== S-18: reject VIDEO (D-50 setup) ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","approval_id":"b5cf2e5f-d512-49cc-88f4-b2d251d82237","decision":"REJECTED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO"}
+
+========== S-19: regenerate VIDEO (D-50) ==========
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","regenerations_used":1}
+========== S-20: poll VIDEO gate (post-regen) ==========
+  regen poll version=1 want>1 status=RUNNING stage=VIDEO
+  regen poll version=2 want>1 status=AWAITING_APPROVAL stage=VIDEO
+VIDEO_V2=2
+========== S-21: approve VIDEO → COMPLETED (D-51) ==========
+  poll status=AWAITING_APPROVAL stage=VIDEO want=VIDEO
+{"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","approval_id":"f08cf430-73af-4972-90e3-57461fffce16","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO"}
+
+  poll post-approve status=COMPLETED
+FINAL_STATUS=COMPLETED
+========== S-22: lineage STORYBOARD→VIDEO (SC-F03) ==========
+LINEAGE_COUNT=4
+========== S-23: GET /export (D-52) ==========
+EXPORT http=200 bytes=1550430
+ZIP_MAGIC=PASS
+========== S-24: unzip + manifest + hash verify (D-53) ==========
+FILE_COUNT=9
+MANIFEST=PASS
+HASH_VERIFY=PASS
+========== S-25: BUNDLE_EXPORTED audit (D-54) ==========
+BUNDLE_EXPORTED_COUNT=1
+BUNDLE_EXPORTED|455f1080d397dd81ba839d7a46d49bbfa4d500a093a14a2356cb7e555b93b9e6|8|1550430
+========== S-26: negative export 409 (D-52 gate) ==========
+NEGATIVE_RUN=5eee619f-f26a-4e11-9f0e-75221a0eba4a http=409
+========== S-27: inline SQL attestation ==========
+--- V-01 terminal ---
+0728f2d6-b53b-48f1-ad6f-1cd32f56057e|COMPLETED|
+--- V-02 approvals ---
+STORY|APPROVED|
+SCRIPT|REJECTED|US-V02: tighten dialogue in the second scene.
+SCRIPT|APPROVED|
+STORYBOARD|REJECTED|US-V02 A-01: increase contrast and wider establishing shots.
+STORYBOARD|APPROVED|
+VIDEO|REJECTED|US-V02: slightly longer hold on frame 2.
+VIDEO|APPROVED|
+--- V-04 SCRIPT versions ---
+1|ai-draft|5f817199ef3f91aa04424bf7b323bd3659d40130dc9e6b66ee3112de8aa3f430
+2|ai-draft|be5cd91e606ad3c57bc8b46f2c3b3befc2a1741353b339e3c4db7a2e8d935b83
+--- V-05 STORYBOARD batches ---
+1|4
+2|4
+--- V-06 lineage ---
+SCRIPT|STORYBOARD|8
+STORY|SCRIPT|2
+STORYBOARD|VIDEO|8
+--- V-08 agent completions ---
+AGENT_TASK_COMPLETED|agent.story_architect|qwen3:14b
+AGENT_TASK_COMPLETED|agent.screenwriter|qwen3:14b
+AGENT_TASK_COMPLETED|agent.screenwriter|qwen3:14b
+AGENT_TASK_COMPLETED|agent.cinematography|qwen3:14b
+AGENT_TASK_COMPLETED|agent.cinematography|qwen3:14b
+AGENT_TASK_COMPLETED|agent.video_generator|
+AGENT_TASK_COMPLETED|agent.video_generator|
+--- V-20 D-51 POST_SB not terminal ---
+POST_SB_STATUS=AWAITING_APPROVAL (logged at S-14)
+========== S-28: worker restart durability (SC-F05 / SC-V06) ==========
+DR-01 baseline={"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-15T01:34:03.015970"}
+deployment.apps/aimpos-worker restarted
+Waiting for deployment "aimpos-worker" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "aimpos-worker" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "aimpos-worker" rollout to finish: 1 old replicas are pending termination...
+deployment "aimpos-worker" successfully rolled out
+DR-06 poll_1={"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-15T01:34:03.015970"}
+DR-06 poll_2={"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-15T01:34:03.015970"}
+DR-06 poll_3={"project_id":"0c98583a-0520-43c9-b811-8bbdf936cc34","run_id":"0728f2d6-b53b-48f1-ad6f-1cd32f56057e","status":"COMPLETED","current_stage":null,"stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-15T01:34:03.015970"}
+SC-V06 worker restart: PASS
+DONE RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e PROJECT=0c98583a-0520-43c9-b811-8bbdf936cc34 SB_V1=1 SB_V2=2 VIDEO_V2=2 FAIL=0
+SC-V07 delta_start_to_story_gate=30s
+RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e PROJECT_ID=0c98583a-0520-43c9-b811-8bbdf936cc34
+ASSET_VERSIONS_BEFORE_PHASE2=145
+========== Phase C: US-20 lineage ==========
+US-20 verify start 2026-06-15T01:35:10+00:00
+API=http://10.233.21.231:8000 RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e PROJECT=0c98583a-0520-43c9-b811-8bbdf936cc34 STATUS=COMPLETED
+LINEAGE_EDGES_BEFORE=114
+========== S-20-01: GET /lineage ==========
+LINEAGE http=200
+========== S-20-02: display chain stages ==========
+DISPLAY_CHAIN=PASS stages= ['IDEA', 'STORY', 'SCRIPT', 'STORYBOARD', 'STORYBOARD', 'STORYBOARD', 'STORYBOARD', 'VIDEO']
+========== S-20-03: API vs SQL edge parity ==========
+SQL_EDGE_COUNT=18 API_EDGE_COUNT=18
+========== S-20-04: synthetic IDEA ==========
+SYNTHETIC_IDEA=PASS
+========== S-20-05: STORYBOARD→VIDEO edges ==========
+STORYBOARD_TO_VIDEO=4 (expect 4)
+========== S-20-06: unknown run 404 ==========
+UNKNOWN http=404
+========== S-20-07: export regression ==========
+EXPORT http=200
+========== V-20-L04: no lineage writes ==========
+LINEAGE_EDGES_AFTER=114
+DONE RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e PROJECT=0c98583a-0520-43c9-b811-8bbdf936cc34 FAIL=0
+========== Phase C: US-22 history API ==========
+US-22 verify start 2026-06-15T01:35:12+00:00
+API=http://10.233.21.231:8000 PROJECT_ID=0c98583a-0520-43c9-b811-8bbdf936cc34 RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e
+ASSET_VERSIONS_BEFORE=145
+========== S-22-01: GET /assets/history ==========
+HISTORY http=200
+========== S-22-02: stage groups ==========
+STAGES=PASS ['IDEA', 'STORY', 'SCRIPT', 'STORYBOARD', 'VIDEO']
+========== S-22-03: API vs SQL row parity ==========
+SQL_ROW_COUNT=15 API_ROW_COUNT=15
+========== S-22-04: STORY newest first + regen history ==========
+STORY_REGEN=PASS count= 2 versions= [2, 1]
+========== S-22-05: STORYBOARD frame_index ==========
+STORYBOARD_FRAMES=PASS count= 8
+========== S-22-06: content-read spot check ==========
+CONTENT_READ id=5beb6db6-416e-462b-af9c-b12acd902e10 http=200
+========== S-22-07: lineage regression ==========
+LINEAGE http=200
+========== S-22-08: export regression ==========
+EXPORT http=200
+========== V-22-L05: no asset_versions writes ==========
+ASSET_VERSIONS_AFTER=145
+DONE PROJECT_ID=0c98583a-0520-43c9-b811-8bbdf936cc34 FAIL=0
+========== Phase C: US-21 realtime ==========
+US-21 verify start 2026-06-15T01:35:13+00:00
+API=http://10.233.21.231:8000 PROJECT_ID=0c98583a-0520-43c9-b811-8bbdf936cc34 RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e
+========== S-21-07: API image us21 ==========
+API_IMAGE=docker.io/library/aimpos-api:us21 WORKER_IMAGE=docker.io/library/aimpos-worker:us21
+========== S-21-01/02: WebSocket smoke + REST parity ==========
+WS_SMOKE=PASS status= COMPLETED
+REST status=COMPLETED
+========== S-21-03: latency spot-check (REST updated_at present) ==========
+SQL_UPDATED_AT=2026-06-15 01:34:03.01597
+LATENCY_NOTE=full gate timing requires active transition; WS smoke confirms push path
+========== S-21-05: REST poll fallback (GET /pipeline/status) ==========
+POLL http=200
+========== S-21-06: Redis regression (/health) ==========
+HEALTH http=200
+REDIS_HEALTH=PASS
+========== S-21-07 regressions: history, lineage, export ==========
+HISTORY=200 LINEAGE=200 EXPORT=200
+========== S-21-08: asset_versions unchanged ==========
+ASSET_VERSIONS_BEFORE=145 AFTER=145
+DONE FAIL=0
+========== Phase C: US-23 history UI (inline, us21 baseline) ==========
+HISTORY http=200
+SQL_ROW_COUNT=15 API_ROW_COUNT=15
+STORY_CONTENT_READ http=200
+SB_CONTENT_READ http=200
+US23_INLINE=PASS
+========== Phase C: XF-01..06 cross-feature matrix ==========
+XF-01=PASS missing=set()
+XF-02=PASS history=15 lineage_nodes=8
+XF-03=PASS 
+XF-04=PASS http=200 status=COMPLETED
+XF-05=PASS lineage=200 history=200 export=200
+XF-06=PASS before=145 after=145
+DONE XF_FAIL=0
+========== Phase D: Path B supplemental (reference project) ==========
+========== Path B: reference project ==========
+REF_PROJECT=76aa4418-d92d-45f7-954c-a10383ea511a REF_RUN=042983f7-0f55-48c3-9d65-fce89a684625
+========== Path B: verify_us20.sh ==========
+US-20 verify start 2026-06-15T01:35:16+00:00
+API=http://10.233.21.231:8000 RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625 PROJECT=76aa4418-d92d-45f7-954c-a10383ea511a STATUS=COMPLETED
+LINEAGE_EDGES_BEFORE=114
+========== S-20-01: GET /lineage ==========
+LINEAGE http=200
+========== S-20-02: display chain stages ==========
+DISPLAY_CHAIN=PASS stages= ['IDEA', 'STORY', 'SCRIPT', 'STORYBOARD', 'STORYBOARD', 'STORYBOARD', 'STORYBOARD', 'VIDEO']
+========== S-20-03: API vs SQL edge parity ==========
+SQL_EDGE_COUNT=18 API_EDGE_COUNT=18
+========== S-20-04: synthetic IDEA ==========
+SYNTHETIC_IDEA=PASS
+========== S-20-05: STORYBOARD→VIDEO edges ==========
+STORYBOARD_TO_VIDEO=4 (expect 4)
+========== S-20-06: unknown run 404 ==========
+UNKNOWN http=404
+========== S-20-07: export regression ==========
+EXPORT http=200
+========== V-20-L04: no lineage writes ==========
+LINEAGE_EDGES_AFTER=114
+DONE RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625 PROJECT=76aa4418-d92d-45f7-954c-a10383ea511a FAIL=0
+========== Path B: verify_us22.sh ==========
+US-22 verify start 2026-06-15T01:35:17+00:00
+API=http://10.233.21.231:8000 PROJECT_ID=76aa4418-d92d-45f7-954c-a10383ea511a RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625
+ASSET_VERSIONS_BEFORE=145
+========== S-22-01: GET /assets/history ==========
+HISTORY http=200
+========== S-22-02: stage groups ==========
+STAGES=PASS ['IDEA', 'STORY', 'SCRIPT', 'STORYBOARD', 'VIDEO']
+========== S-22-03: API vs SQL row parity ==========
+SQL_ROW_COUNT=15 API_ROW_COUNT=15
+========== S-22-04: STORY newest first + regen history ==========
+STORY_REGEN=PASS count= 2 versions= [2, 1]
+========== S-22-05: STORYBOARD frame_index ==========
+STORYBOARD_FRAMES=PASS count= 8
+========== S-22-06: content-read spot check ==========
+CONTENT_READ id=60146f1a-331d-40f2-b919-bcd92f72f0d7 http=200
+========== S-22-07: lineage regression ==========
+LINEAGE http=200
+========== S-22-08: export regression ==========
+EXPORT http=200
+========== V-22-L05: no asset_versions writes ==========
+ASSET_VERSIONS_AFTER=145
+DONE PROJECT_ID=76aa4418-d92d-45f7-954c-a10383ea511a FAIL=0
+========== Path B: verify_us21.sh ==========
+US-21 verify start 2026-06-15T01:35:18+00:00
+API=http://10.233.21.231:8000 PROJECT_ID=76aa4418-d92d-45f7-954c-a10383ea511a RUN_ID=042983f7-0f55-48c3-9d65-fce89a684625
+========== S-21-07: API image us21 ==========
+API_IMAGE=docker.io/library/aimpos-api:us21 WORKER_IMAGE=docker.io/library/aimpos-worker:us21
+========== S-21-01/02: WebSocket smoke + REST parity ==========
+WS_SMOKE=PASS status= COMPLETED
+REST status=COMPLETED
+========== S-21-03: latency spot-check (REST updated_at present) ==========
+SQL_UPDATED_AT=2026-06-11 18:21:52.122535
+LATENCY_NOTE=full gate timing requires active transition; WS smoke confirms push path
+========== S-21-05: REST poll fallback (GET /pipeline/status) ==========
+POLL http=200
+========== S-21-06: Redis regression (/health) ==========
+HEALTH http=200
+REDIS_HEALTH=PASS
+========== S-21-07 regressions: history, lineage, export ==========
+HISTORY=200 LINEAGE=200 EXPORT=200
+========== S-21-08: asset_versions unchanged ==========
+ASSET_VERSIONS_BEFORE=145 AFTER=145
+DONE FAIL=0
+========== Path B: US-23 inline ==========
+HISTORY http=200
+LINEAGE=200 EXPORT=200
+========== Path B: cross-feature (read-only) ==========
+XF-01=PASS missing=set()
+XF-02=PASS history=15 lineage_nodes=8
+XF-03=PASS 
+XF-04=PASS http=200 status=COMPLETED
+XF-05=PASS lineage=200 history=200 export=200
+XF-06=PASS before=145 after=145
+DONE XF_FAIL=0
+PATH_B FAIL=0
+========== Summary ==========
+PROJECT=0c98583a-0520-43c9-b811-8bbdf936cc34 RUN_ID=0728f2d6-b53b-48f1-ad6f-1cd32f56057e
+API_IMAGE=docker.io/library/aimpos-api:us21 WORKER_IMAGE=docker.io/library/aimpos-worker:us21
+DONE FAIL=0
+========== SQL collect ==========
+========== v03-terminal ==========
+ERROR:  invalid input syntax for type uuid: "0728f2d6-b53b-48f1-ad6f-1cd32f56057e PROJECT_ID=0c98583a-0520-43c9-b811-8bbdf936cc34"
+LINE 1: ...ent_stage, updated_at FROM pipeline_runs WHERE id='0728f2d6-...
+                                                             ^
+command terminated with exit code 1

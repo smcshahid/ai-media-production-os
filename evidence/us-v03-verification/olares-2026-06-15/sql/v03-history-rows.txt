@@ -1,0 +1,10 @@
+========== v03-history-rows ==========
+   stage    | count 
+------------+-------
+ IDEA       |     1
+ SCRIPT     |     2
+ STORY      |     2
+ STORYBOARD |     8
+ VIDEO      |     2
+(5 rows)
+
