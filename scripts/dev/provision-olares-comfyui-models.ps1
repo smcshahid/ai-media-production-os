@@ -22,13 +22,18 @@
 .PARAMETER IncludeLightningLora
     Also download the Wan2.2-Lightning 4-step LoRAs (faster, lower-step renders).
 
+.PARAMETER IncludeZImage
+    Also download the Z-Image Turbo trio (diffusion model + qwen encoder + ae VAE)
+    for the permissive, fast 8-step storyboard engine (zimage_storyboard.json).
+
 .EXAMPLE
     pwsh ./provision-olares-comfyui-models.ps1 -ComfyUIRoot /opt/comfyui
 #>
 [CmdletBinding()]
 param(
     [string]$ComfyUIRoot = "/opt/comfyui",
-    [switch]$IncludeLightningLora
+    [switch]$IncludeLightningLora,
+    [switch]$IncludeZImage
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,6 +42,12 @@ $ErrorActionPreference = "Stop"
 $models = @(
     # --- SDXL stills (base usually already present; refiner optional) ---
     @{ Name = "sdxl_base_1.0";           Repo = "stabilityai/stable-diffusion-xl-base-1.0";    Path = "sd_xl_base_1.0.safetensors";                                  Dest = "checkpoints";      File = "sdxl_base_1.0.safetensors" },
+
+    # --- Flux.1-dev fp8 all-in-one (default storyboard engine; flux_storyboard.json) ---
+    @{ Name = "flux1-dev fp8";           Repo = "Comfy-Org/flux1-dev";                         Path = "flux1-dev-fp8.safetensors";                                   Dest = "checkpoints";      File = "flux1-dev-fp8.safetensors" },
+
+    # --- RealVisXL V5 (commercial-friendly photoreal SDXL fallback; sdxl_realvis_storyboard.json) ---
+    @{ Name = "RealVisXL V5.0";          Repo = "SG161222/RealVisXL_V5.0";                     Path = "RealVisXL_V5.0_fp16.safetensors";                             Dest = "checkpoints";      File = "RealVisXL_V5.0_fp16.safetensors" },
 
     # --- WAN 2.2 14B I2V (FP8-scaled fits 24GB; UMT5 offloads to system RAM) ---
     @{ Name = "wan22 i2v high noise";    Repo = "Comfy-Org/Wan_2.2_ComfyUI_Repackaged";        Path = "split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors"; Dest = "diffusion_models"; File = "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors" },
@@ -49,6 +60,14 @@ if ($IncludeLightningLora) {
     $models += @(
         @{ Name = "wan22 lightning high"; Repo = "lightx2v/Wan2.2-Lightning"; Path = "Wan2.2-Lightning_I2V-A14B-4steps-lora_HIGH_fp16.safetensors"; Dest = "loras"; File = "Wan2.2-Lightning_I2V-A14B-4steps-lora_HIGH_fp16.safetensors" },
         @{ Name = "wan22 lightning low";  Repo = "lightx2v/Wan2.2-Lightning"; Path = "Wan2.2-Lightning_I2V-A14B-4steps-lora_LOW_fp16.safetensors";  Dest = "loras"; File = "Wan2.2-Lightning_I2V-A14B-4steps-lora_LOW_fp16.safetensors" }
+    )
+}
+
+if ($IncludeZImage) {
+    $models += @(
+        @{ Name = "z-image turbo";  Repo = "Comfy-Org/z_image_turbo"; Path = "split_files/diffusion_models/z_image_turbo_bf16.safetensors"; Dest = "diffusion_models"; File = "z_image_turbo_bf16.safetensors" },
+        @{ Name = "qwen_3_4b clip"; Repo = "Comfy-Org/z_image_turbo"; Path = "split_files/text_encoders/qwen_3_4b.safetensors";              Dest = "text_encoders";    File = "qwen_3_4b.safetensors" },
+        @{ Name = "z-image ae vae"; Repo = "Comfy-Org/z_image_turbo"; Path = "split_files/vae/ae.safetensors";                               Dest = "vae";              File = "ae.safetensors" }
     )
 }
 

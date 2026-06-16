@@ -2,9 +2,15 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from app.tools.comfyui import generate_storyboard_png, patch_workflow_prompt
+
+WORKFLOWS_DIR = Path(__file__).resolve().parents[3] / "configs" / "comfyui" / "workflows"
 
 
 def test_patch_workflow_prompt_sets_text_and_seed() -> None:
@@ -54,6 +60,66 @@ def test_patch_workflow_prompt_patches_resolution_and_sampler() -> None:
     assert patched["9"]["inputs"]["steps"] == 12
     assert patched["9"]["inputs"]["sampler_name"] == "dpmpp_2m_sde"
     assert patched["9"]["inputs"]["seed"] == 7
+
+
+def test_patch_latent_handles_sd3_latent() -> None:
+    # Flux / Z-Image use EmptySD3LatentImage; it must be resized like EmptyLatentImage.
+    workflow = {
+        "2": {"class_type": "CLIPTextEncode", "inputs": {"text": "old"}},
+        "4": {"class_type": "EmptySD3LatentImage", "inputs": {"width": 512, "height": 512}},
+        "5": {"class_type": "KSampler", "inputs": {"seed": 1}},
+    }
+    patched = patch_workflow_prompt(
+        workflow, positive_text="new", seed=2, width=1344, height=768
+    )
+    assert patched["4"]["inputs"]["width"] == 1344
+    assert patched["4"]["inputs"]["height"] == 768
+
+
+def test_unset_sampler_overrides_keep_engine_values() -> None:
+    # When steps/cfg/sampler are None, the workflow's own (engine-correct) values stay.
+    workflow = {
+        "2": {"class_type": "CLIPTextEncode", "inputs": {"text": "old"}},
+        "5": {
+            "class_type": "KSampler",
+            "inputs": {"seed": 1, "steps": 20, "cfg": 1.0, "sampler_name": "euler", "scheduler": "simple"},
+        },
+    }
+    patched = patch_workflow_prompt(workflow, positive_text="x", seed=9)
+    assert patched["5"]["inputs"]["seed"] == 9
+    assert patched["5"]["inputs"]["steps"] == 20
+    assert patched["5"]["inputs"]["cfg"] == 1.0
+    assert patched["5"]["inputs"]["sampler_name"] == "euler"
+
+
+@pytest.mark.parametrize(
+    "filename,expect_steps,expect_cfg,latent_class",
+    [
+        ("flux_storyboard.json", 20, 1.0, "EmptySD3LatentImage"),
+        ("zimage_storyboard.json", 8, 1.0, "EmptySD3LatentImage"),
+        ("sdxl_realvis_storyboard.json", 28, 5.5, "EmptyLatentImage"),
+        ("sdxl_storyboard_v2.json", 28, 7.0, "EmptyLatentImage"),
+    ],
+)
+def test_shipped_engine_workflows_patch_cleanly(
+    filename: str, expect_steps: int, expect_cfg: float, latent_class: str
+) -> None:
+    path = WORKFLOWS_DIR / filename
+    if not path.is_file():
+        pytest.skip(f"workflow bundle not on path: {path}")
+    workflow = json.loads(path.read_text(encoding="utf-8"))
+    patched = patch_workflow_prompt(
+        workflow, positive_text="cinematic test", seed=123, width=1344, height=768
+    )
+    # Convention: "2" positive prompt, "5" primary KSampler, "4" latent.
+    assert patched["2"]["inputs"]["text"] == "cinematic test"
+    assert patched["5"]["inputs"]["seed"] == 123
+    assert patched["4"]["class_type"] == latent_class
+    assert patched["4"]["inputs"]["width"] == 1344
+    assert patched["4"]["inputs"]["height"] == 768
+    # Sampler overrides unset -> engine-correct values preserved.
+    assert patched["5"]["inputs"]["steps"] == expect_steps
+    assert patched["5"]["inputs"]["cfg"] == expect_cfg
 
 
 def test_generate_storyboard_png_happy_path() -> None:

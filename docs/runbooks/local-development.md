@@ -1,109 +1,113 @@
 # Runbook: local development
 
-Lightweight guide for day-to-day dev on Docker Desktop. For M1-DV (GPU/Olares), see [olares-deployment.md](./olares-deployment.md).
+Day-to-day dev: **local app + Olares shared AI (24GB GPU)**. Open the web UI and run the pipeline — Ollama and ComfyUI always go through Olares.
 
-## Architecture (Olares hybrid)
+For full Olares backend deployment, see [olares-deployment.md](./olares-deployment.md).
+
+## Architecture (default)
 
 | Component | Where it runs |
 |-----------|---------------|
-| **Web** | Local desktop (Vite dev server) |
-| **API, Worker, Postgres, MinIO, Redis, Temporal** | Olares `aimpos-mwayolares` *(or local compose for isolated testing)* |
-| **Ollama, ComfyUI** | Olares shared services (`ollamaserver-shared`, `comfyuisharev2server-shared`) |
+| **Web, API, Worker, Postgres, MinIO, Redis, Temporal** | Local Docker (desktop) |
+| **Ollama, ComfyUI** | Olares shared services via SSH tunnels (`localhost:11434`, `localhost:8190`) |
 
-**Recommended daily setup** — local web only, full backend on Olares:
+Storyboard images use **Flux.1-dev** (`flux_storyboard.json`). Video uses **WAN 2.2 i2v** when weights are present on Olares.
+
+## Start (one command)
+
+```powershell
+# from repo root — first time: cp .env.example .env
+make up-dev
+```
+
+This automatically:
+
+1. Ensures SSH tunnels to Olares Ollama + ComfyUI are up (`scripts/dev/ensure-olares-ai-tunnels.ps1`)
+2. Starts the local app stack with worker hard-wired to Olares (`docker-compose.dev.yml`)
+3. Rebuilds the worker image (so workflow JSON changes are picked up)
+
+Then open **http://localhost:5173**, sign in with `AIMPOS_API_TOKEN` from `.env`, and run the pipeline.
+
+After pulling code changes that touch workflows or worker logic:
+
+```powershell
+make up-dev-build
+```
+
+## Stop / reset
+
+```powershell
+make down
+# reset volumes: docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env down -v
+```
+
+## Opt-in: local GPU instead of Olares
+
+Only if you have sufficient local VRAM and want in-compose Ollama + ComfyUI:
+
+```powershell
+make up-dev-local-ai
+```
+
+Uses SDXL storyboards and disables WAN i2v (local ComfyUI container is SDXL-only).
+
+## Olares desktop mode (web-only, API on Olares)
+
+Separate path — local Vite dev server + Olares API tunnel:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/dev/start-olares-desktop.ps1
 ```
 
-Sign in with the Olares API token (printed by the script, from secret `aimpos-api-env`).
-
-Manual equivalent:
-
-```powershell
-# 1. Stop local Docker (avoids port 8000 conflict)
-docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env down
-
-# 2. API tunnel
-powershell -ExecutionPolicy Bypass -File scripts/dev/start-olares-tunnels.ps1 -ApiOnly
-
-# 3. Web
-cd web
-$env:VITE_API_URL = "http://localhost:18000"
-npm run dev
-```
-
-**Local app + Olares shared AI** (Postgres/MinIO/Redis/API/Worker on desktop, GPU on Olares):
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/dev/start-local-app-olares-ai.ps1
-```
-
-Uses `docker-compose.olares-hybrid.yml` (no local Ollama/ComfyUI) and SSH tunnels for shared AI.
-
-**Full local stack with GPU** (only if you have sufficient VRAM):
-
-```powershell
-docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env --profile local-ai up -d
-```
+Set `VITE_API_URL=http://localhost:18000` for that mode.
 
 ## Prerequisites
 
-- Docker Desktop, Node 24+, Python 3.12+
+- Docker Desktop
+- SSH to Olares (`olares@10.0.0.34` by default; override `OLARES_HOST` in `.env`)
 - Copy `.env.example` → `.env` (never commit `.env`)
-
-## Start / stop
-
-```powershell
-# from repo root
-docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env up -d
-docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env down
-```
-
-Reset data: add `-v` to `down`.
 
 ## Migrations and seed
 
-Host venv against published DB port (see [migrations.md](./migrations.md)):
+See [migrations.md](./migrations.md). Seed:
 
 ```powershell
-cd api
-$u = (Select-String -Path ..\.env -Pattern '^DATABASE_URL=(.*)$').Matches.Groups[1].Value -replace '@postgresql:', '@localhost:'
-$env:DATABASE_URL = $u
-.\.venv\Scripts\python.exe -m alembic upgrade head
+docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env exec api python -m app.seed.default_project
 ```
 
-Seed: `docker compose -f deploy/compose/docker-compose.yml --env-file .env exec api python -m app.seed.default_project`
+## Verify worker is on Olares
+
+```powershell
+docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env exec worker sh -c 'echo OLLAMA=$OLLAMA_HOST COMFYUI=$COMFYUI_HOST WORKFLOW=$COMFYUI_WORKFLOW I2V=$VIDEO_I2V_ENABLED'
+```
+
+Expected:
+
+```
+OLLAMA=http://host.docker.internal:11434
+COMFYUI=http://host.docker.internal:8190
+WORKFLOW=flux_storyboard.json
+I2V=true
+```
 
 ## Quality gates
 
 ```powershell
-cd api; .\.venv\Scripts\python.exe -m pytest tests/unit -q; .\.venv\Scripts\python.exe -m ruff check app tests; .\.venv\Scripts\python.exe -m ruff format --check app tests; .\.venv\Scripts\python.exe -m mypy app
+cd api; .\.venv\Scripts\python.exe -m pytest tests/unit -q
 cd web; npm run build; npm run lint; npm test
+cd worker; python -m pytest tests/unit -q
 ```
-
-CI mirrors these in `.github/workflows/ci-api.yml`.
-
-## Smoke tests
-
-| Script | Purpose | Exit codes |
-|--------|---------|------------|
-| `scripts/smoke/test_postgres.py` | Hermetic Postgres AC | 0 PASS |
-| `scripts/smoke/test_minio.py` | Hermetic MinIO AC | 0 PASS |
-| `scripts/smoke/test_ollama.py` | Ollama inference (GPU) | 0 PASS · 2 SKIP · 1 FAIL |
-| `scripts/smoke/test_comfyui.py` | SDXL → MinIO (GPU) | 0 PASS · 2 SKIP · 1 FAIL |
-
-**SKIP (exit 2)** means GPU/Ollama/ComfyUI unavailable — not a pass. Use `--require-live` on Olares for M1-DV (SKIP becomes FAIL).
-
-```powershell
-python scripts/smoke/test_postgres.py
-python scripts/smoke/test_minio.py
-python scripts/smoke/test_ollama.py
-python scripts/smoke/test_comfyui.py
-```
-
-GPU services (`ollama`, `comfyui`) need NVIDIA runtime; CPU-only hosts expect SKIP on AI smokes.
 
 ## Service ports (dev overlay)
 
-See README port map. Health: `curl.exe --max-time 8 http://127.0.0.1:8000/health`
+| Service | Host port |
+|---------|-----------|
+| `web` | 5173 |
+| `api` | 8000 |
+| `postgresql` | 5432 |
+| `minio` | 9000 / 9001 |
+| `temporal-ui` | 8080 |
+| Olares Ollama (tunnel) | 11434 |
+| Olares ComfyUI (tunnel) | 8190 |
+
+Health: `curl http://127.0.0.1:8000/health`

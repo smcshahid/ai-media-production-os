@@ -26,6 +26,10 @@ function stepState(index: number, currentIndex: number, status: string): StepSta
   if (status === "IDLE" || currentIndex < 0) {
     return "pending";
   }
+  // Terminal failure: don't mark prior stages done — the run did not complete.
+  if (status === "FAILED" || status === "CANCELLED") {
+    return index === currentIndex ? "active" : "pending";
+  }
   if (index < currentIndex) {
     return "done";
   }

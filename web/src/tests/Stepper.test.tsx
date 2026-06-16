@@ -34,4 +34,13 @@ describe("Stepper", () => {
     expect(container.querySelectorAll(".stepper__step--done")).toHaveLength(4);
     expect(container.querySelectorAll(".stepper__step--active")).toHaveLength(0);
   });
+
+  it("does not mark prior stages done when pipeline failed", () => {
+    const { container } = render(
+      <Stepper stages={STAGES} currentStage="STORYBOARD" status="FAILED" />,
+    );
+    expect(container.querySelectorAll(".stepper__step--done")).toHaveLength(0);
+    expect(container.querySelectorAll(".stepper__step--active")).toHaveLength(1);
+    expect(container.querySelectorAll(".stepper__step--pending")).toHaveLength(3);
+  });
 });

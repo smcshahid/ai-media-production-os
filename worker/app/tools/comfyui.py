@@ -36,8 +36,13 @@ def load_production_workflow(settings: Settings) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+# Latent-source nodes whose width/height we patch. SDXL uses EmptyLatentImage;
+# Flux and Z-Image (SD3-style 16ch latents) use EmptySD3LatentImage.
+LATENT_NODE_CLASSES = {"EmptyLatentImage", "EmptySD3LatentImage"}
+
+
 def _patch_latent_dims(node: dict, *, width: int | None, height: int | None) -> None:
-    if node.get("class_type") != "EmptyLatentImage":
+    if node.get("class_type") not in LATENT_NODE_CLASSES:
         return
     if width:
         node["inputs"]["width"] = int(width)
@@ -80,12 +85,18 @@ def patch_workflow_prompt(
     scheduler: str | None = None,
     hires_steps: int | None = None,
 ) -> dict:
-    """Patch prompt, seed, and (when present) resolution + sampler params.
+    """Patch prompt, seed, and (when provided) resolution + sampler params.
 
-    Resolution is applied to every ``EmptyLatentImage`` node and sampler params
-    to every ``KSampler`` node, so both the legacy single-pass workflow and the
-    hi-res-fix v2 workflow are supported. The hi-res sampler keeps its own
-    (lower) step count unless ``hires_steps`` is provided.
+    Resolution is applied to every latent-source node (``EmptyLatentImage`` for
+    SDXL, ``EmptySD3LatentImage`` for Flux/Z-Image) and sampler params to every
+    ``KSampler`` node. All shipped engine workflows follow the convention
+    ``"2"`` = positive prompt, ``"5"`` = primary KSampler, ``"4"`` = latent.
+
+    Sampler params (``steps``/``cfg``/``sampler``/``scheduler``) are optional
+    overrides: when ``None`` the workflow JSON's own (engine-correct) values are
+    kept, so switching engines via ``COMFYUI_WORKFLOW`` requires no other config.
+    The hi-res sampler keeps its own (lower) step count unless ``hires_steps``
+    is provided.
     """
     patched = copy.deepcopy(workflow)
     if PROMPT_NODE_ID not in patched or SEED_NODE_ID not in patched:

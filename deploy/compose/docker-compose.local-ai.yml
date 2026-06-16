@@ -1,0 +1,11 @@
+# Opt-in overlay: route the worker to in-compose Ollama + ComfyUI instead of Olares.
+# Use with: make up-dev-local-ai
+name: aimpos-spark
+
+services:
+  worker:
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      COMFYUI_HOST: http://comfyui:8188
+      COMFYUI_WORKFLOW: sdxl_storyboard_v2.json
+      VIDEO_I2V_ENABLED: "false"

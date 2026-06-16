@@ -70,14 +70,19 @@ class Settings(BaseSettings):
         default="sdxl_storyboard_v2.json", validation_alias="COMFYUI_WORKFLOW"
     )
     # SDXL is trained at ~1MP; 1344x768 is the 16:9 sweet spot for video-bound stills.
+    # All shipped engines (SDXL/RealVisXL/Flux/Z-Image) render natively at this size.
     comfyui_width: int = Field(default=1344, validation_alias="COMFYUI_WIDTH")
     comfyui_height: int = Field(default=768, validation_alias="COMFYUI_HEIGHT")
-    comfyui_steps: int = Field(default=28, validation_alias="COMFYUI_STEPS")
-    comfyui_cfg: float = Field(default=7.0, validation_alias="COMFYUI_CFG")
-    comfyui_sampler: str = Field(default="dpmpp_2m_sde", validation_alias="COMFYUI_SAMPLER")
-    comfyui_scheduler: str = Field(default="karras", validation_alias="COMFYUI_SCHEDULER")
+    # Sampler params are OPTIONAL OVERRIDES. When unset (None) the selected
+    # workflow JSON's own values are used, so each engine ships correct defaults
+    # (e.g. SDXL 28 steps/cfg 7, Flux 20 steps/cfg 1, Z-Image 8 steps/cfg 1).
+    # Only set these to force-override a specific workflow's sampler.
+    comfyui_steps: int | None = Field(default=None, validation_alias="COMFYUI_STEPS")
+    comfyui_cfg: float | None = Field(default=None, validation_alias="COMFYUI_CFG")
+    comfyui_sampler: str | None = Field(default=None, validation_alias="COMFYUI_SAMPLER")
+    comfyui_scheduler: str | None = Field(default=None, validation_alias="COMFYUI_SCHEDULER")
     # Hi-res fix second pass (only applied when the workflow declares a hires node).
-    comfyui_hires_steps: int = Field(default=12, validation_alias="COMFYUI_HIRES_STEPS")
+    comfyui_hires_steps: int | None = Field(default=None, validation_alias="COMFYUI_HIRES_STEPS")
     comfyui_generate_timeout_s: float = Field(
         default=180.0, validation_alias="COMFYUI_GENERATE_TIMEOUT_S"
     )

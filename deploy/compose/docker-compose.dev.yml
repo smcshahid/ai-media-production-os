@@ -2,11 +2,13 @@
 # Layer on top of the base file to publish service ports to the host
 # for local tooling. Never use this overlay in a shared or production-like environment.
 #
-# Usage (from repo root):
-#   docker compose -f deploy/compose/docker-compose.yml \
-#     -f deploy/compose/docker-compose.dev.yml --env-file .env up -d
+# Default dev path: local app (API/Worker/Postgres/…) + Olares shared Ollama/ComfyUI
+# (24GB GPU). Run `make up-dev` — it starts SSH tunnels automatically.
 #
-# Or via Makefile:  make up-dev
+# Usage (from repo root):
+#   make up-dev
+#
+# Opt-in local GPU instead of Olares:  make up-dev-local-ai
 name: aimpos-spark
 
 services:
@@ -46,3 +48,15 @@ services:
   web:
     ports:
       - "${WEB_PORT:-5173}:80"
+
+  # Worker always targets Olares shared AI in dev (via host.docker.internal tunnels).
+  # Values here override .env so a stale local .env cannot silently route to missing
+  # in-compose ollama/comfyui services.
+  worker:
+    environment:
+      OLLAMA_HOST: http://host.docker.internal:11434
+      COMFYUI_HOST: http://host.docker.internal:8190
+      COMFYUI_WORKFLOW: flux_storyboard.json
+      VIDEO_I2V_ENABLED: "true"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

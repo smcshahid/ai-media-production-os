@@ -84,20 +84,28 @@ Do **not** re-run `import_to_github.py --all` unless resetting the repo — it c
 
 Do **not** create new architecture documents in this planning repository. Changes require SCR per MVP Scope Freeze §11.
 
-## Quick start (local dev)
+## Quick start (local dev — Olares 24GB GPU)
 
-Prerequisites: Docker Desktop, Node 24+, Python 3.12+ (host venv for migrations/tests).
+Prerequisites: Docker Desktop, SSH access to Olares (`olares@10.0.0.34`), Node 24+, Python 3.12+.
 
 ```powershell
 # from repo root
-cp .env.example .env
-docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env up -d
+cp .env.example .env   # first time only
+make up-dev            # starts Olares AI tunnels + local app stack
 ```
 
 - **SPA:** http://localhost:5173 — sign in with `AIMPOS_API_TOKEN` from `.env`
-- **API:** http://localhost:8000/health (no auth) · protected routes need `Authorization: Bearer <token>`
-- **Stop:** `docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env down`
-- **Reset data:** add `-v` to `down`
+- **API:** http://localhost:8000/health
+- **AI:** Ollama + ComfyUI on Olares shared services (Flux stills + WAN i2v)
+- **Stop:** `make down`
+- **Local GPU instead of Olares (opt-in):** `make up-dev-local-ai`
+
+Manual equivalent:
+
+```powershell
+pwsh scripts/dev/ensure-olares-ai-tunnels.ps1
+docker compose -f deploy/compose/docker-compose.yml -f deploy/compose/docker-compose.dev.yml --env-file .env up -d --build worker
+```
 
 ### Service port map (dev overlay)
 
