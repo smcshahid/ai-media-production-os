@@ -115,3 +115,41 @@ export interface AssetHistoryResponse {
   project_id: string;
   stages: AssetHistoryStage[];
 }
+
+/** D-64 audit trail row (US-23b). */
+export interface AuditEventRow {
+  id: string;
+  project_id: string | null;
+  pipeline_run_id: string | null;
+  event_type: string;
+  model_id: string | null;
+  payload: Record<string, unknown> | null;
+  created_at: string;
+}
+
+export interface AuditTrailResponse {
+  project_id: string;
+  pipeline_run_id: string | null;
+  events: AuditEventRow[];
+  total: number;
+  limit: number;
+  offset: number;
+  has_more: boolean;
+}
+
+/** US-31 pipeline run summary (Phase 3B). */
+export interface PipelineRunSummary {
+  run_id: string;
+  project_id: string;
+  status: string;
+  current_stage: string | null;
+  temporal_workflow_id: string | null;
+  asset_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PipelineRunListResponse {
+  project_id: string;
+  runs: PipelineRunSummary[];
+}

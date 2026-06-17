@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aimpos-ingress-config
+  namespace: {{ .Values.namespace }}
+data:
+  nginx.conf: |
+    server {
+      listen 8080;
+      access_log /opt/bitnami/openresty/nginx/logs/access.log;
+      error_log /opt/bitnami/openresty/nginx/logs/error.log;
+
+      client_max_body_size 100M;
+      proxy_connect_timeout 300s;
+      proxy_send_timeout 600s;
+      proxy_read_timeout 1800s;
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+
+      location / {
+        proxy_pass http://aimpos-web:80;
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aimposingress
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: aimposingress
+    applications.app.bytetrade.io/name: aimpos
+    applications.app.bytetrade.io/owner: {{ .Values.owner }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: aimposingress
+  template:
+    metadata:
+      labels:
+        app: aimposingress
+        applications.app.bytetrade.io/name: aimpos
+        applications.app.bytetrade.io/owner: {{ .Values.owner }}
+        io.bytetrade.app: "true"
+    spec:
+      containers:
+        - name: nginx
+          image: {{ .Values.ingressImage }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: nginx-config
+              mountPath: /opt/bitnami/openresty/nginx/conf/server_blocks/nginx.conf
+              subPath: nginx.conf
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: aimpos-ingress-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aimposingress
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: aimposingress
+    applications.app.bytetrade.io/name: aimpos
+spec:
+  type: ClusterIP
+  selector:
+    app: aimposingress
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

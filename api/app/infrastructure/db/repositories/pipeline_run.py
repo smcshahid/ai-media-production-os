@@ -30,7 +30,7 @@ class PipelineRunRepository(SQLAlchemyRepository[PipelineRun]):
                 PipelineRun.project_id == project_id,
                 PipelineRun.status.in_(_ACTIVE_STATUSES),
             )
-            .order_by(PipelineRun.created_at.desc())
+            .order_by(PipelineRun.created_at.desc(), PipelineRun.id.desc())
             .limit(1)
         )
         return result.scalar_one_or_none()
@@ -39,7 +39,7 @@ class PipelineRunRepository(SQLAlchemyRepository[PipelineRun]):
         result = await self.session.execute(
             select(PipelineRun)
             .where(PipelineRun.project_id == project_id)
-            .order_by(PipelineRun.created_at.desc())
+            .order_by(PipelineRun.created_at.desc(), PipelineRun.id.desc())
         )
         return result.scalars().all()
 
@@ -51,7 +51,7 @@ class PipelineRunRepository(SQLAlchemyRepository[PipelineRun]):
         result = await self.session.execute(
             select(PipelineRun)
             .where(PipelineRun.project_id == project_id)
-            .order_by(PipelineRun.created_at.desc())
+            .order_by(PipelineRun.created_at.desc(), PipelineRun.id.desc())
             .limit(1)
         )
         return result.scalar_one_or_none()

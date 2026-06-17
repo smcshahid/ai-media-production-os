@@ -356,3 +356,63 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** Daily local dev (`make up-dev`) **always** routes the Temporal worker to Olares shared Ollama (`host.docker.internal:11434`) and ComfyUI (`host.docker.internal:8190`) via SSH tunnels started automatically by `scripts/dev/ensure-olares-ai-tunnels.ps1`. `docker-compose.dev.yml` **hardcodes** worker `OLLAMA_HOST`, `COMFYUI_HOST`, `COMFYUI_WORKFLOW=flux_storyboard.json`, and `VIDEO_I2V_ENABLED=true` so a stale `.env` cannot silently point at missing in-compose AI services. The former `docker-compose.olares-hybrid.yml` overlay is retired (no-op). Local in-compose GPU is **opt-in** via `make up-dev-local-ai` + `docker-compose.local-ai.yml`. Opening http://localhost:5173 and running the pipeline uses Olares 24GB GPU without extra compose flags.
 **Rationale:** Creator workflow should be "start stack → open web → run pipeline" with production-quality Flux stills + WAN i2v, not a separate hybrid mode easy to forget.
 **Verification:** `make up-dev` starts tunnels; worker env check shows Olares endpoints; pipeline STORYBOARD/VIDEO hit shared ComfyUI.
+
+### D-64 — US-23b — Audit trail read API + UI (Phase 3A)
+**Date:** 2026-06-16
+**Decision:** Creators can browse the append-only **`audit_events`** log via **`GET /audit?project_id=&pipeline_run_id=`** (optional run filter) returning chronological **`AuditTrailResponse`** rows (`event_type`, `payload`, `model_id`, `created_at`). The web **`/audit`** route renders a read-only table (US-23b); no writes, no schema change. This restores the original Visual MVP **FEAT-13 / US-23 audit viewer** scope that Phase 2 repurposed the US-23 ID for Asset History UI.
+**Rationale:** Phase 3A trust mission — pipeline/agent events are already captured; creators need visibility without SQL.
+**Verification:** `api/tests/unit/test_audit_trail.py`; `deploy/k8s/us23b-verify/verify_us23b.sh`; local audit API returns events parity with SQL.
+
+### D-65 — Phase 3A — Dev bootstrap migration gate (WP-3)
+**Date:** 2026-06-16
+**Decision:** **`make up-dev`** and **`make up-dev-build`** invoke **`scripts/dev/ensure-db-migrated.ps1`** after Olares tunnel setup and before worker start. The script idempotently runs **`alembic upgrade head`** and **fails fast** unless revision **≥ 0003** and STORYBOARD partial unique indexes exist — preventing the US-16 multi-frame storage failure on fresh clones.
+**Rationale:** Live validation exposed storyboard batches failing when migration 0003 was not applied locally.
+**Verification:** `deploy/dev/verify_bootstrap.sh`; `make verify-bootstrap`; storyboard batch insert succeeds post-gate.
+
+### D-66 — Phase 3B — Audit trail export (WP-1)
+**Date:** 2026-06-17
+**Decision:** Creators can export the read-only audit log via **`GET /audit/export?project_id=&pipeline_run_id=&format=csv|json`**. Export reuses the existing audit read service (no schema change). The Audit UI adds CSV/JSON download buttons for project-level and run-filtered exports.
+**Rationale:** Phase 3B creator experience — operational visibility outside the web UI.
+**Verification:** `api/tests/unit/test_audit_export.py`; `deploy/dev/verify_phase3b_local.ps1`.
+
+### D-67 — US-30 — Story/Script version diff UI (Phase 3B / WP-2)
+**Date:** 2026-06-17
+**Decision:** The Asset History browser adds a **read-only** Story/Script version diff (line-based LCS diff + side-by-side panes). No asset mutation, no new content API — uses existing `GET /assets/history` + `GET /assets/{id}/content`. This **supersedes the D-58 prohibition** on version diff UI for text stages only.
+**Rationale:** Creators rejected/regenerated story and script versions during Phase 3A validation; comparing versions is essential for review without leaving the app.
+**Verification:** `web/src/tests/textDiff.test.ts`; manual History → Compare versions.
+
+### D-68 — US-31 — Pipeline run history read API (Phase 3B / WP-3)
+**Date:** 2026-06-17
+**Decision:** **`GET /pipeline/runs?project_id=`** returns descending **`PipelineRunSummary`** rows from existing **`pipeline_runs`** (status, stage, temporal id, timestamps, per-run asset count). Dashboard renders a run history table with links to filtered Audit and History views. No schema change.
+**Rationale:** Creators could only see the latest run on the dashboard; historical runs and failures were invisible except via Temporal UI.
+**Verification:** `api/tests/unit/test_pipeline_runs.py`; `deploy/dev/verify_phase3b_local.ps1`.
+
+### D-69 — Phase 3C — Audit trail pagination (WP-2)
+**Date:** 2026-06-17
+**Decision:** **`GET /audit`** accepts optional **`limit`** (1–500) and **`offset`** query params. Response adds **`total`**, **`limit`**, **`offset`**, **`has_more`**. Default (no limit) returns the full trail for backward compatibility. **`GET /audit/export`** remains unpaginated (full export). No schema change.
+**Rationale:** Large audit histories from repeated pipeline runs slowed the Audit Browser; pagination keeps the UI responsive.
+**Verification:** `api/tests/unit/test_audit_trail.py`; `deploy/dev/verify_phase3c_local.ps1`.
+
+### D-70 — Phase 3C — Olares web entrance (WP-1)
+**Date:** 2026-06-17
+**Decision:** AIMPOS web deploys to Olares as **`aimpos-web`** + **`aimposingress`** (openresty) in **`aimpos-mwayolares`**, with **`OlaresManifest.yaml`** entrance on port 8080. Web nginx reverse-proxies API routes to **`aimpos-api`**. Build with **`VITE_API_URL=`** (same-origin). Application CR registers the Olares launcher tile.
+**Rationale:** Phase 3B deployed API only; creators still required local Vite or port-forward for UI.
+**Verification:** `deploy/olares/aimpos/`; `deploy/dev/verify_phase3c_olares.ps1`.
+
+### D-71 — Phase 3D — Release manifest as image pin source of truth (WP-1)
+**Date:** 2026-06-17
+**Decision:** **`deploy/release/manifest.yaml`** is the single source of truth for release version, container image tags (`aimpos-api`, `aimpos-web`, `aimpos-worker`), Olares chart version, Alembic head contract, and worker env pins. Helm values, deploy scripts, and drift checks **must** reference manifest values — not ad hoc `:dev` or `:phase3c` tags in production.
+**Rationale:** Phase 3D release hardening; eliminates cluster/local image drift documented in Phase 3B/3C closures.
+**Verification:** `scripts/release/validate-manifest.py`; `deploy/k8s/phase3d-verify/check_drift.sh`.
+
+### D-72 — Phase 3D — Consolidated verify-all entrypoint (WP-4)
+**Date:** 2026-06-17
+**Decision:** **`make verify-all`** runs bootstrap → US-V04 → phase3b → phase3c → phase3d local scripts in sequence via **`deploy/dev/verify_all.ps1`**. **`make verify-all-olares`** runs drift → release → phase3c on cluster via **`deploy/dev/verify_all_olares.ps1`**. Logs archive to **`evidence/phase-3d-verification/`**.
+**Rationale:** Single operator command for release verification; promotes verify scripts to standard operations.
+**Verification:** `Makefile` targets; CI manifest validation step in `.github/workflows/ci-api.yml`.
+
+### D-73 — Phase 3D — US-V04 release attestation package (WP-5)
+**Date:** 2026-06-17
+**Decision:** US-V04 Flux + WAN production engine path is **folded into release history** at **`v0.13.0-phase3d`**. Attestation accepts **`source=comfyui_i2v`** (preferred) or **`source=slideshow`** with **`fallback_reason`** (D-61 fallback). Evidence package: **`evidence/us-v04-verification/phase3d-2026-06-17/US-V04-RELEASE-ATTESTATION.md`**. Verify scripts emit PASS/WARN accordingly — slideshow fallback is not a release blocker.
+**Rationale:** Phase 3A left i2v attestation pending on in-flight runs; Phase 3D closes release evidence loop without workflow changes.
+**Verification:** `deploy/dev/verify_usv04_local.ps1`; `deploy/k8s/phase3d-verify/verify_release.sh`.

@@ -1,0 +1,53 @@
+# Nightly verification — manifest validation + unit gates (non-blocking on PR).
+# Full compose verify requires self-hosted runner with Docker; manifest gate runs on ubuntu-latest.
+name: Verify Nightly
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  manifest:
+    name: Release manifest validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Validate manifest
+        run: python scripts/release/validate-manifest.py
+
+  unit-regression:
+    name: Unit regression (API + web)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: API unit tests
+        working-directory: api
+        run: |
+          pip install -e ../packages/aimpos-core -e ../packages/aimpos-config -e ".[dev]"
+          python -m pytest tests/unit -q
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Web tests
+        working-directory: web
+        run: |
+          npm ci
+          npm test

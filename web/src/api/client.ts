@@ -9,19 +9,22 @@
 
 import type {
   AssetHistoryResponse,
+  AuditTrailResponse,
   AssetVersion,
   IdeaCreateBody,
   LineageResponse,
   PipelineApproveResponse,
   PipelineRegenerateResponse,
+  PipelineRunListResponse,
   PipelineStartResponse,
   PipelineStatus,
   Project,
 } from "./types";
 
-const TOKEN_KEY = "aimpos.token";
+import { resolveApiBaseUrl } from "./baseUrl";
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? "http://localhost:8000").replace(/\/+$/, "");
+const TOKEN_KEY = "aimpos.token";
+const API_BASE_URL = resolveApiBaseUrl();
 
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
@@ -119,6 +122,12 @@ export function getPipelineStatus(projectId: string): Promise<PipelineStatus> {
   return request<PipelineStatus>(`/pipeline/status?project_id=${encodeURIComponent(projectId)}`);
 }
 
+export function listPipelineRuns(projectId: string): Promise<PipelineRunListResponse> {
+  return request<PipelineRunListResponse>(
+    `/pipeline/runs?project_id=${encodeURIComponent(projectId)}`,
+  );
+}
+
 export function startPipeline(projectId: string): Promise<PipelineStartResponse> {
   return request<PipelineStartResponse>("/pipeline/start", {
     method: "POST",
@@ -171,9 +180,12 @@ export function getAssetContent(assetId: string): Promise<string> {
   });
 }
 
-export function getAssetContentBlob(assetId: string): Promise<Blob> {
+export function getAssetContentBlob(
+  assetId: string,
+  accept = "application/octet-stream",
+): Promise<Blob> {
   return requestBlob(`/assets/${encodeURIComponent(assetId)}/content`, {
-    headers: { Accept: "image/png" },
+    headers: { Accept: accept },
   });
 }
 
@@ -203,8 +215,43 @@ export function getLineage(pipelineRunId: string): Promise<LineageResponse> {
   return request<LineageResponse>(`/lineage/${encodeURIComponent(pipelineRunId)}`);
 }
 
-export function getAssetHistory(projectId: string): Promise<AssetHistoryResponse> {
-  return request<AssetHistoryResponse>(
-    `/assets/history?project_id=${encodeURIComponent(projectId)}`,
-  );
+export function getAssetHistory(
+  projectId: string,
+  pipelineRunId?: string | null,
+): Promise<AssetHistoryResponse> {
+  const params = new URLSearchParams({ project_id: projectId });
+  if (pipelineRunId) {
+    params.set("pipeline_run_id", pipelineRunId);
+  }
+  return request<AssetHistoryResponse>(`/assets/history?${params.toString()}`);
+}
+
+export function downloadAuditExport(
+  projectId: string,
+  format: "csv" | "json",
+  pipelineRunId?: string | null,
+): Promise<Blob> {
+  const params = new URLSearchParams({ project_id: projectId, format });
+  if (pipelineRunId) {
+    params.set("pipeline_run_id", pipelineRunId);
+  }
+  return requestBlob(`/audit/export?${params.toString()}`);
+}
+
+export function getAuditTrail(
+  projectId: string,
+  pipelineRunId?: string | null,
+  options?: { limit?: number; offset?: number },
+): Promise<AuditTrailResponse> {
+  const params = new URLSearchParams({ project_id: projectId });
+  if (pipelineRunId) {
+    params.set("pipeline_run_id", pipelineRunId);
+  }
+  if (options?.limit !== undefined) {
+    params.set("limit", String(options.limit));
+  }
+  if (options?.offset !== undefined) {
+    params.set("offset", String(options.offset));
+  }
+  return request<AuditTrailResponse>(`/audit?${params.toString()}`);
 }

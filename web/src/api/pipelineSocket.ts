@@ -2,24 +2,19 @@
  * WebSocket client for pipeline status push (US-21 D-59).
  */
 
+import { resolveWebSocketBaseUrl } from "./baseUrl";
 import { clearToken, getToken } from "./client";
 import type { PipelineStatus } from "./types";
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? "http://localhost:8000").replace(
-  /\/+$/,
-  "",
-);
+function wsUrl(): string {
+  return `${resolveWebSocketBaseUrl()}/ws/pipeline`;
+}
 
 export type PipelineConnectionMode = "connecting" | "live" | "polling";
 
 export interface PipelineSocketHandlers {
   onStatus: (status: PipelineStatus) => void;
   onModeChange: (mode: PipelineConnectionMode) => void;
-}
-
-function wsUrl(): string {
-  const base = API_BASE_URL.replace(/^http/i, "ws");
-  return `${base}/ws/pipeline`;
 }
 
 function parseStatus(payload: unknown): PipelineStatus | null {

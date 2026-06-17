@@ -5,6 +5,7 @@ import { ApiError, listAssets, startPipeline, listProjects } from "../api/client
 import type { AssetVersion, Project } from "../api/types";
 import { IdeaCaptureForm } from "../components/IdeaCaptureForm";
 import { PipelineConnectionIndicator } from "../components/PipelineConnectionIndicator";
+import { PipelineRunHistory } from "../components/PipelineRunHistory";
 import { Stepper } from "../components/Stepper";
 import { usePipelineStatus } from "../hooks/usePipelineStatus";
 import {
@@ -106,7 +107,7 @@ export function DashboardPage() {
       return "No pipeline run yet.";
     }
     if (displayStatus === "GENERATING" && currentStage) {
-      return `Generating ${STAGE_LABELS[currentStage] ?? currentStage} (stub activity)…`;
+      return `Generating ${STAGE_LABELS[currentStage] ?? currentStage}…`;
     }
     if (displayStatus === "REVIEW" && currentStage) {
       return `${STAGE_LABELS[currentStage] ?? currentStage} ready for your review.`;
@@ -203,6 +204,16 @@ export function DashboardPage() {
           )}
         </div>
       </div>
+
+      {project && (
+        <div className="card">
+          <h2 className="card__title">Run history</h2>
+          <p className="card__hint">
+            Past pipeline runs with status, asset counts, and links to audit and history views.
+          </p>
+          <PipelineRunHistory projectId={project.id} activeRunId={pipeline?.run_id} />
+        </div>
+      )}
     </section>
   );
 }

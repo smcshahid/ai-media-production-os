@@ -11,7 +11,7 @@ COMPOSE      := docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE)
 COMPOSE_DEV_CMD := docker compose -f $(COMPOSE_FILE) -f $(COMPOSE_DEV) --env-file $(ENV_FILE)
 COMPOSE_HYBRID := $(COMPOSE_DEV_CMD)
 
-.PHONY: help env up up-dev up-dev-build up-dev-local-ai down logs logs-api db-shell db-smoke minio-smoke health migrate migrate-down seed olares-desktop olares-hybrid-app
+.PHONY: help env up up-dev up-dev-build up-dev-local-ai down logs logs-api db-shell db-smoke minio-smoke health migrate migrate-down seed olares-desktop olares-hybrid-app verify-bootstrap verify-usv04 verify-phase3b verify-phase3b-olares verify-phase3c verify-phase3c-olares verify-phase3d verify-all verify-all-olares check-drift-olares release-build release-notes
 
 # US-04 / T-04-02: until the API image lands (US-03), run Alembic in a one-off
 # python container attached to the compose network so DATABASE_URL
@@ -54,11 +54,49 @@ up: env
 
 up-dev: env
 	powershell -ExecutionPolicy Bypass -File scripts/dev/ensure-olares-ai-tunnels.ps1
-	$(COMPOSE_DEV_CMD) up -d --build worker web
+	powershell -ExecutionPolicy Bypass -File scripts/dev/ensure-db-migrated.ps1
+	$(COMPOSE_DEV_CMD) up -d --build worker web api
 
 up-dev-build: env
 	powershell -ExecutionPolicy Bypass -File scripts/dev/ensure-olares-ai-tunnels.ps1
+	powershell -ExecutionPolicy Bypass -File scripts/dev/ensure-db-migrated.ps1
 	$(COMPOSE_DEV_CMD) up -d --build worker api web
+
+verify-bootstrap:
+	powershell -ExecutionPolicy Bypass -File scripts/dev/ensure-db-migrated.ps1
+
+verify-phase3b:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_phase3b_local.ps1
+
+verify-phase3b-olares:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_phase3b_olares.ps1
+
+verify-phase3c:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_phase3c_local.ps1
+
+verify-phase3c-olares:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_phase3c_olares.ps1
+
+verify-usv04:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_usv04_local.ps1
+
+verify-phase3d:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_phase3d_local.ps1
+
+verify-all:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_all.ps1
+
+verify-all-olares:
+	powershell -ExecutionPolicy Bypass -File deploy/dev/verify_all_olares.ps1
+
+check-drift-olares:
+	powershell -ExecutionPolicy Bypass -Command "$$h='olares@10.0.0.34'; scp deploy/k8s/phase3d-verify/check_drift.sh deploy/k8s/phase3d-verify/run_check_drift.sh $${h}:/tmp/; ssh $$h 'chmod +x /tmp/check_drift.sh /tmp/run_check_drift.sh && bash /tmp/run_check_drift.sh'"
+
+release-build:
+	powershell -ExecutionPolicy Bypass -File scripts/release/build-release-images.ps1
+
+release-notes:
+	powershell -ExecutionPolicy Bypass -File scripts/release/generate-release-notes.ps1 -Version v0.13.0-phase3d
 
 up-dev-local-ai: env
 	$(COMPOSE_DEV_CMD) -f deploy/compose/docker-compose.local-ai.yml --profile local-ai up -d --build worker

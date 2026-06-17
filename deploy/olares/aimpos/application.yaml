@@ -1,0 +1,28 @@
+apiVersion: app.bytetrade.io/v1alpha1
+kind: Application
+metadata:
+  name: aimpos-mwayolares-aimpos
+spec:
+  appid: aimpos
+  deployment: aimpos
+  entrances:
+    - authLevel: private
+      host: aimposingress
+      icon: https://app.cdn.olares.com/appstore/default/defaulticon.webp
+      name: aimpos
+      openMethod: window
+      port: 8080
+      title: AIMPOS Spark
+  icon: https://app.cdn.olares.com/appstore/default/defaulticon.webp
+  isSysApp: false
+  name: aimpos
+  namespace: aimpos-mwayolares
+  owner: mwayolares
+  rawAppName: aimpos
+  settings:
+    clusterScoped: "false"
+    mobileSupported: "false"
+    source: dev
+    title: AIMPOS Spark
+    version: 0.1.0
+  tailscale: {}

@@ -230,7 +230,9 @@ services:
       retries: 5
       start_period: 20s
     networks:
-      - aimpos-spark
+      aimpos-spark:
+        aliases:
+          - aimpos-api
 
   worker:
     build:
@@ -262,7 +264,7 @@ services:
       VIDEO_I2V_FRAMES: ${VIDEO_I2V_FRAMES:-81}
       VIDEO_I2V_FPS: ${VIDEO_I2V_FPS:-16}
       VIDEO_I2V_STEPS: ${VIDEO_I2V_STEPS:-20}
-      VIDEO_I2V_TIMEOUT_S: ${VIDEO_I2V_TIMEOUT_S:-600}
+      VIDEO_I2V_TIMEOUT_S: ${VIDEO_I2V_TIMEOUT_S:-1200}
     depends_on:
       temporal:
         condition: service_healthy

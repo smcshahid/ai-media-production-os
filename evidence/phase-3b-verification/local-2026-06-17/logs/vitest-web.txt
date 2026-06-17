@@ -1,0 +1,33 @@
+﻿node.exe : npm warn Unknown cli config "--run". This will stop working in the next major version of npm.
+At C:\nvm4w\nodejs\npm.ps1:16 char:5
++     & "$basedir/node$exe"  "$basedir/node_modules/npm/bin/npm-cli.js" ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...version of npm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> aimpos-web@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.6 C:/Users/shahid85/02_Personnal/AI Production Media/web
+
+ Γ£ô src/tests/historyDisplay.test.ts (6 tests) 34ms
+ Γ£ô src/tests/fountainFormat.test.ts (3 tests) 5ms
+ Γ£ô src/tests/lineageDisplay.test.ts (3 tests) 5ms
+ Γ£ô src/tests/client.test.ts (2 tests) 12ms
+ Γ£ô src/tests/storyboardReview.test.ts (3 tests) 5ms
+ Γ£ô src/tests/RequireAuth.test.tsx (2 tests) 50ms
+ Γ£ô src/tests/Stepper.test.tsx (5 tests) 213ms
+ Γ£ô src/tests/pipelineDisplay.test.ts (3 tests) 6ms
+ Γ£ô src/tests/pipelineDisplay.us21.test.ts (4 tests) 5ms
+ Γ£ô src/tests/textDiff.test.ts (2 tests) 5ms
+ Γ£ô src/tests/storyReview.test.ts (3 tests) 5ms
+ Γ£ô src/tests/scriptReview.test.ts (3 tests) 6ms
+ Γ£ô src/tests/videoReview.test.ts (2 tests) 5ms
+
+ Test Files  13 passed (13)
+      Tests  41 passed (41)
+   Start at  17:46:05
+   Duration  10.97s (transform 5.80s, setup 8.10s, collect 6.92s, tests 356ms, environment 37.06s, prepare 4.36s)
+

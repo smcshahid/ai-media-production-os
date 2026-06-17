@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   ApiError,
@@ -13,9 +13,11 @@ import {
   shortHash,
   stageSectionTitle,
 } from "../lib/historyDisplay";
+import { VersionDiffViewer } from "./VersionDiffViewer";
 
 interface AssetHistoryViewerProps {
   projectId: string;
+  pipelineRunId?: string | null;
 }
 
 type PreviewState =
@@ -27,55 +29,58 @@ type PreviewState =
   | { kind: "unavailable"; message: string }
   | { kind: "error"; message: string };
 
-const TEXT_PREVIEW_MAX = 2000;
+const TEXT_PREVIEW_MAX = 4000;
+
+function videoSourceLabel(metadata: Record<string, string | number | boolean>): string {
+  const source = metadata.source;
+  if (source === "comfyui_i2v") {
+    return "ComfyUI image-to-video";
+  }
+  if (source === "slideshow") {
+    return "Slideshow (storyboard frames)";
+  }
+  return typeof source === "string" ? source : "Unknown";
+}
 
 /**
- * Read-only stage-grouped asset history (US-23 D-58). D-57 data only — no flat list.
+ * Read-only stage-grouped asset history with inline preview, version navigation,
+ * and Story/Script diff (Phase 3B / US-23 + US-30 + US-V04 UX).
  */
-export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
+export function AssetHistoryViewer({ projectId, pipelineRunId }: AssetHistoryViewerProps) {
   const [history, setHistory] = useState<AssetHistoryResponse | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<AssetHistoryVersion | null>(null);
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
   const [preview, setPreview] = useState<PreviewState>({ kind: "idle" });
+  const [showDiff, setShowDiff] = useState(false);
 
-  useEffect(() => {
-    let active = true;
+  const loadHistory = useCallback(async () => {
     setLoading(true);
     setLoadError(null);
     setHistory(null);
     setSelected(null);
     setSelectedStage(null);
     setPreview({ kind: "idle" });
+    setShowDiff(false);
 
-    getAssetHistory(projectId)
-      .then((data) => {
-        if (active) {
-          setHistory(data);
-        }
-      })
-      .catch((err) => {
-        if (active) {
-          if (err instanceof ApiError && err.status === 404) {
-            setLoadError("Project not found.");
-          } else {
-            setLoadError(
-              err instanceof ApiError ? err.message : "Failed to load asset history.",
-            );
-          }
-        }
-      })
-      .finally(() => {
-        if (active) {
-          setLoading(false);
-        }
-      });
+    try {
+      const data = await getAssetHistory(projectId, pipelineRunId);
+      setHistory(data);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 404) {
+        setLoadError("Project not found.");
+      } else {
+        setLoadError(err instanceof ApiError ? err.message : "Failed to load asset history.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [projectId, pipelineRunId]);
 
-    return () => {
-      active = false;
-    };
-  }, [projectId]);
+  useEffect(() => {
+    void loadHistory();
+  }, [loadHistory]);
 
   useEffect(() => {
     return () => {
@@ -85,18 +90,8 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
     };
   }, [preview]);
 
-  const handleSelect = useCallback((stage: string, version: AssetHistoryVersion) => {
-    setSelected(version);
-    setSelectedStage(stage);
-    setPreview({ kind: "idle" });
-  }, []);
-
-  const handlePreview = useCallback(async () => {
-    if (!selected || !selectedStage) {
-      return;
-    }
-
-    if (selectedStage === "IDEA") {
+  const loadPreview = useCallback(async (stage: string, version: AssetHistoryVersion) => {
+    if (stage === "IDEA") {
       setPreview({
         kind: "unavailable",
         message: "Content preview is not available for IDEA assets.",
@@ -107,25 +102,27 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
     setPreview({ kind: "loading" });
 
     try {
-      if (selectedStage === "STORY" || selectedStage === "SCRIPT") {
-        const text = await getAssetContent(selected.asset_id);
+      if (stage === "STORY" || stage === "SCRIPT") {
+        const text = await getAssetContent(version.asset_id);
         setPreview({ kind: "text", content: text });
         return;
       }
 
-      const blob = await getAssetContentBlob(selected.asset_id);
+      const accept =
+        stage === "STORYBOARD" ? "image/png" : stage === "VIDEO" ? "video/mp4" : "application/octet-stream";
+      const blob = await getAssetContentBlob(version.asset_id, accept);
       const url = URL.createObjectURL(blob);
 
-      if (selectedStage === "STORYBOARD") {
+      if (stage === "STORYBOARD") {
         setPreview({ kind: "image", url });
         return;
       }
 
-      if (selectedStage === "VIDEO") {
+      if (stage === "VIDEO") {
         setPreview({
           kind: "video",
           url,
-          filename: `video-v${selected.version}.mp4`,
+          filename: `video-v${version.version}.mp4`,
         });
         return;
       }
@@ -138,7 +135,41 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
         message: err instanceof ApiError ? err.message : "Failed to load preview.",
       });
     }
-  }, [selected, selectedStage]);
+  }, []);
+
+  const handleSelect = useCallback(
+    (stage: string, version: AssetHistoryVersion) => {
+      setSelected(version);
+      setSelectedStage(stage);
+      setShowDiff(false);
+      void loadPreview(stage, version);
+    },
+    [loadPreview],
+  );
+
+  const stageVersions = useMemo(() => {
+    if (!history || !selectedStage) {
+      return [];
+    }
+    return history.stages.find((group) => group.stage === selectedStage)?.versions ?? [];
+  }, [history, selectedStage]);
+
+  const selectedIndex = useMemo(() => {
+    if (!selected) {
+      return -1;
+    }
+    return stageVersions.findIndex((row) => row.asset_id === selected.asset_id);
+  }, [selected, stageVersions]);
+
+  function navigateVersion(delta: number) {
+    if (!selectedStage || selectedIndex < 0) {
+      return;
+    }
+    const next = stageVersions[selectedIndex + delta];
+    if (next) {
+      handleSelect(selectedStage, next);
+    }
+  }
 
   if (loading) {
     return <p className="card__hint">Loading asset history…</p>;
@@ -157,12 +188,21 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
   }
 
   const totalVersions = history.stages.reduce((sum, s) => sum + s.versions.length, 0);
+  const diffStage =
+    selectedStage === "STORY" || selectedStage === "SCRIPT" ? selectedStage : null;
+  const diffVersions =
+    history.stages.find((group) => group.stage === diffStage)?.versions ?? [];
 
   return (
     <div className="history">
+      {pipelineRunId && (
+        <p className="card__hint">
+          Filtered to pipeline run <code className="history__mono">{pipelineRunId}</code>
+        </p>
+      )}
       <p className="card__hint">
         {totalVersions} version{totalVersions === 1 ? "" : "s"} across {history.stages.length}{" "}
-        stage{history.stages.length === 1 ? "" : "s"}. Click a row for metadata.
+        stage{history.stages.length === 1 ? "" : "s"}. Select a row to preview inline.
       </p>
 
       {history.stages.map((stageGroup) => (
@@ -190,6 +230,11 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
                     {version.is_ai_generated && (
                       <span className="badge badge--review">AI</span>
                     )}
+                    {stageGroup.stage === "VIDEO" && version.metadata?.source != null && (
+                      <span className="badge badge--review">
+                        {String(version.metadata.source)}
+                      </span>
+                    )}
                     <span className="history__hash">{shortHash(version.content_hash)}</span>
                   </button>
                 </li>
@@ -201,7 +246,28 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
 
       {selected && selectedStage && (
         <div className="history__panel" aria-live="polite">
-          <h3 className="history__panel-title">Version metadata</h3>
+          <div className="history__panel-header">
+            <h3 className="history__panel-title">Version metadata</h3>
+            <div className="history__nav">
+              <button
+                type="button"
+                className="button"
+                disabled={selectedIndex <= 0}
+                onClick={() => navigateVersion(-1)}
+              >
+                ← Prev
+              </button>
+              <button
+                type="button"
+                className="button"
+                disabled={selectedIndex < 0 || selectedIndex >= stageVersions.length - 1}
+                onClick={() => navigateVersion(1)}
+              >
+                Next →
+              </button>
+            </div>
+          </div>
+
           <dl className="history__meta">
             <div>
               <dt>Stage</dt>
@@ -241,13 +307,33 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
                 <dd>{String(selected.metadata.frame_index)}</dd>
               </div>
             )}
+            {selectedStage === "VIDEO" && selected.metadata?.source != null && (
+              <>
+                <div>
+                  <dt>Video source</dt>
+                  <dd>{videoSourceLabel(selected.metadata)}</dd>
+                </div>
+                {selected.metadata.fallback_reason != null && (
+                  <div>
+                    <dt>Fallback reason</dt>
+                    <dd>{String(selected.metadata.fallback_reason)}</dd>
+                  </div>
+                )}
+              </>
+            )}
           </dl>
 
-          <div className="history__preview-actions">
-            <button type="button" className="history__preview-button" onClick={handlePreview}>
-              {selectedStage === "VIDEO" ? "Download" : "Preview"}
-            </button>
-          </div>
+          {diffStage && diffVersions.length >= 2 && (
+            <div className="history__diff-toggle">
+              <button type="button" className="button" onClick={() => setShowDiff((v) => !v)}>
+                {showDiff ? "Hide version diff" : "Compare versions"}
+              </button>
+            </div>
+          )}
+
+          {showDiff && diffStage && (
+            <VersionDiffViewer stage={diffStage} versions={diffVersions} />
+          )}
 
           {preview.kind === "loading" && <p className="card__hint">Loading preview…</p>}
           {preview.kind === "unavailable" && (
@@ -275,9 +361,18 @@ export function AssetHistoryViewer({ projectId }: AssetHistoryViewerProps) {
             />
           )}
           {preview.kind === "video" && (
-            <a className="history__download-link" href={preview.url} download={preview.filename}>
-              Download video (v{selected.version})
-            </a>
+            <div className="history__video-wrap">
+              <video
+                className="history__preview-video"
+                src={preview.url}
+                controls
+                playsInline
+                preload="metadata"
+              />
+              <a className="history__download-link" href={preview.url} download={preview.filename}>
+                Download video (v{selected.version})
+              </a>
+            </div>
           )}
         </div>
       )}

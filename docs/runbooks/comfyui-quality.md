@@ -149,4 +149,4 @@ build's WAN nodes differ, export a known-good graph from the UI:
 | `VIDEO_I2V_WIDTH` / `VIDEO_I2V_HEIGHT` | 832 / 480 | WAN clip size |
 | `VIDEO_I2V_FRAMES` / `VIDEO_I2V_FPS` | 81 / 16 | ~5s per storyboard frame |
 | `VIDEO_I2V_STEPS` | 20 | total steps (split high/low noise) |
-| `VIDEO_I2V_TIMEOUT_S` | 600 | per-clip i2v timeout |
+| `VIDEO_I2V_TIMEOUT_S` | 1200 | per-clip i2v timeout (~12 min/clip on Olares; 600 was too short) |

@@ -23,8 +23,9 @@ make up-dev
 This automatically:
 
 1. Ensures SSH tunnels to Olares Ollama + ComfyUI are up (`scripts/dev/ensure-olares-ai-tunnels.ps1`)
-2. Starts the local app stack with worker hard-wired to Olares (`docker-compose.dev.yml`)
-3. Rebuilds the worker image (so workflow JSON changes are picked up)
+2. Applies Alembic migrations and validates revision 0003 (`scripts/dev/ensure-db-migrated.ps1`)
+3. Starts the local app stack with worker hard-wired to Olares (`docker-compose.dev.yml`)
+4. Rebuilds the worker/api/web images (so workflow JSON and API changes are picked up)
 
 Then open **http://localhost:5173**, sign in with `AIMPOS_API_TOKEN` from `.env`, and run the pipeline.
 
@@ -61,6 +62,17 @@ powershell -ExecutionPolicy Bypass -File scripts/dev/start-olares-desktop.ps1
 
 Set `VITE_API_URL=http://localhost:18000` for that mode.
 
+## Olares hosted app (Phase 3C — no local dev required)
+
+AIMPOS web runs on Olares as a first-class application entrance. Deploy and verify:
+
+```powershell
+# See deploy/olares/aimpos/README.md for full image build + helm deploy steps
+make verify-phase3c-olares
+```
+
+Open from the Olares launcher (Application `aimpos-mwayolares-aimpos`). Sign in with the API token from the cluster `aimpos-api-env` secret.
+
 ## Prerequisites
 
 - Docker Desktop
@@ -89,6 +101,19 @@ COMFYUI=http://host.docker.internal:8190
 WORKFLOW=flux_storyboard.json
 I2V=true
 ```
+
+## Verify database migrations (WP-3)
+
+```powershell
+make verify-bootstrap
+# or: powershell -ExecutionPolicy Bypass -File scripts/dev/ensure-db-migrated.ps1
+```
+
+Expected: Alembic revision `0003` and STORYBOARD partial unique indexes present.
+
+## Audit trail (US-23b)
+
+Open **http://localhost:5173/audit** or `GET /audit?project_id=<uuid>` for the append-only event log.
 
 ## Quality gates
 

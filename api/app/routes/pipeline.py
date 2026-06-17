@@ -19,6 +19,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from temporalio.service import RPCError
 
 from app.dependencies import get_session, get_temporal
+from app.domain.pipeline.run_list import (
+    PipelineRunListResponse,
+    ProjectNotFoundError as RunListProjectNotFoundError,
+    get_pipeline_run_list,
+)
 from app.domain.pipeline.status_read import PipelineStatusRead, build_pipeline_status_read
 from app.infrastructure.db.models.approval import Approval
 from app.infrastructure.db.models.audit_event import AuditEvent
@@ -90,6 +95,35 @@ async def pipeline_status(
 
     run = await PipelineRunRepository(session).latest_for_project(project_id)
     return build_pipeline_status_read(project_id, run)
+
+
+@router.get(
+    "/pipeline/runs",
+    response_model=PipelineRunListResponse,
+    summary="Historical pipeline runs for a project (US-31)",
+)
+async def pipeline_runs(
+    project_id: uuid.UUID,
+    session: AsyncSession = Depends(get_session),
+) -> PipelineRunListResponse:
+    try:
+        return await get_pipeline_run_list(project_id, session=session)
+    except RunListProjectNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"project {exc} not found",
+        ) from exc
+
+
+def _temporal_signal_detail(exc: BaseException) -> str:
+    """User-facing detail when Temporal workflow is unreachable (Phase 3B UX)."""
+    message = str(exc).lower()
+    if "not found" in message or "failed" in message or "terminated" in message:
+        return (
+            "Pipeline workflow is out of sync with the database. "
+            "Refresh the dashboard; if the problem persists, contact an operator."
+        )
+    return "Pipeline workflow signal failed. Try refreshing and retrying."
 
 
 @router.post(
@@ -231,12 +265,12 @@ async def pipeline_approve(
     except RPCError as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="temporal signal failed",
+            detail=_temporal_signal_detail(exc),
         ) from exc
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="temporal signal failed",
+            detail=_temporal_signal_detail(exc),
         ) from exc
 
     approval = Approval(
@@ -365,12 +399,12 @@ async def pipeline_regenerate(
     except RPCError as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="temporal signal failed",
+            detail=_temporal_signal_detail(exc),
         ) from exc
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="temporal signal failed",
+            detail=_temporal_signal_detail(exc),
         ) from exc
 
     await AuditEventRepository(session).append(

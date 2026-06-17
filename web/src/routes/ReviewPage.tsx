@@ -20,6 +20,7 @@ import { selectLatestAiDraftScriptAsset } from "../lib/scriptReview";
 import { batchVersion, selectLatestStoryboardBatch } from "../lib/storyboardReview";
 import { selectLatestAiDraftStoryAsset, selectLatestStoryAsset } from "../lib/storyReview";
 import { selectLatestAiDraftVideoAsset, videoSourceLabel } from "../lib/videoReview";
+import { formatReviewActionError } from "../lib/reviewErrors";
 
 const STAGE_LABELS: Record<string, string> = {
   STORY: "Story",
@@ -148,7 +149,7 @@ export function ReviewPage() {
       }
       const urls: Record<string, string> = {};
       for (const frame of batch) {
-        const blob = await getAssetContentBlob(frame.id);
+        const blob = await getAssetContentBlob(frame.id, "image/png");
         urls[frame.id] = URL.createObjectURL(blob);
       }
       setStoryboardImageUrls((prev) => {
@@ -184,7 +185,7 @@ export function ReviewPage() {
         });
         return;
       }
-      const blob = await getAssetContentBlob(latest.id);
+      const blob = await getAssetContentBlob(latest.id, "video/mp4");
       const url = URL.createObjectURL(blob);
       setVideoAsset(latest);
       setVideoUrl((prev) => {
@@ -327,7 +328,7 @@ export function ReviewPage() {
       setRejectedHint(false);
       refresh();
     } catch (err) {
-      setActionError(err instanceof ApiError ? err.message : "Approval failed.");
+      setActionError(formatReviewActionError(err, "Approval failed."));
     } finally {
       setSubmitting(false);
     }
@@ -350,7 +351,7 @@ export function ReviewPage() {
       setRejectedHint(true);
       refresh();
     } catch (err) {
-      setActionError(err instanceof ApiError ? err.message : "Rejection failed.");
+      setActionError(formatReviewActionError(err, "Rejection failed."));
     } finally {
       setSubmitting(false);
     }
@@ -378,7 +379,7 @@ export function ReviewPage() {
       if (err instanceof ApiError && err.status === 429) {
         setActionError(err.message);
       } else {
-        setActionError(err instanceof ApiError ? err.message : "Regeneration failed.");
+        setActionError(formatReviewActionError(err, "Regeneration failed."));
       }
     } finally {
       setSubmitting(false);

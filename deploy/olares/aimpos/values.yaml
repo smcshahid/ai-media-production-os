@@ -1,0 +1,6 @@
+namespace: aimpos-mwayolares
+owner: mwayolares
+# Pinned by deploy/release/manifest.yaml — do not use :dev or :phase3c in production
+webImage: docker.io/library/aimpos-web:v0.13.0-phase3d
+ingressImage: docker.io/beclab/aboveos-bitnami-openresty:1.25.3-2
+releaseVersion: v0.13.0-phase3d

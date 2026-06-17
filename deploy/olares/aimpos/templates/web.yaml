@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aimpos-web
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: aimpos-web
+    applications.app.bytetrade.io/name: aimpos
+    applications.app.bytetrade.io/owner: {{ .Values.owner }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aimpos-web
+  template:
+    metadata:
+      labels:
+        app: aimpos-web
+        applications.app.bytetrade.io/name: aimpos
+        applications.app.bytetrade.io/owner: {{ .Values.owner }}
+        io.bytetrade.app: "true"
+    spec:
+      containers:
+        - name: web
+          image: {{ .Values.webImage }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aimpos-web
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: aimpos-web
+spec:
+  type: ClusterIP
+  selector:
+    app: aimpos-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

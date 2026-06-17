@@ -7,7 +7,7 @@ Privacy-first, local-AI media production platform.
 | Program | Status | Frontier |
 |---------|--------|----------|
 | **Visual MVP** | **CLOSED** (M5 · `v0.4.0-usv01`) | — |
-| **Spark Full** | **Phase 2 CLOSED** (M7 · `v0.12.0-usv03`) | **Phase 3 planning** (not started) |
+| **Spark Full** | **Phase 2 CLOSED** (M7 · `v0.12.0-usv03`) | **Phase 3D CLOSED** — Release Hardening |
 
 | State | Detail |
 |-------|--------|
@@ -30,6 +30,12 @@ Privacy-first, local-AI media production platform.
 | US-19 | **CLOSED** — `v0.6.0-us19` · `docs/sprints/sprint-4b-us19-closure-report.md` |
 | US-V02 | **CLOSED** — `v0.7.0-usv02` · `docs/sprints/sprint-4c-usv02-closure-report.md` |
 | M6 Spark Full | **COMPLETE** |
+| Phase 3A | **CLOSED** — Trust & Visibility · `PHASE-3A-MISSION-CLOSURE.md` |
+| Phase 3B | **CLOSED** — Asset Intelligence · `PHASE-3B-MISSION-CLOSURE.md` |
+| Phase 3C | **CLOSED** — Platform Readiness · `PHASE-3C-MISSION-CLOSURE.md` |
+| Phase 3D | **CLOSED** — Release Hardening · `v0.13.0-phase3d` · `PHASE-3D-MISSION-CLOSURE.md` |
+| Release manifest | `deploy/release/manifest.yaml` · `make verify-all` |
+| Olares web | `deploy/olares/aimpos/` · `make verify-all-olares` |
 | Stack | 9-service compose; Olares GPU path verified through VIDEO + export |
 | CI | `.github/workflows/ci-api.yml` — ruff/mypy/pytest + web build/lint/vitest on PRs |
 

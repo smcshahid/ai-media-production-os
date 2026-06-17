@@ -99,7 +99,7 @@ class Settings(BaseSettings):
     video_i2v_fps: int = Field(default=16, validation_alias="VIDEO_I2V_FPS")
     video_i2v_steps: int = Field(default=20, validation_alias="VIDEO_I2V_STEPS")
     video_i2v_timeout_s: float = Field(
-        default=600.0, validation_alias="VIDEO_I2V_TIMEOUT_S"
+        default=1200.0, validation_alias="VIDEO_I2V_TIMEOUT_S"
     )
 
     # --- Config bundle (prompts, model pins) ---

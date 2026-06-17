@@ -15,6 +15,7 @@ import shutil
 import subprocess
 import tempfile
 import time
+import uuid
 from pathlib import Path
 
 import httpx
@@ -26,7 +27,7 @@ from app.tools.ollama import normalize_host
 logger = logging.getLogger("aimpos.worker.video_i2v")
 
 DEFAULT_WORKFLOW = "wan22_i2v.json"
-DEFAULT_TIMEOUT_S = 600.0
+DEFAULT_TIMEOUT_S = 1200.0
 CROSSFADE_S = 0.5
 MP4_FTYP = b"ftyp"
 
@@ -92,7 +93,7 @@ def _generate_clip(
     fps: int,
     timeout_s: float,
 ) -> bytes:
-    image_name = _upload_image(host, f"aimpos_i2v_{index:02d}.png", png)
+    image_name = _upload_image(host, f"aimpos_i2v_{index:02d}_{uuid.uuid4().hex[:8]}.png", png)
     patched = _patch_i2v_workflow(
         workflow,
         image_name=image_name,
@@ -178,10 +179,18 @@ def _wait_for_video(host: str, prompt_id: str, *, timeout_s: float) -> tuple[str
             response.raise_for_status()
             history = response.json()
         entry = history.get(prompt_id)
-        if entry and entry.get("outputs"):
-            found = _extract_video_output(entry["outputs"])
-            if found:
-                return found
+        if entry:
+            status = entry.get("status") or {}
+            outputs = entry.get("outputs") or {}
+            if status.get("completed") and not outputs:
+                raise VideoI2VError(
+                    "comfyui i2v finished with empty outputs "
+                    f"(prompt_id={prompt_id}; likely stale execution cache — retry)"
+                )
+            if outputs:
+                found = _extract_video_output(outputs)
+                if found:
+                    return found
         time.sleep(3)
     raise VideoI2VError(f"comfyui i2v timed out after {timeout_s}s (prompt_id={prompt_id})")
 

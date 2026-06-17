@@ -58,5 +58,6 @@ services:
       COMFYUI_HOST: http://host.docker.internal:8190
       COMFYUI_WORKFLOW: flux_storyboard.json
       VIDEO_I2V_ENABLED: "true"
+      VIDEO_I2V_TIMEOUT_S: "1200"
     extra_hosts:
       - "host.docker.internal:host-gateway"

@@ -28,6 +28,7 @@ from app.infrastructure.realtime.listener import PipelineRealtimeListener
 from app.middleware.auth import AuthMiddleware
 from app.middleware.logging import AccessLogMiddleware
 from app.middleware.request_id import RequestIDMiddleware
+from app.routes.audit import router as audit_router
 from app.routes.assets import router as assets_router
 from app.routes.export import router as export_router
 from app.routes.health import router as health_router
@@ -134,6 +135,7 @@ def create_app() -> FastAPI:
     )
     app.include_router(health_router)
     app.include_router(projects_router)
+    app.include_router(audit_router)
     app.include_router(assets_router)
     app.include_router(ideas_router)
     app.include_router(pipeline_router)

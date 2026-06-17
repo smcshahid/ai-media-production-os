@@ -38,6 +38,14 @@ jobs:
       - name: Unit tests
         run: python -m pytest tests/unit -q
 
+      - name: Audit pagination regression
+        run: python -m pytest tests/unit/test_audit_trail.py tests/unit/test_audit_export.py -q
+
+      - name: Validate release manifest
+        run: |
+          pip install pyyaml
+          python ../scripts/release/validate-manifest.py
+
   web:
     name: Web (build, lint, vitest)
     runs-on: ubuntu-latest

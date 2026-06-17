@@ -112,7 +112,8 @@ class SparkPipelineWorkflow:
             await workflow.execute_activity(
                 run_video_agent,
                 args=[pipeline_input.project_id, pipeline_input.run_id, rejection_note],
-                start_to_close_timeout=timedelta(minutes=10),
+                # WAN i2v: up to 4 clips × ~12–20 min each + stitch/fallback headroom.
+                start_to_close_timeout=timedelta(minutes=90),
                 retry_policy=RetryPolicy(maximum_attempts=2),
             )
 

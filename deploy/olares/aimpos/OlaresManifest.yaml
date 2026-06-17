@@ -1,0 +1,38 @@
+olaresManifest.version: "0.10.0"
+olaresManifest.type: app
+metadata:
+  name: aimpos
+  title: AIMPOS Spark
+  description: Privacy-first AI media production — Idea to Video pipeline
+  icon: https://app.cdn.olares.com/appstore/default/defaulticon.webp
+  version: 0.13.0
+  categories:
+    - Productivity
+entrances:
+  - name: aimpos
+    host: aimposingress
+    port: 8080
+    title: AIMPOS Spark
+    icon: https://app.cdn.olares.com/appstore/default/defaulticon.webp
+    authLevel: private
+    openMethod: window
+permission:
+  appCache: false
+  appData: false
+spec:
+  versionName: "0.13.0"
+  developer: AIMPOS
+  locale:
+    - en
+  supportArch:
+    - amd64
+  requiredCpu: 50m
+  requiredMemory: 128Mi
+  requiredDisk: 50Mi
+  limitedCpu: 500m
+  limitedMemory: 512Mi
+options:
+  dependencies:
+    - name: olares
+      type: system
+      version: ">=1.12.0"
