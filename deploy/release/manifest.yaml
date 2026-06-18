@@ -3,7 +3,7 @@ release:
   codename: phase8-consolidation
   date: "2026-06-18"
   baseline_tag: "v0.17.1-phase7-character-hardening"
-  git_commit: "pending"
+  git_commit: "efc4073"
 
 images:
   api:

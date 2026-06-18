@@ -47,5 +47,5 @@ Artifacts: `evidence/us-v09-verification/olares-2026-06-18/platform-export.zip`,
 
 | Field | Value |
 |-------|-------|
+| Commit | `efc4073` |
 | Tag | `v0.18.0-phase8-consolidation` |
-| Remote | `origin/main` |
