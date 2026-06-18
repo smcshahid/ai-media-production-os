@@ -7,7 +7,7 @@ release:
   codename: phase7-character-hardening
   date: "2026-06-18"
   baseline_tag: "v0.17.0-phase7-character-bible"
-  git_commit: "pending-release-cut"
+  git_commit: "1eb6021"
 
 images:
   api:
