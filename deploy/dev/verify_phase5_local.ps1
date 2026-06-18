@@ -39,8 +39,12 @@ Pop-Location
 
 Log "========== V06-04: Web vitest =========="
 Push-Location (Join-Path $RepoRoot "web")
+$prevEap = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
 npm test 2>&1 | Tee-Object -FilePath (Join-Path $LogDir "vitest-web.txt")
-if ($LASTEXITCODE -ne 0) { $FAIL = 1; Log "FAIL web vitest" } else { Log "PASS web vitest" }
+$vitestExit = $LASTEXITCODE
+$ErrorActionPreference = $prevEap
+if ($vitestExit -ne 0) { $FAIL = 1; Log "FAIL web vitest" } else { Log "PASS web vitest" }
 Pop-Location
 
 Log "DONE FAIL=$FAIL"

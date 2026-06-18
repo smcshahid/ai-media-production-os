@@ -44,7 +44,7 @@ echo "========== Alembic version =========="
 : "${PGPW:?set PGPW}"
 ALEMBIC=$($K exec -i aimpos-postgres-0 -n "$NS" -- env PGPASSWORD="$PGPW" psql -U aimpos -d aimpos_spark -t -A -c "SELECT version_num FROM alembic_version;" 2>/dev/null | tr -d '\r\n')
 echo "CLUSTER_ALEMBIC=$ALEMBIC"
-: "${EXPECTED_ALEMBIC:=0003}"
+: "${EXPECTED_ALEMBIC:?set EXPECTED_ALEMBIC from deploy/release/manifest.yaml via load-manifest-env.sh}"
 if [ "$ALEMBIC" != "$EXPECTED_ALEMBIC" ]; then
   echo "DRIFT alembic expected $EXPECTED_ALEMBIC got $ALEMBIC"
   FAIL=1

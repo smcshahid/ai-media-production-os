@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate deploy/release/manifest.yaml structure (Phase 3D CI gate)."""
+"""Validate deploy/release/manifest.yaml structure (Phase 8 CI gate)."""
 from __future__ import annotations
 
 import sys
@@ -44,11 +44,11 @@ def main() -> int:
             print(f"PASS images.{svc}={repo}:{tag}")
 
     alembic = data.get("database", {}).get("alembic_head")
-    if alembic != "0003":
-        print(f"FAIL: alembic_head={alembic}")
+    if not alembic or not str(alembic).isdigit():
+        print(f"FAIL: database.alembic_head must be set (got {alembic!r})")
         fail = 1
     else:
-        print("PASS alembic_head=0003")
+        print(f"PASS alembic_head={alembic}")
 
     scripts = data.get("verify", {}).get("scripts", [])
     for rel in scripts:

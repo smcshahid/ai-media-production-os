@@ -64,6 +64,7 @@ class PipelineStartResponse(BaseModel):
 
 class PipelineApproveRequest(BaseModel):
     project_id: uuid.UUID
+    episode_id: uuid.UUID | None = None
     stage: PipelineStage
     decision: ApprovalDecision
     note: str | None = Field(default=None, max_length=4000)
@@ -296,7 +297,17 @@ async def pipeline_approve(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"project {project_id} not found"
         )
 
-    run = _require_active_run(await PipelineRunRepository(session).active_for_project(project_id))
+    runs = PipelineRunRepository(session)
+    if body.episode_id is not None:
+        episode = await EpisodeRepository(session).get_for_project(project_id, body.episode_id)
+        if episode is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"episode {body.episode_id} not found for project",
+            )
+        run = _require_active_run(await runs.active_for_episode(body.episode_id))
+    else:
+        run = _require_active_run(await runs.active_for_project(project_id))
 
     if run.status != PipelineRunStatus.AWAITING_APPROVAL:
         raise HTTPException(

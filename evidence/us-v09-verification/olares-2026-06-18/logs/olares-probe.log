@@ -1,0 +1,9 @@
+=== Olares probe 2026-06-18 ===
+aimpos-api: usv08b-phase75
+aimpos-web: usv08b-phase75
+aimpos-worker: usv08b-phase75
+Alembic: 0007
+Project: ba0c4636-817c-423b-9771-20100e080b76
+
+=== Drift (acceptance tags) ===
+DRIFT=0 API/WEB/WORKER=usv08b-phase75 ALEMBIC=0007

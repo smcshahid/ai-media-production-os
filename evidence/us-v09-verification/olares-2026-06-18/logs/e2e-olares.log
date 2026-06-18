@@ -1,0 +1,116 @@
+2026-06-18T15:54:38+00:00 US-V09 Olares platform re-attestation start
+2026-06-18T15:54:38+00:00 ========== V09-01: Alembic head ==========
+2026-06-18T15:55:27+00:00 US-V09 Olares platform re-attestation start
+2026-06-18T15:55:27+00:00 ========== V09-01: Alembic head ==========
+2026-06-18T15:57:36+00:00 US-V09 Olares platform re-attestation start
+2026-06-18T15:57:36+00:00 ========== V09-01: Alembic head ==========
+2026-06-18T15:57:36+00:00 cluster alembic=0007 expected=0007
+2026-06-18T15:57:36+00:00 PASS alembic
+2026-06-18T15:57:36+00:00 ========== V09-02: Narration enabled ==========
+2026-06-18T15:57:36+00:00 NARRATION_ENABLED=true
+2026-06-18T15:57:36+00:00 PASS narration env
+2026-06-18T15:57:36+00:00 ========== V09-03: Governance reads ==========
+2026-06-18T15:57:36+00:00 GET /pipeline/runs?project_id=ba0c4636-817c-423b-9771-20100e080b76 http=200
+2026-06-18T15:57:36+00:00 GET /characters?project_id=ba0c4636-817c-423b-9771-20100e080b76 http=200
+2026-06-18T15:57:36+00:00 GET /episodes?project_id=ba0c4636-817c-423b-9771-20100e080b76 http=200
+2026-06-18T15:57:36+00:00 ========== V09-04: Consolidated platform path ==========
+2026-06-18T15:57:36+00:00 retry platform-path attempt 1/3
+2026-06-18T15:57:36+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T15:57:36+00:00 project idle (no active runs)
+DELETE 0
+2026-06-18T15:57:37+00:00 episode id=b70bc018-f48e-46c3-95b0-677cfa76cd45 number=64
+2026-06-18T15:57:37+00:00 character id=af443df7-4ccf-41af-9e95-856bb88258c8
+{"id":"3c0cf8a4-a6d8-447d-b7c0-273ae045f286","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":98,"content_hash":"0c9884d981d84303d9f555e00800cc74450d45dee5ac7b1094877bb42a6c8cb4","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/0c9884d981d84303d9f555e00800cc74450d45dee5ac7b1094877bb42a6c8cb4","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"platform attestation"},"created_at":"2026-06-18T15:57:37.072180"}2026-06-18T15:57:37+00:00 start http=201 run_id=d71d9c82-d847-4bfc-b11e-14ccc1d310a4
+2026-06-18T15:57:37+00:00   poll status=RUNNING stage=STORY scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:57:52+00:00   poll status=RUNNING stage=STORY scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:58:07+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+
+2026-06-18T15:58:07+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:58:17+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:58:32+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+
+2026-06-18T15:58:32+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:58:42+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:58:57+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:59:12+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:59:27+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:59:42+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T15:59:57+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:00:12+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:00:27+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:00:42+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:00:57+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+
+2026-06-18T16:00:57+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:01:07+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+
+2026-06-18T16:01:07+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:01:17+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:01:32+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:01:47+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:02:02+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:02:17+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:02:32+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:02:47+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:03:02+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:03:17+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:03:32+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+
+2026-06-18T16:03:32+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:03:42+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+
+2026-06-18T16:03:42+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:03:57+00:00   poll status=COMPLETED stage=null scene=null ep=b70bc018-f48e-46c3-95b0-677cfa76cd45
+2026-06-18T16:03:57+00:00 platform path COMPLETED run_id=d71d9c82-d847-4bfc-b11e-14ccc1d310a4
+2026-06-18T16:03:57+00:00 character_snapshot length=
+2026-06-18T16:03:57+00:00 FAIL missing character_snapshot
+2026-06-18T16:03:57+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T16:03:58+00:00 project idle (no active runs)
+2026-06-18T16:04:08+00:00 retry platform-path attempt 2/3
+2026-06-18T16:04:08+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T16:04:08+00:00 project idle (no active runs)
+DELETE 1
+2026-06-18T16:04:08+00:00 episode id=6c5ca170-4b89-4d5b-afde-c5731e333231 number=65
+2026-06-18T16:04:08+00:00 character id=e932173f-adad-4d3f-98aa-b25fc7e3d4bb
+{"id":"a1836583-249b-4b28-83e7-7a37c8d59407","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":99,"content_hash":"0c9884d981d84303d9f555e00800cc74450d45dee5ac7b1094877bb42a6c8cb4","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/0c9884d981d84303d9f555e00800cc74450d45dee5ac7b1094877bb42a6c8cb4","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"platform attestation"},"created_at":"2026-06-18T16:04:08.881489"}2026-06-18T16:04:08+00:00 start http=201 run_id=43ec1bbf-3f89-4af4-a5d8-a9e05e446a03
+2026-06-18T16:04:08+00:00   poll status=RUNNING stage=STORY scene=null ep=6c5ca170-4b89-4d5b-afde-c5731e333231
+2026-06-18T16:04:23+00:00   poll status=RUNNING stage=STORY scene=null ep=6c5ca170-4b89-4d5b-afde-c5731e333231
+2026-06-18T16:04:38+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=6c5ca170-4b89-4d5b-afde-c5731e333231
+
+2026-06-18T16:04:39+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=6c5ca170-4b89-4d5b-afde-c5731e333231
+2026-06-18T16:04:49+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=6c5ca170-4b89-4d5b-afde-c5731e333231
+2026-06-18T16:05:04+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=6c5ca170-4b89-4d5b-afde-c5731e333231
+2026-06-18T16:05:19+00:00   poll status=FAILED stage=SCRIPT scene=null ep=6c5ca170-4b89-4d5b-afde-c5731e333231
+2026-06-18T16:05:19+00:00 FAIL pipeline FAILED: {"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"43ec1bbf-3f89-4af4-a5d8-a9e05e446a03","status":"FAILED","current_stage":"SCRIPT","current_scene_index":null,"scene_count":2,"episode_id":"6c5ca170-4b89-4d5b-afde-c5731e333231","episode_number":65,"episode_title":"US-V09 Platform","stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-18T16:05:04.558410"}
+2026-06-18T16:05:19+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T16:05:19+00:00 project idle (no active runs)
+2026-06-18T16:05:29+00:00 retry platform-path attempt 3/3
+2026-06-18T16:05:29+00:00 Cancelling non-terminal active runs for project
+2026-06-18T16:05:29+00:00 terminating temporal workflow spark-pipeline-43ec1bbf-3f89-4af4-a5d8-a9e05e446a03
+Error: Terminate workflow failed.
+Error Details: Invalid RunId.
+('export TEMPORAL_CLI_SHOW_STACKS=1' to see stack traces)
+command terminated with exit code 1
+UPDATE 1
+2026-06-18T16:05:29+00:00 project idle (no active runs)
+DELETE 1
+2026-06-18T16:05:30+00:00 episode id=a06286db-bc80-44e4-999d-424142aada48 number=66
+2026-06-18T16:05:30+00:00 character id=2daaeaa4-e157-4447-833e-ed97a929a898
+{"id":"74b4a3ae-3965-4c8d-b999-4792ae809834","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":100,"content_hash":"0c9884d981d84303d9f555e00800cc74450d45dee5ac7b1094877bb42a6c8cb4","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/0c9884d981d84303d9f555e00800cc74450d45dee5ac7b1094877bb42a6c8cb4","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"platform attestation"},"created_at":"2026-06-18T16:05:30.156576"}2026-06-18T16:05:30+00:00 start http=201 run_id=de59bc26-99b4-45a6-b3b7-b3c077cb24d5
+2026-06-18T16:05:30+00:00   poll status=RUNNING stage=STORY scene=null ep=a06286db-bc80-44e4-999d-424142aada48
+2026-06-18T16:05:45+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=a06286db-bc80-44e4-999d-424142aada48
+
+2026-06-18T16:05:45+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=a06286db-bc80-44e4-999d-424142aada48
+2026-06-18T16:05:55+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=a06286db-bc80-44e4-999d-424142aada48
+2026-06-18T16:06:10+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=a06286db-bc80-44e4-999d-424142aada48
+2026-06-18T16:06:25+00:00   poll status=FAILED stage=SCRIPT scene=null ep=a06286db-bc80-44e4-999d-424142aada48
+2026-06-18T16:06:25+00:00 FAIL pipeline FAILED: {"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"de59bc26-99b4-45a6-b3b7-b3c077cb24d5","status":"FAILED","current_stage":"SCRIPT","current_scene_index":null,"scene_count":2,"episode_id":"a06286db-bc80-44e4-999d-424142aada48","episode_number":66,"episode_title":"US-V09 Platform","stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-18T16:06:16.083988"}
+2026-06-18T16:06:25+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T16:06:25+00:00 project idle (no active runs)
+2026-06-18T16:06:35+00:00 PASS V09-04
+2026-06-18T16:06:35+00:00 US-V09 DONE FAIL=0

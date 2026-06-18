@@ -1,0 +1,56 @@
+2026-06-18T03:34:41.8644544-07:00 US-V09 Phase 8 platform re-attestation start
+2026-06-18T03:34:41.9181999-07:00 ========== V09-01: Manifest validation ==========
+2026-06-18T03:34:42.1043049-07:00 PASS manifest validation
+2026-06-18T03:34:42.1087536-07:00 ========== V09-02: Export ladder unit tests (v1-v5) ==========
+2026-06-18T03:34:52.1942557-07:00 PASS export ladder pytest
+2026-06-18T03:34:52.2101437-07:00 ========== V09-03: Episode-scoped approve (TD-P6.5-01) ==========
+2026-06-18T03:34:59.8857640-07:00 PASS approve episode pytest
+2026-06-18T03:35:00.1303683-07:00 ========== V09-04: Full platform verify-all ==========
+2026-06-18T03:35:38.6553775-07:00 US-V09 Phase 8 platform re-attestation start
+2026-06-18T03:35:38.7158787-07:00 ========== V09-01: Manifest validation ==========
+2026-06-18T03:35:38.9141593-07:00 PASS manifest validation
+2026-06-18T03:35:38.9171482-07:00 ========== V09-02: Export ladder unit tests (v1-v5) ==========
+2026-06-18T03:35:45.5170746-07:00 PASS export ladder pytest
+2026-06-18T03:35:45.8182550-07:00 ========== V09-03: Episode-scoped approve (TD-P6.5-01) ==========
+2026-06-18T03:35:51.4238765-07:00 PASS approve episode pytest
+2026-06-18T03:35:51.4276256-07:00 ========== V09-04: Full platform verify-all ==========
+2026-06-18T03:42:06.7989740-07:00 FAIL verify-all
+2026-06-18T03:42:06.9919201-07:00 DONE FAIL=1
+2026-06-18T03:43:08.8981768-07:00 US-V09 Phase 8 platform re-attestation start
+2026-06-18T03:43:08.9444182-07:00 ========== V09-01: Manifest validation ==========
+2026-06-18T03:43:09.0971285-07:00 PASS manifest validation
+2026-06-18T03:43:09.1001284-07:00 ========== V09-02: Export ladder unit tests (v1-v5) ==========
+2026-06-18T03:43:15.6285911-07:00 PASS export ladder pytest
+2026-06-18T03:43:15.6331105-07:00 ========== V09-03: Episode-scoped approve (TD-P6.5-01) ==========
+2026-06-18T03:43:21.4652355-07:00 PASS approve episode pytest
+2026-06-18T03:43:21.4701406-07:00 ========== V09-04: Full platform verify-all ==========
+2026-06-18T03:43:31.9638231-07:00 US-V09 Phase 8 platform re-attestation start
+2026-06-18T03:43:32.0458705-07:00 ========== V09-01: Manifest validation ==========
+2026-06-18T03:43:32.2774048-07:00 PASS manifest validation
+2026-06-18T03:43:32.2861575-07:00 ========== V09-02: Export ladder unit tests (v1-v5) ==========
+2026-06-18T03:43:41.5332938-07:00 PASS export ladder pytest
+2026-06-18T03:43:41.5376615-07:00 ========== V09-03: Episode-scoped approve (TD-P6.5-01) ==========
+2026-06-18T03:43:47.1768682-07:00 PASS approve episode pytest
+2026-06-18T03:43:47.1808709-07:00 ========== V09-04: Full platform verify-all ==========
+2026-06-18T03:50:20.4609298-07:00 FAIL verify-all
+2026-06-18T03:50:20.4639341-07:00 DONE FAIL=1
+2026-06-18T04:00:08.1684030-07:00 US-V09 Phase 8 platform re-attestation start
+2026-06-18T04:00:08.2337775-07:00 ========== V09-01: Manifest validation ==========
+2026-06-18T04:00:08.4093558-07:00 PASS manifest validation
+2026-06-18T04:00:08.4133539-07:00 ========== V09-02: Export ladder unit tests (v1-v5) ==========
+2026-06-18T04:00:14.7651153-07:00 PASS export ladder pytest
+2026-06-18T04:00:14.7715393-07:00 ========== V09-03: Episode-scoped approve (TD-P6.5-01) ==========
+2026-06-18T04:00:20.1025244-07:00 PASS approve episode pytest
+2026-06-18T04:00:20.1051389-07:00 ========== V09-04: Full platform verify-all ==========
+2026-06-18T04:08:59.5029753-07:00 FAIL verify-all
+2026-06-18T04:08:59.5938597-07:00 DONE FAIL=1
+2026-06-18T08:35:05.4413298-07:00 US-V09 Phase 8 platform re-attestation start
+2026-06-18T08:35:05.4763398-07:00 ========== V09-01: Manifest validation ==========
+2026-06-18T08:35:05.5848374-07:00 PASS manifest validation
+2026-06-18T08:35:05.5868719-07:00 ========== V09-02: Export ladder unit tests (v1-v5) ==========
+2026-06-18T08:35:10.3247386-07:00 PASS export ladder pytest
+2026-06-18T08:35:10.3275798-07:00 ========== V09-03: Episode-scoped approve (TD-P6.5-01) ==========
+2026-06-18T08:35:13.9806626-07:00 PASS approve episode pytest
+2026-06-18T08:35:13.9865996-07:00 ========== V09-04: Full platform verify-all ==========
+2026-06-18T08:43:03.5271468-07:00 PASS verify-all
+2026-06-18T08:43:03.7705014-07:00 DONE FAIL=0

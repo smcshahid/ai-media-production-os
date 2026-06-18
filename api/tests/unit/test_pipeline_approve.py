@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.dependencies import get_session, get_temporal
 from app.infrastructure.db.models.approval import Approval
 from app.infrastructure.db.models.audit_event import AuditEvent
+from app.infrastructure.db.models.episode import Episode
 from app.infrastructure.db.models.pipeline_run import PipelineRun
 from app.infrastructure.db.models.project import Project
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
@@ -36,12 +37,14 @@ async def _seed_awaiting_run(
     project_id: uuid.UUID,
     *,
     stage: PipelineStage = PipelineStage.STORY,
+    episode_id: uuid.UUID | None = None,
 ) -> PipelineRun:
     run = PipelineRun(
         project_id=project_id,
         status=PipelineRunStatus.AWAITING_APPROVAL,
         current_stage=stage,
         temporal_workflow_id=f"spark-pipeline-{uuid.uuid4()}",
+        episode_id=episode_id,
     )
     await PipelineRunRepository(session).add(run)
     await session.commit()
@@ -155,3 +158,37 @@ async def test_reject_without_note_returns_422(session: AsyncSession) -> None:
         )
 
     assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_approve_with_episode_id_resolves_episode_active_run(session: AsyncSession) -> None:
+    project_id = await _seed_project(session)
+    episode = Episode(project_id=project_id, episode_number=1, title="Ep1")
+    session.add(episode)
+    await session.commit()
+    await session.refresh(episode)
+
+    legacy_run = await _seed_awaiting_run(session, project_id, stage=PipelineStage.SCRIPT)
+    episode_run = await _seed_awaiting_run(
+        session, project_id, stage=PipelineStage.STORY, episode_id=episode.id
+    )
+    fake = FakeTemporal()
+    transport = _transport(session, fake)
+
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/pipeline/approve",
+            json={
+                "project_id": str(project_id),
+                "episode_id": str(episode.id),
+                "stage": "STORY",
+                "decision": "APPROVED",
+            },
+            headers=_AUTH,
+        )
+
+    assert response.status_code == 200
+    assert response.json()["run_id"] == str(episode_run.id)
+    assert len(fake.approvals) == 1
+    assert fake.approvals[0][0] == episode_run.temporal_workflow_id
+    assert legacy_run.id != episode_run.id

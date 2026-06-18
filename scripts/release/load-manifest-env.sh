@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
-# Export drift-check env vars from deploy/release/manifest.yaml (Phase 6.5).
+# Export drift-check env vars from deploy/release/manifest.yaml (Phase 8).
 set -euo pipefail
 MANIFEST="${1:-deploy/release/manifest.yaml}"
 ROOT="${2:-.}"
 
-if [ ! -f "$ROOT/$MANIFEST" ]; then
-  echo "missing manifest: $ROOT/$MANIFEST" >&2
+M="$MANIFEST"
+if [[ "$MANIFEST" != /* ]]; then
+  M="$ROOT/$MANIFEST"
+fi
+
+if [ ! -f "$M" ]; then
+  echo "missing manifest: $M" >&2
   exit 1
 fi
 
-M="$ROOT/$MANIFEST"
 export EXPECTED_API_TAG="${EXPECTED_API_TAG:-$(grep -A1 'api:' "$M" | grep tag | sed -n 's/.*"\([^"]*\)".*/\1/p' | head -1)}"
 export EXPECTED_WEB_TAG="${EXPECTED_WEB_TAG:-$(grep -A1 'web:' "$M" | grep tag | sed -n 's/.*"\([^"]*\)".*/\1/p' | head -1)}"
 export EXPECTED_WORKER_TAG="${EXPECTED_WORKER_TAG:-$(grep -A1 'worker:' "$M" | grep tag | sed -n 's/.*"\([^"]*\)".*/\1/p' | head -1)}"

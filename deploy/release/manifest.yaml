@@ -1,30 +1,26 @@
-# AIMPOS-Spark release manifest — single source of truth for pinned images.
-# Updated by release manager per docs/release/RELEASE-PROCESS.md
-# Do not hand-edit image tags outside a release cut.
-
 release:
-  version: "v0.17.1-phase7-character-hardening"
-  codename: phase7-character-hardening
+  version: "v0.18.0-phase8-consolidation"
+  codename: phase8-consolidation
   date: "2026-06-18"
-  baseline_tag: "v0.17.0-phase7-character-bible"
-  git_commit: "1eb6021"
+  baseline_tag: "v0.17.1-phase7-character-hardening"
+  git_commit: "pending"
 
 images:
   api:
     repository: docker.io/library/aimpos-api
-    tag: "v0.17.1-phase7-character-hardening"
+    tag: "v0.18.0-phase8-consolidation"
   web:
     repository: docker.io/library/aimpos-web
-    tag: "v0.17.1-phase7-character-hardening"
+    tag: "v0.18.0-phase8-consolidation"
   worker:
     repository: docker.io/library/aimpos-worker
-    tag: "v0.17.1-phase7-character-hardening"
+    tag: "v0.18.0-phase8-consolidation"
 
 olares:
   namespace: aimpos-mwayolares
   ingress_image: docker.io/beclab/aboveos-bitnami-openresty:1.25.3-2
-  chart_version: "0.17.1"
-  manifest_version: "0.17.1"
+  chart_version: "0.18.0"
+  manifest_version: "0.18.0"
 
 database:
   alembic_head: "0007"
@@ -36,6 +32,7 @@ worker_env:
 
 verify:
   scripts:
-    - deploy/dev/verify_usv08b_local.ps1
+    - deploy/dev/verify_usv09_local.ps1
+    - deploy/dev/verify_all.ps1
   olares:
-    - deploy/k8s/usv08b-verify/verify_usv08b_e2e.sh
+    - deploy/k8s/usv09-verify/verify_usv09_e2e.sh

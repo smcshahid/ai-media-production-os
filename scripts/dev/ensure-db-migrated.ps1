@@ -27,12 +27,15 @@ function Get-PsqlScalar {
 
 Write-Host "=== Database migration check (Alembic head) ==="
 
+$prevEap = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+
 if (-not (Test-Path .env)) {
     Write-Host "ERROR: .env missing. Run: make env" -ForegroundColor Red
     exit 1
 }
 
-docker compose -f deploy/compose/docker-compose.yml --env-file .env up -d postgresql | Out-Null
+docker compose -f deploy/compose/docker-compose.yml --env-file .env up -d postgresql 2>&1 | Out-Null
 
 $deadline = (Get-Date).AddSeconds($MaxWaitSec)
 while ((Get-Date) -lt $deadline) {
@@ -70,3 +73,4 @@ if ([int]$indexCount -lt 2) {
 }
 
 Write-Host "Migration validation OK."
+$ErrorActionPreference = $prevEap

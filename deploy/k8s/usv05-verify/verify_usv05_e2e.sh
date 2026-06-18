@@ -16,49 +16,12 @@ API="http://${API_IP}:8000"
 AUTH="Authorization: Bearer ${TOKEN}"
 FAIL=0
 
-log() { echo "$(date -Iseconds) $*" | tee -a "$EVID/e2e.log"; }
-
-psql() {
-  $K exec -i aimpos-postgres-0 -n "$NS" -- env PGPASSWORD="$PGPW" psql -U aimpos -d aimpos_spark -t -A "$@"
-}
-
-poll_until() {
-  local want_status="$1" want_stage="$2" want_scene="${3:-}" max="${4:-1200}"
-  local deadline=$(( $(date +%s) + max ))
-  while [ "$(date +%s)" -lt "$deadline" ]; do
-    local body
-    body=$(curl -sf -m 20 "$API/pipeline/status?project_id=$PROJECT" -H "$AUTH" || echo '{}')
-    local st stg scn
-    st=$(echo "$body" | sed -n 's/.*"status":"\([^"]*\)".*/\1/p')
-    stg=$(echo "$body" | sed -n 's/.*"current_stage":"\([^"]*\)".*/\1/p')
-    scn=$(echo "$body" | sed -n 's/.*"current_scene_index":\([0-9]*\).*/\1/p')
-    log "  poll status=$st stage=${stg:-null} scene=${scn:-null}"
-    if [ "$st" = "FAILED" ]; then log "FAIL pipeline FAILED: $body"; return 1; fi
-    if [ "$st" = "$want_status" ]; then
-      if [ -n "$want_stage" ] && [ "$stg" != "$want_stage" ]; then sleep 10; continue; fi
-      if [ -n "$want_scene" ] && [ "$scn" != "$want_scene" ]; then sleep 10; continue; fi
-      return 0
-    fi
-    sleep 15
-  done
-  log "FAIL poll timeout want=$want_status/$want_stage scene=$want_scene"
-  return 1
-}
-
-approve() {
-  local stage="$1"
-  curl -sf -m 60 -X POST "$API/pipeline/approve" -H "$AUTH" -H 'Content-Type: application/json' \
-    -d '{"project_id":"'"$PROJECT"'","stage":"'"$stage"'","decision":"APPROVED"}' >> "$EVID/e2e.log" 2>&1
-  echo >> "$EVID/e2e.log"
-}
-
-cancel_active_runs() {
-  log "Cancelling non-terminal active runs for project"
-  psql -c "
-    UPDATE pipeline_runs SET status='CANCELLED', current_stage=NULL, updated_at=NOW()
-    WHERE project_id='$PROJECT' AND status IN ('PENDING','RUNNING','AWAITING_APPROVAL');
-  " >> "$EVID/e2e.log" 2>&1 || true
-}
+LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/verify_common.sh"
+# shellcheck source=/dev/null
+source "$LIB"
+verify_common_source_helpers
+poll_until() { verify_common_poll_until "$1" "$2" "${3:-}" "" "${4:-1200}"; }
+verify_common_acquire_lock
 
 submit_idea() {
   curl -sf -m 30 -X POST "$API/ideas" -H "$AUTH" -H 'Content-Type: application/json' \

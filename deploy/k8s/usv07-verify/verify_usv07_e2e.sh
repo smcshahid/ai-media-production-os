@@ -16,87 +16,11 @@ API="http://${API_IP}:8000"
 AUTH="Authorization: Bearer ${TOKEN}"
 FAIL=0
 
-log() { echo "$(date -Iseconds) $*" >> "$EVID/e2e-olares.log"; echo "$(date -Iseconds) $*" >&2; }
-
-psql() {
-  $K exec -i aimpos-postgres-0 -n "$NS" -- env PGPASSWORD="$PGPW" psql -U aimpos -d aimpos_spark -t -A "$@"
-}
-
-poll_until() {
-  local want_status="$1" want_stage="$2" want_scene="${3:-}" episode_id="${4:-}" max="${5:-1200}"
-  local deadline=$(( $(date +%s) + max ))
-  while [ "$(date +%s)" -lt "$deadline" ]; do
-    local url="$API/pipeline/status?project_id=$PROJECT"
-    if [ -n "$episode_id" ]; then url="${url}&episode_id=${episode_id}"; fi
-    local body
-    body=$(curl -sf -m 20 "$url" -H "$AUTH" || echo '{}')
-    local st stg scn
-    st=$(echo "$body" | sed -n 's/.*"status":"\([^"]*\)".*/\1/p')
-    stg=$(echo "$body" | sed -n 's/.*"current_stage":"\([^"]*\)".*/\1/p')
-    scn=$(echo "$body" | sed -n 's/.*"current_scene_index":\([0-9]*\).*/\1/p')
-    log "  poll status=$st stage=${stg:-null} scene=${scn:-null} ep=${episode_id:-legacy}"
-    if [ "$st" = "FAILED" ]; then log "FAIL pipeline FAILED: $body"; return 1; fi
-    if [ "$st" = "$want_status" ]; then
-      if [ -n "$want_stage" ] && [ "$stg" != "$want_stage" ]; then sleep 10; continue; fi
-      if [ -n "$want_scene" ] && [ "$scn" != "$want_scene" ]; then sleep 10; continue; fi
-      return 0
-    fi
-    sleep 15
-  done
-  log "FAIL poll timeout want=$want_status/$want_stage scene=$want_scene"
-  return 1
-}
-
-approve() {
-  local stage="$1"
-  curl -sf -m 60 -X POST "$API/pipeline/approve" -H "$AUTH" -H 'Content-Type: application/json' \
-    -d '{"project_id":"'"$PROJECT"'","stage":"'"$stage"'","decision":"APPROVED"}' >> "$EVID/e2e-olares.log" 2>&1
-  echo >> "$EVID/e2e-olares.log"
-}
-
-terminate_workflow() {
-  local wf="$1"
-  [ -n "$wf" ] || return 0
-  log "terminating temporal workflow $wf"
-  $K exec deploy/temporal -n "$NS" -- tctl --address temporal:7233 workflow terminate \
-    -w "$wf" -r "US-V07 verification cleanup" >> "$EVID/e2e-olares.log" 2>&1 || true
-}
-
-cancel_active_runs() {
-  local wf_ids
-  log "Cancelling non-terminal active runs for project"
-  wf_ids=$(psql -c "
-    SELECT COALESCE(temporal_workflow_id, 'spark-pipeline-' || id::text)
-    FROM pipeline_runs
-    WHERE project_id='$PROJECT' AND status IN ('PENDING','RUNNING','AWAITING_APPROVAL');
-  " || true)
-  for wf in $wf_ids; do
-    terminate_workflow "$wf"
-  done
-  psql -c "
-    UPDATE pipeline_runs SET status='CANCELLED', current_stage=NULL, updated_at=NOW()
-    WHERE project_id='$PROJECT' AND status IN ('PENDING','RUNNING','AWAITING_APPROVAL');
-  " >> "$EVID/e2e-olares.log" 2>&1 || true
-  wait_for_project_idle 120
-}
-
-wait_for_project_idle() {
-  local max="${1:-120}" i count
-  for i in $(seq 1 "$max"); do
-    count=$(psql -c "
-      SELECT COUNT(*) FROM pipeline_runs
-      WHERE project_id='$PROJECT' AND status IN ('PENDING','RUNNING','AWAITING_APPROVAL');
-    " || echo 1)
-    if [ "${count:-1}" = "0" ]; then
-      log "project idle (no active runs)"
-      return 0
-    fi
-    log "waiting for idle active_runs=$count (${i}/${max})"
-    sleep 5
-  done
-  log "WARN project still has active runs after ${max} polls"
-  return 1
-}
+LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/verify_common.sh"
+# shellcheck source=/dev/null
+source "$LIB"
+verify_common_source_helpers
+verify_common_acquire_lock
 
 submit_idea() {
   local label="$1" scene_count="$2"

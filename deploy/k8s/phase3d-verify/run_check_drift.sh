@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Phase 3D — load manifest env and run drift check on Olares.
+# Phase 8 — load manifest env and run drift check on Olares.
 set -euo pipefail
 NS=aimpos-mwayolares
 K="sudo k3s kubectl"
@@ -7,21 +7,31 @@ K="sudo k3s kubectl"
 export PGPW
 PGPW=$($K get secret aimpos-postgres-auth -n "$NS" -o jsonpath='{.data.postgres-password}' | base64 -d)
 
-# Defaults loaded from deploy/release/manifest.yaml when synced to Olares.
-# Override via env for acceptance image tags (e.g. usv08-phase7).
-if [ -f /tmp/load-manifest-env.sh ]; then
-  # shellcheck source=/dev/null
-  source /tmp/load-manifest-env.sh /tmp/aimpos-manifest.yaml /tmp
-elif [ -f /tmp/aimpos-manifest.yaml ]; then
-  export EXPECTED_API_TAG="${EXPECTED_API_TAG:-v0.16.0-phase6-episode}"
-  export EXPECTED_WEB_TAG="${EXPECTED_WEB_TAG:-v0.16.0-phase6-episode}"
-  export EXPECTED_WORKER_TAG="${EXPECTED_WORKER_TAG:-v0.16.0-phase6-episode}"
-  export EXPECTED_ALEMBIC="${EXPECTED_ALEMBIC:-0006}"
-else
-  export EXPECTED_API_TAG="${EXPECTED_API_TAG:-v0.16.0-phase6-episode}"
-  export EXPECTED_WEB_TAG="${EXPECTED_WEB_TAG:-v0.16.0-phase6-episode}"
-  export EXPECTED_WORKER_TAG="${EXPECTED_WORKER_TAG:-v0.16.0-phase6-episode}"
-  export EXPECTED_ALEMBIC="${EXPECTED_ALEMBIC:-0006}"
+MANIFEST="${MANIFEST_PATH:-/tmp/aimpos-manifest.yaml}"
+LOADER="${MANIFEST_LOADER:-/tmp/load-manifest-env.sh}"
+
+if [ ! -f "$MANIFEST" ]; then
+  echo "FAIL missing manifest at $MANIFEST — run deploy/k8s/lib/sync_manifest_to_olares.sh first" >&2
+  exit 1
 fi
+
+if [ -f "$LOADER" ]; then
+  # shellcheck source=/dev/null
+  source "$LOADER" "$MANIFEST"
+else
+  echo "FAIL missing $LOADER — sync scripts/release/load-manifest-env.sh to Olares" >&2
+  exit 1
+fi
+
+if [ -n "${ACCEPTANCE_IMAGE_TAG:-}" ]; then
+  export EXPECTED_API_TAG="$ACCEPTANCE_IMAGE_TAG"
+  export EXPECTED_WEB_TAG="$ACCEPTANCE_IMAGE_TAG"
+  export EXPECTED_WORKER_TAG="$ACCEPTANCE_IMAGE_TAG"
+fi
+
+: "${EXPECTED_API_TAG:?}"
+: "${EXPECTED_WEB_TAG:?}"
+: "${EXPECTED_WORKER_TAG:?}"
+: "${EXPECTED_ALEMBIC:?}"
 
 exec bash /tmp/check_drift.sh

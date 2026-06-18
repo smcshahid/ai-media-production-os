@@ -1,8 +1,8 @@
 # AIMPOS Verification Standards
 
-**Version:** 1.0 (Phase 6.5)  
+**Version:** 2.0 (Phase 8)  
 **Authority:** Verification Lead  
-**Scope:** US-V03 through US-V07 and future acceptance suites
+**Scope:** US-V03 through US-V09 and future acceptance suites
 
 ---
 
@@ -18,13 +18,15 @@ Standardize Olares and local acceptance scripts so verification defects (SEV-3 o
 
 | Layer | Location | Role |
 |-------|----------|------|
-| Shared library | `deploy/k8s/lib/verify_common.sh` *(target)* | `log`, `psql`, `poll_until`, `approve`, `cancel_active_runs`, `wait_for_project_idle` |
+| Shared library | `deploy/k8s/lib/verify_common.sh` | `log`, `psql`, `poll_until`, `approve`, `cancel_active_runs`, `wait_for_project_idle`, `flock`, retry, supplemental |
+| Deploy library | `deploy/k8s/lib/olares_deploy_common.sh` | Pod recycle after `set image`, rollout sequencing |
+| Manifest loader | `scripts/release/load-manifest-env.sh` | Drift env from `deploy/release/manifest.yaml` |
 | Path runner | `deploy/k8s/usvXX-verify/verify_usvXX_e2e.sh` | Path orchestration only |
 | Supplement | `deploy/k8s/usvXX-verify/verify_path_*_olares.sh` | Isolated path re-run after SEV-3 |
 | Local gate | `deploy/dev/verify_phaseX_local.ps1` | Pytest/vitest aggregation |
 | Orchestrator | `deploy/dev/verify_usvXX_olares.ps1` | SCP, deploy, E2E, evidence fetch |
 
-**Current state:** US-V07 implements the target pattern inline; US-V05/V06 duplicate partial helpers without flock/Temporal terminate. Consolidation is **documented**; library extraction is deferred to a future implementation sprint (no schema/workflow change authorized in Phase 6.5).
+**Current state (Phase 8):** `verify_common.sh` operational; US-V05–V08B E2E scripts source shared helpers. `make verify-all` covers Phases 3B–7.5. US-V09 is the full-platform re-attestation gate.
 
 ### 2.2 Logging contract
 
@@ -78,7 +80,7 @@ Poll loop **must** fail fast on `status=FAILED`. Default interval: 15s. Stage ti
 2. Call `POST /pipeline/approve` once per gate
 3. Re-poll until stage advances or timeout
 
-**Known product gap (debt TD-P6.5-01):** `POST /pipeline/approve` resolves **project-level** active run, not `episode_id`. Acceptable while one active run per project is enforced; verification must not start overlapping episode runs.
+**TD-P6.5-01 (Phase 8):** Optional `episode_id` on `POST /pipeline/approve` resolves via `active_for_episode()` when set. Project-scoped approve remains default for backward compatibility.
 
 **Retry on approve:** US-V03 pattern — up to 12 attempts with 5s backoff on 409/502.
 

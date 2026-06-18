@@ -1,0 +1,36 @@
+2026-06-18T04:00:21.3024094-07:00 US-V05 Phase 4 local verify start
+2026-06-18T04:00:21.3057917-07:00 ========== V05-01: API unit tests ==========
+2026-06-18T04:01:30.8501818-07:00 PASS api pytest
+2026-06-18T04:01:30.8531036-07:00 ========== V05-02: Worker unit tests ==========
+2026-06-18T04:01:42.1939930-07:00 PASS worker pytest
+2026-06-18T04:01:42.2008821-07:00 ========== V05-03: Web vitest ==========
+2026-06-18T04:02:05.9315505-07:00 PASS web vitest
+2026-06-18T04:02:05.9370444-07:00 ========== V05-04: Alembic contract (manifest-driven) ==========
+2026-06-18T04:02:06.9859895-07:00 WARN migration check skipped or failed:  Container aimpos-spark-postgresql-1 Running 
+2026-06-18T04:02:06.9910939-07:00 ========== V05-05: Pipeline start scene_count API (if stack up) ==========
+2026-06-18T04:02:07.0875172-07:00 WARN API not reachable - skip live pipeline probe
+2026-06-18T04:02:07.0915180-07:00 DONE FAIL=0
+2026-06-18T04:09:27.9137081-07:00 US-V05 Phase 4 local verify start
+2026-06-18T04:09:27.9464248-07:00 ========== V05-01: API unit tests ==========
+2026-06-18T04:10:38.4592113-07:00 PASS api pytest
+2026-06-18T04:10:38.5012353-07:00 ========== V05-02: Worker unit tests ==========
+2026-06-18T04:10:52.5406055-07:00 PASS worker pytest
+2026-06-18T04:10:52.5490360-07:00 ========== V05-03: Web vitest ==========
+2026-06-18T04:11:12.9703603-07:00 PASS web vitest
+2026-06-18T04:11:12.9803065-07:00 ========== V05-04: Alembic contract (manifest-driven) ==========
+2026-06-18T04:11:13.9512264-07:00 WARN migration check skipped or failed:  Container aimpos-spark-postgresql-1 Running 
+2026-06-18T04:11:13.9567765-07:00 ========== V05-05: Pipeline start scene_count API (if stack up) ==========
+2026-06-18T04:11:14.0504261-07:00 WARN API not reachable - skip live pipeline probe
+2026-06-18T04:11:14.0587237-07:00 DONE FAIL=0
+2026-06-18T08:35:25.6050747-07:00 US-V05 Phase 4 local verify start
+2026-06-18T08:35:25.6050747-07:00 ========== V05-01: API unit tests ==========
+2026-06-18T08:36:35.3208965-07:00 PASS api pytest
+2026-06-18T08:36:35.3524510-07:00 ========== V05-02: Worker unit tests ==========
+2026-06-18T08:36:48.4330388-07:00 PASS worker pytest
+2026-06-18T08:36:48.4330388-07:00 ========== V05-03: Web vitest ==========
+2026-06-18T08:36:59.0775949-07:00 PASS web vitest
+2026-06-18T08:36:59.0824528-07:00 ========== V05-04: Alembic contract (manifest-driven) ==========
+2026-06-18T08:37:11.9483050-07:00 PASS migration gate
+2026-06-18T08:37:11.9503096-07:00 ========== V05-05: Pipeline start scene_count API (if stack up) ==========
+2026-06-18T08:37:12.0035127-07:00 WARN API not reachable - skip live pipeline probe
+2026-06-18T08:37:12.0035127-07:00 DONE FAIL=0
