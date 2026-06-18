@@ -64,7 +64,7 @@ Source: `deploy/release/manifest.yaml`
 
 | Field | Value |
 |-------|-------|
-| Commit | *(populated after release cut)* |
+| Commit | `1eb6021` |
 | Tag | `v0.17.1-phase7-character-hardening` |
 | Remote | `origin/main` |
 
