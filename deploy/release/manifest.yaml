@@ -7,7 +7,7 @@ release:
   codename: phase6-episode
   date: "2026-06-17"
   baseline_tag: "v0.15.0-phase5-narration"
-  git_commit: "pending-cut"
+  git_commit: "4c9bf86"
 
 images:
   api:

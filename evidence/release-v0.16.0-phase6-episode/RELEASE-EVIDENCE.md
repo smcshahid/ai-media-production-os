@@ -59,9 +59,9 @@ Source: `deploy/release/manifest.yaml`
 
 | Field | Value |
 |-------|-------|
-| Commit | *(set at cut)* |
+| Commit | `4c9bf86` |
 | Tag | `v0.16.0-phase6-episode` |
-| Remote | `origin/main` |
+| Remote | `origin/main` (pushed) |
 
 | Artifact | Path |
 |----------|------|
