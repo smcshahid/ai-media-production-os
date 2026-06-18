@@ -1,14 +1,11 @@
-"""Fountain validation for US-14 (D-40)."""
+"""Fountain validation for US-14 (D-40 superseded by D-74 multi-scene pilot)."""
 
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass
 
-SCENE_HEADING_RE = re.compile(
-    r"^(?P<prefix>INT\.|EXT\.|INT/EXT\.|I/E\.)\s+(?P<location>.+?)(?:\s+-\s+(?P<time>.+))?$",
-    re.MULTILINE,
-)
+from aimpos_core.scene import MAX_SCENES, MIN_SCENES, SCENE_HEADING_RE
 
 CHARACTER_CUE_RE = re.compile(r"^[A-Z0-9][A-Z0-9 .'\-()]{0,30}$")
 
@@ -25,7 +22,7 @@ class FountainValidationResult:
 
 
 class FountainValidationError(ValueError):
-    """Raised when Fountain output fails D-40 validation."""
+    """Raised when Fountain output fails validation."""
 
 
 def _is_title_page_line(line: str) -> bool:
@@ -71,8 +68,10 @@ def count_dialogue_blocks(lines: list[str]) -> int:
     return count
 
 
-def validate_fountain(text: str) -> FountainValidationResult:
-    """Validate Fountain output per D-40."""
+def validate_fountain(
+    text: str, *, expected_scene_count: int | None = None
+) -> FountainValidationResult:
+    """Validate Fountain output (1–3 scenes for pilot; D-74)."""
     errors: list[str] = []
     stripped = (text or "").strip()
 
@@ -93,8 +92,14 @@ def validate_fountain(text: str) -> FountainValidationResult:
 
     if scene_heading_count == 0:
         errors.append("scene_heading_count == 0")
-    if scene_count != 1:
-        errors.append(f"scene_count != 1 (found {scene_count})")
+    if scene_count < MIN_SCENES or scene_count > MAX_SCENES:
+        errors.append(
+            f"scene_count out of range {MIN_SCENES}-{MAX_SCENES} (found {scene_count})"
+        )
+    elif expected_scene_count is not None and scene_count != expected_scene_count:
+        errors.append(
+            f"scene_count != {expected_scene_count} (found {scene_count})"
+        )
     if dialogue_count == 0:
         errors.append("dialogue_count == 0")
 
@@ -107,9 +112,11 @@ def validate_fountain(text: str) -> FountainValidationResult:
     )
 
 
-def require_valid_fountain(text: str) -> FountainValidationResult:
+def require_valid_fountain(
+    text: str, *, expected_scene_count: int | None = None
+) -> FountainValidationResult:
     """Validate and raise ``FountainValidationError`` on failure."""
-    result = validate_fountain(text)
+    result = validate_fountain(text, expected_scene_count=expected_scene_count)
     if not result.ok:
         raise FountainValidationError("; ".join(result.errors))
     return result

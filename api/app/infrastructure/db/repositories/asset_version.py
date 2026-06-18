@@ -6,6 +6,7 @@ import uuid
 from collections.abc import Sequence
 
 from aimpos_core.enums import AssetStage
+from aimpos_core.scene import scene_index_from_metadata
 from sqlalchemy import func, select
 
 from app.domain.assets.service import StoredAsset
@@ -88,6 +89,25 @@ class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
         )
         return int(result.scalar_one_or_none() or 0)
 
+    async def latest_for_run(
+        self,
+        project_id: uuid.UUID,
+        stage: AssetStage,
+        pipeline_run_id: uuid.UUID,
+    ) -> AssetVersion | None:
+        """Return latest asset version scoped to a pipeline run (Phase 6 episode export)."""
+        result = await self.session.execute(
+            select(AssetVersion)
+            .where(
+                AssetVersion.project_id == project_id,
+                AssetVersion.stage == stage,
+                AssetVersion.pipeline_run_id == pipeline_run_id,
+            )
+            .order_by(AssetVersion.version.desc())
+            .limit(1)
+        )
+        return result.scalar_one_or_none()
+
     async def get_at_version(
         self, project_id: uuid.UUID, stage: AssetStage, version: int
     ) -> AssetVersion | None:
@@ -116,6 +136,96 @@ class AssetVersionRepository(SQLAlchemyRepository[AssetVersion]):
         rows = list(result.scalars().all())
         rows.sort(key=lambda row: int((row.metadata_json or {}).get("frame_index", 0)))
         return rows
+
+    async def list_storyboard_batch_for_scene(
+        self, project_id: uuid.UUID, scene_index: int
+    ) -> Sequence[AssetVersion]:
+        """Return latest storyboard batch rows for a scene (Phase 4)."""
+        result = await self.session.execute(
+            select(AssetVersion).where(
+                AssetVersion.project_id == project_id,
+                AssetVersion.stage == AssetStage.STORYBOARD,
+            )
+        )
+        rows = [
+            row
+            for row in result.scalars().all()
+            if scene_index_from_metadata(row.metadata_json) == scene_index
+        ]
+        if not rows:
+            return []
+        max_version = max(row.version for row in rows)
+        batch = [row for row in rows if row.version == max_version]
+        batch.sort(key=lambda row: int((row.metadata_json or {}).get("frame_index", 0)))
+        return batch
+
+    async def latest_video_for_scene(
+        self,
+        project_id: uuid.UUID,
+        scene_index: int,
+        *,
+        pipeline_run_id: uuid.UUID | None = None,
+    ) -> AssetVersion | None:
+        result = await self.session.execute(
+            select(AssetVersion).where(
+                AssetVersion.project_id == project_id,
+                AssetVersion.stage == AssetStage.VIDEO,
+            )
+        )
+        rows = [
+            row
+            for row in result.scalars().all()
+            if scene_index_from_metadata(row.metadata_json) == scene_index
+        ]
+        if pipeline_run_id is not None:
+            scoped = [row for row in rows if row.pipeline_run_id == pipeline_run_id]
+            if scoped:
+                rows = scoped
+            else:
+                legacy = [row for row in rows if row.pipeline_run_id is None]
+                if legacy:
+                    rows = legacy
+        if not rows:
+            return None
+        max_version = max(row.version for row in rows)
+        for row in rows:
+            if row.version == max_version:
+                return row
+        return None
+
+    async def latest_narration_for_scene(
+        self,
+        project_id: uuid.UUID,
+        scene_index: int,
+        *,
+        pipeline_run_id: uuid.UUID | None = None,
+    ) -> AssetVersion | None:
+        result = await self.session.execute(
+            select(AssetVersion).where(
+                AssetVersion.project_id == project_id,
+                AssetVersion.stage == AssetStage.NARRATION,
+            )
+        )
+        rows = [
+            row
+            for row in result.scalars().all()
+            if scene_index_from_metadata(row.metadata_json) == scene_index
+        ]
+        if pipeline_run_id is not None:
+            scoped = [row for row in rows if row.pipeline_run_id == pipeline_run_id]
+            if scoped:
+                rows = scoped
+            else:
+                legacy = [row for row in rows if row.pipeline_run_id is None]
+                if legacy:
+                    rows = legacy
+        if not rows:
+            return None
+        max_version = max(row.version for row in rows)
+        for row in rows:
+            if row.version == max_version:
+                return row
+        return None
 
     async def list_history_for_project(
         self,

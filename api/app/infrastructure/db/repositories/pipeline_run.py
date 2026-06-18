@@ -35,6 +35,19 @@ class PipelineRunRepository(SQLAlchemyRepository[PipelineRun]):
         )
         return result.scalar_one_or_none()
 
+    async def active_for_episode(self, episode_id: uuid.UUID) -> PipelineRun | None:
+        """Return an in-flight run for ``episode_id``, if any."""
+        result = await self.session.execute(
+            select(PipelineRun)
+            .where(
+                PipelineRun.episode_id == episode_id,
+                PipelineRun.status.in_(_ACTIVE_STATUSES),
+            )
+            .order_by(PipelineRun.created_at.desc(), PipelineRun.id.desc())
+            .limit(1)
+        )
+        return result.scalar_one_or_none()
+
     async def list_for_project(self, project_id: uuid.UUID) -> Sequence[PipelineRun]:
         result = await self.session.execute(
             select(PipelineRun)
@@ -44,13 +57,31 @@ class PipelineRunRepository(SQLAlchemyRepository[PipelineRun]):
         return result.scalars().all()
 
     async def latest_for_project(self, project_id: uuid.UUID) -> PipelineRun | None:
-        """Return the most recent run for a project, or ``None`` (idle).
-
-        Used by ``GET /pipeline/status`` to render the dashboard stepper.
-        """
+        """Return the most recent legacy (non-episode) run, or latest overall."""
+        result = await self.session.execute(
+            select(PipelineRun)
+            .where(
+                PipelineRun.project_id == project_id,
+                PipelineRun.episode_id.is_(None),
+            )
+            .order_by(PipelineRun.created_at.desc(), PipelineRun.id.desc())
+            .limit(1)
+        )
+        legacy = result.scalar_one_or_none()
+        if legacy is not None:
+            return legacy
         result = await self.session.execute(
             select(PipelineRun)
             .where(PipelineRun.project_id == project_id)
+            .order_by(PipelineRun.created_at.desc(), PipelineRun.id.desc())
+            .limit(1)
+        )
+        return result.scalar_one_or_none()
+
+    async def latest_for_episode(self, episode_id: uuid.UUID) -> PipelineRun | None:
+        result = await self.session.execute(
+            select(PipelineRun)
+            .where(PipelineRun.episode_id == episode_id)
             .order_by(PipelineRun.created_at.desc(), PipelineRun.id.desc())
             .limit(1)
         )

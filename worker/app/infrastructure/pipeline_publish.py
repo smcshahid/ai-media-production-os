@@ -20,6 +20,8 @@ def publish_pipeline_status(
     status: str,
     current_stage: str | None,
     updated_at: datetime | None = None,
+    scene_index: int | None = None,
+    scene_count: int | None = None,
 ) -> None:
     """Non-fatal Redis pub/sub publish after DB sync."""
     try:
@@ -35,6 +37,10 @@ def publish_pipeline_status(
         }
         if updated_at is not None:
             payload["updated_at"] = updated_at.isoformat()
+        if scene_index is not None:
+            payload["current_scene_index"] = scene_index
+        if scene_count is not None:
+            payload["scene_count"] = scene_count
         client.publish(f"{_CHANNEL_PREFIX}{project_id}", json.dumps(payload))
         client.close()
     except Exception as exc:

@@ -21,7 +21,7 @@ RUN pip install ./worker
 
 USER root
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ffmpeg \
+    && apt-get install -y --no-install-recommends ffmpeg espeak-ng \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd --create-home --uid 10002 worker

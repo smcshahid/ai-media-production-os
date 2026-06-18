@@ -416,3 +416,93 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** US-V04 Flux + WAN production engine path is **folded into release history** at **`v0.13.0-phase3d`**. Attestation accepts **`source=comfyui_i2v`** (preferred) or **`source=slideshow`** with **`fallback_reason`** (D-61 fallback). Evidence package: **`evidence/us-v04-verification/phase3d-2026-06-17/US-V04-RELEASE-ATTESTATION.md`**. Verify scripts emit PASS/WARN accordingly — slideshow fallback is not a release blocker.
 **Rationale:** Phase 3A left i2v attestation pending on in-flight runs; Phase 3D closes release evidence loop without workflow changes.
 **Verification:** `deploy/dev/verify_usv04_local.ps1`; `deploy/k8s/phase3d-verify/verify_release.sh`.
+
+### D-74 — Phase 4 — Fountain multi-scene validation (supersedes D-40)
+**Date:** 2026-06-17
+**Decision:** Fountain validation **allows 1–3 scenes** per script (`MIN_SCENES=1`, `MAX_SCENES=3`). When `pipeline_runs.scene_count` is set at start, the Screenwriter **must** produce exactly that many scenes. Legacy single-scene runs remain valid (`scene_count=1` default). This **supersedes D-40** (`scene_count == 1` hard gate).
+**Rationale:** SCR-2026-002 Option A — bounded multi-scene pilot without unlimited scope.
+**Verification:** `worker/tests/unit/test_fountain_validate.py`; `packages/aimpos-core/tests/test_scene.py`.
+
+### D-75 — Phase 4 — Scene metadata convention on assets
+**Date:** 2026-06-17
+**Decision:** STORYBOARD and VIDEO `asset_versions.metadata_json` carry **`scene_index`** (1-based) and **`scene_count`**. Rows without `scene_index` are treated as scene 1 in read paths (history, export, review). STORYBOARD batches remain 4 frames per scene (D-45 unchanged per scene).
+**Rationale:** Extends D-43 `frame_index` pattern; avoids lineage/history architecture redesign.
+**Verification:** Alembic 0004; export resolver; asset history sort.
+
+### D-76 — Phase 4 — Per-scene storyboard/video approvals
+**Date:** 2026-06-17
+**Decision:** SCRIPT is approved once for all scenes. STORYBOARD and VIDEO require **one approval per scene** when `scene_count > 1`. `approvals.scene_index` records the scene (nullable for STORY/SCRIPT and legacy single-scene). Worker fetch/store functions filter by `scene_index`. This **extends D-46/D-49/D-48** without branch promotion.
+**Rationale:** Human review gate per visual scene; mirrors batch-scope approval model.
+**Verification:** Workflow scene loop; `api/tests/unit/test_pipeline_approve.py`; US-V05 acceptance.
+
+### D-77 — Phase 4 — Pipeline status scene fields
+**Date:** 2026-06-17
+**Decision:** `pipeline_runs` adds **`scene_count`** (set at start, 1–3) and **`current_scene_index`** (set during scene loop). `GET /pipeline/status` and Redis push include these fields. Temporal signals remain stage-only; scene context comes from workflow/DB state.
+**Rationale:** Dashboard/review UX needs scene progress without signal API breakage.
+**Verification:** `api/app/domain/pipeline/status_read.py`; web dashboard/review.
+
+### D-78 — Phase 4 — Export manifest v2 for multi-scene
+**Date:** 2026-06-17
+**Decision:** Export ZIP uses **`manifest_version=2`** and `scenes/scene_XX/` layout when `scene_count > 1`. Single-scene runs keep **manifest v1** flat paths for backward compatibility. This **extends D-52/D-53**.
+**Rationale:** Portable delivery of multi-scene productions; v1 consumers unaffected for legacy runs.
+**Verification:** `api/tests/unit/test_export.py`; US-V05 multi-scene export checks.
+
+### D-79 — Phase 5 — Narration within VIDEO stage (SCR-2026-003)
+**Date:** 2026-06-17
+**Decision:** Narration is generated **inside the existing VIDEO activity** after silent MP4 production. No new pipeline stage or approval gate. TTS runs on **CPU** (espeak-ng default) after ComfyUI/i2v completes, preserving **D-08** GPU sequencing. **`NARRATION_ENABLED=false`** preserves legacy silent-video path.
+**Rationale:** Minimize workflow/API surface change; narration is a post-process on scene video.
+**Verification:** `worker/app/temporal/activities/video.py`; US-V06 PATH D.
+
+### D-80 — Phase 5 — NARRATION asset stage and metadata
+**Date:** 2026-06-17
+**Decision:** Narration WAV stored as **`AssetStage.NARRATION`** with `metadata_json.scene_index`, `tts_source`, `duration_sec`. Lineage: SCRIPT → NARRATION. VIDEO metadata adds `has_narration`, `narration_source`, optional `narration_asset_id`.
+**Rationale:** Separate audio artifact for manifest v3 while review plays muxed MP4.
+**Verification:** `worker/app/tools/assets.py`; `api/tests/unit/test_narration_export.py`.
+
+### D-81 — Phase 5 — Audio/video mux contract
+**Date:** 2026-06-17
+**Decision:** FFmpeg muxes narration WAV into scene MP4 (`-c:v copy -c:a aac -shortest`). On TTS/mux failure, **fallback to silent MP4** without failing the run.
+**Rationale:** Narration enhances output; silent fallback preserves pipeline reliability.
+**Verification:** `worker/app/agents/narration/mux.py`; `worker/tests/unit/test_narration_mux.py`.
+
+### D-82 — Phase 5 — Sovereign TTS providers
+**Date:** 2026-06-17
+**Decision:** Allowed TTS: **`espeak`** (default, local) and **`http`** (Olares-hosted speaches-compatible endpoint). **Cloud TTS forbidden.** Config via `NARRATION_TTS_PROVIDER`, `NARRATION_TTS_HOST`, `NARRATION_TTS_VOICE`.
+**Rationale:** Zero-egress sovereignty (D-63); Olares can use existing speaches service.
+**Verification:** `worker/app/agents/narration/tts.py`; `.env.example`.
+
+### D-83 — Phase 5 — Export manifest v3
+**Date:** 2026-06-17
+**Decision:** Export uses **`manifest_version=3`** when NARRATION assets or `has_narration` VIDEO metadata present. Adds `narration.wav` paths (flat v1 layout or `scenes/scene_XX/` v2 layout). **v1/v2 manifests unchanged** when narration disabled. Top-level `narration_enabled: true` on v3.
+**Rationale:** Backward-compatible version ladder; v3 consumers detect audio sidecars.
+**Verification:** `api/app/domain/export/manifest.py`; US-V06 export checks.
+
+### D-84 — Phase 6 — Episode entity (SCR-2026-004)
+**Date:** 2026-06-17
+**Decision:** Introduce **`episodes`** table with `project_id`, `episode_number` (unique per project), `title`, `status` (`DRAFT`/`IN_PROGRESS`/`COMPLETED`/`ARCHIVED`). Alembic **0005** additive only. Legacy projects operate without episodes (`episode_id IS NULL`).
+**Rationale:** Episode-oriented creator platform without breaking single-scene/multi-scene pilots.
+**Verification:** `api/alembic/versions/0005_episode_model_pilot.py`; US-V07 PATH C.
+
+### D-85 — Phase 6 — Episode-scoped pipeline runs
+**Date:** 2026-06-17
+**Decision:** `pipeline_runs.episode_id` nullable FK binds a run to an episode. `POST /pipeline/start` accepts optional `episode_id`; episode status → `IN_PROGRESS` at start, `COMPLETED` when run completes. One active run per project (including episode runs).
+**Rationale:** Project → Episode → Scene loop; multiple episodes sequential on one project.
+**Verification:** `api/app/routes/pipeline.py`; worker `sync_pipeline_status`.
+
+### D-86 — Phase 6 — Episode asset metadata
+**Date:** 2026-06-17
+**Decision:** Episode-scoped assets carry `metadata_json.episode_number`. Export resolves STORY/SCRIPT/STORYBOARD/VIDEO/NARRATION by **`pipeline_run_id`** when episode-scoped. History sort key prepends `episode_number`.
+**Rationale:** Traceability without redesigning asset versioning; mirrors `scene_index` pattern.
+**Verification:** `api/app/domain/export/resolver.py`; `api/app/domain/asset_history/resolver.py`.
+
+### D-87 — Phase 6 — Episode pipeline status UX
+**Date:** 2026-06-17
+**Decision:** `GET /pipeline/status?episode_id=` returns latest run for episode. Status read includes `episode_id`, `episode_number`, `episode_title`. Dashboard episode selector; audit `PIPELINE_STARTED` payload includes `episode_id`.
+**Rationale:** Simple pilot UX for 1 project → N episodes without studio suite.
+**Verification:** `web/src/routes/DashboardPage.tsx`; US-V07 PATH A–C.
+
+### D-88 — Phase 6 — Export manifest v4
+**Date:** 2026-06-17
+**Decision:** Export uses **`manifest_version=4`** when run has `episode_id`. ZIP layout: `episodes/episode_XX/` prefix (with `scenes/scene_XX/` for multi-scene). Shared `idea.txt` at ZIP root. Top-level `episode_id`, `episode_number`. **v1/v2/v3 unchanged** for legacy runs.
+**Rationale:** Backward-compatible version ladder; episode consumers detect v4 paths.
+**Verification:** `api/tests/unit/test_episode_export.py`; US-V07 PATH D.

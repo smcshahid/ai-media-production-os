@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { selectLatestAiDraftVideoAsset, videoSourceLabel } from "../lib/videoReview";
+import { selectLatestAiDraftVideoAsset, narrationStatusLabel, videoSourceLabel } from "../lib/videoReview";
 import type { AssetVersion } from "../api/types";
 
 function asset(partial: Partial<AssetVersion> & Pick<AssetVersion, "id" | "version" | "stage">): AssetVersion {
@@ -36,5 +36,23 @@ describe("videoReview", () => {
         asset({ id: "v2", stage: "VIDEO", version: 1, metadata_json: { source: "comfyui_i2v" } }),
       ),
     ).toBe("ComfyUI image-to-video");
+  });
+
+  it("labels narration status", () => {
+    expect(
+      narrationStatusLabel(
+        asset({
+          id: "v1",
+          stage: "VIDEO",
+          version: 1,
+          metadata_json: { has_narration: true, narration_source: "espeak" },
+        }),
+      ),
+    ).toBe("Narrated (local TTS)");
+    expect(
+      narrationStatusLabel(
+        asset({ id: "v2", stage: "VIDEO", version: 1, metadata_json: {} }),
+      ),
+    ).toBe("Silent");
   });
 });

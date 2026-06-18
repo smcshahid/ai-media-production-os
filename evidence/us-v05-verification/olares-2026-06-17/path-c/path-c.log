@@ -1,0 +1,28 @@
+2026-06-17T18:40:08+00:00 PATH C regression API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+2026-06-17T18:40:08+00:00 legacy_run=e5da4992-226c-4969-b95d-e7a2c6415b30
+2026-06-17T18:40:08+00:00 export http=200 -> /tmp/usv05-evidence-pathc/legacy-export.zip
+2026-06-17T18:40:08+00:00 legacy manifest: "manifest_version": "1"
+2026-06-17T18:40:08+00:00 history http=200 -> /tmp/usv05-evidence-pathc/history.json
+2026-06-17T18:40:08+00:00 history-run http=200 -> /tmp/usv05-evidence-pathc/history-run.json
+2026-06-17T18:40:08+00:00 audit http=200 -> /tmp/usv05-evidence-pathc/audit.json
+2026-06-17T18:40:08+00:00 audit-run http=200 -> /tmp/usv05-evidence-pathc/audit-run.json
+2026-06-17T18:40:08+00:00 lineage http=404 -> /tmp/usv05-evidence-pathc/lineage.json
+2026-06-17T18:40:08+00:00 runs http=200 -> /tmp/usv05-evidence-pathc/runs.json
+2026-06-17T18:40:08+00:00 status http=200 -> /tmp/usv05-evidence-pathc/status.json
+2026-06-17T18:40:08+00:00 scene_count start probe http=201 (409=active run, 201=ok, 422=old API schema)
+2026-06-17T18:40:08+00:00 DONE PATH C FAIL=1
+2026-06-17T18:41:51+00:00 PATH C regression API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+2026-06-17T18:41:51+00:00 FAIL no legacy COMPLETED run found
+2026-06-17T18:42:05+00:00 PATH C regression API=http://10.233.21.231:8000 PROJECT=ba0c4636-817c-423b-9771-20100e080b76
+2026-06-17T18:42:05+00:00 legacy_run=e5da4992-226c-4969-b95d-e7a2c6415b30
+2026-06-17T18:42:05+00:00 export http=200 -> /tmp/usv05-evidence-pathc/legacy-export.zip
+2026-06-17T18:42:05+00:00 legacy manifest: "manifest_version": "1"
+2026-06-17T18:42:05+00:00 history http=200 -> /tmp/usv05-evidence-pathc/history.json
+2026-06-17T18:42:05+00:00 history-run http=200 -> /tmp/usv05-evidence-pathc/history-run.json
+2026-06-17T18:42:05+00:00 audit http=200 -> /tmp/usv05-evidence-pathc/audit.json
+2026-06-17T18:42:05+00:00 audit-run http=200 -> /tmp/usv05-evidence-pathc/audit-run.json
+2026-06-17T18:42:05+00:00 lineage http=200 -> /tmp/usv05-evidence-pathc/lineage.json
+2026-06-17T18:42:05+00:00 runs http=200 -> /tmp/usv05-evidence-pathc/runs.json
+2026-06-17T18:42:05+00:00 status http=200 -> /tmp/usv05-evidence-pathc/status.json
+2026-06-17T18:42:05+00:00 scene_count start probe http=409 (409=active run, 201=ok, 422=old API schema)
+2026-06-17T18:42:05+00:00 DONE PATH C FAIL=0

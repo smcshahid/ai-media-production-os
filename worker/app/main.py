@@ -16,6 +16,7 @@ from app.temporal.activities.story import run_story_agent
 from app.temporal.activities.storyboard import run_storyboard_agent
 from app.temporal.activities.video import run_video_agent
 from app.temporal.activities.stub import run_stub_stage
+from app.tools.pipeline_run import fetch_run_scene_count
 from app.temporal.workflows.spark_pipeline import SparkPipelineWorkflow
 
 configure_logging()
@@ -39,6 +40,7 @@ async def run_worker() -> None:
             run_storyboard_agent,
             run_video_agent,
             sync_pipeline_status,
+            fetch_run_scene_count,
         ],
     )
     logger.info(
@@ -55,6 +57,7 @@ async def run_worker() -> None:
                 "run_storyboard_agent",
                 "run_video_agent",
                 "sync_pipeline_status",
+                "fetch_run_scene_count",
             ],
         },
     )

@@ -9,7 +9,7 @@ import zipfile
 from datetime import UTC, datetime
 
 from app.domain.assets.content import compute_content_hash
-from app.domain.export.manifest import build_manifest_v1
+from app.domain.export.manifest import build_manifest
 from app.domain.export.types import ExportBundleResult, ExportFileEntry
 from app.infrastructure.storage.minio_client import MinioClient
 
@@ -20,6 +20,9 @@ async def build_export_zip(
     project_id: uuid.UUID,
     entries: list[ExportFileEntry],
     minio: MinioClient,
+    scene_count: int | None = None,
+    episode_id: uuid.UUID | None = None,
+    episode_number: int | None = None,
 ) -> ExportBundleResult:
     """Load MinIO bytes, build manifest, assemble deterministic ZIP."""
     exported_at = datetime.now(tz=UTC)
@@ -30,11 +33,14 @@ async def build_export_zip(
             raise ValueError(f"hash mismatch for {entry.zip_path}")
         loaded.append((entry, data))
 
-    manifest = build_manifest_v1(
+    manifest = build_manifest(
         pipeline_run_id=pipeline_run_id,
         project_id=project_id,
         exported_at=exported_at,
         file_entries=loaded,
+        scene_count=scene_count,
+        episode_id=episode_id,
+        episode_number=episode_number,
     )
     manifest_bytes = json.dumps(manifest, indent=2, sort_keys=True).encode("utf-8")
     manifest_hash = compute_content_hash(manifest_bytes)

@@ -1,0 +1,127 @@
+2026-06-17T19:08:41+00:00 US-V05 E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-17T19:08:41+00:00 ========== PATH A: 2-scene run ==========
+2026-06-17T19:08:41+00:00 Cancelling non-terminal active runs for project
+2026-06-17T19:08:42+00:00 start http=201 run_id=99e70e94-89f0-4cf9-b5e5-719108862d1b
+2026-06-17T19:08:42+00:00   poll status=RUNNING stage=STORY scene=null
+2026-06-17T19:08:57+00:00   poll status=RUNNING stage=STORY scene=null
+2026-06-17T19:09:12+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null
+2026-06-17T19:09:12+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null
+2026-06-17T19:09:22+00:00   poll status=RUNNING stage=SCRIPT scene=null
+2026-06-17T19:09:37+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null
+2026-06-17T19:09:37+00:00 --- Scene 1 / 2 STORYBOARD ---
+2026-06-17T19:09:37+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null
+2026-06-17T19:09:47+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:10:02+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:10:17+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:10:32+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:10:47+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:11:02+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:11:17+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:11:32+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:11:47+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:12:02+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:12:17+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1
+2026-06-17T19:12:17+00:00 storyboard frames for scene 1: 24
+2026-06-17T19:12:17+00:00 --- Scene 1 / 2 VIDEO ---
+2026-06-17T19:12:17+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1
+2026-06-17T19:12:27+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1
+2026-06-17T19:12:27+00:00 --- Scene 2 / 2 STORYBOARD ---
+2026-06-17T19:12:27+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1
+2026-06-17T19:12:37+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:12:52+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:13:07+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:13:22+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:13:37+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:13:52+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:14:07+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:14:22+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:14:37+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:14:52+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2
+2026-06-17T19:14:52+00:00 storyboard frames for scene 2: 4
+2026-06-17T19:14:52+00:00 --- Scene 2 / 2 VIDEO ---
+2026-06-17T19:14:52+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2
+2026-06-17T19:15:02+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2
+2026-06-17T19:15:02+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2
+2026-06-17T19:15:17+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:15:27+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:15:37+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:15:48+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:15:58+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:16:08+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:16:18+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:16:28+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:16:38+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:16:48+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:16:58+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:17:08+00:00 FAIL poll timeout want=COMPLETED/null scene=
+2026-06-17T19:17:08+00:00 ========== PATH B: 3-scene run ==========
+2026-06-17T19:17:08+00:00 Cancelling non-terminal active runs for project
+2026-06-17T19:17:08+00:00 start http=201 run_id=f8d89b35-f333-474c-a012-d3ab1d5864b3
+2026-06-17T19:17:08+00:00   poll status=RUNNING stage=STORY scene=null
+2026-06-17T19:17:23+00:00   poll status=RUNNING stage=STORY scene=null
+2026-06-17T19:17:38+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null
+2026-06-17T19:17:38+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null
+2026-06-17T19:17:48+00:00   poll status=RUNNING stage=SCRIPT scene=null
+2026-06-17T19:18:03+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null
+2026-06-17T19:18:03+00:00 --- Scene 1 / 3 STORYBOARD ---
+2026-06-17T19:18:03+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null
+2026-06-17T19:18:13+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:18:28+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:18:43+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:18:58+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:19:13+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:19:28+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:19:43+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:19:58+00:00   poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-17T19:20:13+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1
+2026-06-17T19:20:13+00:00 storyboard frames for scene 1: 28
+2026-06-17T19:20:13+00:00 --- Scene 1 / 3 VIDEO ---
+2026-06-17T19:20:13+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1
+2026-06-17T19:20:23+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1
+2026-06-17T19:20:23+00:00 --- Scene 2 / 3 STORYBOARD ---
+2026-06-17T19:20:23+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1
+2026-06-17T19:20:33+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:20:48+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:21:03+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:21:18+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:21:33+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:21:48+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:22:03+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:22:18+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:22:33+00:00   poll status=RUNNING stage=STORYBOARD scene=2
+2026-06-17T19:22:48+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2
+2026-06-17T19:22:49+00:00 storyboard frames for scene 2: 8
+2026-06-17T19:22:49+00:00 --- Scene 2 / 3 VIDEO ---
+2026-06-17T19:22:49+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2
+2026-06-17T19:22:59+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2
+2026-06-17T19:22:59+00:00 --- Scene 3 / 3 STORYBOARD ---
+2026-06-17T19:22:59+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2
+2026-06-17T19:23:09+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:23:24+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:23:39+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:23:54+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:24:09+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:24:24+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:24:39+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:24:54+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:25:09+00:00   poll status=RUNNING stage=STORYBOARD scene=3
+2026-06-17T19:25:24+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3
+2026-06-17T19:25:24+00:00 storyboard frames for scene 3: 4
+2026-06-17T19:25:24+00:00 --- Scene 3 / 3 VIDEO ---
+2026-06-17T19:25:24+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3
+2026-06-17T19:25:34+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3
+2026-06-17T19:25:34+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3
+2026-06-17T19:25:49+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:25:59+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:26:09+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:26:19+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:26:29+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:26:39+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:26:49+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:26:59+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:27:09+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:27:19+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:27:29+00:00   poll status=COMPLETED stage=null scene=null
+2026-06-17T19:27:39+00:00 FAIL poll timeout want=COMPLETED/null scene=
+/tmp/verify_usv05_e2e.sh: line 164: syntax error near unexpected token `||'
+/tmp/verify_usv05_e2e.sh: line 164: `|| FAIL=1'

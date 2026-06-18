@@ -1,4 +1,4 @@
-"""VIDEO stage slideshow / i2v activity (US-18)."""
+"""VIDEO stage slideshow / i2v activity (US-18 / Phase 4)."""
 
 from __future__ import annotations
 
@@ -8,6 +8,8 @@ from aimpos_config import get_settings
 from aimpos_core.events import AuditEventType
 from temporalio import activity
 
+from app.agents.narration.constants import SOURCE_NONE
+from app.agents.narration.pipeline import NarrationResult, apply_scene_narration
 from app.agents.video.constants import (
     AGENT_ID,
     SOURCE_COMFYUI_I2V,
@@ -30,35 +32,48 @@ from app.tools.assets import (
     store_video_asset,
 )
 from app.tools.audit import append_audit_event
+from app.tools.pipeline_run import _read_run_scene_count
 from app.tools.video_i2v import VideoI2VError, try_comfyui_i2v
 
 
 @activity.defn(name="run_video_agent")
 async def run_video_agent(
-    project_id: str, run_id: str, rejection_note: str = ""
+    project_id: str,
+    run_id: str,
+    rejection_note: str = "",
+    scene_index: int = 1,
 ) -> str:
-    """Generate one MP4 from approved storyboard batch (D-48 / D-49)."""
+    """Generate one MP4 from approved storyboard batch for a scene (D-48 / D-76)."""
     settings = get_settings()
     project_uuid = uuid.UUID(project_id)
     run_uuid = uuid.UUID(run_id)
+    scene_count = _read_run_scene_count(settings, pipeline_run_id=run_uuid)
 
     append_audit_event(
         settings,
         project_id=project_uuid,
         pipeline_run_id=run_uuid,
         event_type=AuditEventType.STAGE_STARTED,
-        payload={"stage": "VIDEO", "agent": AGENT_ID},
+        payload={
+            "stage": "VIDEO",
+            "agent": AGENT_ID,
+            "scene_index": scene_index,
+            "scene_count": scene_count,
+        },
     )
 
     try:
         batch = fetch_approved_storyboard_batch(
-            settings, project_id=project_uuid, pipeline_run_id=run_uuid
+            settings,
+            project_id=project_uuid,
+            pipeline_run_id=run_uuid,
+            scene_index=scene_index,
         )
         png_frames = [frame.png_bytes for frame in batch.frames]
         frame_ids = [frame.asset_version_id for frame in batch.frames]
 
         db_rationale = fetch_latest_video_rejection_rationale(
-            settings, pipeline_run_id=run_uuid
+            settings, pipeline_run_id=run_uuid, scene_index=scene_index
         )
         effective_note = (rejection_note or "").strip() or (db_rationale or "")
 
@@ -69,7 +84,6 @@ async def run_video_agent(
 
         try:
             if getattr(settings, "video_i2v_enabled", False):
-                # WAN 2.2 is VRAM-heavy; free the GPU from Ollama first (D-08).
                 unload_ollama_before_comfyui(settings)
             candidate = try_comfyui_i2v(settings, png_frames)
             probe = validate_video_mp4(candidate)
@@ -78,7 +92,12 @@ async def run_video_agent(
         except (VideoI2VError, VideoValidationError, GpuSequencerError) as exc:
             activity.logger.warning(
                 "video_i2v_failed",
-                extra={"project_id": project_id, "run_id": run_id, "error": str(exc)},
+                extra={
+                    "project_id": project_id,
+                    "run_id": run_id,
+                    "scene_index": scene_index,
+                    "error": str(exc),
+                },
             )
             fallback_from = SOURCE_COMFYUI_I2V
             fallback_reason = str(exc)[:500]
@@ -98,13 +117,53 @@ async def run_video_agent(
                 else 24
             ),
             "file_size_bytes": len(mp4_bytes),
-            "logical_filename": "scene_video.mp4",
+            "logical_filename": f"scene_{scene_index:02d}_video.mp4",
         }
         if effective_note:
             metadata["rejection_note_used"] = effective_note[:500]
         if fallback_from:
             metadata["fallback_from"] = fallback_from
             metadata["fallback_reason"] = fallback_reason
+
+        silent_mp4_bytes = mp4_bytes
+        narration = apply_scene_narration(
+            settings,
+            project_id=project_uuid,
+            pipeline_run_id=run_uuid,
+            scene_index=scene_index,
+            scene_count=scene_count,
+            silent_mp4_bytes=silent_mp4_bytes,
+        )
+        mp4_bytes = narration.mp4_bytes
+        if narration.narration_applied:
+            try:
+                probe = validate_video_mp4(mp4_bytes)
+                metadata["duration_sec"] = round(probe.duration_sec, 3)
+            except VideoValidationError:
+                activity.logger.warning(
+                    "narration_mux_validation_failed",
+                    extra={
+                        "project_id": project_id,
+                        "run_id": run_id,
+                        "scene_index": scene_index,
+                    },
+                )
+                mp4_bytes = silent_mp4_bytes
+                narration = NarrationResult(
+                    mp4_bytes=silent_mp4_bytes,
+                    narration_applied=False,
+                    narration_source=SOURCE_NONE,
+                    narration_text="",
+                    narration_duration_sec=None,
+                    narration_asset_id=None,
+                )
+        metadata["file_size_bytes"] = len(mp4_bytes)
+        metadata["has_narration"] = narration.narration_applied
+        metadata["narration_source"] = narration.narration_source
+        if narration.narration_duration_sec is not None:
+            metadata["narration_duration_sec"] = narration.narration_duration_sec
+        if narration.narration_asset_id:
+            metadata["narration_asset_id"] = narration.narration_asset_id
 
         stored = store_video_asset(
             settings,
@@ -114,6 +173,8 @@ async def run_video_agent(
             frame_parent_ids=frame_ids,
             metadata=metadata,
             branch=VIDEO_BRANCH,
+            scene_index=scene_index,
+            scene_count=scene_count,
         )
     except (
         ApprovedStoryboardNotFoundError,
@@ -123,10 +184,10 @@ async def run_video_agent(
         VideoValidationError,
         RuntimeError,
     ) as exc:
-        await _mark_video_failed(project_uuid, run_uuid, exc)
+        await _mark_video_failed(project_uuid, run_uuid, exc, scene_index)
         raise
     except Exception as exc:
-        await _mark_video_failed(project_uuid, run_uuid, exc)
+        await _mark_video_failed(project_uuid, run_uuid, exc, scene_index)
         raise
 
     append_audit_event(
@@ -141,6 +202,10 @@ async def run_video_agent(
             "version": stored.version,
             "duration_sec": metadata["duration_sec"],
             "rejection_note": effective_note or None,
+            "scene_index": scene_index,
+            "scene_count": scene_count,
+            "has_narration": narration.narration_applied,
+            "narration_source": narration.narration_source,
         },
     )
     append_audit_event(
@@ -154,6 +219,8 @@ async def run_video_agent(
             "content_hash": stored.content_hash,
             "version": stored.version,
             "source": source,
+            "scene_index": scene_index,
+            "has_narration": narration.narration_applied,
         },
     )
 
@@ -162,6 +229,7 @@ async def run_video_agent(
         extra={
             "project_id": project_id,
             "run_id": run_id,
+            "scene_index": scene_index,
             "asset_version_id": str(stored.asset_version_id),
             "source": source,
             "video_method": source,
@@ -171,7 +239,10 @@ async def run_video_agent(
 
 
 async def _mark_video_failed(
-    project_id: uuid.UUID, run_id: uuid.UUID, exc: Exception
+    project_id: uuid.UUID,
+    run_id: uuid.UUID,
+    exc: Exception,
+    scene_index: int,
 ) -> None:
     settings = get_settings()
     append_audit_event(
@@ -179,6 +250,11 @@ async def _mark_video_failed(
         project_id=project_id,
         pipeline_run_id=run_id,
         event_type=AuditEventType.PIPELINE_FAILED,
-        payload={"stage": "VIDEO", "error": str(exc), "agent": AGENT_ID},
+        payload={
+            "stage": "VIDEO",
+            "error": str(exc),
+            "agent": AGENT_ID,
+            "scene_index": scene_index,
+        },
     )
-    await sync_pipeline_status(str(run_id), "FAILED", "VIDEO")
+    await sync_pipeline_status(str(run_id), "FAILED", "VIDEO", scene_index)

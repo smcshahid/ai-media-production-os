@@ -21,7 +21,10 @@ interface UsePipelineStatusResult {
  * Pipeline status from REST (authoritative) with optional WebSocket push (US-21 D-59).
  * Polling fallback always active — faster when not live.
  */
-export function usePipelineStatus(projectId: string | null): UsePipelineStatusResult {
+export function usePipelineStatus(
+  projectId: string | null,
+  episodeId?: string | null,
+): UsePipelineStatusResult {
   const [status, setStatus] = useState<PipelineStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(projectId !== null);
@@ -52,7 +55,7 @@ export function usePipelineStatus(projectId: string | null): UsePipelineStatusRe
 
     async function poll() {
       try {
-        const next = await getPipelineStatus(projectId as string);
+        const next = await getPipelineStatus(projectId as string, episodeId ?? undefined);
         if (active) {
           setStatus(next);
           setError(null);
@@ -95,7 +98,7 @@ export function usePipelineStatus(projectId: string | null): UsePipelineStatusRe
         window.clearTimeout(timer);
       }
     };
-  }, [projectId, refreshToken, connectionMode]);
+  }, [projectId, episodeId, refreshToken, connectionMode]);
 
   useEffect(() => {
     if (!projectId) {

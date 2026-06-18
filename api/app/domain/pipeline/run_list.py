@@ -5,12 +5,16 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
+from collections.abc import Sequence
+
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.db.models.asset_version import AssetVersion
+from app.infrastructure.db.models.episode import Episode
 from app.infrastructure.db.models.pipeline_run import PipelineRun
+from app.infrastructure.db.repositories.episode import EpisodeRepository
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
 from app.infrastructure.db.repositories.project import ProjectRepository
 
@@ -20,8 +24,12 @@ class PipelineRunSummary(BaseModel):
 
     run_id: uuid.UUID
     project_id: uuid.UUID
+    episode_id: uuid.UUID | None = None
+    episode_number: int | None = None
     status: str
     current_stage: str | None
+    current_scene_index: int | None = None
+    scene_count: int | None = None
     temporal_workflow_id: str | None
     asset_count: int
     created_at: datetime
@@ -47,13 +55,22 @@ async def get_pipeline_run_list(
 
     runs = await PipelineRunRepository(session).list_for_project(project_id)
     asset_counts = await _asset_counts_by_run(session, project_id)
+    episode_map = await _episode_map_for_runs(session, runs)
 
     summaries = [
         PipelineRunSummary(
             run_id=run.id,
             project_id=run.project_id,
+            episode_id=run.episode_id,
+            episode_number=(
+                episode_map[run.episode_id].episode_number
+                if run.episode_id in episode_map
+                else None
+            ),
             status=run.status.value,
             current_stage=run.current_stage.value if run.current_stage else None,
+            current_scene_index=run.current_scene_index,
+            scene_count=run.scene_count,
             temporal_workflow_id=run.temporal_workflow_id,
             asset_count=asset_counts.get(run.id, 0),
             created_at=run.created_at,
@@ -76,3 +93,18 @@ async def _asset_counts_by_run(
         .group_by(AssetVersion.pipeline_run_id)
     )
     return {row[0]: int(row[1]) for row in result.all() if row[0] is not None}
+
+
+async def _episode_map_for_runs(
+    session: AsyncSession, runs: Sequence[PipelineRun]
+) -> dict[uuid.UUID, Episode]:
+    episode_ids = {run.episode_id for run in runs if run.episode_id is not None}
+    if not episode_ids:
+        return {}
+    repo = EpisodeRepository(session)
+    mapping: dict[uuid.UUID, Episode] = {}
+    for episode_id in episode_ids:
+        episode = await repo.get(episode_id)
+        if episode is not None:
+            mapping[episode_id] = episode
+    return mapping

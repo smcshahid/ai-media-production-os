@@ -61,6 +61,7 @@ export function PipelineRunHistory({ projectId, activeRunId }: PipelineRunHistor
           <thead>
             <tr>
               <th scope="col">Run</th>
+              <th scope="col">Episode</th>
               <th scope="col">Status</th>
               <th scope="col">Stage</th>
               <th scope="col">Assets</th>
@@ -78,6 +79,7 @@ export function PipelineRunHistory({ projectId, activeRunId }: PipelineRunHistor
                     <code className="table__hash">{run.run_id.slice(0, 8)}…</code>
                     {isActive && <span className="badge badge--review">current</span>}
                   </td>
+                  <td>{run.episode_number != null ? `Ep ${run.episode_number}` : "—"}</td>
                   <td>{run.status}</td>
                   <td>{run.current_stage ?? "—"}</td>
                   <td>{run.asset_count}</td>

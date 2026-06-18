@@ -16,15 +16,22 @@ _STAGE_ORDER: tuple[AssetStage, ...] = (
     AssetStage.SCRIPT,
     AssetStage.STORYBOARD,
     AssetStage.VIDEO,
+    AssetStage.NARRATION,
 )
 
 
-def _version_sort_key(row: AssetVersion) -> tuple[int, int | float]:
+def _version_sort_key(row: AssetVersion) -> tuple[int, int, int, int | float]:
+    episode_num = int((row.metadata_json or {}).get("episode_number", 0) or 0)
+    scene_idx = int((row.metadata_json or {}).get("scene_index", 1) or 1)
     if row.stage == AssetStage.STORYBOARD:
         frame_index = int((row.metadata_json or {}).get("frame_index", 0))
-        return (-row.version, frame_index)
+        return (-row.version, episode_num, scene_idx, frame_index)
+    if row.stage == AssetStage.VIDEO:
+        return (-row.version, episode_num, scene_idx, 0)
+    if row.stage == AssetStage.NARRATION:
+        return (-row.version, episode_num, scene_idx, 1)
     created_ts = row.created_at.timestamp() if row.created_at else 0.0
-    return (-row.version, -created_ts)
+    return (-row.version, episode_num, 0, -created_ts)
 
 
 def _row_to_version(row: AssetVersion) -> AssetHistoryVersion:

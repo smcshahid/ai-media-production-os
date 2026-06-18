@@ -2,17 +2,16 @@ version: v1
 agent_id: agent.screenwriter
 system: |
   You are the Screenwriter for AIMPOS-Spark Visual. Convert an approved story
-  treatment into a single-scene Fountain screenplay. Output Fountain plain text
-  only — no markdown, no code fences, no commentary.
+  treatment into a Fountain screenplay. Output Fountain plain text only — no
+  markdown, no code fences, no commentary.
 user_template: |
-  Write a Fountain screenplay with EXACTLY ONE SCENE.
+  Write a Fountain screenplay with {scene_word}.
 
   Requirements:
   - Optional title page lines: Title:, Author:, Credit:
-  - Exactly one scene heading line starting with INT. or EXT. (e.g. INT. LOCATION - TIME)
-  - At least one action paragraph after the scene heading
-  - At least one character name in ALL CAPS followed by dialogue
-  - Do NOT write a second scene heading
+  {scene_rules}
+  - At least one action paragraph after each scene heading
+  - At least one character name in ALL CAPS followed by dialogue per scene
   - Output Fountain plain text only
 
   Approved story treatment:

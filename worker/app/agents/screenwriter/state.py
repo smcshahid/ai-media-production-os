@@ -8,6 +8,7 @@ from typing import TypedDict
 class ScreenwriterState(TypedDict, total=False):
     story_text: str
     rejection_note: str | None
+    scene_count: int
     script_fountain: str
     model_id: str | None
     prompt_version: str | None

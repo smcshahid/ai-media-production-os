@@ -1,4 +1,4 @@
-"""STORYBOARD stage Cinematography + ComfyUI activity (US-16)."""
+"""STORYBOARD stage Cinematography + ComfyUI activity (US-16 / Phase 4)."""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ import uuid
 
 from aimpos_config import get_settings
 from aimpos_core.events import AuditEventType
+from aimpos_core.scene import extract_fountain_scene
 from temporalio import activity
 
 from app.agents.cinematography.constants import (
@@ -27,50 +28,62 @@ from app.tools.assets import (
     StoryboardBatchStoreError,
     StoryboardFrameInput,
     fetch_approved_script,
-    fetch_latest_idea,
     fetch_latest_storyboard_rejection_rationale,
     store_storyboard_batch,
 )
 from app.tools.audit import append_audit_event
 from app.tools.comfyui import ComfyUIError, generate_storyboard_png
+from app.tools.pipeline_run import _read_run_scene_count
 
 
 @activity.defn(name="run_storyboard_agent")
 async def run_storyboard_agent(
-    project_id: str, run_id: str, rejection_note: str = ""
+    project_id: str,
+    run_id: str,
+    rejection_note: str = "",
+    scene_index: int = 1,
 ) -> str:
-    """Generate 4 storyboard PNG frames from approved script (D-41 / D-45)."""
+    """Generate 4 storyboard PNG frames for one scene from approved script (D-76)."""
     settings = get_settings()
     project_uuid = uuid.UUID(project_id)
     run_uuid = uuid.UUID(run_id)
+    scene_count = _read_run_scene_count(settings, pipeline_run_id=run_uuid)
 
     append_audit_event(
         settings,
         project_id=project_uuid,
         pipeline_run_id=run_uuid,
         event_type=AuditEventType.STAGE_STARTED,
-        payload={"stage": "STORYBOARD", "agent": AGENT_ID},
+        payload={
+            "stage": "STORYBOARD",
+            "agent": AGENT_ID,
+            "scene_index": scene_index,
+            "scene_count": scene_count,
+        },
     )
 
     try:
         script = fetch_approved_script(
             settings, project_id=project_uuid, pipeline_run_id=run_uuid
         )
+        scene_script = extract_fountain_scene(script.script_fountain, scene_index)
         style_note = None
         try:
+            from app.tools.assets import fetch_latest_idea
+
             idea = fetch_latest_idea(settings, project_uuid)
             style_note = idea.style_note
         except Exception:
             style_note = None
 
         db_rationale = fetch_latest_storyboard_rejection_rationale(
-            settings, pipeline_run_id=run_uuid
+            settings, pipeline_run_id=run_uuid, scene_index=scene_index
         )
         effective_note = (rejection_note or "").strip() or (db_rationale or "")
 
         graph_result = run_cinematography_graph(
             settings,
-            script_fountain=script.script_fountain,
+            script_fountain=scene_script,
             style_note=style_note,
             rejection_note=effective_note or None,
         )
@@ -111,6 +124,8 @@ async def run_storyboard_agent(
             frames=frame_inputs,
             branch=STORYBOARD_BRANCH,
             workflow_name=WORKFLOW_NAME,
+            scene_index=scene_index,
+            scene_count=scene_count,
         )
     except (
         ApprovedScriptNotFoundError,
@@ -119,10 +134,10 @@ async def run_storyboard_agent(
         ComfyUIError,
         RuntimeError,
     ) as exc:
-        await _mark_storyboard_failed(project_uuid, run_uuid, exc)
+        await _mark_storyboard_failed(project_uuid, run_uuid, exc, scene_index)
         raise
     except Exception as exc:
-        await _mark_storyboard_failed(project_uuid, run_uuid, exc)
+        await _mark_storyboard_failed(project_uuid, run_uuid, exc, scene_index)
         raise
 
     model_id = graph_result.get("model_id")
@@ -142,6 +157,8 @@ async def run_storyboard_agent(
             "duration_ms": duration_ms,
             "prompt_version": PROMPT_VERSION,
             "branch": STORYBOARD_BRANCH,
+            "scene_index": scene_index,
+            "scene_count": scene_count,
         },
     )
     for frame in stored_frames:
@@ -157,6 +174,7 @@ async def run_storyboard_agent(
                 "content_hash": frame.content_hash,
                 "version": frame.version,
                 "frame_index": frame.frame_index,
+                "scene_index": scene_index,
             },
         )
 
@@ -165,6 +183,7 @@ async def run_storyboard_agent(
         extra={
             "project_id": project_id,
             "run_id": run_id,
+            "scene_index": scene_index,
             "frame_count": len(stored_frames),
             "frame_asset_version_ids": frame_ids,
             "model_id": model_id,
@@ -174,7 +193,10 @@ async def run_storyboard_agent(
 
 
 async def _mark_storyboard_failed(
-    project_id: uuid.UUID, run_id: uuid.UUID, exc: Exception
+    project_id: uuid.UUID,
+    run_id: uuid.UUID,
+    exc: Exception,
+    scene_index: int,
 ) -> None:
     settings = get_settings()
     append_audit_event(
@@ -182,6 +204,11 @@ async def _mark_storyboard_failed(
         project_id=project_id,
         pipeline_run_id=run_id,
         event_type=AuditEventType.PIPELINE_FAILED,
-        payload={"stage": "STORYBOARD", "error": str(exc), "agent": AGENT_ID},
+        payload={
+            "stage": "STORYBOARD",
+            "error": str(exc),
+            "agent": AGENT_ID,
+            "scene_index": scene_index,
+        },
     )
-    await sync_pipeline_status(str(run_id), "FAILED", "STORYBOARD")
+    await sync_pipeline_status(str(run_id), "FAILED", "STORYBOARD", scene_index)

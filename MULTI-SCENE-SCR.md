@@ -2,7 +2,7 @@
 
 **SCR ID:** SCR-2026-002 (proposed)  
 **Date:** 2026-06-17  
-**Status:** **DRAFT — For governance review**  
+**Status:** **ACCEPTED — Phase 4 Multi-Scene Pilot authorized**  
 **Requestor:** Product Architect  
 **Baseline release:** `v0.13.0-phase3d`  
 **Authority:** `MVP Scope Freeze.md` §11 · `PHASE-NEXT-RECOMMENDATION.md`

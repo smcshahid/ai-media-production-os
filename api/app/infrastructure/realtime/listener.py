@@ -12,6 +12,7 @@ from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from app.domain.pipeline.status_read import build_pipeline_status_read
+from app.infrastructure.db.repositories.episode import EpisodeRepository
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
 from app.infrastructure.realtime.hub import PipelineHub
 
@@ -81,7 +82,19 @@ class PipelineRealtimeListener:
             return
 
         async with self._sessionmaker() as session:
-            run = await PipelineRunRepository(session).latest_for_project(project_id)
-            payload = build_pipeline_status_read(project_id, run)
+            runs = PipelineRunRepository(session)
+            run_id_raw = data.get("run_id")
+            run = None
+            if run_id_raw:
+                try:
+                    run = await runs.get(uuid.UUID(str(run_id_raw)))
+                except ValueError:
+                    run = None
+            if run is None:
+                run = await runs.latest_for_project(project_id)
+            episode = None
+            if run and run.episode_id:
+                episode = await EpisodeRepository(session).get(run.episode_id)
+            payload = build_pipeline_status_read(project_id, run, episode=episode)
 
         await self._hub.broadcast(project_id, payload)

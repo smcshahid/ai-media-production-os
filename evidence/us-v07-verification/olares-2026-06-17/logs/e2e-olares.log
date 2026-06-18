@@ -1,0 +1,200 @@
+2026-06-18T00:29:13+00:00 US-V07 E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-18T00:29:13+00:00 ========== PATH A: episode 1-scene narrated (attempt 1) ==========
+2026-06-18T00:29:13+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T00:29:14+00:00 created episode id=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1 number=22 title=US-V07 Path A Episode
+{"id":"57ee2342-aa8a-48d7-9614-a550af0f849f","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":56,"content_hash":"06656a05269af8a2ae301ebc1282e699939a38d54025dc263085048fbf7a7bca","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/06656a05269af8a2ae301ebc1282e699939a38d54025dc263085048fbf7a7bca","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"episode narration test"},"created_at":"2026-06-18T00:29:14.029255"}
+2026-06-18T00:29:14+00:00 start http=201 run_id=638ffe42-5740-41fd-a4cd-e5ee9fcc8500 episode_id=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+2026-06-18T00:29:14+00:00   poll status=RUNNING stage=STORY scene=null ep=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+2026-06-18T00:29:29+00:00   poll status=RUNNING stage=STORY scene=null ep=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+2026-06-18T00:29:44+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"638ffe42-5740-41fd-a4cd-e5ee9fcc8500","approval_id":"c4ae2b37-92fe-42eb-a10b-296d01ce8631","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T00:29:44+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+2026-06-18T00:29:54+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+2026-06-18T00:30:09+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+2026-06-18T00:30:24+00:00   poll status=FAILED stage=SCRIPT scene=null ep=cef5fb6c-890b-4ec9-88a6-4ae7480d70b1
+2026-06-18T00:30:24+00:00 FAIL pipeline FAILED: {"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"638ffe42-5740-41fd-a4cd-e5ee9fcc8500","status":"FAILED","current_stage":"SCRIPT","current_scene_index":null,"scene_count":1,"episode_id":"cef5fb6c-890b-4ec9-88a6-4ae7480d70b1","episode_number":22,"episode_title":"US-V07 Path A Episode","stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-18T00:30:15.269863"}
+2026-06-18T00:30:24+00:00 ========== PATH A: episode 1-scene narrated (attempt 2) ==========
+2026-06-18T00:30:24+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T00:30:24+00:00 created episode id=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf number=23 title=US-V07 Path A Episode
+{"id":"4dca92c7-75e6-4c5f-a3c9-1542aaf7aa3c","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":57,"content_hash":"06656a05269af8a2ae301ebc1282e699939a38d54025dc263085048fbf7a7bca","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/06656a05269af8a2ae301ebc1282e699939a38d54025dc263085048fbf7a7bca","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"episode narration test"},"created_at":"2026-06-18T00:30:24.365573"}
+2026-06-18T00:30:24+00:00 start http=201 run_id=16d4b266-c088-4b8a-baf8-188f83470be0 episode_id=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:30:24+00:00   poll status=RUNNING stage=STORY scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:30:39+00:00   poll status=RUNNING stage=STORY scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:30:54+00:00   poll status=RUNNING stage=STORY scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:31:09+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"16d4b266-c088-4b8a-baf8-188f83470be0","approval_id":"496755f0-af43-482f-8aca-7d79c7741a25","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T00:31:09+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:31:19+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:31:34+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"16d4b266-c088-4b8a-baf8-188f83470be0","approval_id":"e71c10d2-eaeb-494d-bb23-bb1f21e715e3","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T00:31:34+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T00:31:34+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:31:44+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:31:59+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:32:14+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:32:29+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:32:44+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:32:59+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:33:14+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:33:29+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:33:44+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"16d4b266-c088-4b8a-baf8-188f83470be0","approval_id":"4117b281-c91e-49a7-be6a-4e78cf1b68f7","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T00:33:44+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T00:33:44+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:33:54+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"16d4b266-c088-4b8a-baf8-188f83470be0","approval_id":"c67d5aa7-cf8a-40e3-a6c4-cc46c26ae7f1","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T00:33:54+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:34:09+00:00   poll status=COMPLETED stage=null scene=null ep=7b8639a0-7c0e-4f40-a05b-a6a8a4e31bbf
+2026-06-18T00:34:10+00:00 export manifest_version=4 size=14556363 prefix=episodes/episode_23
+2026-06-18T00:34:10+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T00:34:10+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T00:34:10+00:00 PASS PATH A episode run 16d4b266-c088-4b8a-baf8-188f83470be0 ep=23
+2026-06-18T00:34:10+00:00 ========== PATH B: episode 3-scene narrated (attempt 1) ==========
+2026-06-18T00:34:10+00:00 Cancelling non-terminal active runs for project
+UPDATE 1
+2026-06-18T00:34:10+00:00 created episode id=cd73536e-a211-414b-9fa4-294a280b707c number=24 title=US-V07 Path B Episode
+{"id":"15fa6eef-ab31-42d7-a26f-251ec333447c","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":58,"content_hash":"0de56a026126b1a01e7e077d2b57065a87676ee0a8038fa026f8dde000bfc096","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/0de56a026126b1a01e7e077d2b57065a87676ee0a8038fa026f8dde000bfc096","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"episode narration test"},"created_at":"2026-06-18T00:34:10.577862"}
+2026-06-18T00:34:10+00:00 start http=201 run_id=cad81163-76e2-4f03-9f6f-30299e080f66 episode_id=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:34:10+00:00   poll status=RUNNING stage=STORY scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:34:25+00:00   poll status=RUNNING stage=STORY scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:34:40+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"0a129a90-7baf-456e-bc43-7326c24c322c","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T00:34:40+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:34:50+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:35:05+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:35:20+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"0b7e61fd-1eb8-4ae0-af56-e210ab0301df","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T00:35:20+00:00 --- Scene 1 / 3 STORYBOARD ---
+2026-06-18T00:35:20+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:35:30+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:35:45+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:36:00+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:36:15+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:36:30+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:36:45+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:37:00+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:37:15+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:37:30+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:37:45+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"4f67433b-ebab-439e-97bf-d827b5dc86fe","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T00:37:45+00:00 --- Scene 1 / 3 VIDEO (narration) ---
+2026-06-18T00:37:45+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:37:56+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"c510720f-93a7-4966-ba62-71fa28a243cf","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T00:37:56+00:00 --- Scene 2 / 3 STORYBOARD ---
+2026-06-18T00:37:56+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:38:06+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:38:21+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:38:36+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:38:51+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:39:06+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:39:21+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:39:36+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:39:51+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:40:06+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:40:21+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"a20830fd-0b65-4e37-8a75-9d77faf078f6","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":2}
+2026-06-18T00:40:21+00:00 --- Scene 2 / 3 VIDEO (narration) ---
+2026-06-18T00:40:21+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:40:31+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"14248143-c937-4fbb-829d-21b32521571d","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":2}
+2026-06-18T00:40:31+00:00 --- Scene 3 / 3 STORYBOARD ---
+2026-06-18T00:40:31+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:40:41+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:40:56+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:41:11+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:41:26+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:41:41+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:41:56+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:42:11+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:42:26+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:42:41+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:42:56+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"3cc097a7-3686-4802-ad3d-ad8a44bf5172","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":3}
+2026-06-18T00:42:56+00:00 --- Scene 3 / 3 VIDEO (narration) ---
+2026-06-18T00:42:56+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:43:06+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cad81163-76e2-4f03-9f6f-30299e080f66","approval_id":"b4c76130-accd-4720-99ed-f04bdb40187e","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":3}
+2026-06-18T00:43:06+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3 ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:43:21+00:00   poll status=COMPLETED stage=null scene=null ep=cd73536e-a211-414b-9fa4-294a280b707c
+2026-06-18T00:43:22+00:00 export manifest_version=4 size=46300337 prefix=episodes/episode_24
+2026-06-18T00:43:22+00:00 NARRATION assets for run: 3 (expect >= 3)
+2026-06-18T00:43:22+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T00:43:22+00:00 PASS PATH B episode run cad81163-76e2-4f03-9f6f-30299e080f66 ep=24
+2026-06-18T00:43:22+00:00 ========== PATH C: multi-episode project ==========
+2026-06-18T00:43:22+00:00 ========== PATH C1: episode 1-scene narrated (attempt 1) ==========
+2026-06-18T00:43:22+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T00:43:22+00:00 created episode id=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee number=25 title=US-V07 Path C Episode 1
+{"id":"c3662441-79dc-456b-a98a-662590f81a88","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":59,"content_hash":"4044d9fe9726652161671945d20184fc984d7855f5354977608d9fc6d44ae814","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4044d9fe9726652161671945d20184fc984d7855f5354977608d9fc6d44ae814","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"episode narration test"},"created_at":"2026-06-18T00:43:22.890421"}
+2026-06-18T00:43:22+00:00 start http=201 run_id=69c705a6-b7cd-4f13-90d6-c3e8d78cec17 episode_id=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:43:22+00:00   poll status=RUNNING stage=STORY scene=null ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:43:37+00:00   poll status=RUNNING stage=STORY scene=null ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:43:52+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"69c705a6-b7cd-4f13-90d6-c3e8d78cec17","approval_id":"da903432-f436-4ecc-88bc-b806655bbef8","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T00:43:52+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:44:03+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:44:18+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"69c705a6-b7cd-4f13-90d6-c3e8d78cec17","approval_id":"116f9f6c-2701-4bd2-bcf4-c8b92b597fc4","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T00:44:18+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T00:44:18+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:44:28+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:44:43+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=076f72c4-9d2c-4c62-b9b3-a38a001ae3ee
+2026-06-18T00:44:58+00:00 ========== PATH C2: episode 1-scene narrated (attempt 1) ==========
+2026-06-18T00:44:58+00:00 Cancelling non-terminal active runs for project
+UPDATE 1
+2026-06-18T00:44:58+00:00 created episode id=2f8097fc-1bf0-42c6-9407-5abe99cefd75 number=26 title=US-V07 Path C Episode 2
+{"id":"115c8678-d234-4651-8e18-a1920ba05552","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":60,"content_hash":"78f4915507748c0f39911ed9b69b8360f5d43247924b6b74620b0d77276c3b32","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/78f4915507748c0f39911ed9b69b8360f5d43247924b6b74620b0d77276c3b32","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"episode narration test"},"created_at":"2026-06-18T00:44:58.283020"}
+2026-06-18T00:44:58+00:00 start http=201 run_id=1e4f8f0a-1e77-4521-a91f-002355b688ef episode_id=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:44:58+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:45:13+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:45:28+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:45:43+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:45:58+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:46:13+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:46:28+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:46:43+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:46:58+00:00   poll status=RUNNING stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:47:13+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"1e4f8f0a-1e77-4521-a91f-002355b688ef","approval_id":"43cde8bd-bde1-4b2b-ad2a-cfdcc7f7522f","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T00:47:13+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:47:23+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:47:38+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"1e4f8f0a-1e77-4521-a91f-002355b688ef","approval_id":"559d42aa-3c25-46f9-a5b5-7bbf7108c4fe","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T00:47:38+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T00:47:38+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:47:48+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:48:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:48:18+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:48:33+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:48:48+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:49:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:49:18+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:49:33+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:49:48+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:50:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:50:18+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"1e4f8f0a-1e77-4521-a91f-002355b688ef","approval_id":"617f815a-a696-43c5-a26a-b59b1916266c","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T00:50:18+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T00:50:18+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:50:28+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"1e4f8f0a-1e77-4521-a91f-002355b688ef","approval_id":"ac43c652-9866-44d2-a941-88409c814156","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T00:50:28+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:50:43+00:00   poll status=COMPLETED stage=null scene=null ep=2f8097fc-1bf0-42c6-9407-5abe99cefd75
+2026-06-18T00:50:44+00:00 export manifest_version=4 size=12506533 prefix=episodes/episode_26
+2026-06-18T00:50:44+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T00:50:44+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T00:50:44+00:00 PASS PATH C2 episode run 1e4f8f0a-1e77-4521-a91f-002355b688ef ep=26
+2026-06-18T00:50:44+00:00 PATH C episode count=26 (expect >= 2 for C1+C2 plus A,B)
+2026-06-18T00:50:44+00:00 PASS PATH C episode isolation ep1= ep2=26
+2026-06-18T00:50:44+00:00 ========== PATH D: backward compatibility (v1/v2/v3) ==========
+2026-06-18T00:50:44+00:00 v3 narrated legacy run=e3c0d402-f623-42e7-a120-c5b284d13242 manifest=3
+2026-06-18T00:50:45+00:00 v2 multi-scene legacy run=3258cc26-d971-47d9-8c7f-b5868c2de9d4 manifest=3
+2026-06-18T00:50:46+00:00 v1 silent legacy run=7e8699d1-35c6-4135-9a2b-404a737ad622 manifest=3
+2026-06-18T00:50:46+00:00 PASS PATH D backward compatibility (v2=1 v3=1 v1=1)
+2026-06-18T00:50:46+00:00 ========== PATH E: platform regression ==========
+2026-06-18T00:50:46+00:00 audit events sample=1 runs=1 episodes=26
+2026-06-18T00:50:46+00:00 PASS PATH E platform regression
+2026-06-18T00:50:46+00:00 DONE FAIL=1

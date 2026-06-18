@@ -31,6 +31,11 @@ class PipelineRun(Base):
     temporal_workflow_id: Mapped[str | None] = mapped_column(
         String(255), nullable=True, unique=True
     )
+    scene_count: Mapped[int | None] = mapped_column(nullable=True)
+    current_scene_index: Mapped[int | None] = mapped_column(nullable=True)
+    episode_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("episodes.id"), nullable=True, index=True
+    )
     created_at: Mapped[datetime] = created_at_column()
     updated_at: Mapped[datetime] = mapped_column(
         server_default=func.now(), onupdate=func.now(), nullable=False

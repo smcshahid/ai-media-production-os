@@ -11,7 +11,7 @@ from __future__ import annotations
 import uuid
 from typing import Literal
 
-from aimpos_core.enums import ApprovalDecision, PipelineRunStatus, PipelineStage
+from aimpos_core.enums import ApprovalDecision, EpisodeStatus, PipelineRunStatus, PipelineStage
 from aimpos_core.events import AuditEventType
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field, field_validator
@@ -27,9 +27,11 @@ from app.domain.pipeline.run_list import (
 from app.domain.pipeline.status_read import PipelineStatusRead, build_pipeline_status_read
 from app.infrastructure.db.models.approval import Approval
 from app.infrastructure.db.models.audit_event import AuditEvent
+from app.infrastructure.db.models.episode import Episode
 from app.infrastructure.db.models.pipeline_run import PipelineRun
 from app.infrastructure.db.repositories.approval import ApprovalRepository
 from app.infrastructure.db.repositories.audit_event import AuditEventRepository
+from app.infrastructure.db.repositories.episode import EpisodeRepository
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
 from app.infrastructure.db.repositories.project import ProjectRepository
 from app.infrastructure.temporal.client import TemporalService, is_workflow_already_started
@@ -41,6 +43,8 @@ router = APIRouter(tags=["pipeline"])
 
 class PipelineStartRequest(BaseModel):
     project_id: uuid.UUID
+    scene_count: int = Field(default=1, ge=1, le=3)
+    episode_id: uuid.UUID | None = None
 
 
 class PipelineStartResponse(BaseModel):
@@ -49,6 +53,8 @@ class PipelineStartResponse(BaseModel):
     workflow_id: str
     status: str
     current_stage: str | None
+    scene_count: int
+    episode_id: uuid.UUID | None = None
 
 
 class PipelineApproveRequest(BaseModel):
@@ -77,6 +83,7 @@ class PipelineApproveResponse(BaseModel):
     stage: str
     status: str
     current_stage: str | None
+    scene_index: int | None = None
 
 
 @router.get(
@@ -86,6 +93,7 @@ class PipelineApproveResponse(BaseModel):
 )
 async def pipeline_status(
     project_id: uuid.UUID,
+    episode_id: uuid.UUID | None = None,
     session: AsyncSession = Depends(get_session),
 ) -> PipelineStatusRead:
     if await ProjectRepository(session).get(project_id) is None:
@@ -93,8 +101,23 @@ async def pipeline_status(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"project {project_id} not found"
         )
 
-    run = await PipelineRunRepository(session).latest_for_project(project_id)
-    return build_pipeline_status_read(project_id, run)
+    runs = PipelineRunRepository(session)
+    episodes = EpisodeRepository(session)
+    episode: Episode | None = None
+    if episode_id is not None:
+        episode = await episodes.get_for_project(project_id, episode_id)
+        if episode is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"episode {episode_id} not found for project",
+            )
+        run = await runs.latest_for_episode(episode_id)
+    else:
+        run = await runs.latest_for_project(project_id)
+        if run and run.episode_id:
+            episode = await episodes.get(run.episode_id)
+
+    return build_pipeline_status_read(project_id, run, episode=episode)
 
 
 @router.get(
@@ -144,6 +167,15 @@ async def pipeline_start(
         )
 
     runs = PipelineRunRepository(session)
+    episodes = EpisodeRepository(session)
+    episode: Episode | None = None
+    if body.episode_id is not None:
+        episode = await episodes.get_for_project(project_id, body.episode_id)
+        if episode is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"episode {body.episode_id} not found for project",
+            )
     if await runs.active_for_project(project_id) is not None:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -154,8 +186,12 @@ async def pipeline_start(
         project_id=project_id,
         status=PipelineRunStatus.PENDING,
         current_stage=None,
+        scene_count=body.scene_count,
+        episode_id=body.episode_id,
     )
     await runs.add(run)
+    if episode is not None:
+        episode.status = EpisodeStatus.IN_PROGRESS
     workflow_id = f"spark-pipeline-{run.id}"
     run.temporal_workflow_id = workflow_id
 
@@ -187,7 +223,12 @@ async def pipeline_start(
             project_id=project_id,
             pipeline_run_id=run.id,
             event_type=AuditEventType.PIPELINE_STARTED,
-            payload={"workflow_id": started_id, "task_queue": temporal.task_queue},
+            payload={
+                "workflow_id": started_id,
+                "task_queue": temporal.task_queue,
+                "scene_count": body.scene_count,
+                "episode_id": str(body.episode_id) if body.episode_id else None,
+            },
         )
     )
 
@@ -199,6 +240,8 @@ async def pipeline_start(
         workflow_id=started_id,
         status=run.status.value,
         current_stage=run.current_stage.value,
+        scene_count=body.scene_count,
+        episode_id=body.episode_id,
     )
 
 
@@ -273,12 +316,17 @@ async def pipeline_approve(
             detail=_temporal_signal_detail(exc),
         ) from exc
 
+    approval_scene_index: int | None = None
+    if body.stage in (PipelineStage.STORYBOARD, PipelineStage.VIDEO):
+        approval_scene_index = run.current_scene_index or 1
+
     approval = Approval(
         pipeline_run_id=run.id,
         stage=body.stage,
         decision=body.decision,
         rationale=body.note,
         decided_by=_DECIDED_BY,
+        scene_index=approval_scene_index,
     )
     await ApprovalRepository(session).add(approval)
 
@@ -293,6 +341,7 @@ async def pipeline_approve(
                 "principal": _DECIDED_BY,
                 "approval_id": str(approval.id),
                 "note": body.note,
+                "scene_index": approval_scene_index,
             },
         )
     )
@@ -308,6 +357,7 @@ async def pipeline_approve(
         stage=body.stage.value,
         status=run.status.value,
         current_stage=run.current_stage.value if run.current_stage else None,
+        scene_index=approval_scene_index,
     )
 
 
@@ -377,7 +427,13 @@ async def pipeline_regenerate(
         )
 
     approvals = ApprovalRepository(session)
-    latest_stage_approval = await approvals.latest_for_stage(run.id, body.stage)
+    scene_index = run.current_scene_index if body.stage in (
+        PipelineStage.STORYBOARD,
+        PipelineStage.VIDEO,
+    ) else None
+    latest_stage_approval = await approvals.latest_for_stage(
+        run.id, body.stage, scene_index=scene_index
+    )
     if latest_stage_approval is None or latest_stage_approval.decision != ApprovalDecision.REJECTED:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

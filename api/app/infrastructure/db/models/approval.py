@@ -29,5 +29,6 @@ class Approval(Base):
         Enum(ApprovalDecision, native_enum=False, length=16), nullable=False
     )
     rationale: Mapped[str | None] = mapped_column(Text, nullable=True)
+    scene_index: Mapped[int | None] = mapped_column(nullable=True)
     decided_by: Mapped[str | None] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = created_at_column()

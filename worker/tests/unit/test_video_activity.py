@@ -48,28 +48,29 @@ def test_run_video_agent_happy_path_slideshow() -> None:
     )
 
     with patch("app.temporal.activities.video.get_settings", return_value=_settings()):
-        with patch(
-            "app.temporal.activities.video.fetch_approved_storyboard_batch",
-            return_value=_batch(),
-        ):
+        with patch("app.temporal.activities.video._read_run_scene_count", return_value=1):
             with patch(
-                "app.temporal.activities.video.fetch_latest_video_rejection_rationale",
-                return_value=None,
+                "app.temporal.activities.video.fetch_approved_storyboard_batch",
+                return_value=_batch(),
             ):
                 with patch(
-                    "app.temporal.activities.video.try_comfyui_i2v",
-                    side_effect=VideoI2VError("disabled"),
+                    "app.temporal.activities.video.fetch_latest_video_rejection_rationale",
+                    return_value=None,
                 ):
                     with patch(
-                        "app.temporal.activities.video.render_slideshow_mp4",
-                        return_value=(b"\x00\x00\x00\x18ftypmp42" + b"\x00" * 100, PROBE),
+                        "app.temporal.activities.video.try_comfyui_i2v",
+                        side_effect=VideoI2VError("disabled"),
                     ):
                         with patch(
-                            "app.temporal.activities.video.store_video_asset",
-                            return_value=stored,
+                            "app.temporal.activities.video.render_slideshow_mp4",
+                            return_value=(b"\x00\x00\x00\x18ftypmp42" + b"\x00" * 100, PROBE),
                         ):
-                            with patch("app.temporal.activities.video.append_audit_event"):
-                                result = asyncio.run(run_video_agent(project_id, run_id))
+                            with patch(
+                                "app.temporal.activities.video.store_video_asset",
+                                return_value=stored,
+                            ):
+                                with patch("app.temporal.activities.video.append_audit_event"):
+                                    result = asyncio.run(run_video_agent(project_id, run_id))
 
     assert result == str(stored.asset_version_id)
 
@@ -90,25 +91,29 @@ def test_run_video_agent_uses_rejection_note_from_db() -> None:
         return stored
 
     with patch("app.temporal.activities.video.get_settings", return_value=_settings()):
-        with patch(
-            "app.temporal.activities.video.fetch_approved_storyboard_batch",
-            return_value=_batch(),
-        ):
+        with patch("app.temporal.activities.video._read_run_scene_count", return_value=1):
             with patch(
-                "app.temporal.activities.video.fetch_latest_video_rejection_rationale",
-                return_value="Sharper contrast please.",
+                "app.temporal.activities.video.fetch_approved_storyboard_batch",
+                return_value=_batch(),
             ):
-                with patch("app.temporal.activities.video.try_comfyui_i2v", side_effect=VideoI2VError("x")):
+                with patch(
+                    "app.temporal.activities.video.fetch_latest_video_rejection_rationale",
+                    return_value="Sharper contrast please.",
+                ):
                     with patch(
-                        "app.temporal.activities.video.render_slideshow_mp4",
-                        return_value=(b"\x00\x00\x00\x18ftypmp42" + b"\x00" * 100, PROBE),
+                        "app.temporal.activities.video.try_comfyui_i2v",
+                        side_effect=VideoI2VError("x"),
                     ):
                         with patch(
-                            "app.temporal.activities.video.store_video_asset",
-                            side_effect=capture_store,
+                            "app.temporal.activities.video.render_slideshow_mp4",
+                            return_value=(b"\x00\x00\x00\x18ftypmp42" + b"\x00" * 100, PROBE),
                         ):
-                            with patch("app.temporal.activities.video.append_audit_event"):
-                                asyncio.run(run_video_agent(project_id, run_id, ""))
+                            with patch(
+                                "app.temporal.activities.video.store_video_asset",
+                                side_effect=capture_store,
+                            ):
+                                with patch("app.temporal.activities.video.append_audit_event"):
+                                    asyncio.run(run_video_agent(project_id, run_id, ""))
 
     assert store_kwargs["metadata"]["rejection_note_used"] == "Sharper contrast please."
     assert store_kwargs["metadata"]["source"] == SOURCE_SLIDESHOW

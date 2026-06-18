@@ -16,3 +16,4 @@ class AssetStage(StrEnum):
     SCRIPT = "SCRIPT"
     STORYBOARD = "STORYBOARD"
     VIDEO = "VIDEO"
+    NARRATION = "NARRATION"

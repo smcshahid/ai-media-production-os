@@ -1,0 +1,2 @@
+2026-06-17T22:04:24Z PATH D legacy export e5da4992-226c-4969-b95d-e7a2c6415b30 manifest_version=2 (pre-fix: v3 leak from cross-run narration)
+2026-06-17T22:05:xxZ After run-scoped export resolver + API pod restart: manifest_version=2, video asset 1f158ecf (silent), no narration.wav

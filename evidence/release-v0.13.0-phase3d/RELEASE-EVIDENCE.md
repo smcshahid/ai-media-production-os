@@ -43,6 +43,12 @@ Source: `deploy/release/manifest.yaml`
 
 ## Git release artifacts
 
+| Field | Value |
+|-------|-------|
+| Commit | `b57ef90` |
+| Tag | `v0.13.0-phase3d` |
+| Remote | `origin/main` pushed |
+
 | Artifact | Path |
 |----------|------|
 | VERSION | `VERSION` |

@@ -15,6 +15,7 @@ from app.infrastructure.db.models.audit_event import AuditEvent
 from app.infrastructure.db.repositories.approval import ApprovalRepository
 from app.infrastructure.db.repositories.asset_version import AssetVersionRepository
 from app.infrastructure.db.repositories.audit_event import AuditEventRepository
+from app.infrastructure.db.repositories.episode import EpisodeRepository
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
 from app.infrastructure.storage.minio_client import MinioClient
 
@@ -43,8 +44,20 @@ async def export_pipeline_run(
 
     assets = AssetVersionRepository(session)
     approvals = ApprovalRepository(session)
+    episode_id: uuid.UUID | None = None
+    episode_number: int | None = None
+    if run.episode_id is not None:
+        episode = await EpisodeRepository(session).get(run.episode_id)
+        if episode is not None:
+            episode_id = episode.id
+            episode_number = episode.episode_number
     try:
-        entries = await resolve_export_files(run, assets=assets, approvals=approvals)
+        entries = await resolve_export_files(
+            run,
+            assets=assets,
+            approvals=approvals,
+            episode_number=episode_number,
+        )
     except ExportAssetResolutionError as exc:
         raise RuntimeError(str(exc)) from exc
 
@@ -53,9 +66,13 @@ async def export_pipeline_run(
         project_id=run.project_id,
         entries=entries,
         minio=minio,
+        scene_count=run.scene_count,
+        episode_id=episode_id,
+        episode_number=episode_number,
     )
 
     exported_iso = result.exported_at.isoformat().replace("+00:00", "Z")
+    manifest_version = str(result.manifest_json.get("manifest_version", "1"))
     await AuditEventRepository(session).append(
         AuditEvent(
             project_id=run.project_id,
@@ -68,7 +85,9 @@ async def export_pipeline_run(
                 "manifest_hash": result.manifest_hash,
                 "zip_size_bytes": len(result.zip_bytes),
                 "exported_at": exported_iso,
-                "manifest_version": "1",
+                "manifest_version": manifest_version,
+                "scene_count": run.scene_count,
+                "episode_id": str(run.episode_id) if run.episode_id else None,
                 "client_hint": "api",
             },
         )

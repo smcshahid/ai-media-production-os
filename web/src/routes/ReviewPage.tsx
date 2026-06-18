@@ -19,7 +19,7 @@ import { toDisplayStatus } from "../lib/pipelineDisplay";
 import { selectLatestAiDraftScriptAsset } from "../lib/scriptReview";
 import { batchVersion, selectLatestStoryboardBatch } from "../lib/storyboardReview";
 import { selectLatestAiDraftStoryAsset, selectLatestStoryAsset } from "../lib/storyReview";
-import { selectLatestAiDraftVideoAsset, videoSourceLabel } from "../lib/videoReview";
+import { selectLatestAiDraftVideoAsset, narrationStatusLabel, videoSourceLabel } from "../lib/videoReview";
 import { formatReviewActionError } from "../lib/reviewErrors";
 
 const STAGE_LABELS: Record<string, string> = {
@@ -133,12 +133,12 @@ export function ReviewPage() {
     Object.values(urls).forEach((url) => URL.revokeObjectURL(url));
   }, []);
 
-  const loadStoryboard = useCallback(async (projectId: string) => {
+  const loadStoryboard = useCallback(async (projectId: string, sceneIdx = 1) => {
     setStoryboardLoading(true);
     setActionError(null);
     try {
       const assets = await listAssets(projectId);
-      const batch = selectLatestStoryboardBatch(assets);
+      const batch = selectLatestStoryboardBatch(assets, sceneIdx);
       if (!batch) {
         setStoryboardFrames([]);
         setStoryboardImageUrls((prev) => {
@@ -171,12 +171,12 @@ export function ReviewPage() {
     }
   }, []);
 
-  const loadVideo = useCallback(async (projectId: string) => {
+  const loadVideo = useCallback(async (projectId: string, sceneIdx = 1) => {
     setVideoLoading(true);
     setActionError(null);
     try {
       const assets = await listAssets(projectId);
-      const latest = selectLatestAiDraftVideoAsset(assets);
+      const latest = selectLatestAiDraftVideoAsset(assets, sceneIdx);
       if (!latest) {
         setVideoAsset(null);
         setVideoUrl((prev) => {
@@ -221,6 +221,8 @@ export function ReviewPage() {
   }, [revokeStoryboardUrls]);
 
   const reviewStage = pipeline?.current_stage;
+  const reviewSceneIndex = pipeline?.current_scene_index ?? 1;
+  const reviewSceneCount = pipeline?.scene_count ?? 1;
   const isStoryReview = reviewStage === "STORY";
   const isScriptReview = reviewStage === "SCRIPT";
   const isStoryboardReview = reviewStage === "STORYBOARD";
@@ -244,15 +246,15 @@ export function ReviewPage() {
     if (!project || !isStoryboardReview || pipeline?.status !== "AWAITING_APPROVAL") {
       return;
     }
-    void loadStoryboard(project.id);
-  }, [project, isStoryboardReview, pipeline?.status, loadStoryboard]);
+    void loadStoryboard(project.id, reviewSceneIndex);
+  }, [project, isStoryboardReview, pipeline?.status, loadStoryboard, reviewSceneIndex]);
 
   useEffect(() => {
     if (!project || !isVideoReview || pipeline?.status !== "AWAITING_APPROVAL") {
       return;
     }
-    void loadVideo(project.id);
-  }, [project, isVideoReview, pipeline?.status, loadVideo]);
+    void loadVideo(project.id, reviewSceneIndex);
+  }, [project, isVideoReview, pipeline?.status, loadVideo, reviewSceneIndex]);
 
   if (!project && !actionError) {
     return <p className="page__subtitle">Loading review…</p>;
@@ -389,7 +391,12 @@ export function ReviewPage() {
   return (
     <section className="page">
       <header className="page__header">
-        <h1 className="page__title">Review — {STAGE_LABELS[stage] ?? stage}</h1>
+        <h1 className="page__title">
+          Review — {STAGE_LABELS[stage] ?? stage}
+          {reviewSceneCount > 1 && (isStoryboardReview || isVideoReview)
+            ? ` (Scene ${reviewSceneIndex} of ${reviewSceneCount})`
+            : ""}
+        </h1>
         <span className="badge badge--review">REVIEW</span>
       </header>
 
@@ -531,7 +538,7 @@ export function ReviewPage() {
             {videoAsset && (
               <p className="review__meta">
                 Version <strong>{videoAsset.version}</strong> ·{" "}
-                {videoSourceLabel(videoAsset)} · branch{" "}
+                {videoSourceLabel(videoAsset)} · {narrationStatusLabel(videoAsset)} · branch{" "}
                 <code className="table__hash">{videoAsset.branch}</code>
                 {typeof videoAsset.metadata_json?.duration_sec === "number" ? (
                   <>

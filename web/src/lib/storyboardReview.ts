@@ -13,9 +13,28 @@ function frameIndex(asset: AssetVersion): number {
   return 0;
 }
 
-/** Latest ai-draft STORYBOARD batch at max version (D-43 / D-45). */
-export function selectLatestStoryboardBatch(assets: AssetVersion[]): AssetVersion[] | null {
-  const frames = assets.filter((a) => a.stage === "STORYBOARD" && a.branch === "ai-draft");
+function sceneIndex(asset: AssetVersion): number {
+  const raw = asset.metadata_json?.scene_index;
+  if (typeof raw === "number") {
+    return raw;
+  }
+  if (typeof raw === "string") {
+    return parseInt(raw, 10);
+  }
+  return 1;
+}
+
+/** Latest ai-draft STORYBOARD batch at max version for a scene (D-43 / D-76). */
+export function selectLatestStoryboardBatch(
+  assets: AssetVersion[],
+  targetSceneIndex = 1,
+): AssetVersion[] | null {
+  const frames = assets.filter(
+    (a) =>
+      a.stage === "STORYBOARD" &&
+      a.branch === "ai-draft" &&
+      sceneIndex(a) === targetSceneIndex,
+  );
   if (frames.length === 0) {
     return null;
   }
@@ -36,4 +55,14 @@ export function selectLatestStoryboardBatch(assets: AssetVersion[]): AssetVersio
 
 export function batchVersion(frames: AssetVersion[]): number {
   return frames[0]?.version ?? 0;
+}
+
+export function distinctSceneIndices(assets: AssetVersion[]): number[] {
+  const indices = new Set<number>();
+  for (const asset of assets) {
+    if (asset.stage === "STORYBOARD" || asset.stage === "VIDEO") {
+      indices.add(sceneIndex(asset));
+    }
+  }
+  return [...indices].sort((a, b) => a - b);
 }

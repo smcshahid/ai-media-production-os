@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ApiError, listAssets, startPipeline, listProjects } from "../api/client";
-import type { AssetVersion, Project } from "../api/types";
+import {
+  ApiError,
+  createEpisode,
+  listAssets,
+  listEpisodes,
+  startPipeline,
+  listProjects,
+} from "../api/client";
+import type { AssetVersion, Episode, Project } from "../api/types";
 import { IdeaCaptureForm } from "../components/IdeaCaptureForm";
 import { PipelineConnectionIndicator } from "../components/PipelineConnectionIndicator";
 import { PipelineRunHistory } from "../components/PipelineRunHistory";
@@ -43,11 +50,24 @@ export function DashboardPage() {
   const [projectError, setProjectError] = useState<string | null>(null);
   const [startError, setStartError] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
+  const [sceneCount, setSceneCount] = useState(1);
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | "legacy">("legacy");
+  const [episodeMode, setEpisodeMode] = useState(false);
+  const [creatingEpisode, setCreatingEpisode] = useState(false);
   const [ideaVersion, setIdeaVersion] = useState<AssetVersion | null>(null);
 
   const refreshIdea = useCallback(async (projectId: string) => {
     const assets = await listAssets(projectId);
     setIdeaVersion(latestIdeaVersion(assets));
+  }, []);
+
+  const refreshEpisodes = useCallback(async (projectId: string) => {
+    const response = await listEpisodes(projectId);
+    setEpisodes(response.episodes);
+    if (response.episodes.length > 0) {
+      setEpisodeMode(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -61,6 +81,7 @@ export function DashboardPage() {
         setProject(first);
         if (first) {
           await refreshIdea(first.id);
+          await refreshEpisodes(first.id);
         }
       })
       .catch(() => {
@@ -71,10 +92,14 @@ export function DashboardPage() {
     return () => {
       active = false;
     };
-  }, [refreshIdea]);
+  }, [refreshIdea, refreshEpisodes]);
+
+  const activeEpisodeId =
+    selectedEpisodeId === "legacy" ? null : selectedEpisodeId;
 
   const { status: pipeline, error: statusError, loading, connectionMode, refresh } = usePipelineStatus(
     project?.id ?? null,
+    activeEpisodeId,
   );
 
   const stages = pipeline?.stages ?? IDLE_STAGES;
@@ -90,7 +115,11 @@ export function DashboardPage() {
     setStarting(true);
     setStartError(null);
     try {
-      await startPipeline(project.id);
+      await startPipeline(
+        project.id,
+        sceneCount,
+        activeEpisodeId,
+      );
       refresh();
     } catch (err) {
       setStartError(err instanceof ApiError ? err.message : "Failed to start pipeline.");
@@ -99,6 +128,28 @@ export function DashboardPage() {
     }
   }
 
+  async function handleCreateEpisode() {
+    if (!project) {
+      return;
+    }
+    setCreatingEpisode(true);
+    setStartError(null);
+    try {
+      const title = `Episode ${episodes.length + 1}`;
+      const created = await createEpisode(project.id, title);
+      await refreshEpisodes(project.id);
+      setSelectedEpisodeId(created.episode.id);
+      setEpisodeMode(true);
+    } catch (err) {
+      setStartError(err instanceof ApiError ? err.message : "Failed to create episode.");
+    } finally {
+      setCreatingEpisode(false);
+    }
+  }
+
+  const currentSceneIndex = pipeline?.current_scene_index ?? null;
+  const runSceneCount = pipeline?.scene_count ?? null;
+
   const statusLine = (() => {
     if (loading && !pipeline) {
       return "Loading pipeline status…";
@@ -106,16 +157,24 @@ export function DashboardPage() {
     if (displayStatus === "IDLE") {
       return "No pipeline run yet.";
     }
+    const episodeSuffix =
+      pipeline?.episode_number != null
+        ? ` · Episode ${pipeline.episode_number}`
+        : "";
+    const sceneSuffix =
+      currentSceneIndex && runSceneCount && runSceneCount > 1
+        ? ` (scene ${currentSceneIndex} of ${runSceneCount})`
+        : "";
     if (displayStatus === "GENERATING" && currentStage) {
-      return `Generating ${STAGE_LABELS[currentStage] ?? currentStage}…`;
+      return `Generating ${STAGE_LABELS[currentStage] ?? currentStage}${episodeSuffix}${sceneSuffix}…`;
     }
     if (displayStatus === "REVIEW" && currentStage) {
-      return `${STAGE_LABELS[currentStage] ?? currentStage} ready for your review.`;
+      return `${STAGE_LABELS[currentStage] ?? currentStage}${episodeSuffix}${sceneSuffix} ready for your review.`;
     }
     if (displayStatus === "COMPLETED") {
-      return "Pipeline completed — all stages approved.";
+      return `Pipeline completed${episodeSuffix} — all stages approved.`;
     }
-    return `Status: ${displayStatus}`;
+    return `Status: ${displayStatus}${episodeSuffix}`;
   })();
 
   return (
@@ -158,6 +217,44 @@ export function DashboardPage() {
       </div>
 
       <div className="card">
+        <h2 className="card__title">Episodes</h2>
+        <p className="card__hint">
+          Pilot: create episodes under this project, then start a pipeline scoped to one episode.
+        </p>
+        <div className="card__actions">
+          <button
+            type="button"
+            className="button"
+            disabled={creatingEpisode || !project}
+            onClick={() => void handleCreateEpisode()}
+          >
+            {creatingEpisode ? "Creating…" : "New Episode"}
+          </button>
+        </div>
+        {episodeMode && episodes.length > 0 && (
+          <div className="card__field">
+            <label htmlFor="episode-select" className="card__hint">
+              Active episode
+            </label>
+            <select
+              id="episode-select"
+              className="input"
+              value={selectedEpisodeId}
+              onChange={(event) => setSelectedEpisodeId(event.target.value)}
+            >
+              <option value="legacy">Legacy (no episode)</option>
+              {episodes.map((episode) => (
+                <option key={episode.id} value={episode.id}>
+                  Episode {episode.episode_number}
+                  {episode.title ? ` — ${episode.title}` : ""} ({episode.status})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      <div className="card">
         <h2 className="card__title">Pipeline</h2>
         <p className="dashboard__status-line">{statusLine}</p>
         {!hasIdea && (
@@ -166,6 +263,24 @@ export function DashboardPage() {
           </p>
         )}
         <Stepper stages={stages} currentStage={currentStage} status={apiStatus} />
+        {canStartPipeline(apiStatus) && (
+          <div className="card__field">
+            <label htmlFor="scene-count" className="card__hint">
+              Scenes per run (pilot: 1–3)
+            </label>
+            <select
+              id="scene-count"
+              className="input"
+              value={sceneCount}
+              onChange={(event) => setSceneCount(Number(event.target.value))}
+              disabled={starting}
+            >
+              <option value={1}>1 scene (classic)</option>
+              <option value={2}>2 scenes</option>
+              <option value={3}>3 scenes</option>
+            </select>
+          </div>
+        )}
         <div className="card__actions">
           {canStartPipeline(apiStatus) ? (
             <button

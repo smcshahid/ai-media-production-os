@@ -3,43 +3,39 @@
 # Do not hand-edit image tags outside a release cut.
 
 release:
-  version: "v0.13.0-phase3d"
-  codename: phase3d
+  version: "v0.16.0-phase6-episode"
+  codename: phase6-episode
   date: "2026-06-17"
-  baseline_tag: "v0.12.0-usv03"
-  git_commit: ""  # filled at release cut: git rev-parse HEAD
+  baseline_tag: "v0.15.0-phase5-narration"
+  git_commit: "pending-cut"
 
 images:
   api:
     repository: docker.io/library/aimpos-api
-    tag: "v0.13.0-phase3d"
+    tag: "v0.16.0-phase6-episode"
   web:
     repository: docker.io/library/aimpos-web
-    tag: "v0.13.0-phase3d"
+    tag: "v0.16.0-phase6-episode"
   worker:
     repository: docker.io/library/aimpos-worker
-    tag: "v0.13.0-phase3d"
+    tag: "v0.16.0-phase6-episode"
 
 olares:
   namespace: aimpos-mwayolares
   ingress_image: docker.io/beclab/aboveos-bitnami-openresty:1.25.3-2
-  chart_version: "0.13.0"
-  manifest_version: "0.13.0"
+  chart_version: "0.16.0"
+  manifest_version: "0.16.0"
 
 database:
-  alembic_head: "0003"
+  alembic_head: "0005"
 
 worker_env:
   COMFYUI_WORKFLOW: flux_storyboard.json
   VIDEO_I2V_ENABLED: "true"
+  NARRATION_ENABLED: "true"
 
 verify:
   scripts:
-    - deploy/dev/verify_bootstrap.sh
-    - deploy/dev/verify_usv04_local.ps1
-    - deploy/dev/verify_phase3b_local.ps1
-    - deploy/dev/verify_phase3c_local.ps1
-    - deploy/dev/verify_phase3d_local.ps1
+    - deploy/dev/verify_phase6_local.ps1
   olares:
-    - deploy/k8s/phase3d-verify/check_drift.sh
-    - deploy/k8s/phase3d-verify/verify_release.sh
+    - deploy/k8s/usv07-verify/verify_usv07_e2e.sh

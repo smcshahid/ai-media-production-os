@@ -43,6 +43,10 @@ class VideoStoreError(AssetStoreError):
     """VIDEO asset persistence failed (D-48)."""
 
 
+class NarrationStoreError(AssetStoreError):
+    """NARRATION asset persistence failed (D-80)."""
+
+
 @dataclass(frozen=True, slots=True)
 class IdeaAsset:
     project_id: uuid.UUID
@@ -122,6 +126,15 @@ class StoredVideoAsset:
     content_hash: str
     minio_key: str
     version: int
+
+
+@dataclass(frozen=True, slots=True)
+class StoredNarrationAsset:
+    asset_version_id: uuid.UUID
+    content_hash: str
+    minio_key: str
+    version: int
+    duration_sec: float | None
 
 
 def _engine(settings: Settings) -> Engine:
@@ -346,8 +359,9 @@ def fetch_latest_video_rejection_rationale(
     settings: Settings,
     *,
     pipeline_run_id: uuid.UUID,
+    scene_index: int = 1,
 ) -> str | None:
-    """Return latest VIDEO rejection note for regeneration (D-50)."""
+    """Return latest VIDEO rejection note for a scene (D-50 / D-76)."""
     engine = _engine(settings)
     try:
         with engine.begin() as conn:
@@ -358,11 +372,12 @@ def fetch_latest_video_rejection_rationale(
                     WHERE pipeline_run_id = :run_id
                       AND stage = 'VIDEO'
                       AND decision = 'REJECTED'
+                      AND COALESCE(scene_index, 1) = :scene_index
                     ORDER BY created_at DESC
                     LIMIT 1
                     """
                 ),
-                {"run_id": str(pipeline_run_id)},
+                {"run_id": str(pipeline_run_id), "scene_index": scene_index},
             ).first()
     finally:
         engine.dispose()
@@ -376,8 +391,9 @@ def fetch_approved_storyboard_batch(
     *,
     project_id: uuid.UUID,
     pipeline_run_id: uuid.UUID,
+    scene_index: int = 1,
 ) -> ApprovedStoryboardBatch:
-    """Return approved storyboard batch PNG bytes ordered by frame_index (D-49)."""
+    """Return approved storyboard batch PNG bytes for a scene (D-49 / D-76)."""
     from app.agents.cinematography.constants import STORYBOARD_FRAME_COUNT
     from app.agents.cinematography.validate import validate_storyboard_frame
 
@@ -391,14 +407,16 @@ def fetch_approved_storyboard_batch(
                     WHERE pipeline_run_id = :run_id
                       AND stage = 'STORYBOARD'
                       AND decision = 'APPROVED'
+                      AND COALESCE(scene_index, 1) = :scene_index
                     LIMIT 1
                     """
                 ),
-                {"run_id": str(pipeline_run_id)},
+                {"run_id": str(pipeline_run_id), "scene_index": scene_index},
             ).first()
             if approved is None:
                 raise ApprovedStoryboardNotFoundError(
-                    f"no APPROVED STORYBOARD approval for run {pipeline_run_id}"
+                    f"no APPROVED STORYBOARD approval for run {pipeline_run_id} "
+                    f"scene {scene_index}"
                 )
 
             batch_version = conn.execute(
@@ -406,10 +424,12 @@ def fetch_approved_storyboard_batch(
                     """
                     SELECT COALESCE(MAX(version), 0) AS v
                     FROM asset_versions
-                    WHERE project_id = :project_id AND stage = 'STORYBOARD'
+                    WHERE project_id = :project_id
+                      AND stage = 'STORYBOARD'
+                      AND COALESCE((metadata_json->>'scene_index')::int, 1) = :scene_index
                     """
                 ),
-                {"project_id": str(project_id)},
+                {"project_id": str(project_id), "scene_index": scene_index},
             ).scalar_one()
 
             rows = conn.execute(
@@ -421,10 +441,15 @@ def fetch_approved_storyboard_batch(
                     WHERE project_id = :project_id
                       AND stage = 'STORYBOARD'
                       AND version = :version
+                      AND COALESCE((metadata_json->>'scene_index')::int, 1) = :scene_index
                     ORDER BY frame_index
                     """
                 ),
-                {"project_id": str(project_id), "version": batch_version},
+                {
+                    "project_id": str(project_id),
+                    "version": batch_version,
+                    "scene_index": scene_index,
+                },
             ).mappings().all()
     finally:
         engine.dispose()
@@ -465,8 +490,9 @@ def fetch_latest_storyboard_rejection_rationale(
     settings: Settings,
     *,
     pipeline_run_id: uuid.UUID,
+    scene_index: int = 1,
 ) -> str | None:
-    """Return latest STORYBOARD rejection note for regeneration (D-47)."""
+    """Return latest STORYBOARD rejection note for a scene (D-47 / D-76)."""
     engine = _engine(settings)
     try:
         with engine.begin() as conn:
@@ -477,11 +503,12 @@ def fetch_latest_storyboard_rejection_rationale(
                     WHERE pipeline_run_id = :run_id
                       AND stage = 'STORYBOARD'
                       AND decision = 'REJECTED'
+                      AND COALESCE(scene_index, 1) = :scene_index
                     ORDER BY created_at DESC
                     LIMIT 1
                     """
                 ),
-                {"run_id": str(pipeline_run_id)},
+                {"run_id": str(pipeline_run_id), "scene_index": scene_index},
             ).first()
     finally:
         engine.dispose()
@@ -639,6 +666,8 @@ def store_storyboard_batch(
     frames: list[StoryboardFrameInput],
     branch: str = "ai-draft",
     workflow_name: str = "sdxl_storyboard_production_v1",
+    scene_index: int = 1,
+    scene_count: int = 1,
 ) -> list[StoredStoryboardFrame]:
     """Persist exactly one storyboard batch atomically (D-43 / D-44).
 
@@ -690,6 +719,8 @@ def store_storyboard_batch(
                     metadata = {
                         "frame_index": frame.frame_index,
                         "frame_count": frame_count,
+                        "scene_index": scene_index,
+                        "scene_count": scene_count,
                         "prompt": frame.prompt,
                         "shot_label": frame.shot_label,
                         "workflow": workflow_name,
@@ -759,10 +790,16 @@ def store_video_asset(
     frame_parent_ids: list[uuid.UUID],
     metadata: dict,
     branch: str = "ai-draft",
+    scene_index: int = 1,
+    scene_count: int = 1,
 ) -> StoredVideoAsset:
     """Persist exactly one VIDEO asset and frame→video lineage (D-48)."""
     if not frame_parent_ids:
         raise VideoStoreError("video lineage requires at least one frame parent")
+
+    stored_metadata = dict(metadata)
+    stored_metadata.setdefault("scene_index", scene_index)
+    stored_metadata.setdefault("scene_count", scene_count)
 
     content_hash = compute_content_hash(mp4_bytes)
     key = build_object_key(project_id, AssetStage.VIDEO, content_hash)
@@ -812,7 +849,7 @@ def store_video_asset(
                         "minio_key": key,
                         "content_hash": content_hash,
                         "branch": branch,
-                        "metadata": json.dumps(metadata),
+                        "metadata": json.dumps(stored_metadata),
                     },
                 )
 
@@ -845,6 +882,141 @@ def store_video_asset(
         content_hash=content_hash,
         minio_key=key,
         version=int(next_version),
+    )
+
+
+def _probe_wav_duration_sec(wav_bytes: bytes) -> float | None:
+    import subprocess
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "narration.wav"
+        path.write_bytes(wav_bytes)
+        try:
+            result = subprocess.run(
+                [
+                    "ffprobe",
+                    "-v",
+                    "error",
+                    "-show_entries",
+                    "format=duration",
+                    "-of",
+                    "default=noprint_wrappers=1:nokey=1",
+                    str(path),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            return round(float(result.stdout.strip()), 3)
+        except Exception:
+            return None
+
+
+def store_narration_asset(
+    settings: Settings,
+    *,
+    project_id: uuid.UUID,
+    pipeline_run_id: uuid.UUID,
+    wav_bytes: bytes,
+    metadata: dict,
+    branch: str = "ai-draft",
+    scene_index: int = 1,
+    scene_count: int = 1,
+    script_parent_id: uuid.UUID | None = None,
+) -> StoredNarrationAsset:
+    """Persist scene narration WAV (Phase 5 / D-80)."""
+    stored_metadata = dict(metadata)
+    stored_metadata.setdefault("scene_index", scene_index)
+    stored_metadata.setdefault("scene_count", scene_count)
+    duration_sec = _probe_wav_duration_sec(wav_bytes)
+    if duration_sec is not None:
+        stored_metadata["duration_sec"] = duration_sec
+
+    content_hash = compute_content_hash(wav_bytes)
+    key = build_object_key(project_id, AssetStage.NARRATION, content_hash)
+    asset_id = uuid.uuid4()
+    client = _minio_client(settings)
+
+    try:
+        client.put_object(
+            settings.minio_bucket,
+            key,
+            io.BytesIO(wav_bytes),
+            length=len(wav_bytes),
+            content_type="audio/wav",
+        )
+
+        engine = _engine(settings)
+        try:
+            with engine.begin() as conn:
+                next_version = conn.execute(
+                    text(
+                        """
+                        SELECT COALESCE(MAX(version), 0) + 1 AS next_version
+                        FROM asset_versions
+                        WHERE project_id = :project_id AND stage = 'NARRATION'
+                        """
+                    ),
+                    {"project_id": str(project_id)},
+                ).scalar_one()
+
+                conn.execute(
+                    text(
+                        """
+                        INSERT INTO asset_versions (
+                            id, project_id, pipeline_run_id, stage, version,
+                            minio_key, content_hash, is_ai_generated, branch, metadata_json
+                        ) VALUES (
+                            :id, :project_id, :pipeline_run_id, 'NARRATION', :version,
+                            :minio_key, :content_hash, TRUE, :branch, CAST(:metadata AS jsonb)
+                        )
+                        """
+                    ),
+                    {
+                        "id": str(asset_id),
+                        "project_id": str(project_id),
+                        "pipeline_run_id": str(pipeline_run_id),
+                        "version": next_version,
+                        "minio_key": key,
+                        "content_hash": content_hash,
+                        "branch": branch,
+                        "metadata": json.dumps(stored_metadata),
+                    },
+                )
+
+                if script_parent_id is not None:
+                    conn.execute(
+                        text(
+                            """
+                            INSERT INTO lineage_edges (id, parent_id, child_id)
+                            VALUES (:id, :parent_id, :child_id)
+                            ON CONFLICT (parent_id, child_id) DO NOTHING
+                            """
+                        ),
+                        {
+                            "id": str(uuid.uuid4()),
+                            "parent_id": str(script_parent_id),
+                            "child_id": str(asset_id),
+                        },
+                    )
+        finally:
+            engine.dispose()
+    except Exception as exc:
+        try:
+            client.remove_object(settings.minio_bucket, key)
+        except Exception:
+            pass
+        raise NarrationStoreError(str(exc)) from exc
+
+    return StoredNarrationAsset(
+        asset_version_id=asset_id,
+        content_hash=content_hash,
+        minio_key=key,
+        version=int(next_version),
+        duration_sec=duration_sec,
     )
 
 

@@ -2,12 +2,14 @@
 
 from aimpos_core.enums.approval import ApprovalDecision
 from aimpos_core.enums.asset import AssetStage
+from aimpos_core.enums.episode import EpisodeStatus
 from aimpos_core.enums.pipeline import PipelineRunStatus, PipelineStage
 from aimpos_core.enums.project import ProjectStatus
 
 __all__ = [
     "ApprovalDecision",
     "AssetStage",
+    "EpisodeStatus",
     "PipelineRunStatus",
     "PipelineStage",
     "ProjectStatus",

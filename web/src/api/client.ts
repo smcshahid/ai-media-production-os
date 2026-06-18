@@ -11,6 +11,8 @@ import type {
   AssetHistoryResponse,
   AuditTrailResponse,
   AssetVersion,
+  EpisodeCreateResponse,
+  EpisodeListResponse,
   IdeaCreateBody,
   LineageResponse,
   PipelineApproveResponse,
@@ -118,8 +120,32 @@ export function listProjects(): Promise<Project[]> {
   return request<Project[]>("/projects");
 }
 
-export function getPipelineStatus(projectId: string): Promise<PipelineStatus> {
-  return request<PipelineStatus>(`/pipeline/status?project_id=${encodeURIComponent(projectId)}`);
+export function getPipelineStatus(
+  projectId: string,
+  episodeId?: string | null,
+): Promise<PipelineStatus> {
+  const params = new URLSearchParams({ project_id: projectId });
+  if (episodeId) {
+    params.set("episode_id", episodeId);
+  }
+  return request<PipelineStatus>(`/pipeline/status?${params.toString()}`);
+}
+
+export function listEpisodes(projectId: string): Promise<EpisodeListResponse> {
+  return request<EpisodeListResponse>(
+    `/episodes?project_id=${encodeURIComponent(projectId)}`,
+  );
+}
+
+export function createEpisode(
+  projectId: string,
+  title?: string,
+): Promise<EpisodeCreateResponse> {
+  return request<EpisodeCreateResponse>("/episodes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ project_id: projectId, title: title ?? null }),
+  });
 }
 
 export function listPipelineRuns(projectId: string): Promise<PipelineRunListResponse> {
@@ -128,11 +154,22 @@ export function listPipelineRuns(projectId: string): Promise<PipelineRunListResp
   );
 }
 
-export function startPipeline(projectId: string): Promise<PipelineStartResponse> {
+export function startPipeline(
+  projectId: string,
+  sceneCount = 1,
+  episodeId?: string | null,
+): Promise<PipelineStartResponse> {
+  const body: Record<string, unknown> = {
+    project_id: projectId,
+    scene_count: sceneCount,
+  };
+  if (episodeId) {
+    body.episode_id = episodeId;
+  }
   return request<PipelineStartResponse>("/pipeline/start", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ project_id: projectId }),
+    body: JSON.stringify(body),
   });
 }
 

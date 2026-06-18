@@ -1,8 +1,9 @@
-"""Screenwriter LangGraph nodes (US-14)."""
+"""Screenwriter LangGraph nodes (US-14 / Phase 4 multi-scene)."""
 
 from __future__ import annotations
 
 from aimpos_config import Settings
+from aimpos_core.scene import MAX_SCENES, MIN_SCENES
 
 from app.agents.screenwriter.constants import MIN_SCRIPT_CHARS, PROMPT_VERSION
 from app.agents.screenwriter.state import ScreenwriterState
@@ -16,7 +17,10 @@ def load_story_context_node(state: ScreenwriterState) -> ScreenwriterState:
     story = (state.get("story_text") or "").strip()
     if not story:
         return {**state, "error": "story_text is empty"}
-    return state
+    scene_count = int(state.get("scene_count") or 1)
+    if scene_count < MIN_SCENES or scene_count > MAX_SCENES:
+        return {**state, "error": f"scene_count out of range {MIN_SCENES}-{MAX_SCENES}"}
+    return {**state, "scene_count": scene_count}
 
 
 def draft_script_node(state: ScreenwriterState, settings: Settings) -> ScreenwriterState:
@@ -24,7 +28,24 @@ def draft_script_node(state: ScreenwriterState, settings: Settings) -> Screenwri
         return state
 
     prompt_cfg = load_script_prompt(settings, version=PROMPT_VERSION)
-    user_prompt = prompt_cfg["user_template"].format(story_text=state["story_text"].strip())
+    scene_count = int(state.get("scene_count") or 1)
+    scene_word = "ONE SCENE" if scene_count == 1 else f"EXACTLY {scene_count} SCENES"
+    scene_rules = (
+        "- Exactly one scene heading line starting with INT. or EXT. (e.g. INT. LOCATION - TIME)\n"
+        "- Do NOT write a second scene heading"
+        if scene_count == 1
+        else (
+            f"- Exactly {scene_count} scene heading lines (INT. or EXT. …)\n"
+            "- Each scene must have action and at least one character cue with dialogue\n"
+            "- Separate scenes with blank lines; do not merge scenes"
+        )
+    )
+
+    user_prompt = prompt_cfg["user_template"].format(
+        story_text=state["story_text"].strip(),
+        scene_word=scene_word,
+        scene_rules=scene_rules,
+    )
 
     rejection_note = (state.get("rejection_note") or "").strip()
     revision_block = ""
@@ -65,8 +86,9 @@ def finalize_script_node(state: ScreenwriterState) -> ScreenwriterState:
     if len(script) < MIN_SCRIPT_CHARS:
         return {**state, "error": f"script output too short ({len(script)} chars)"}
 
+    scene_count = int(state.get("scene_count") or 1)
     try:
-        require_valid_fountain(script)
+        require_valid_fountain(script, expected_scene_count=scene_count)
     except ValueError as exc:
         return {**state, "error": str(exc)}
 

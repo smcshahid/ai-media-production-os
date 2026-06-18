@@ -38,8 +38,15 @@ _STORY_CONTENT_TYPE = "text/markdown; charset=utf-8"
 _SCRIPT_CONTENT_TYPE = "text/plain; charset=utf-8"
 _STORYBOARD_CONTENT_TYPE = "image/png"
 _VIDEO_CONTENT_TYPE = "video/mp4"
+_NARRATION_CONTENT_TYPE = "audio/wav"
 _READABLE_STAGES = frozenset(
-    {AssetStage.STORY, AssetStage.SCRIPT, AssetStage.STORYBOARD, AssetStage.VIDEO}
+    {
+        AssetStage.STORY,
+        AssetStage.SCRIPT,
+        AssetStage.STORYBOARD,
+        AssetStage.VIDEO,
+        AssetStage.NARRATION,
+    }
 )
 
 
@@ -188,6 +195,7 @@ async def read_asset_history(
                 _SCRIPT_CONTENT_TYPE: {},
                 _STORYBOARD_CONTENT_TYPE: {},
                 _VIDEO_CONTENT_TYPE: {},
+                _NARRATION_CONTENT_TYPE: {},
             }
         }
     },
@@ -217,6 +225,8 @@ async def get_asset_content(
         media_type = _STORYBOARD_CONTENT_TYPE
     elif row.stage == AssetStage.VIDEO:
         media_type = _VIDEO_CONTENT_TYPE
+    elif row.stage == AssetStage.NARRATION:
+        media_type = _NARRATION_CONTENT_TYPE
     else:
         media_type = _STORY_CONTENT_TYPE
     return Response(content=data, media_type=media_type)

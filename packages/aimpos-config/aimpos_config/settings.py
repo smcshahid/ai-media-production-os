@@ -102,6 +102,24 @@ class Settings(BaseSettings):
         default=1200.0, validation_alias="VIDEO_I2V_TIMEOUT_S"
     )
 
+    # --- Multi-scene pilot (Phase 4 / SCR-2026-002) ---
+    multi_scene_enabled: bool = Field(default=True, validation_alias="MULTI_SCENE_ENABLED")
+    multi_scene_max: int = Field(default=3, validation_alias="MULTI_SCENE_MAX")
+
+    # --- Audio narration (Phase 5 / SCR-2026-003) ---
+    narration_enabled: bool = Field(default=True, validation_alias="NARRATION_ENABLED")
+    narration_tts_provider: str = Field(
+        default="espeak", validation_alias="NARRATION_TTS_PROVIDER"
+    )
+    narration_tts_host: str = Field(
+        default="http://speaches:8000", validation_alias="NARRATION_TTS_HOST"
+    )
+    narration_tts_voice: str = Field(default="en", validation_alias="NARRATION_TTS_VOICE")
+    narration_tts_timeout_s: float = Field(
+        default=120.0, validation_alias="NARRATION_TTS_TIMEOUT_S"
+    )
+    narration_espeak_rate: int = Field(default=150, validation_alias="NARRATION_ESPEAK_RATE")
+
     # --- Config bundle (prompts, model pins) ---
     config_root: str = Field(default="/srv/configs", validation_alias="AIMPOS_CONFIG_ROOT")
 

@@ -15,8 +15,32 @@ export interface PipelineStatus {
   /** Run status (PENDING/RUNNING/...) or the "IDLE" sentinel when no run exists. */
   status: string;
   current_stage: string | null;
+  current_scene_index?: number | null;
+  scene_count?: number | null;
+  episode_id?: string | null;
+  episode_number?: number | null;
+  episode_title?: string | null;
   stages: string[];
   updated_at: string | null;
+}
+
+export interface Episode {
+  id: string;
+  project_id: string;
+  episode_number: number;
+  title: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EpisodeListResponse {
+  project_id: string;
+  episodes: Episode[];
+}
+
+export interface EpisodeCreateResponse {
+  episode: Episode;
 }
 
 export interface PipelineStartResponse {
@@ -25,6 +49,8 @@ export interface PipelineStartResponse {
   workflow_id: string;
   status: string;
   current_stage: string | null;
+  scene_count: number;
+  episode_id?: string | null;
 }
 
 export interface PipelineApproveResponse {
@@ -141,6 +167,8 @@ export interface AuditTrailResponse {
 export interface PipelineRunSummary {
   run_id: string;
   project_id: string;
+  episode_id?: string | null;
+  episode_number?: number | null;
   status: string;
   current_stage: string | null;
   temporal_workflow_id: string | null;
