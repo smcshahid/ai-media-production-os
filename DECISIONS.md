@@ -530,3 +530,21 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** Export uses **`manifest_version=5`** when run has non-empty `character_ids`. Top-level **`characters[]`** mirrors profile fields. **v1/v2/v3/v4 unchanged** when no characters bound. v5 may co-exist with episode and narration fields (v4 layout + character metadata).
 **Rationale:** Backward-compatible version ladder; v5 consumers detect character metadata in portable exports.
 **Verification:** `api/app/domain/export/manifest.py`; `api/tests/unit/test_character_export.py`; US-V08 PATH D.
+
+### D-93 — Phase 7.5 — Export-time character snapshot (TD-P7-01)
+**Date:** 2026-06-18
+**Decision:** `pipeline_runs.character_snapshot` JSON stores immutable character profiles at **`POST /pipeline/start`**. Export and worker continuity read snapshot first; live `characters` rows are fallback for legacy runs only. Alembic **0007** additive only.
+**Rationale:** Historical exports remain reproducible after character edit/delete; closes TD-P7-01 without graph/memory infrastructure.
+**Verification:** `api/alembic/versions/0007_character_snapshot.py`; `api/tests/unit/test_character_snapshot_export.py`; US-V08B PATH E.
+
+### D-94 — Phase 7.5 — Governed character delete
+**Date:** 2026-06-18
+**Decision:** `DELETE /characters/{id}` removes project-scoped characters when **not** bound to an active pipeline run (`PENDING`, `RUNNING`, `AWAITING_APPROVAL`). Completed runs retain export fidelity via snapshot.
+**Rationale:** Production character lifecycle without orphaning in-flight workflows.
+**Verification:** `api/app/routes/characters.py`; `api/tests/unit/test_character_snapshot_export.py`; US-V08B PATH D/E.
+
+### D-95 — Phase 7.5 — Character UX completion
+**Date:** 2026-06-18
+**Decision:** Dashboard `CharacterPanel` supports **create, view, edit, delete, select** for the five pilot fields only. No memory, chat, or agent behaviors.
+**Rationale:** WP-1 production readiness without scope expansion.
+**Verification:** `web/src/components/CharacterPanel.tsx`; US-V08B PATH D.

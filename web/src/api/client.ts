@@ -172,6 +172,16 @@ export function createCharacter(body: {
   });
 }
 
+export function deleteCharacter(
+  characterId: string,
+  projectId: string,
+): Promise<void> {
+  return request<void>(
+    `/characters/${encodeURIComponent(characterId)}?project_id=${encodeURIComponent(projectId)}`,
+    { method: "DELETE" },
+  );
+}
+
 export function updateCharacter(
   characterId: string,
   projectId: string,

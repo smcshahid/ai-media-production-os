@@ -23,6 +23,7 @@ def test_format_character_bible_includes_fields() -> None:
     assert "protagonist" in text
     assert "lab coat" in text
     assert "Curious" in text
+    assert "all scenes and episodes" in text
 
 
 def test_max_characters_constant() -> None:

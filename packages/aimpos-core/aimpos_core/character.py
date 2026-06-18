@@ -32,5 +32,7 @@ def format_character_bible(profiles: list[dict[str, str]]) -> str:
     return (
         "## Character Bible (maintain consistency)\n\n"
         + "\n\n".join(blocks)
-        + "\n\nKeep character names, roles, visual traits, and personality consistent in this output."
+        + "\n\nMaintain exact character names, roles, visual traits, and personality across "
+        "all scenes and episodes. Do not rename, redesign, merge, or omit listed characters. "
+        "Reference only the traits documented above."
     )

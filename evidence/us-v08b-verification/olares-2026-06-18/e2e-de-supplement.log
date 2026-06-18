@@ -1,0 +1,6 @@
+2026-06-18T09:35:34+00:00 ========== PATH D supplement: snapshot name isolation ==========
+2026-06-18T09:35:34+00:00 run1 snapshot name=Maya-D-a1 run2 snapshot name=Maya-D-a1
+2026-06-18T09:35:34+00:00 FAIL PATH D supplement names identical
+2026-06-18T09:55:50+00:00 ========== PATH D supplement: snapshot name isolation ==========
+2026-06-18T09:55:50+00:00 run1 snapshot name=Maya-D-a1 run2 snapshot name=Maya-D-a1
+2026-06-18T09:55:50+00:00 FAIL PATH D supplement names identical

@@ -1,0 +1,769 @@
+2026-06-18T08:55:58+00:00 US-V08B E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-18T08:55:58+00:00 ========== PATH A: 1 char(s) 1-scene (attempt 1) ==========
+2026-06-18T08:55:58+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T08:55:58+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T08:55:58+00:00 cleaned project characters (was 3)
+2026-06-18T08:55:58+00:00 created character id=818d2f9f-ed3a-4ac9-b473-3eaa332817e6 name=Maya-A-a1
+2026-06-18T08:55:58+00:00 created episode id=514b1d18-b88c-4628-aa49-10dc410bea66 number=56 title=US-V08B Path A Episode
+{"id":"a28132ba-0325-46f6-912a-4bf5a5759665","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":90,"content_hash":"2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T08:55:58.981776"}
+2026-06-18T08:55:59+00:00 start http=201 run_id=adf931ba-b63e-4fb1-aa19-cbe8b432d7b3 episode_id=514b1d18-b88c-4628-aa49-10dc410bea66 chars=1
+2026-06-18T08:55:59+00:00   poll status=RUNNING stage=STORY scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:56:14+00:00   poll status=RUNNING stage=STORY scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:56:29+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"adf931ba-b63e-4fb1-aa19-cbe8b432d7b3","approval_id":"d39b5ead-2b1d-4d71-b719-0ac2597c8fb6","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T08:56:29+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:56:39+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:56:54+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"adf931ba-b63e-4fb1-aa19-cbe8b432d7b3","approval_id":"8fc73acc-3c50-424b-9b2e-51ea520be639","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T08:56:54+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T08:56:54+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:57:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:57:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:57:34+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:57:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:58:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:58:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:58:34+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:58:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:59:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:59:19+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"adf931ba-b63e-4fb1-aa19-cbe8b432d7b3","approval_id":"f49b3f87-4702-482f-a7a4-c6a431b6f07c","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T08:59:19+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T08:59:19+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:59:29+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"adf931ba-b63e-4fb1-aa19-cbe8b432d7b3","approval_id":"75dc22ef-7676-4d83-952d-29fa1002a094","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T08:59:29+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:59:44+00:00   poll status=COMPLETED stage=null scene=null ep=514b1d18-b88c-4628-aa49-10dc410bea66
+2026-06-18T08:59:44+00:00 export manifest_version=5 size=16516629 chars=1
+2026-06-18T08:59:44+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T08:59:45+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T08:59:45+00:00 run character_ids count=1 (expect 1)
+2026-06-18T08:59:45+00:00 run character_snapshot count=1 (expect 1)
+2026-06-18T08:59:45+00:00 PASS PATH A character run adf931ba-b63e-4fb1-aa19-cbe8b432d7b3 ep=56 chars=1
+2026-06-18T08:59:45+00:00 ========== PATH B: 3 char(s) 3-scene (attempt 1) ==========
+2026-06-18T08:59:45+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T08:59:45+00:00 project idle (no active runs)
+DELETE 1
+2026-06-18T08:59:45+00:00 cleaned project characters (was 1)
+2026-06-18T08:59:46+00:00 created character id=089dc047-fd14-4f3b-9e5b-d3acac2c49db name=Maya-B-a1
+2026-06-18T08:59:46+00:00 created character id=0d4a0f9c-6218-49f8-9b3a-85a26ddb784f name=Eli-B-a1
+2026-06-18T08:59:46+00:00 created character id=28b86ba6-b741-47e9-8025-10aa3b41326c name=Jordan-B-a1
+2026-06-18T08:59:46+00:00 created episode id=ee74d2ac-9b2f-4531-95ae-1160e346406e number=57 title=US-V08B Path B Episode
+{"id":"45c59257-8a6d-4420-a1db-e50e315ce70b","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":91,"content_hash":"016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T08:59:46.108274"}
+2026-06-18T08:59:46+00:00 start http=201 run_id=959ab565-2336-405d-9fe5-8110325a1a8d episode_id=ee74d2ac-9b2f-4531-95ae-1160e346406e chars=3
+2026-06-18T08:59:46+00:00   poll status=RUNNING stage=STORY scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:00:01+00:00   poll status=RUNNING stage=STORY scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:00:16+00:00   poll status=RUNNING stage=STORY scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:00:31+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"ceb9ebb0-b54f-471d-b644-9ffaf9ddd922","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T09:00:31+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:00:41+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:00:56+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:01:11+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"f5dd268a-80dc-4b76-bbb4-61efafba45a0","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T09:01:11+00:00 --- Scene 1 / 3 STORYBOARD ---
+2026-06-18T09:01:11+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:01:21+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:01:36+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:01:51+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:02:06+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:02:21+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:02:36+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:02:51+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:03:06+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:03:21+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:03:36+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"20833710-f93e-410d-ad72-0906826ffa12","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T09:03:36+00:00 --- Scene 1 / 3 VIDEO (narration) ---
+2026-06-18T09:03:36+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:03:46+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"7894275f-0ed0-4183-b3dc-f7e41b61a100","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T09:03:46+00:00 --- Scene 2 / 3 STORYBOARD ---
+2026-06-18T09:03:46+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:03:56+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:04:11+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:04:26+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:04:41+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:04:56+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:05:11+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:05:26+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:05:41+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:05:56+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:06:11+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"0fd230be-c5e1-4ef9-95ea-e130ba2ba9f6","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":2}
+2026-06-18T09:06:11+00:00 --- Scene 2 / 3 VIDEO (narration) ---
+2026-06-18T09:06:11+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:06:21+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"7c8f4482-5f56-4555-ad5f-9a3a5c45174f","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":2}
+2026-06-18T09:06:21+00:00 --- Scene 3 / 3 STORYBOARD ---
+2026-06-18T09:06:21+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:06:31+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:06:46+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:07:01+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:07:16+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:07:31+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:07:46+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:08:01+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:08:16+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:08:32+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:08:47+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"42ea4736-b2ad-4cc2-9e04-7449bd90fb39","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":3}
+2026-06-18T09:08:47+00:00 --- Scene 3 / 3 VIDEO (narration) ---
+2026-06-18T09:08:47+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:08:57+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"959ab565-2336-405d-9fe5-8110325a1a8d","approval_id":"4f0eac06-d8f6-4057-95fd-437784f37157","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":3}
+2026-06-18T09:08:57+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3 ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:09:12+00:00   poll status=COMPLETED stage=null scene=null ep=ee74d2ac-9b2f-4531-95ae-1160e346406e
+2026-06-18T09:09:12+00:00 export manifest_version=5 size=45182725 chars=3
+2026-06-18T09:09:13+00:00 NARRATION assets for run: 3 (expect >= 3)
+2026-06-18T09:09:13+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T09:09:13+00:00 run character_ids count=3 (expect 3)
+2026-06-18T09:09:13+00:00 run character_snapshot count=3 (expect 3)
+2026-06-18T09:09:13+00:00 PASS PATH B character run 959ab565-2336-405d-9fe5-8110325a1a8d ep=57 chars=3
+2026-06-18T09:09:13+00:00 ========== PATH C: multi-episode with 3 characters ==========
+2026-06-18T09:09:13+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 1) ==========
+2026-06-18T09:09:13+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T09:09:13+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T09:09:14+00:00 cleaned project characters (was 3)
+2026-06-18T09:09:14+00:00 created character id=603d587e-1ff5-4909-81b8-4ceaad6e64c0 name=Maya-C1-a1
+2026-06-18T09:09:14+00:00 created character id=8f8fcb1a-dbc5-4780-8085-486b9783bce0 name=Eli-C1-a1
+2026-06-18T09:09:14+00:00 created character id=6c176286-7874-47fe-94d9-afd44588a34a name=Jordan-C1-a1
+2026-06-18T09:09:14+00:00 created episode id=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4 number=58 title=US-V08B Path C Episode 1
+{"id":"9ce5ffe0-d121-43cd-acc2-a4d6e4a96ec5","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":92,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T09:09:14.246150"}
+2026-06-18T09:09:14+00:00 start http=201 run_id=19aa82c2-18e7-44b6-b022-f70cf7b4d152 episode_id=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4 chars=3
+2026-06-18T09:09:14+00:00   poll status=RUNNING stage=STORY scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:09:29+00:00   poll status=RUNNING stage=STORY scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:09:44+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"19aa82c2-18e7-44b6-b022-f70cf7b4d152","approval_id":"d7c047f3-83b9-4263-ab08-2854189fd67e","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T09:09:44+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:09:54+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:10:09+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"19aa82c2-18e7-44b6-b022-f70cf7b4d152","approval_id":"b63f630a-7bd7-497a-aa93-3b547f75cab7","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T09:10:09+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T09:10:09+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:10:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:10:34+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:10:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:11:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:11:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:11:34+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:11:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:12:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:12:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:12:34+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"19aa82c2-18e7-44b6-b022-f70cf7b4d152","approval_id":"9f194063-36ef-43c6-a763-97022c1f6e99","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T09:12:34+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T09:12:34+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:12:44+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"19aa82c2-18e7-44b6-b022-f70cf7b4d152","approval_id":"d3882862-13d0-45c7-a329-2291a2d8a2a5","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T09:12:44+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:12:59+00:00   poll status=COMPLETED stage=null scene=null ep=71ccef86-5cc6-4b83-ba59-4860ecdeb8f4
+2026-06-18T09:13:00+00:00 export manifest_version=5 size=16642256 chars=3
+2026-06-18T09:13:00+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T09:13:00+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T09:13:00+00:00 run character_ids count=3 (expect 3)
+2026-06-18T09:13:00+00:00 run character_snapshot count=3 (expect 3)
+2026-06-18T09:13:00+00:00 PASS PATH C1 character run 19aa82c2-18e7-44b6-b022-f70cf7b4d152 ep=58 chars=3
+2026-06-18T09:13:00+00:00 ========== PATH C2: 3 char(s) 1-scene (attempt 1) ==========
+2026-06-18T09:13:00+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T09:13:01+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T09:13:01+00:00 cleaned project characters (was 3)
+2026-06-18T09:13:01+00:00 created character id=a5a40d82-5204-4ffa-9ce9-2d94fa0a63fa name=Maya-C2-a1
+2026-06-18T09:13:01+00:00 created character id=b7b077f1-8ecf-4757-b6ad-245d2a1430d2 name=Eli-C2-a1
+2026-06-18T09:13:01+00:00 created character id=8e4e6138-4780-444a-95c6-dcb2651a7181 name=Jordan-C2-a1
+2026-06-18T09:13:01+00:00 created episode id=1ae7189d-0aa8-435f-94aa-a8561a01ffc0 number=59 title=US-V08B Path C Episode 2
+{"id":"67069aca-4e5a-44c6-834b-5915031ea271","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":93,"content_hash":"4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T09:13:01.385938"}
+2026-06-18T09:13:01+00:00 start http=201 run_id=67d00c52-3446-4d42-bc28-8a1b7f90fad4 episode_id=1ae7189d-0aa8-435f-94aa-a8561a01ffc0 chars=3
+2026-06-18T09:13:01+00:00   poll status=RUNNING stage=STORY scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:13:16+00:00   poll status=RUNNING stage=STORY scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:13:31+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"67d00c52-3446-4d42-bc28-8a1b7f90fad4","approval_id":"f46e55aa-fee6-4fcf-9c78-2490b75792c9","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T09:13:31+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:13:41+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:13:56+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"67d00c52-3446-4d42-bc28-8a1b7f90fad4","approval_id":"5ae866e7-4d59-417c-b9a9-e6c603f2be9f","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T09:13:56+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T09:13:56+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:14:06+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:14:21+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:14:36+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:14:51+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:15:06+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:15:21+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:15:36+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:15:51+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:16:06+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:16:21+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"67d00c52-3446-4d42-bc28-8a1b7f90fad4","approval_id":"68c8a500-2ca1-46d2-99e9-c0c0c99696cb","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T09:16:21+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T09:16:21+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:16:31+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"67d00c52-3446-4d42-bc28-8a1b7f90fad4","approval_id":"c033eca2-c2ef-41d5-9ff3-719fbe7642a1","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T09:16:31+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:16:46+00:00   poll status=COMPLETED stage=null scene=null ep=1ae7189d-0aa8-435f-94aa-a8561a01ffc0
+2026-06-18T09:16:47+00:00 export manifest_version=5 size=15634374 chars=3
+2026-06-18T09:16:47+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T09:16:47+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T09:16:47+00:00 run character_ids count=3 (expect 3)
+2026-06-18T09:16:47+00:00 run character_snapshot count=3 (expect 3)
+2026-06-18T09:16:47+00:00 PASS PATH C2 character run 67d00c52-3446-4d42-bc28-8a1b7f90fad4 ep=59 chars=3
+2026-06-18T09:16:47+00:00 PATH C episode count=59 (expect >= 2 for C1+C2)
+2026-06-18T09:16:47+00:00 PASS PATH C multi-episode character continuity ep1=58 ep2=59
+2026-06-18T09:16:47+00:00 ========== PATH D: character edit lifecycle ==========
+2026-06-18T09:16:47+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T09:16:48+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T09:16:48+00:00 cleaned project characters (was 3)
+2026-06-18T09:16:48+00:00 created character id=f01f12ce-a5e0-4ed7-ab10-bf68db4c2a39 name=Maya-D-a1
+2026-06-18T09:16:48+00:00 created episode id=3b602aa2-4491-456f-b0d8-32b3129272d8 number=60 title=US-V08B Path D Run1
+{"id":"0908d09b-e190-4e74-af1e-9e2e55b95f41","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":94,"content_hash":"af38804c042ee935c898ca8b669e856426c179a86c90b631bdfefdf88b6e9dac","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/af38804c042ee935c898ca8b669e856426c179a86c90b631bdfefdf88b6e9dac","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T09:16:48.679244"}
+2026-06-18T09:16:48+00:00   poll status=RUNNING stage=STORY scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:17:03+00:00   poll status=RUNNING stage=STORY scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:17:18+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"5d99fc7b-2a59-4b59-be86-f048b4cdd9d4","approval_id":"ed6e43c9-513d-44cf-a6e9-95aaa832b294","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T09:17:18+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:17:28+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:17:43+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"5d99fc7b-2a59-4b59-be86-f048b4cdd9d4","approval_id":"ea0fd414-6d0f-4797-8283-e14ea6762b68","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T09:17:43+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:17:53+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:18:08+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:18:23+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:18:38+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:18:53+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:19:08+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:19:23+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:19:38+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:19:54+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:20:09+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"5d99fc7b-2a59-4b59-be86-f048b4cdd9d4","approval_id":"33ff1865-bfbf-40cd-a963-ede710d00ccf","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T09:20:09+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:20:19+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"5d99fc7b-2a59-4b59-be86-f048b4cdd9d4","approval_id":"1b2f4e43-1d55-4a8a-8305-eede5f95133b","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T09:20:19+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:20:34+00:00   poll status=COMPLETED stage=null scene=null ep=3b602aa2-4491-456f-b0d8-32b3129272d8
+2026-06-18T09:20:34+00:00 export manifest_version=5 size=16594486 chars=1
+2026-06-18T09:20:34+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T09:20:34+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T09:20:34+00:00 run character_ids count=1 (expect 1)
+2026-06-18T09:20:34+00:00 run character_snapshot count=1 (expect 1)
+2026-06-18T09:20:35+00:00 PASS PATH D1 character run 5d99fc7b-2a59-4b59-be86-f048b4cdd9d4 ep=60 chars=1
+2026-06-18T09:20:35+00:00 created episode id=4943dadd-b11c-4090-94db-cfc1db03d2a1 number=61 title=US-V08B Path D Run2
+{"id":"188c08c7-178b-4b65-aaa5-5366a9969990","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":95,"content_hash":"d4d7167e6dd204a3ed362a91773577695f28731503000f89edc371db310990c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/d4d7167e6dd204a3ed362a91773577695f28731503000f89edc371db310990c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T09:20:35.074074"}
+2026-06-18T09:20:35+00:00   poll status=RUNNING stage=STORY scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:20:50+00:00   poll status=RUNNING stage=STORY scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:21:05+00:00   poll status=RUNNING stage=STORY scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:21:20+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6a92786-6e55-499d-9d15-39153af62f81","approval_id":"cbb358a2-36ee-4ef3-b8e0-b4f5c985930b","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T09:21:20+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:21:30+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:21:45+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6a92786-6e55-499d-9d15-39153af62f81","approval_id":"1fca5495-6b0c-4999-99eb-2ca7ef0027af","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T09:21:45+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:21:55+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:22:10+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:22:25+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:22:40+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:22:55+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:23:10+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:23:25+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:23:40+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:23:55+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:24:10+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6a92786-6e55-499d-9d15-39153af62f81","approval_id":"cd6173fc-6956-46a9-88a1-868272e65430","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T09:24:10+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:24:20+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6a92786-6e55-499d-9d15-39153af62f81","approval_id":"8ee68ac3-8a12-45e0-811f-7585b6f9d3da","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T09:24:20+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:24:35+00:00   poll status=COMPLETED stage=null scene=null ep=4943dadd-b11c-4090-94db-cfc1db03d2a1
+2026-06-18T09:24:35+00:00 export manifest_version=5 size=14924524 chars=1
+2026-06-18T09:24:35+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T09:24:36+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T09:24:36+00:00 run character_ids count=1 (expect 1)
+2026-06-18T09:24:36+00:00 run character_snapshot count=1 (expect 1)
+2026-06-18T09:24:36+00:00 PASS PATH D2 character run a6a92786-6e55-499d-9d15-39153af62f81 ep=61 chars=1
+2026-06-18T09:24:36+00:00 FAIL PATH D snapshot names run1=Maya-D-a1 run2=Maya-D-a1-Edited
+2026-06-18T09:24:36+00:00 ========== PATH E: character delete after export ==========
+2026-06-18T09:24:36+00:00 FAIL PATH E missing run/char
+2026-06-18T09:24:36+00:00 ========== PATH F: platform regression ==========
+2026-06-18T09:24:36+00:00 audit=1 runs=1 episodes=61
+2026-06-18T09:24:36+00:00 ========== PATH F: backward compatibility (v1/v2/v3/v4 without characters) ==========
+2026-06-18T09:24:37+00:00 v4 episode legacy run=1e9e6246-b059-4107-b50d-c1626d5d8e84 manifest=
+2026-06-18T09:24:37+00:00 v3 narrated legacy run=e3c0d402-f623-42e7-a120-c5b284d13242 manifest=3
+2026-06-18T09:24:38+00:00 v2 multi-scene legacy run=3258cc26-d971-47d9-8c7f-b5868c2de9d4 manifest=3
+2026-06-18T09:24:38+00:00 PASS PATH F backward compatibility (v2=1 v3=1 v4=0)
+2026-06-18T09:24:38+00:00 PASS PATH F platform regression
+2026-06-18T09:24:38+00:00 DONE FAIL=1
+2026-06-18T09:25:09+00:00 US-V08B E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-18T09:25:09+00:00 ========== PATH D: character edit lifecycle ==========
+2026-06-18T09:25:09+00:00 Cancelling non-terminal active runs for project
+psql: error: connection to server on socket "/tmp/.s.PGSQL.5432" failed: FATAL:  password authentication failed for user "aimpos"
+command terminated with exit code 2
+2026-06-18T09:25:10+00:00 waiting for idle active_runs=1 (1/120)
+2026-06-18T09:25:15+00:00 waiting for idle active_runs=1 (2/120)
+2026-06-18T09:25:20+00:00 waiting for idle active_runs=1 (3/120)
+2026-06-18T09:25:25+00:00 waiting for idle active_runs=1 (4/120)
+2026-06-18T09:25:30+00:00 waiting for idle active_runs=1 (5/120)
+2026-06-18T09:25:35+00:00 waiting for idle active_runs=1 (6/120)
+2026-06-18T09:25:41+00:00 waiting for idle active_runs=1 (7/120)
+2026-06-18T09:25:46+00:00 waiting for idle active_runs=1 (8/120)
+2026-06-18T09:25:51+00:00 waiting for idle active_runs=1 (9/120)
+2026-06-18T09:25:56+00:00 waiting for idle active_runs=1 (10/120)
+2026-06-18T09:26:01+00:00 waiting for idle active_runs=1 (11/120)
+2026-06-18T09:26:06+00:00 waiting for idle active_runs=1 (12/120)
+2026-06-18T09:26:11+00:00 waiting for idle active_runs=1 (13/120)
+2026-06-18T09:26:16+00:00 waiting for idle active_runs=1 (14/120)
+2026-06-18T09:26:22+00:00 waiting for idle active_runs=1 (15/120)
+2026-06-18T09:26:27+00:00 waiting for idle active_runs=1 (16/120)
+2026-06-18T09:26:32+00:00 waiting for idle active_runs=1 (17/120)
+2026-06-18T09:26:37+00:00 waiting for idle active_runs=1 (18/120)
+2026-06-18T09:26:42+00:00 waiting for idle active_runs=1 (19/120)
+2026-06-18T09:26:47+00:00 waiting for idle active_runs=1 (20/120)
+2026-06-18T09:26:52+00:00 waiting for idle active_runs=1 (21/120)
+2026-06-18T09:26:57+00:00 waiting for idle active_runs=1 (22/120)
+2026-06-18T09:27:03+00:00 waiting for idle active_runs=1 (23/120)
+2026-06-18T09:27:08+00:00 waiting for idle active_runs=1 (24/120)
+2026-06-18T09:27:13+00:00 waiting for idle active_runs=1 (25/120)
+2026-06-18T09:27:18+00:00 waiting for idle active_runs=1 (26/120)
+2026-06-18T09:27:23+00:00 waiting for idle active_runs=1 (27/120)
+2026-06-18T09:27:28+00:00 waiting for idle active_runs=1 (28/120)
+2026-06-18T09:27:33+00:00 waiting for idle active_runs=1 (29/120)
+2026-06-18T09:27:38+00:00 waiting for idle active_runs=1 (30/120)
+2026-06-18T09:27:44+00:00 waiting for idle active_runs=1 (31/120)
+2026-06-18T09:27:49+00:00 waiting for idle active_runs=1 (32/120)
+2026-06-18T09:27:54+00:00 waiting for idle active_runs=1 (33/120)
+2026-06-18T09:27:59+00:00 waiting for idle active_runs=1 (34/120)
+2026-06-18T09:28:04+00:00 waiting for idle active_runs=1 (35/120)
+2026-06-18T09:28:09+00:00 waiting for idle active_runs=1 (36/120)
+2026-06-18T09:28:14+00:00 waiting for idle active_runs=1 (37/120)
+2026-06-18T09:28:20+00:00 waiting for idle active_runs=1 (38/120)
+2026-06-18T09:28:25+00:00 waiting for idle active_runs=1 (39/120)
+2026-06-18T09:28:30+00:00 waiting for idle active_runs=1 (40/120)
+2026-06-18T09:28:35+00:00 waiting for idle active_runs=1 (41/120)
+2026-06-18T09:28:40+00:00 waiting for idle active_runs=1 (42/120)
+2026-06-18T09:28:45+00:00 waiting for idle active_runs=1 (43/120)
+2026-06-18T09:28:50+00:00 waiting for idle active_runs=1 (44/120)
+2026-06-18T09:28:55+00:00 waiting for idle active_runs=1 (45/120)
+2026-06-18T09:29:01+00:00 waiting for idle active_runs=1 (46/120)
+2026-06-18T09:29:06+00:00 waiting for idle active_runs=1 (47/120)
+2026-06-18T09:29:11+00:00 waiting for idle active_runs=1 (48/120)
+2026-06-18T09:29:16+00:00 waiting for idle active_runs=1 (49/120)
+2026-06-18T09:29:21+00:00 waiting for idle active_runs=1 (50/120)
+2026-06-18T09:29:26+00:00 waiting for idle active_runs=1 (51/120)
+2026-06-18T09:29:31+00:00 waiting for idle active_runs=1 (52/120)
+2026-06-18T09:29:36+00:00 waiting for idle active_runs=1 (53/120)
+2026-06-18T09:29:42+00:00 waiting for idle active_runs=1 (54/120)
+2026-06-18T09:29:47+00:00 waiting for idle active_runs=1 (55/120)
+2026-06-18T09:29:52+00:00 waiting for idle active_runs=1 (56/120)
+2026-06-18T09:29:57+00:00 waiting for idle active_runs=1 (57/120)
+2026-06-18T09:30:02+00:00 waiting for idle active_runs=1 (58/120)
+2026-06-18T09:30:07+00:00 waiting for idle active_runs=1 (59/120)
+2026-06-18T09:30:12+00:00 waiting for idle active_runs=1 (60/120)
+2026-06-18T09:30:17+00:00 waiting for idle active_runs=1 (61/120)
+2026-06-18T09:30:23+00:00 waiting for idle active_runs=1 (62/120)
+2026-06-18T09:30:28+00:00 waiting for idle active_runs=1 (63/120)
+2026-06-18T09:30:33+00:00 waiting for idle active_runs=1 (64/120)
+2026-06-18T09:30:38+00:00 waiting for idle active_runs=1 (65/120)
+2026-06-18T09:30:43+00:00 waiting for idle active_runs=1 (66/120)
+2026-06-18T09:30:48+00:00 waiting for idle active_runs=1 (67/120)
+2026-06-18T09:30:53+00:00 waiting for idle active_runs=1 (68/120)
+2026-06-18T09:30:58+00:00 waiting for idle active_runs=1 (69/120)
+2026-06-18T09:31:04+00:00 waiting for idle active_runs=1 (70/120)
+2026-06-18T09:31:09+00:00 waiting for idle active_runs=1 (71/120)
+2026-06-18T09:31:14+00:00 waiting for idle active_runs=1 (72/120)
+2026-06-18T09:31:19+00:00 waiting for idle active_runs=1 (73/120)
+2026-06-18T09:31:24+00:00 waiting for idle active_runs=1 (74/120)
+2026-06-18T09:31:29+00:00 waiting for idle active_runs=1 (75/120)
+2026-06-18T09:31:34+00:00 waiting for idle active_runs=1 (76/120)
+2026-06-18T09:31:40+00:00 waiting for idle active_runs=1 (77/120)
+2026-06-18T09:31:45+00:00 waiting for idle active_runs=1 (78/120)
+2026-06-18T09:31:50+00:00 waiting for idle active_runs=1 (79/120)
+2026-06-18T09:31:55+00:00 waiting for idle active_runs=1 (80/120)
+2026-06-18T09:32:00+00:00 waiting for idle active_runs=1 (81/120)
+2026-06-18T09:32:05+00:00 waiting for idle active_runs=1 (82/120)
+2026-06-18T09:32:10+00:00 waiting for idle active_runs=1 (83/120)
+2026-06-18T09:32:15+00:00 waiting for idle active_runs=1 (84/120)
+2026-06-18T09:32:21+00:00 waiting for idle active_runs=1 (85/120)
+2026-06-18T09:32:26+00:00 waiting for idle active_runs=1 (86/120)
+2026-06-18T09:32:31+00:00 waiting for idle active_runs=1 (87/120)
+2026-06-18T09:32:36+00:00 waiting for idle active_runs=1 (88/120)
+2026-06-18T09:32:41+00:00 waiting for idle active_runs=1 (89/120)
+2026-06-18T09:32:46+00:00 waiting for idle active_runs=1 (90/120)
+2026-06-18T09:32:51+00:00 waiting for idle active_runs=1 (91/120)
+2026-06-18T09:32:56+00:00 waiting for idle active_runs=1 (92/120)
+2026-06-18T09:33:02+00:00 waiting for idle active_runs=1 (93/120)
+2026-06-18T09:33:07+00:00 waiting for idle active_runs=1 (94/120)
+2026-06-18T09:33:12+00:00 waiting for idle active_runs=1 (95/120)
+2026-06-18T09:33:17+00:00 waiting for idle active_runs=1 (96/120)
+2026-06-18T09:33:22+00:00 waiting for idle active_runs=1 (97/120)
+2026-06-18T09:33:27+00:00 waiting for idle active_runs=1 (98/120)
+2026-06-18T09:33:32+00:00 waiting for idle active_runs=1 (99/120)
+2026-06-18T09:33:38+00:00 waiting for idle active_runs=1 (100/120)
+2026-06-18T09:33:43+00:00 waiting for idle active_runs=1 (101/120)
+2026-06-18T09:33:48+00:00 waiting for idle active_runs=1 (102/120)
+2026-06-18T09:33:53+00:00 waiting for idle active_runs=1 (103/120)
+2026-06-18T09:33:58+00:00 waiting for idle active_runs=1 (104/120)
+2026-06-18T09:34:03+00:00 waiting for idle active_runs=1 (105/120)
+2026-06-18T09:34:08+00:00 waiting for idle active_runs=1 (106/120)
+2026-06-18T09:34:13+00:00 waiting for idle active_runs=1 (107/120)
+2026-06-18T09:34:19+00:00 waiting for idle active_runs=1 (108/120)
+2026-06-18T09:34:24+00:00 waiting for idle active_runs=1 (109/120)
+2026-06-18T09:34:29+00:00 waiting for idle active_runs=1 (110/120)
+2026-06-18T09:34:34+00:00 waiting for idle active_runs=1 (111/120)
+2026-06-18T09:34:39+00:00 waiting for idle active_runs=1 (112/120)
+2026-06-18T09:34:44+00:00 waiting for idle active_runs=1 (113/120)
+2026-06-18T09:34:49+00:00 waiting for idle active_runs=1 (114/120)
+2026-06-18T09:34:54+00:00 waiting for idle active_runs=1 (115/120)
+2026-06-18T09:35:00+00:00 waiting for idle active_runs=1 (116/120)
+2026-06-18T09:35:05+00:00 waiting for idle active_runs=1 (117/120)
+2026-06-18T09:35:10+00:00 waiting for idle active_runs=1 (118/120)
+2026-06-18T09:35:15+00:00 waiting for idle active_runs=1 (119/120)
+2026-06-18T09:35:20+00:00 waiting for idle active_runs=1 (120/120)
+2026-06-18T09:35:25+00:00 WARN project still has active runs after 120 polls
+psql: error: connection to server on socket "/tmp/.s.PGSQL.5432" failed: FATAL:  password authentication failed for user "aimpos"
+command terminated with exit code 2
+2026-06-18T09:35:25+00:00 cleaned project characters (was )
+2026-06-18T09:35:25+00:00 FAIL create character name=Maya-D-a1 http=401 body={"detail":"Unauthorized"}
+2026-06-18T09:35:25+00:00 Cancelling non-terminal active runs for project
+psql: error: connection to server on socket "/tmp/.s.PGSQL.5432" failed: FATAL:  password authentication failed for user "aimpos"
+command terminated with exit code 2
+2026-06-18T09:35:26+00:00 waiting for idle active_runs=1 (1/120)
+2026-06-18T09:35:31+00:00 waiting for idle active_runs=1 (2/120)
+2026-06-18T09:35:36+00:00 waiting for idle active_runs=1 (3/120)
+2026-06-18T09:35:41+00:00 waiting for idle active_runs=1 (4/120)
+2026-06-18T09:35:46+00:00 waiting for idle active_runs=1 (5/120)
+2026-06-18T09:35:51+00:00 waiting for idle active_runs=1 (6/120)
+2026-06-18T09:35:56+00:00 waiting for idle active_runs=1 (7/120)
+2026-06-18T09:36:02+00:00 waiting for idle active_runs=1 (8/120)
+2026-06-18T09:36:07+00:00 waiting for idle active_runs=1 (9/120)
+2026-06-18T09:36:12+00:00 waiting for idle active_runs=1 (10/120)
+2026-06-18T09:36:17+00:00 waiting for idle active_runs=1 (11/120)
+2026-06-18T09:36:22+00:00 waiting for idle active_runs=1 (12/120)
+2026-06-18T09:36:27+00:00 waiting for idle active_runs=1 (13/120)
+2026-06-18T09:36:32+00:00 waiting for idle active_runs=1 (14/120)
+2026-06-18T09:36:37+00:00 waiting for idle active_runs=1 (15/120)
+2026-06-18T09:36:43+00:00 waiting for idle active_runs=1 (16/120)
+2026-06-18T09:36:48+00:00 waiting for idle active_runs=1 (17/120)
+2026-06-18T09:36:53+00:00 waiting for idle active_runs=1 (18/120)
+2026-06-18T09:36:58+00:00 waiting for idle active_runs=1 (19/120)
+2026-06-18T09:37:03+00:00 waiting for idle active_runs=1 (20/120)
+2026-06-18T09:37:08+00:00 waiting for idle active_runs=1 (21/120)
+2026-06-18T09:37:13+00:00 waiting for idle active_runs=1 (22/120)
+2026-06-18T09:37:19+00:00 waiting for idle active_runs=1 (23/120)
+2026-06-18T09:37:24+00:00 waiting for idle active_runs=1 (24/120)
+2026-06-18T09:37:29+00:00 waiting for idle active_runs=1 (25/120)
+2026-06-18T09:37:34+00:00 waiting for idle active_runs=1 (26/120)
+2026-06-18T09:37:39+00:00 waiting for idle active_runs=1 (27/120)
+2026-06-18T09:37:44+00:00 waiting for idle active_runs=1 (28/120)
+2026-06-18T09:37:49+00:00 waiting for idle active_runs=1 (29/120)
+2026-06-18T09:37:54+00:00 waiting for idle active_runs=1 (30/120)
+2026-06-18T09:38:00+00:00 waiting for idle active_runs=1 (31/120)
+2026-06-18T09:38:05+00:00 waiting for idle active_runs=1 (32/120)
+2026-06-18T09:38:10+00:00 waiting for idle active_runs=1 (33/120)
+2026-06-18T09:38:15+00:00 waiting for idle active_runs=1 (34/120)
+2026-06-18T09:38:20+00:00 waiting for idle active_runs=1 (35/120)
+2026-06-18T09:38:25+00:00 waiting for idle active_runs=1 (36/120)
+2026-06-18T09:38:30+00:00 waiting for idle active_runs=1 (37/120)
+2026-06-18T09:38:35+00:00 waiting for idle active_runs=1 (38/120)
+2026-06-18T09:38:41+00:00 waiting for idle active_runs=1 (39/120)
+2026-06-18T09:38:46+00:00 waiting for idle active_runs=1 (40/120)
+2026-06-18T09:38:51+00:00 waiting for idle active_runs=1 (41/120)
+2026-06-18T09:38:56+00:00 waiting for idle active_runs=1 (42/120)
+2026-06-18T09:39:01+00:00 waiting for idle active_runs=1 (43/120)
+2026-06-18T09:39:06+00:00 waiting for idle active_runs=1 (44/120)
+2026-06-18T09:39:11+00:00 waiting for idle active_runs=1 (45/120)
+2026-06-18T09:39:16+00:00 waiting for idle active_runs=1 (46/120)
+2026-06-18T09:39:22+00:00 waiting for idle active_runs=1 (47/120)
+2026-06-18T09:39:27+00:00 waiting for idle active_runs=1 (48/120)
+2026-06-18T09:39:32+00:00 waiting for idle active_runs=1 (49/120)
+2026-06-18T09:39:37+00:00 waiting for idle active_runs=1 (50/120)
+2026-06-18T09:39:42+00:00 waiting for idle active_runs=1 (51/120)
+2026-06-18T09:39:47+00:00 waiting for idle active_runs=1 (52/120)
+2026-06-18T09:39:52+00:00 waiting for idle active_runs=1 (53/120)
+2026-06-18T09:39:58+00:00 waiting for idle active_runs=1 (54/120)
+2026-06-18T09:40:03+00:00 waiting for idle active_runs=1 (55/120)
+2026-06-18T09:40:08+00:00 waiting for idle active_runs=1 (56/120)
+2026-06-18T09:40:13+00:00 waiting for idle active_runs=1 (57/120)
+2026-06-18T09:40:18+00:00 waiting for idle active_runs=1 (58/120)
+2026-06-18T09:40:23+00:00 waiting for idle active_runs=1 (59/120)
+2026-06-18T09:40:28+00:00 waiting for idle active_runs=1 (60/120)
+2026-06-18T09:40:33+00:00 waiting for idle active_runs=1 (61/120)
+2026-06-18T09:40:39+00:00 waiting for idle active_runs=1 (62/120)
+2026-06-18T09:40:44+00:00 waiting for idle active_runs=1 (63/120)
+2026-06-18T09:40:49+00:00 waiting for idle active_runs=1 (64/120)
+2026-06-18T09:40:54+00:00 waiting for idle active_runs=1 (65/120)
+2026-06-18T09:40:59+00:00 waiting for idle active_runs=1 (66/120)
+2026-06-18T09:41:04+00:00 waiting for idle active_runs=1 (67/120)
+2026-06-18T09:41:09+00:00 waiting for idle active_runs=1 (68/120)
+2026-06-18T09:41:14+00:00 waiting for idle active_runs=1 (69/120)
+2026-06-18T09:41:20+00:00 waiting for idle active_runs=1 (70/120)
+2026-06-18T09:41:25+00:00 waiting for idle active_runs=1 (71/120)
+2026-06-18T09:41:30+00:00 waiting for idle active_runs=1 (72/120)
+2026-06-18T09:41:35+00:00 waiting for idle active_runs=1 (73/120)
+2026-06-18T09:41:40+00:00 waiting for idle active_runs=1 (74/120)
+2026-06-18T09:41:45+00:00 waiting for idle active_runs=1 (75/120)
+2026-06-18T09:41:50+00:00 waiting for idle active_runs=1 (76/120)
+2026-06-18T09:41:55+00:00 waiting for idle active_runs=1 (77/120)
+2026-06-18T09:42:01+00:00 waiting for idle active_runs=1 (78/120)
+2026-06-18T09:42:06+00:00 waiting for idle active_runs=1 (79/120)
+2026-06-18T09:42:11+00:00 waiting for idle active_runs=1 (80/120)
+2026-06-18T09:42:16+00:00 waiting for idle active_runs=1 (81/120)
+2026-06-18T09:42:21+00:00 waiting for idle active_runs=1 (82/120)
+2026-06-18T09:42:26+00:00 waiting for idle active_runs=1 (83/120)
+2026-06-18T09:42:31+00:00 waiting for idle active_runs=1 (84/120)
+2026-06-18T09:42:36+00:00 waiting for idle active_runs=1 (85/120)
+2026-06-18T09:42:42+00:00 waiting for idle active_runs=1 (86/120)
+2026-06-18T09:42:47+00:00 waiting for idle active_runs=1 (87/120)
+2026-06-18T09:42:52+00:00 waiting for idle active_runs=1 (88/120)
+2026-06-18T09:42:57+00:00 waiting for idle active_runs=1 (89/120)
+2026-06-18T09:43:02+00:00 waiting for idle active_runs=1 (90/120)
+2026-06-18T09:43:07+00:00 waiting for idle active_runs=1 (91/120)
+2026-06-18T09:43:12+00:00 waiting for idle active_runs=1 (92/120)
+2026-06-18T09:43:17+00:00 waiting for idle active_runs=1 (93/120)
+2026-06-18T09:43:23+00:00 waiting for idle active_runs=1 (94/120)
+2026-06-18T09:43:28+00:00 waiting for idle active_runs=1 (95/120)
+2026-06-18T09:43:33+00:00 waiting for idle active_runs=1 (96/120)
+2026-06-18T09:43:38+00:00 waiting for idle active_runs=1 (97/120)
+2026-06-18T09:43:43+00:00 waiting for idle active_runs=1 (98/120)
+2026-06-18T09:43:48+00:00 waiting for idle active_runs=1 (99/120)
+2026-06-18T09:43:53+00:00 waiting for idle active_runs=1 (100/120)
+2026-06-18T09:43:59+00:00 waiting for idle active_runs=1 (101/120)
+2026-06-18T09:44:04+00:00 waiting for idle active_runs=1 (102/120)
+2026-06-18T09:44:09+00:00 waiting for idle active_runs=1 (103/120)
+2026-06-18T09:44:14+00:00 waiting for idle active_runs=1 (104/120)
+2026-06-18T09:44:19+00:00 waiting for idle active_runs=1 (105/120)
+2026-06-18T09:44:24+00:00 waiting for idle active_runs=1 (106/120)
+2026-06-18T09:44:29+00:00 waiting for idle active_runs=1 (107/120)
+2026-06-18T09:44:34+00:00 waiting for idle active_runs=1 (108/120)
+2026-06-18T09:44:40+00:00 waiting for idle active_runs=1 (109/120)
+2026-06-18T09:44:45+00:00 waiting for idle active_runs=1 (110/120)
+2026-06-18T09:44:50+00:00 waiting for idle active_runs=1 (111/120)
+2026-06-18T09:44:55+00:00 waiting for idle active_runs=1 (112/120)
+2026-06-18T09:45:00+00:00 waiting for idle active_runs=1 (113/120)
+2026-06-18T09:45:05+00:00 waiting for idle active_runs=1 (114/120)
+2026-06-18T09:45:10+00:00 waiting for idle active_runs=1 (115/120)
+2026-06-18T09:45:15+00:00 waiting for idle active_runs=1 (116/120)
+2026-06-18T09:45:21+00:00 waiting for idle active_runs=1 (117/120)
+2026-06-18T09:45:26+00:00 waiting for idle active_runs=1 (118/120)
+2026-06-18T09:45:31+00:00 waiting for idle active_runs=1 (119/120)
+2026-06-18T09:45:36+00:00 waiting for idle active_runs=1 (120/120)
+2026-06-18T09:45:41+00:00 WARN project still has active runs after 120 polls
+psql: error: connection to server on socket "/tmp/.s.PGSQL.5432" failed: FATAL:  password authentication failed for user "aimpos"
+command terminated with exit code 2
+2026-06-18T09:45:41+00:00 cleaned project characters (was )
+2026-06-18T09:45:41+00:00 FAIL create character name=Maya-D-a2 http=401 body={"detail":"Unauthorized"}
+2026-06-18T09:45:41+00:00 Cancelling non-terminal active runs for project
+psql: error: connection to server on socket "/tmp/.s.PGSQL.5432" failed: FATAL:  password authentication failed for user "aimpos"
+command terminated with exit code 2
+2026-06-18T09:45:42+00:00 waiting for idle active_runs=1 (1/120)
+2026-06-18T09:45:47+00:00 waiting for idle active_runs=1 (2/120)
+2026-06-18T09:45:52+00:00 waiting for idle active_runs=1 (3/120)
+2026-06-18T09:45:57+00:00 waiting for idle active_runs=1 (4/120)
+2026-06-18T09:46:02+00:00 waiting for idle active_runs=1 (5/120)
+2026-06-18T09:46:07+00:00 waiting for idle active_runs=1 (6/120)
+2026-06-18T09:46:12+00:00 waiting for idle active_runs=1 (7/120)
+2026-06-18T09:46:18+00:00 waiting for idle active_runs=1 (8/120)
+2026-06-18T09:46:23+00:00 waiting for idle active_runs=1 (9/120)
+2026-06-18T09:46:28+00:00 waiting for idle active_runs=1 (10/120)
+2026-06-18T09:46:33+00:00 waiting for idle active_runs=1 (11/120)
+2026-06-18T09:46:38+00:00 waiting for idle active_runs=1 (12/120)
+2026-06-18T09:46:43+00:00 waiting for idle active_runs=1 (13/120)
+2026-06-18T09:46:48+00:00 waiting for idle active_runs=1 (14/120)
+2026-06-18T09:46:53+00:00 waiting for idle active_runs=1 (15/120)
+2026-06-18T09:46:59+00:00 waiting for idle active_runs=1 (16/120)
+2026-06-18T09:47:04+00:00 waiting for idle active_runs=1 (17/120)
+2026-06-18T09:47:09+00:00 waiting for idle active_runs=1 (18/120)
+2026-06-18T09:47:14+00:00 waiting for idle active_runs=1 (19/120)
+2026-06-18T09:47:19+00:00 waiting for idle active_runs=1 (20/120)
+2026-06-18T09:47:24+00:00 waiting for idle active_runs=1 (21/120)
+2026-06-18T09:47:29+00:00 waiting for idle active_runs=1 (22/120)
+2026-06-18T09:47:34+00:00 waiting for idle active_runs=1 (23/120)
+2026-06-18T09:47:39+00:00 FAIL another US-V08B E2E instance holds /tmp/usv08b-evidence/.e2e-v08b.lock
+2026-06-18T09:47:40+00:00 waiting for idle active_runs=1 (24/120)
+2026-06-18T09:47:45+00:00 waiting for idle active_runs=1 (25/120)
+2026-06-18T09:47:50+00:00 waiting for idle active_runs=1 (26/120)
+2026-06-18T09:47:55+00:00 waiting for idle active_runs=1 (27/120)
+2026-06-18T09:47:57+00:00 US-V08B E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-18T09:47:57+00:00 ========== PATH D: character edit lifecycle ==========
+2026-06-18T09:47:57+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T09:47:58+00:00 project idle (no active runs)
+DELETE 1
+2026-06-18T09:47:58+00:00 cleaned project characters (was 1)
+2026-06-18T09:47:58+00:00 created character id=250270a2-5089-49f8-bcf2-58b691c19618 name=Maya-D-a1
+2026-06-18T09:47:58+00:00 created episode id=f375a209-7c3a-4990-9c62-38a4d6c1c01c number=62 title=US-V08B Path D Run1
+{"id":"0ac95345-ecd8-419e-9920-5c585f96b158","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":96,"content_hash":"af38804c042ee935c898ca8b669e856426c179a86c90b631bdfefdf88b6e9dac","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/af38804c042ee935c898ca8b669e856426c179a86c90b631bdfefdf88b6e9dac","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T09:47:58.699923"}
+2026-06-18T09:47:58+00:00   poll status=RUNNING stage=STORY scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:48:00+00:00 waiting for idle active_runs=1 (28/120)
+2026-06-18T09:48:05+00:00 waiting for idle active_runs=1 (29/120)
+2026-06-18T09:48:10+00:00 waiting for idle active_runs=1 (30/120)
+2026-06-18T09:48:13+00:00   poll status=RUNNING stage=STORY scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:48:15+00:00 waiting for idle active_runs=1 (31/120)
+2026-06-18T09:48:21+00:00 waiting for idle active_runs=1 (32/120)
+2026-06-18T09:48:26+00:00 waiting for idle active_runs=1 (33/120)
+2026-06-18T09:48:28+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6894d3e-df8e-412b-9e13-73add88060c2","approval_id":"b37b2201-868b-44fa-b06e-3853e5d02b83","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T09:48:28+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:48:31+00:00 waiting for idle active_runs=1 (34/120)
+2026-06-18T09:48:36+00:00 waiting for idle active_runs=1 (35/120)
+2026-06-18T09:48:38+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:48:41+00:00 waiting for idle active_runs=1 (36/120)
+2026-06-18T09:48:46+00:00 waiting for idle active_runs=1 (37/120)
+2026-06-18T09:48:51+00:00 waiting for idle active_runs=1 (38/120)
+2026-06-18T09:48:53+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6894d3e-df8e-412b-9e13-73add88060c2","approval_id":"f3bc3588-3cf9-49a0-9b59-78818a236688","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T09:48:53+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:48:57+00:00 waiting for idle active_runs=1 (39/120)
+2026-06-18T09:49:02+00:00 waiting for idle active_runs=1 (40/120)
+2026-06-18T09:49:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:49:07+00:00 waiting for idle active_runs=1 (41/120)
+2026-06-18T09:49:12+00:00 waiting for idle active_runs=1 (42/120)
+2026-06-18T09:49:17+00:00 waiting for idle active_runs=1 (43/120)
+2026-06-18T09:49:18+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:49:22+00:00 waiting for idle active_runs=1 (44/120)
+2026-06-18T09:49:27+00:00 waiting for idle active_runs=1 (45/120)
+2026-06-18T09:49:32+00:00 waiting for idle active_runs=1 (46/120)
+2026-06-18T09:49:33+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:49:38+00:00 waiting for idle active_runs=1 (47/120)
+2026-06-18T09:49:43+00:00 waiting for idle active_runs=1 (48/120)
+2026-06-18T09:49:48+00:00 waiting for idle active_runs=1 (49/120)
+2026-06-18T09:49:48+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:49:53+00:00 waiting for idle active_runs=1 (50/120)
+2026-06-18T09:49:58+00:00 waiting for idle active_runs=1 (51/120)
+2026-06-18T09:50:03+00:00 waiting for idle active_runs=1 (52/120)
+2026-06-18T09:50:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:50:08+00:00 waiting for idle active_runs=1 (53/120)
+2026-06-18T09:50:14+00:00 waiting for idle active_runs=1 (54/120)
+2026-06-18T09:50:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:50:19+00:00 waiting for idle active_runs=1 (55/120)
+2026-06-18T09:50:24+00:00 waiting for idle active_runs=1 (56/120)
+2026-06-18T09:50:29+00:00 waiting for idle active_runs=1 (57/120)
+2026-06-18T09:50:34+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:50:34+00:00 waiting for idle active_runs=1 (58/120)
+2026-06-18T09:50:39+00:00 waiting for idle active_runs=1 (59/120)
+2026-06-18T09:50:44+00:00 waiting for idle active_runs=1 (60/120)
+2026-06-18T09:50:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:50:50+00:00 waiting for idle active_runs=1 (61/120)
+2026-06-18T09:50:55+00:00 waiting for idle active_runs=1 (62/120)
+2026-06-18T09:51:00+00:00 waiting for idle active_runs=1 (63/120)
+2026-06-18T09:51:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:51:05+00:00 waiting for idle active_runs=1 (64/120)
+2026-06-18T09:51:10+00:00 waiting for idle active_runs=1 (65/120)
+2026-06-18T09:51:15+00:00 waiting for idle active_runs=1 (66/120)
+2026-06-18T09:51:19+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6894d3e-df8e-412b-9e13-73add88060c2","approval_id":"b850a02d-4c8e-413e-9d42-cb1320f60cca","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T09:51:19+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:51:20+00:00 waiting for idle active_runs=1 (67/120)
+2026-06-18T09:51:25+00:00 waiting for idle active_runs=1 (68/120)
+2026-06-18T09:51:29+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"a6894d3e-df8e-412b-9e13-73add88060c2","approval_id":"afb6968e-0948-4739-a7a6-47be6ad6c9fe","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T09:51:29+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:51:31+00:00 waiting for idle active_runs=1 (69/120)
+2026-06-18T09:51:36+00:00 waiting for idle active_runs=1 (70/120)
+2026-06-18T09:51:41+00:00 waiting for idle active_runs=1 (71/120)
+2026-06-18T09:51:44+00:00   poll status=COMPLETED stage=null scene=null ep=f375a209-7c3a-4990-9c62-38a4d6c1c01c
+2026-06-18T09:51:44+00:00 export manifest_version=5 size=13896510 chars=1
+2026-06-18T09:51:44+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T09:51:44+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T09:51:44+00:00 run character_ids count=1 (expect 1)
+2026-06-18T09:51:44+00:00 run character_snapshot count=1 (expect 1)
+2026-06-18T09:51:45+00:00 PASS PATH D1 character run a6894d3e-df8e-412b-9e13-73add88060c2 ep=62 chars=1
+{"character":{"id":"250270a2-5089-49f8-bcf2-58b691c19618","project_id":"ba0c4636-817c-423b-9771-20100e080b76","name":"Maya-D-a1-Edited","description":"US-V08 D-1-a1 character","role":"protagonist","visual_traits":"edited silver lab coat","personality_notes":"curious analytical","created_at":"2026-06-18T09:47:58.491308Z","updated_at":"2026-06-18T09:51:45.039793Z"}}2026-06-18T09:51:45+00:00 created episode id=6b93bdf5-992e-42ef-92e4-df2f77f26b5d number=63 title=US-V08B Path D Run2
+{"id":"077866d5-381b-4cad-98e3-90a2d441422f","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":97,"content_hash":"d4d7167e6dd204a3ed362a91773577695f28731503000f89edc371db310990c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/d4d7167e6dd204a3ed362a91773577695f28731503000f89edc371db310990c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T09:51:45.082666"}
+2026-06-18T09:51:45+00:00   poll status=RUNNING stage=STORY scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:51:46+00:00 waiting for idle active_runs=1 (72/120)
+2026-06-18T09:51:51+00:00 waiting for idle active_runs=1 (73/120)
+2026-06-18T09:51:56+00:00 waiting for idle active_runs=1 (74/120)
+2026-06-18T09:52:00+00:00   poll status=RUNNING stage=STORY scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:52:01+00:00 waiting for idle active_runs=1 (75/120)
+2026-06-18T09:52:06+00:00 waiting for idle active_runs=1 (76/120)
+2026-06-18T09:52:12+00:00 waiting for idle active_runs=1 (77/120)
+2026-06-18T09:52:15+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cf274c65-ecf5-4c56-9f8b-6b5bbb88a15f","approval_id":"a2f30d66-731f-4901-aba1-69e0a77ad078","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T09:52:15+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:52:17+00:00 waiting for idle active_runs=1 (78/120)
+2026-06-18T09:52:22+00:00 waiting for idle active_runs=1 (79/120)
+2026-06-18T09:52:25+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:52:27+00:00 waiting for idle active_runs=1 (80/120)
+2026-06-18T09:52:32+00:00 waiting for idle active_runs=1 (81/120)
+2026-06-18T09:52:37+00:00 waiting for idle active_runs=1 (82/120)
+2026-06-18T09:52:40+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cf274c65-ecf5-4c56-9f8b-6b5bbb88a15f","approval_id":"c1128224-4ffa-4373-8dc5-5bea7212f081","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T09:52:40+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:52:42+00:00 waiting for idle active_runs=1 (83/120)
+2026-06-18T09:52:48+00:00 waiting for idle active_runs=1 (84/120)
+2026-06-18T09:52:50+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:52:53+00:00 waiting for idle active_runs=1 (85/120)
+2026-06-18T09:52:58+00:00 waiting for idle active_runs=1 (86/120)
+2026-06-18T09:53:03+00:00 waiting for idle active_runs=1 (87/120)
+2026-06-18T09:53:05+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:53:08+00:00 waiting for idle active_runs=1 (88/120)
+2026-06-18T09:53:13+00:00 waiting for idle active_runs=1 (89/120)
+2026-06-18T09:53:18+00:00 waiting for idle active_runs=1 (90/120)
+2026-06-18T09:53:20+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:53:24+00:00 waiting for idle active_runs=1 (91/120)
+2026-06-18T09:53:29+00:00 waiting for idle active_runs=1 (92/120)
+2026-06-18T09:53:34+00:00 waiting for idle active_runs=1 (93/120)
+2026-06-18T09:53:35+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:53:39+00:00 waiting for idle active_runs=1 (94/120)
+2026-06-18T09:53:44+00:00 waiting for idle active_runs=1 (95/120)
+2026-06-18T09:53:49+00:00 waiting for idle active_runs=1 (96/120)
+2026-06-18T09:53:50+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:53:54+00:00 waiting for idle active_runs=1 (97/120)
+2026-06-18T09:54:00+00:00 waiting for idle active_runs=1 (98/120)
+2026-06-18T09:54:05+00:00 waiting for idle active_runs=1 (99/120)
+2026-06-18T09:54:05+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:54:10+00:00 waiting for idle active_runs=1 (100/120)
+2026-06-18T09:54:15+00:00 waiting for idle active_runs=1 (101/120)
+2026-06-18T09:54:20+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:54:20+00:00 waiting for idle active_runs=1 (102/120)
+2026-06-18T09:54:25+00:00 waiting for idle active_runs=1 (103/120)
+2026-06-18T09:54:30+00:00 waiting for idle active_runs=1 (104/120)
+2026-06-18T09:54:35+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:54:36+00:00 waiting for idle active_runs=1 (105/120)
+2026-06-18T09:54:41+00:00 waiting for idle active_runs=1 (106/120)
+2026-06-18T09:54:46+00:00 waiting for idle active_runs=1 (107/120)
+2026-06-18T09:54:50+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:54:51+00:00 waiting for idle active_runs=1 (108/120)
+2026-06-18T09:54:56+00:00 waiting for idle active_runs=1 (109/120)
+2026-06-18T09:55:01+00:00 waiting for idle active_runs=1 (110/120)
+2026-06-18T09:55:05+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cf274c65-ecf5-4c56-9f8b-6b5bbb88a15f","approval_id":"08dad524-23d4-4d60-aedf-1c96b419d82a","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T09:55:05+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:55:06+00:00 waiting for idle active_runs=1 (111/120)
+2026-06-18T09:55:11+00:00 waiting for idle active_runs=1 (112/120)
+2026-06-18T09:55:15+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"cf274c65-ecf5-4c56-9f8b-6b5bbb88a15f","approval_id":"a59af68d-a67a-4e3a-941b-5727cb7c33cb","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T09:55:15+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:55:17+00:00 waiting for idle active_runs=1 (113/120)
+2026-06-18T09:55:22+00:00 waiting for idle active_runs=1 (114/120)
+2026-06-18T09:55:27+00:00 waiting for idle active_runs=1 (115/120)
+2026-06-18T09:55:30+00:00   poll status=COMPLETED stage=null scene=null ep=6b93bdf5-992e-42ef-92e4-df2f77f26b5d
+2026-06-18T09:55:30+00:00 export manifest_version=5 size=14640454 chars=1
+2026-06-18T09:55:30+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T09:55:31+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T09:55:31+00:00 run character_ids count=1 (expect 1)
+2026-06-18T09:55:31+00:00 run character_snapshot count=1 (expect 1)
+2026-06-18T09:55:31+00:00 PASS PATH D2 character run cf274c65-ecf5-4c56-9f8b-6b5bbb88a15f ep=63 chars=1
+2026-06-18T09:55:31+00:00 PASS PATH D edit lifecycle run1=a6894d3e-df8e-412b-9e13-73add88060c2 run2=cf274c65-ecf5-4c56-9f8b-6b5bbb88a15f char=250270a2-5089-49f8-bcf2-58b691c19618
+2026-06-18T09:55:31+00:00 DONE FAIL=0 (only=D)
+2026-06-18T09:55:32+00:00 waiting for idle active_runs=1 (116/120)
+2026-06-18T09:55:37+00:00 waiting for idle active_runs=1 (117/120)
+2026-06-18T09:55:42+00:00 waiting for idle active_runs=1 (118/120)
+2026-06-18T09:55:47+00:00 waiting for idle active_runs=1 (119/120)
+2026-06-18T09:55:53+00:00 waiting for idle active_runs=1 (120/120)
+2026-06-18T09:55:58+00:00 WARN project still has active runs after 120 polls
+psql: error: connection to server on socket "/tmp/.s.PGSQL.5432" failed: FATAL:  password authentication failed for user "aimpos"
+command terminated with exit code 2
+2026-06-18T09:55:58+00:00 cleaned project characters (was )
+2026-06-18T09:55:58+00:00 FAIL create character name=Maya-D-a3 http=401 body={"detail":"Unauthorized"}
+2026-06-18T09:55:58+00:00 FAIL PATH D after 3 attempts
+2026-06-18T09:55:58+00:00 DONE FAIL=1 (only=D)

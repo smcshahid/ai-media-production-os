@@ -38,6 +38,7 @@ class PipelineRun(Base):
         ForeignKey("episodes.id"), nullable=True, index=True
     )
     character_ids: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
+    character_snapshot: Mapped[list[dict] | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = created_at_column()
     updated_at: Mapped[datetime] = mapped_column(
         server_default=func.now(), onupdate=func.now(), nullable=False

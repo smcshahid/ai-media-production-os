@@ -32,6 +32,7 @@ from app.infrastructure.db.models.episode import Episode
 from app.infrastructure.db.models.pipeline_run import PipelineRun
 from app.infrastructure.db.repositories.approval import ApprovalRepository
 from app.infrastructure.db.repositories.audit_event import AuditEventRepository
+from app.domain.character.service import character_snapshot_from_characters
 from app.infrastructure.db.repositories.character import CharacterRepository
 from app.infrastructure.db.repositories.episode import EpisodeRepository
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
@@ -187,6 +188,7 @@ async def pipeline_start(
         )
 
     character_id_strs: list[str] | None = None
+    character_snapshot: list[dict[str, str | None]] | None = None
     if body.character_ids:
         if len(body.character_ids) > MAX_CHARACTERS_PER_RUN:
             raise HTTPException(
@@ -201,6 +203,7 @@ async def pipeline_start(
                 detail="one or more character_ids not found for project",
             )
         character_id_strs = [str(c.id) for c in chars]
+        character_snapshot = character_snapshot_from_characters(list(chars))
 
     run = PipelineRun(
         project_id=project_id,
@@ -209,6 +212,7 @@ async def pipeline_start(
         scene_count=body.scene_count,
         episode_id=body.episode_id,
         character_ids=character_id_strs,
+        character_snapshot=character_snapshot,
     )
     await runs.add(run)
     if episode is not None:

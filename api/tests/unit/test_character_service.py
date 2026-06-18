@@ -42,6 +42,37 @@ async def test_create_and_list_characters(session: AsyncSession) -> None:
 
 
 @pytest.mark.asyncio
+async def test_update_character(session: AsyncSession) -> None:
+    from app.domain.character.service import CharacterUpdateRequest, update_character
+
+    project = Project(name="Update test", status=ProjectStatus.ACTIVE)
+    await ProjectRepository(session).add(project)
+    await session.commit()
+
+    created = await create_character(
+        project_id=project.id,
+        name="Maya",
+        description="Biologist",
+        role="protagonist",
+        visual_traits="Lab coat",
+        personality_notes="Curious",
+        session=session,
+    )
+    await session.commit()
+
+    updated = await update_character(
+        project_id=project.id,
+        character_id=created.character.id,
+        body=CharacterUpdateRequest(name="Maya-Edited", visual_traits="Edited coat"),
+        session=session,
+    )
+    await session.commit()
+
+    assert updated.character.name == "Maya-Edited"
+    assert updated.character.visual_traits == "Edited coat"
+
+
+@pytest.mark.asyncio
 async def test_character_limit(session: AsyncSession) -> None:
     project = Project(name="Limit test", status=ProjectStatus.ACTIVE)
     await ProjectRepository(session).add(project)

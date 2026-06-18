@@ -12,11 +12,10 @@ from app.domain.export.bundle import build_export_zip
 from app.domain.export.resolver import ExportAssetResolutionError, resolve_export_files
 from app.domain.export.types import ExportBundleResult
 from app.infrastructure.db.models.audit_event import AuditEvent
-from app.domain.character.service import character_profiles_for_export
+from app.domain.character.service import load_characters_for_export
 from app.infrastructure.db.repositories.approval import ApprovalRepository
 from app.infrastructure.db.repositories.asset_version import AssetVersionRepository
 from app.infrastructure.db.repositories.audit_event import AuditEventRepository
-from app.infrastructure.db.repositories.character import CharacterRepository
 from app.infrastructure.db.repositories.episode import EpisodeRepository
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
 from app.infrastructure.storage.minio_client import MinioClient
@@ -49,11 +48,8 @@ async def export_pipeline_run(
     episode_id: uuid.UUID | None = None
     episode_number: int | None = None
     characters_payload: list[dict[str, str | None]] | None = None
-    if run.character_ids:
-        id_list = [uuid.UUID(str(cid)) for cid in run.character_ids]
-        chars = await CharacterRepository(session).list_by_ids(run.project_id, id_list)
-        if chars:
-            characters_payload = character_profiles_for_export(list(chars))
+    if run.character_ids or run.character_snapshot:
+        characters_payload = await load_characters_for_export(run, session=session)
     if run.episode_id is not None:
         episode = await EpisodeRepository(session).get(run.episode_id)
         if episode is not None:

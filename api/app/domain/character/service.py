@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 
 from aimpos_core.character import MAX_CHARACTERS_PER_PROJECT
 from pydantic import BaseModel, ConfigDict, Field
@@ -50,6 +50,11 @@ class CharacterNotFoundError(Exception):
 
 
 class CharacterLimitError(Exception):
+    pass
+
+
+class CharacterInUseError(Exception):
+    """Character bound to an active pipeline run."""
     pass
 
 
@@ -137,19 +142,61 @@ async def update_character(
         character.visual_traits = body.visual_traits
     if body.personality_notes is not None:
         character.personality_notes = body.personality_notes
+    character.updated_at = datetime.now(UTC)
     await session.flush()
     return CharacterUpdateResponse(character=CharacterRead.model_validate(character))
 
 
 def character_profiles_for_export(characters: list[Character]) -> list[dict[str, str | None]]:
-    return [
-        {
-            "id": str(c.id),
-            "name": c.name,
-            "description": c.description,
-            "role": c.role,
-            "visual_traits": c.visual_traits,
-            "personality_notes": c.personality_notes,
-        }
-        for c in characters
-    ]
+    return [character_profile_dict(c) for c in characters]
+
+
+def character_profile_dict(character: Character) -> dict[str, str | None]:
+    return {
+        "id": str(character.id),
+        "name": character.name,
+        "description": character.description,
+        "role": character.role,
+        "visual_traits": character.visual_traits,
+        "personality_notes": character.personality_notes,
+    }
+
+
+def character_snapshot_from_characters(characters: list[Character]) -> list[dict[str, str | None]]:
+    """Immutable profile snapshot stored on pipeline run at start (TD-P7-01)."""
+    return character_profiles_for_export(characters)
+
+
+async def load_characters_for_export(
+    run,
+    *,
+    session: AsyncSession,
+) -> list[dict[str, str | None]] | None:
+    """Prefer run snapshot; fall back to live rows for legacy runs."""
+    if run.character_snapshot:
+        return list(run.character_snapshot)
+    if not run.character_ids:
+        return None
+    id_list = [uuid.UUID(str(cid)) for cid in run.character_ids]
+    chars = await CharacterRepository(session).list_by_ids(run.project_id, id_list)
+    if not chars:
+        return None
+    return character_profiles_for_export(list(chars))
+
+
+async def delete_character(
+    *,
+    project_id: uuid.UUID,
+    character_id: uuid.UUID,
+    session: AsyncSession,
+) -> None:
+    if await ProjectRepository(session).get(project_id) is None:
+        raise ProjectNotFoundError(str(project_id))
+    repo = CharacterRepository(session)
+    character = await repo.get_for_project(project_id, character_id)
+    if character is None:
+        raise CharacterNotFoundError(str(character_id))
+    if await repo.is_bound_to_active_run(project_id, character_id):
+        raise CharacterInUseError("character is bound to an active pipeline run")
+    await repo.delete(character)
+    await session.flush()

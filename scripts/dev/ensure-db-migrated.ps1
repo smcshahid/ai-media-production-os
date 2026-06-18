@@ -58,8 +58,8 @@ if ($LASTEXITCODE -ne 0) {
 $version = Get-PsqlScalar "SELECT version_num FROM alembic_version;"
 Write-Host "Database at Alembic revision: $version"
 
-if ($version -lt "0006") {
-    Write-Host "ERROR: Expected Alembic 0006 (character bible pilot)." -ForegroundColor Red
+if ($version -lt "0007") {
+    Write-Host "ERROR: Expected Alembic 0007 (character snapshot)." -ForegroundColor Red
     exit 1
 }
 

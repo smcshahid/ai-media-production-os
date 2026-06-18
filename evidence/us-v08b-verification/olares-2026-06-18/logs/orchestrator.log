@@ -1,0 +1,11 @@
+2026-06-18T01:46:36.4978103-07:00 === Sync source to Olares ===
+2026-06-18T01:48:09.4882187-07:00 Source synced to /tmp/aimpos-usv08b-src
+2026-06-18T01:48:09.4912167-07:00 === Olares probe (pre) ===
+2026-06-18T01:48:10.6927310-07:00 === Apply migration 0007 ===
+2026-06-18T01:48:12.2055755-07:00 === Build usv08b-phase75 images locally ===
+2026-06-18T01:54:08.9294557-07:00 === Upload image tars to Olares ===
+2026-06-18T01:54:22.7957251-07:00 === Deploy usv08b-phase75 ===
+2026-06-18T01:54:55.7297607-07:00 === Olares probe (post) ===
+2026-06-18T01:54:56.7307259-07:00 === US-V08B E2E (Paths A-F) - long running ===
+2026-06-18T02:23:37.4885806-07:00 === Fetch evidence ===
+2026-06-18T02:23:45.9425154-07:00 E2E exit=1

@@ -5,10 +5,18 @@ from __future__ import annotations
 import uuid
 from collections.abc import Sequence
 
+from aimpos_core.enums import PipelineRunStatus
 from sqlalchemy import func, select
 
 from app.infrastructure.db.models.character import Character
+from app.infrastructure.db.models.pipeline_run import PipelineRun
 from app.infrastructure.db.repositories.base import SQLAlchemyRepository
+
+_ACTIVE_RUN_STATUSES = (
+    PipelineRunStatus.PENDING,
+    PipelineRunStatus.RUNNING,
+    PipelineRunStatus.AWAITING_APPROVAL,
+)
 
 
 class CharacterRepository(SQLAlchemyRepository[Character]):
@@ -55,3 +63,24 @@ class CharacterRepository(SQLAlchemyRepository[Character]):
             .order_by(Character.name.asc())
         )
         return result.scalars().all()
+
+    async def delete(self, character: Character) -> None:
+        await self.session.delete(character)
+        await self.session.flush()
+
+    async def is_bound_to_active_run(
+        self, project_id: uuid.UUID, character_id: uuid.UUID
+    ) -> bool:
+        result = await self.session.execute(
+            select(PipelineRun).where(
+                PipelineRun.project_id == project_id,
+                PipelineRun.status.in_(_ACTIVE_RUN_STATUSES),
+                PipelineRun.character_ids.isnot(None),
+            )
+        )
+        cid = str(character_id)
+        for run in result.scalars():
+            ids = run.character_ids or []
+            if cid in [str(x) for x in ids]:
+                return True
+        return False

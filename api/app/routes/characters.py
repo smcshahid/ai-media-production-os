@@ -14,10 +14,12 @@ from app.domain.character.service import (
     CharacterLimitError,
     CharacterListResponse,
     CharacterNotFoundError,
+    CharacterInUseError,
     CharacterUpdateRequest,
     CharacterUpdateResponse,
     ProjectNotFoundError,
     create_character,
+    delete_character,
     list_characters,
     update_character,
 )
@@ -106,4 +108,38 @@ async def characters_update(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"character {exc} not found",
+        ) from exc
+
+
+@router.delete(
+    "/characters/{character_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a character (blocked when bound to active run)",
+)
+async def characters_delete(
+    character_id: uuid.UUID,
+    project_id: uuid.UUID,
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    try:
+        await delete_character(
+            project_id=project_id,
+            character_id=character_id,
+            session=session,
+        )
+        await session.commit()
+    except ProjectNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"project {exc} not found",
+        ) from exc
+    except CharacterNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"character {exc} not found",
+        ) from exc
+    except CharacterInUseError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
         ) from exc

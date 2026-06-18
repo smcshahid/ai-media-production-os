@@ -1,0 +1,134 @@
+{
+  "characters": [
+    {
+      "description": "US-V08 A-1-a1 character",
+      "id": "818d2f9f-ed3a-4ac9-b473-3eaa332817e6",
+      "name": "Maya-A-a1",
+      "personality_notes": "curious analytical",
+      "role": "protagonist",
+      "visual_traits": "silver lab coat"
+    }
+  ],
+  "episode_id": "514b1d18-b88c-4628-aa49-10dc410bea66",
+  "episode_number": 56,
+  "exported_at": "2026-06-18T08:59:44.480551Z",
+  "files": [
+    {
+      "approval_at": null,
+      "asset_id": "d585b232-ad5f-4d82-b822-c3ff1336d12d",
+      "branch": "main",
+      "content_hash": "bd1c1b241b3205218f873817ad4104c5324f4552ecdd574fbf91353d848212aa",
+      "episode_number": 56,
+      "path": "idea.txt",
+      "size_bytes": 174,
+      "stage": "IDEA",
+      "version": 1
+    },
+    {
+      "approval_at": "2026-06-18T08:56:29.079119Z",
+      "asset_id": "1ae3cfd5-a430-4f7f-82c0-5289d29ec11e",
+      "branch": "ai-draft",
+      "content_hash": "febc16772732034c0b266ad1ca0a528c37dfdb7115be9815b60bc17dec708448",
+      "episode_number": 56,
+      "path": "episodes/episode_56/story.md",
+      "size_bytes": 2771,
+      "stage": "STORY",
+      "version": 52
+    },
+    {
+      "approval_at": "2026-06-18T08:56:54.143716Z",
+      "asset_id": "2a998e37-9665-43b3-86d1-ae56ec2acbfd",
+      "branch": "ai-draft",
+      "content_hash": "7e81accb7c6fc90933107b0a406779b9a9ea4d53f8ce31785b7eafb03d8ab704",
+      "episode_number": 56,
+      "path": "episodes/episode_56/script.fountain",
+      "size_bytes": 1656,
+      "stage": "SCRIPT",
+      "version": 44
+    },
+    {
+      "approval_at": "2026-06-18T08:59:19.359233Z",
+      "asset_id": "46fd4e32-6890-4158-9f44-559739cd971f",
+      "branch": "ai-draft",
+      "content_hash": "7ad496682ef2fa9e1469019249d2c06c8407d1ace206960ddbd6c157d1b8d096",
+      "episode_number": 56,
+      "frame_index": 1,
+      "path": "episodes/episode_56/frames/frame_01.png",
+      "scene_index": 1,
+      "size_bytes": 3149219,
+      "stage": "STORYBOARD",
+      "version": 41
+    },
+    {
+      "approval_at": "2026-06-18T08:59:19.359233Z",
+      "asset_id": "5ba58c3a-6895-4833-bebc-604a2b1add3b",
+      "branch": "ai-draft",
+      "content_hash": "9b23322698ab3ab5652ed0ef400a571bf5e9dc0f39102ba6f8bf64623cc4398c",
+      "episode_number": 56,
+      "frame_index": 2,
+      "path": "episodes/episode_56/frames/frame_02.png",
+      "scene_index": 1,
+      "size_bytes": 3119505,
+      "stage": "STORYBOARD",
+      "version": 41
+    },
+    {
+      "approval_at": "2026-06-18T08:59:19.359233Z",
+      "asset_id": "9bc81633-53ff-436e-a6c0-9f19799a2f4f",
+      "branch": "ai-draft",
+      "content_hash": "d484410921316081539ec15dbc1eced558ce5183c60042364442830279cb85c7",
+      "episode_number": 56,
+      "frame_index": 3,
+      "path": "episodes/episode_56/frames/frame_03.png",
+      "scene_index": 1,
+      "size_bytes": 2507917,
+      "stage": "STORYBOARD",
+      "version": 41
+    },
+    {
+      "approval_at": "2026-06-18T08:59:19.359233Z",
+      "asset_id": "9f89ca87-221f-4f06-a8e2-e00980d902cf",
+      "branch": "ai-draft",
+      "content_hash": "bf1aa5886efacd772996c6a64bab3c4270f4710de806f1923083f20da1bb1646",
+      "episode_number": 56,
+      "frame_index": 4,
+      "path": "episodes/episode_56/frames/frame_04.png",
+      "scene_index": 1,
+      "size_bytes": 2983596,
+      "stage": "STORYBOARD",
+      "version": 41
+    },
+    {
+      "approval_at": "2026-06-18T08:59:29.414204Z",
+      "asset_id": "244c3788-aa73-4012-8c0c-82e6f95da7bc",
+      "branch": "ai-draft",
+      "content_hash": "01b40c8d5d9e8bbf0160a6aa89dff351a0fb1ef8eeffdf10c306285ab7b6e960",
+      "episode_number": 56,
+      "has_narration": true,
+      "narration_source": "espeak",
+      "path": "episodes/episode_56/scene_video.mp4",
+      "scene_index": 1,
+      "size_bytes": 3294555,
+      "stage": "VIDEO",
+      "version": 29
+    },
+    {
+      "approval_at": "2026-06-18T08:59:29.414204Z",
+      "asset_id": "a5cdcb8b-7744-41e0-b659-5bab1fa8d975",
+      "branch": "ai-draft",
+      "content_hash": "c667472fb6fc998d2af58784cd9994241603373956c093c11bea2570857ea11c",
+      "duration_sec": 50.41,
+      "episode_number": 56,
+      "path": "episodes/episode_56/narration.wav",
+      "scene_index": 1,
+      "size_bytes": 2223122,
+      "stage": "NARRATION",
+      "tts_source": "espeak",
+      "version": 26
+    }
+  ],
+  "manifest_version": "5",
+  "narration_enabled": true,
+  "pipeline_run_id": "adf931ba-b63e-4fb1-aa19-cbe8b432d7b3",
+  "project_id": "ba0c4636-817c-423b-9771-20100e080b76"
+}

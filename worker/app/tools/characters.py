@@ -1,4 +1,4 @@
-"""Character profile fetch for worker activities (Phase 7)."""
+"""Character profile fetch for worker activities (Phase 7 / 7.5)."""
 
 from __future__ import annotations
 
@@ -8,6 +8,30 @@ import uuid
 from aimpos_config import Settings
 from aimpos_core.character import format_character_bible
 from sqlalchemy import create_engine, text
+
+
+def _profiles_from_snapshot(raw_snapshot) -> list[dict[str, str]]:
+    if raw_snapshot is None:
+        return []
+    if isinstance(raw_snapshot, str):
+        data = json.loads(raw_snapshot)
+    else:
+        data = list(raw_snapshot)
+    profiles: list[dict[str, str]] = []
+    for row in data:
+        if not isinstance(row, dict):
+            continue
+        profiles.append(
+            {
+                "id": str(row.get("id") or ""),
+                "name": row.get("name") or "",
+                "description": row.get("description") or "",
+                "role": row.get("role") or "",
+                "visual_traits": row.get("visual_traits") or "",
+                "personality_notes": row.get("personality_notes") or "",
+            }
+        )
+    return profiles
 
 
 def fetch_run_character_profiles(
@@ -20,17 +44,22 @@ def fetch_run_character_profiles(
             row = conn.execute(
                 text(
                     """
-                    SELECT r.character_ids, r.project_id
+                    SELECT r.character_snapshot, r.character_ids, r.project_id
                     FROM pipeline_runs r
                     WHERE r.id = :run_id
                     """
                 ),
                 {"run_id": str(pipeline_run_id)},
             ).first()
-            if row is None or not row[0]:
+            if row is None:
                 return [], ""
-            raw_ids = row[0]
-            project_id = row[1]
+            snapshot, raw_ids, project_id = row[0], row[1], row[2]
+            profiles = _profiles_from_snapshot(snapshot)
+            if profiles:
+                bible = format_character_bible(profiles)
+                return profiles, bible
+            if not raw_ids:
+                return [], ""
             if isinstance(raw_ids, str):
                 id_list = json.loads(raw_ids)
             else:
@@ -53,7 +82,7 @@ def fetch_run_character_profiles(
                 ),
                 params,
             )
-            profiles: list[dict[str, str]] = []
+            profiles = []
             for crow in result:
                 profiles.append(
                     {
