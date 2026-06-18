@@ -7,7 +7,7 @@ release:
   codename: phase7-character-bible
   date: "2026-06-18"
   baseline_tag: "v0.16.0-phase6-episode"
-  git_commit: "pending-cut"
+  git_commit: "6d9b3be"
 
 images:
   api:
