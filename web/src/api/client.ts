@@ -11,6 +11,9 @@ import type {
   AssetHistoryResponse,
   AuditTrailResponse,
   AssetVersion,
+  CharacterCreateResponse,
+  CharacterListResponse,
+  CharacterUpdateResponse,
   EpisodeCreateResponse,
   EpisodeListResponse,
   IdeaCreateBody,
@@ -148,6 +151,48 @@ export function createEpisode(
   });
 }
 
+export function listCharacters(projectId: string): Promise<CharacterListResponse> {
+  return request<CharacterListResponse>(
+    `/characters?project_id=${encodeURIComponent(projectId)}`,
+  );
+}
+
+export function createCharacter(body: {
+  project_id: string;
+  name: string;
+  description?: string | null;
+  role?: string | null;
+  visual_traits?: string | null;
+  personality_notes?: string | null;
+}): Promise<CharacterCreateResponse> {
+  return request<CharacterCreateResponse>("/characters", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+export function updateCharacter(
+  characterId: string,
+  projectId: string,
+  body: {
+    name?: string;
+    description?: string | null;
+    role?: string | null;
+    visual_traits?: string | null;
+    personality_notes?: string | null;
+  },
+): Promise<CharacterUpdateResponse> {
+  return request<CharacterUpdateResponse>(
+    `/characters/${encodeURIComponent(characterId)}?project_id=${encodeURIComponent(projectId)}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    },
+  );
+}
+
 export function listPipelineRuns(projectId: string): Promise<PipelineRunListResponse> {
   return request<PipelineRunListResponse>(
     `/pipeline/runs?project_id=${encodeURIComponent(projectId)}`,
@@ -158,6 +203,7 @@ export function startPipeline(
   projectId: string,
   sceneCount = 1,
   episodeId?: string | null,
+  characterIds?: string[] | null,
 ): Promise<PipelineStartResponse> {
   const body: Record<string, unknown> = {
     project_id: projectId,
@@ -165,6 +211,9 @@ export function startPipeline(
   };
   if (episodeId) {
     body.episode_id = episodeId;
+  }
+  if (characterIds && characterIds.length > 0) {
+    body.character_ids = characterIds;
   }
   return request<PipelineStartResponse>("/pipeline/start", {
     method: "POST",

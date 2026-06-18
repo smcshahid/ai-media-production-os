@@ -24,6 +24,31 @@ export interface PipelineStatus {
   updated_at: string | null;
 }
 
+export interface Character {
+  id: string;
+  project_id: string;
+  name: string;
+  description: string | null;
+  role: string | null;
+  visual_traits: string | null;
+  personality_notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CharacterListResponse {
+  project_id: string;
+  characters: Character[];
+}
+
+export interface CharacterCreateResponse {
+  character: Character;
+}
+
+export interface CharacterUpdateResponse {
+  character: Character;
+}
+
 export interface Episode {
   id: string;
   project_id: string;
@@ -51,6 +76,7 @@ export interface PipelineStartResponse {
   current_stage: string | null;
   scene_count: number;
   episode_id?: string | null;
+  character_ids?: string[] | null;
 }
 
 export interface PipelineApproveResponse {

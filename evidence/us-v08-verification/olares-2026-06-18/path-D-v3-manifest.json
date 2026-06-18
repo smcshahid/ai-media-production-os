@@ -1,0 +1,113 @@
+{
+  "exported_at": "2026-06-18T07:19:30.895938Z",
+  "files": [
+    {
+      "approval_at": null,
+      "asset_id": "d585b232-ad5f-4d82-b822-c3ff1336d12d",
+      "branch": "main",
+      "content_hash": "bd1c1b241b3205218f873817ad4104c5324f4552ecdd574fbf91353d848212aa",
+      "path": "idea.txt",
+      "size_bytes": 174,
+      "stage": "IDEA",
+      "version": 1
+    },
+    {
+      "approval_at": "2026-06-17T22:18:06.327367Z",
+      "asset_id": "c702a19d-e1c8-4b90-a97b-cc654fa524ae",
+      "branch": "ai-draft",
+      "content_hash": "68f28d7dfaabff8f5a4d08db66049fd625fd68165a8337ee9bc13c75ebc5c522",
+      "path": "story.md",
+      "size_bytes": 3010,
+      "stage": "STORY",
+      "version": 50
+    },
+    {
+      "approval_at": "2026-06-17T22:18:31.390542Z",
+      "asset_id": "9e0eef96-f57a-4cf5-94cc-4f45dc258381",
+      "branch": "ai-draft",
+      "content_hash": "adbd9b7a190d7d933cf8f313312b484f1428d8e4deb8f6684540981971acd8f3",
+      "path": "script.fountain",
+      "size_bytes": 1322,
+      "stage": "SCRIPT",
+      "version": 42
+    },
+    {
+      "approval_at": "2026-06-17T22:20:41.574593Z",
+      "asset_id": "35d443d0-8d82-41d0-b005-cee56297ee61",
+      "branch": "ai-draft",
+      "content_hash": "e46117df4e36a1b1b8985ae5a0166d56b668191ce535d917e8ead1f119c305c8",
+      "frame_index": 1,
+      "path": "frames/frame_01.png",
+      "scene_index": 1,
+      "size_bytes": 3252267,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-17T22:20:41.574593Z",
+      "asset_id": "25f576f7-f79e-4e0a-b51c-7a339a98d8a5",
+      "branch": "ai-draft",
+      "content_hash": "7f21f055da89a83c7709cc63ce41f2a996c270255469a81f65024cf130e10b5e",
+      "frame_index": 2,
+      "path": "frames/frame_02.png",
+      "scene_index": 1,
+      "size_bytes": 2780212,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-17T22:20:41.574593Z",
+      "asset_id": "8ed9e5db-58b5-47af-a32a-8af4291064f9",
+      "branch": "ai-draft",
+      "content_hash": "e43cdbc2c9682fdedb40e60bc8ac7cbf123a37c9b22bcc44da2f43031d6db77b",
+      "frame_index": 3,
+      "path": "frames/frame_03.png",
+      "scene_index": 1,
+      "size_bytes": 2489240,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-17T22:20:41.574593Z",
+      "asset_id": "581ae2ce-5eb9-4a60-866b-f7aff0d8edae",
+      "branch": "ai-draft",
+      "content_hash": "5d86c4b32c2d99e9e6fa4b4179e54f5d2878e4934eeacc234aef685f11f181c7",
+      "frame_index": 4,
+      "path": "frames/frame_04.png",
+      "scene_index": 1,
+      "size_bytes": 3050473,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-17T22:20:51.632715Z",
+      "asset_id": "09a803ba-afb3-4813-9b44-fc7bfdd6cbed",
+      "branch": "ai-draft",
+      "content_hash": "6e3a08303520f7e9c934cf1a8d9f5ad3ab1aff4be5f02a357c02c8a93496cc81",
+      "has_narration": true,
+      "narration_source": "espeak",
+      "path": "scene_video.mp4",
+      "scene_index": 1,
+      "size_bytes": 2472249,
+      "stage": "VIDEO",
+      "version": 13
+    },
+    {
+      "approval_at": "2026-06-17T22:20:51.632715Z",
+      "asset_id": "8fb89b93-5616-42a4-8bad-1245a6ac38bc",
+      "branch": "ai-draft",
+      "content_hash": "f0c2145b5903fb4f0f49ae72903b8b0bcfb2d54184fee16219b999b45b137ce3",
+      "duration_sec": 17.16,
+      "path": "narration.wav",
+      "scene_index": 1,
+      "size_bytes": 756812,
+      "stage": "NARRATION",
+      "tts_source": "espeak",
+      "version": 10
+    }
+  ],
+  "manifest_version": "3",
+  "narration_enabled": true,
+  "pipeline_run_id": "e3c0d402-f623-42e7-a120-c5b284d13242",
+  "project_id": "ba0c4636-817c-423b-9771-20100e080b76"
+}

@@ -3,7 +3,11 @@ param(
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path,
     [switch]$SkipBootstrap,
     [switch]$SkipUsv04,
-    [switch]$SkipPhase3d
+    [switch]$SkipPhase3d,
+    [switch]$SkipPhase4,
+    [switch]$SkipPhase5,
+    [switch]$SkipPhase6,
+    [switch]$SkipPhase7
 )
 
 $ErrorActionPreference = "Stop"
@@ -47,6 +51,22 @@ $FAIL += Run-Step "phase3c" { & "$RepoRoot/deploy/dev/verify_phase3c_local.ps1" 
 
 if (-not $SkipPhase3d) {
     $FAIL += Run-Step "phase3d" { & "$RepoRoot/deploy/dev/verify_phase3d_local.ps1" }
+}
+
+if (-not $SkipPhase4) {
+    $FAIL += Run-Step "phase4" { & "$RepoRoot/deploy/dev/verify_phase4_local.ps1" }
+}
+
+if (-not $SkipPhase5) {
+    $FAIL += Run-Step "phase5" { & "$RepoRoot/deploy/dev/verify_phase5_local.ps1" }
+}
+
+if (-not $SkipPhase6) {
+    $FAIL += Run-Step "phase6" { & "$RepoRoot/deploy/dev/verify_phase6_local.ps1" }
+}
+
+if (-not $SkipPhase7) {
+    $FAIL += Run-Step "phase7" { & "$RepoRoot/deploy/dev/verify_phase7_local.ps1" }
 }
 
 Write-Host ""

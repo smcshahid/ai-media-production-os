@@ -19,4 +19,5 @@ class CinematographyState(TypedDict, total=False):
     prompt_version: str
     duration_ms: int
     rejection_note: str | None
+    character_bible: str | None
     error: str | None

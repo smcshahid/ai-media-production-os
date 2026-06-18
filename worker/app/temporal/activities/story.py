@@ -13,6 +13,7 @@ from app.agents.story_architect.graph import run_story_architect_graph
 from app.temporal.activities.pipeline_status import sync_pipeline_status
 from app.tools.assets import AssetStoreError, IdeaNotFoundError, fetch_latest_idea, store_story_markdown
 from app.tools.audit import append_audit_event
+from app.tools.characters import fetch_run_character_profiles
 
 
 @activity.defn(name="run_story_agent")
@@ -32,11 +33,15 @@ async def run_story_agent(project_id: str, run_id: str, rejection_note: str = ""
 
     try:
         idea = fetch_latest_idea(settings, project_uuid)
+        _profiles, character_bible = fetch_run_character_profiles(
+            settings, pipeline_run_id=run_uuid
+        )
         graph_result = run_story_architect_graph(
             settings,
             idea_text=idea.idea_text,
             style_note=idea.style_note,
             rejection_note=rejection_note or None,
+            character_bible=character_bible or None,
         )
         stored = store_story_markdown(
             settings,

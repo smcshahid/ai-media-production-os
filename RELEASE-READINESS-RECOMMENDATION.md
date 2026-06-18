@@ -1,16 +1,16 @@
-# Release Readiness Recommendation — Phase 6 Episode Model Pilot
+# Release Readiness Recommendation — Phase 7 Character Bible Pilot
 
 **Date:** 2026-06-18  
-**Release:** `v0.16.0-phase6-episode`  
-**Baseline:** `v0.15.0-phase5-narration`  
-**SCR:** SCR-2026-004 (ACCEPTED)  
-**Acceptance:** US-V07 **ACCEPTED**
+**Release:** `v0.17.0-phase7-character-bible`  
+**Baseline:** `v0.16.0-phase6-episode`  
+**SCR:** SCR-2026-005 (ACCEPTED)  
+**Acceptance:** US-V08 **ACCEPTED**
 
 ---
 
 ## Recommendation
 
-**RELEASE READY** — Olares attestation complete (PATH A–E PASS with C1 supplemental). Authorized for annotated tag **`v0.16.0-phase6-episode`**.
+**RELEASE READY WITH CONDITIONS** — Olares attestation complete (PATH A–E PASS with C1 supplemental). Authorized for annotated tag **`v0.17.0-phase7-character-bible`**.
 
 ---
 
@@ -18,36 +18,35 @@
 
 | Path | Scope | Olares | Final |
 |------|-------|--------|-------|
-| **PATH A** | 1 episode, 1 scene, narrated → manifest v4 | PASS | **PASS** |
-| **PATH B** | 1 episode, 3 scenes, narrated → manifest v4 | PASS | **PASS** |
-| **PATH C1** | Multi-episode — Episode 1 export | FAIL (primary) / PASS (supplement) | **PASS** |
-| **PATH C2** | Multi-episode — Episode 2 export | PASS | **PASS** |
-| **PATH D** | Legacy manifest v1/v2/v3 | PASS | **PASS** |
-| **PATH E** | Audit, history, lineage, run history | PASS | **PASS** |
+| **PATH A** | 1 character, 1 episode → manifest v5 | PASS | **PASS** |
+| **PATH B** | 3 characters, 3 scenes → manifest v5 | PASS | **PASS** |
+| **PATH C1** | Multi-episode ep 1 (supplement) | PASS | **PASS** |
+| **PATH C2** | Multi-episode ep 2 | PASS | **PASS** |
+| **PATH D** | Legacy v1–v4 | PASS | **PASS** |
+| **PATH E** | Platform regression | PASS | **PASS** |
 | **Local automated** | Core + API + worker + web | PASS | **PASS** |
 
-Matrix detail: `evidence/us-v07-verification/olares-2026-06-17/PASS-FAIL-MATRIX.md`
+Evidence: `evidence/us-v08-verification/olares-2026-06-18/`
 
 ---
 
-## Manifest v4
+## Conditions
 
-Episode-scoped exports use `manifest_version=4` with:
+| ID | Severity | Condition |
+|----|----------|-----------|
+| TD-P7-01 | SEV-3 | Document that manifest v5 requires character rows at export (not just `character_ids` on run) |
+| OPS-V08-01 | SEV-4 | Olares E2E must use single flock; supplemental paths via `USV08_ONLY_PATH` |
 
-- Top-level `episode_id`, `episode_number`
-- ZIP paths under `episodes/episode_XX/`
-- Shared `idea.txt` at ZIP root
-- Narration sidecars preserved (v3 semantics within v4 layout)
-
-Legacy runs without `episode_id` continue v1/v2/v3 ladder unchanged.
+No unresolved SEV-1 or SEV-2.
 
 ---
 
 ## Migration notes
 
-1. Run `alembic upgrade head` (revision **0005**).
-2. No data migration required.
-3. Existing projects continue without episodes until `POST /episodes` is used.
+1. Run `alembic upgrade head` (revision **0006**).
+2. Creates `characters` table and `pipeline_runs.character_ids`.
+3. Existing projects unchanged until characters created and selected at pipeline start.
+4. Olares: `deploy/k8s/usv08-verify/migrate_0006_olares.sh`
 
 ---
 
@@ -55,32 +54,15 @@ Legacy runs without `episode_id` continue v1/v2/v3 ladder unchanged.
 
 | Step | Status |
 |------|--------|
-| Apply Alembic 0005 on PostgreSQL | **DONE** (Olares) |
-| Deploy API / worker / web `usv07-phase6` | **DONE** (Olares) |
-| Run `deploy/dev/verify_phase6_local.ps1` | **PASS** |
-| Run `deploy/k8s/usv07-verify/verify_usv07_e2e.sh` | **PASS** (C1 supplement) |
-| Archive evidence | **DONE** |
+| Apply Alembic 0006 | **DONE** (Olares) |
+| Deploy `usv08-phase7` images | **DONE** (Olares) |
+| `verify_phase7_local.ps1` | **PASS** |
+| `verify_usv08_e2e.sh` Paths A–E | **PASS** |
+| Evidence archived | **DONE** |
+| Git tag `v0.17.0-phase7-character-bible` | **AUTHORIZED** |
 
 ---
 
-## Defects
+## Release decision
 
-| Severity | Open | Notes |
-|----------|------|-------|
-| S1 | 0 | — |
-| S2 | 0 | — |
-| S3 | 0 | C1 orphan closed via supplement + script hardening |
-
----
-
-## Risks for operators
-
-1. Export integrators must handle manifest v4 episode paths.
-2. One active pipeline run per project (episode or legacy).
-3. Do not run multiple E2E verification instances concurrently on one project.
-
----
-
-## Phase 7 guidance
-
-**Recommended:** Platform maturity (`verify-all` adoption, operational runbooks) before character bible or publishing SCRs. Character bible remains out of scope until governance authorizes a new SCR.
+**B. RELEASE READY WITH CONDITIONS** — Product pilot validated on Olares; C1 supplemental attestation and SEV-3 export snapshot note tracked for Phase 8.

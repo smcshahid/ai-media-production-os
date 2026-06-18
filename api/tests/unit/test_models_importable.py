@@ -16,6 +16,7 @@ from app.infrastructure.db.models import (
     AssetVersion,
     AuditEvent,
     Base,
+    Character,
     Episode,
     LineageEdge,
     PipelineRun,
@@ -25,6 +26,7 @@ from app.infrastructure.db.models import (
 EXPECTED_TABLES = {
     "projects",
     "episodes",
+    "characters",
     "pipeline_runs",
     "asset_versions",
     "approvals",
@@ -41,6 +43,7 @@ def test_models_are_importable() -> None:
     for model in (
         Project,
         Episode,
+        Character,
         PipelineRun,
         AssetVersion,
         Approval,

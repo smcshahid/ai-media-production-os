@@ -20,6 +20,7 @@ from app.tools.assets import (
     store_script_fountain,
 )
 from app.tools.audit import append_audit_event
+from app.tools.characters import fetch_run_character_profiles
 from app.tools.pipeline_run import _read_run_scene_count
 
 
@@ -53,12 +54,16 @@ async def run_script_agent(
             regen_note = rejection_note.strip()
 
         scene_count = _read_run_scene_count(settings, pipeline_run_id=run_uuid)
+        _profiles, character_bible = fetch_run_character_profiles(
+            settings, pipeline_run_id=run_uuid
+        )
 
         graph_result = run_screenwriter_graph(
             settings,
             story_text=story.story_text,
             rejection_note=regen_note or None,
             scene_count=scene_count,
+            character_bible=character_bible or None,
         )
         stored = store_script_fountain(
             settings,

@@ -11,6 +11,7 @@ import {
 } from "../api/client";
 import type { AssetVersion, Episode, Project } from "../api/types";
 import { IdeaCaptureForm } from "../components/IdeaCaptureForm";
+import { CharacterPanel } from "../components/CharacterPanel";
 import { PipelineConnectionIndicator } from "../components/PipelineConnectionIndicator";
 import { PipelineRunHistory } from "../components/PipelineRunHistory";
 import { Stepper } from "../components/Stepper";
@@ -55,6 +56,7 @@ export function DashboardPage() {
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | "legacy">("legacy");
   const [episodeMode, setEpisodeMode] = useState(false);
   const [creatingEpisode, setCreatingEpisode] = useState(false);
+  const [selectedCharacterIds, setSelectedCharacterIds] = useState<string[]>([]);
   const [ideaVersion, setIdeaVersion] = useState<AssetVersion | null>(null);
 
   const refreshIdea = useCallback(async (projectId: string) => {
@@ -119,6 +121,7 @@ export function DashboardPage() {
         project.id,
         sceneCount,
         activeEpisodeId,
+        selectedCharacterIds.length > 0 ? selectedCharacterIds : null,
       );
       refresh();
     } catch (err) {
@@ -253,6 +256,14 @@ export function DashboardPage() {
           </div>
         )}
       </div>
+
+      {project && (
+        <CharacterPanel
+          projectId={project.id}
+          selectedIds={selectedCharacterIds}
+          onSelectionChange={setSelectedCharacterIds}
+        />
+      )}
 
       <div className="card">
         <h2 className="card__title">Pipeline</h2>

@@ -55,7 +55,12 @@ def draft_script_node(state: ScreenwriterState, settings: Settings) -> Screenwri
             f"{rejection_note}\n"
         )
 
-    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}{revision_block}"
+    character_block = ""
+    character_bible = (state.get("character_bible") or "").strip()
+    if character_bible:
+        character_block = f"\n{character_bible}\n"
+
+    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}{character_block}{revision_block}"
 
     model_id = load_script_model(settings)
     try:

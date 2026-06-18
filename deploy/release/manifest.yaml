@@ -3,31 +3,31 @@
 # Do not hand-edit image tags outside a release cut.
 
 release:
-  version: "v0.16.0-phase6-episode"
-  codename: phase6-episode
-  date: "2026-06-17"
-  baseline_tag: "v0.15.0-phase5-narration"
-  git_commit: "4c9bf86"
+  version: "v0.17.0-phase7-character-bible"
+  codename: phase7-character-bible
+  date: "2026-06-18"
+  baseline_tag: "v0.16.0-phase6-episode"
+  git_commit: "pending-cut"
 
 images:
   api:
     repository: docker.io/library/aimpos-api
-    tag: "v0.16.0-phase6-episode"
+    tag: "v0.17.0-phase7-character-bible"
   web:
     repository: docker.io/library/aimpos-web
-    tag: "v0.16.0-phase6-episode"
+    tag: "v0.17.0-phase7-character-bible"
   worker:
     repository: docker.io/library/aimpos-worker
-    tag: "v0.16.0-phase6-episode"
+    tag: "v0.17.0-phase7-character-bible"
 
 olares:
   namespace: aimpos-mwayolares
   ingress_image: docker.io/beclab/aboveos-bitnami-openresty:1.25.3-2
-  chart_version: "0.16.0"
-  manifest_version: "0.16.0"
+  chart_version: "0.17.0"
+  manifest_version: "0.17.0"
 
 database:
-  alembic_head: "0005"
+  alembic_head: "0006"
 
 worker_env:
   COMFYUI_WORKFLOW: flux_storyboard.json
@@ -36,6 +36,6 @@ worker_env:
 
 verify:
   scripts:
-    - deploy/dev/verify_phase6_local.ps1
+    - deploy/dev/verify_phase7_local.ps1
   olares:
-    - deploy/k8s/usv07-verify/verify_usv07_e2e.sh
+    - deploy/k8s/usv08-verify/verify_usv08_e2e.sh

@@ -8,6 +8,7 @@ from datetime import datetime
 from aimpos_core.enums import PipelineRunStatus, PipelineStage
 from sqlalchemy import Enum, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import JSON
 
 from app.infrastructure.db.base import Base, created_at_column, uuid_pk
 
@@ -36,6 +37,7 @@ class PipelineRun(Base):
     episode_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("episodes.id"), nullable=True, index=True
     )
+    character_ids: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = created_at_column()
     updated_at: Mapped[datetime] = mapped_column(
         server_default=func.now(), onupdate=func.now(), nullable=False

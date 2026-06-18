@@ -32,6 +32,7 @@ from app.tools.assets import (
     store_storyboard_batch,
 )
 from app.tools.audit import append_audit_event
+from app.tools.characters import fetch_run_character_profiles
 from app.tools.comfyui import ComfyUIError, generate_storyboard_png
 from app.tools.pipeline_run import _read_run_scene_count
 
@@ -80,12 +81,16 @@ async def run_storyboard_agent(
             settings, pipeline_run_id=run_uuid, scene_index=scene_index
         )
         effective_note = (rejection_note or "").strip() or (db_rationale or "")
+        _profiles, character_bible = fetch_run_character_profiles(
+            settings, pipeline_run_id=run_uuid
+        )
 
         graph_result = run_cinematography_graph(
             settings,
             script_fountain=scene_script,
             style_note=style_note,
             rejection_note=effective_note or None,
+            character_bible=character_bible or None,
         )
         shots = graph_result["shots"]
         validate_shot_plan(shots)

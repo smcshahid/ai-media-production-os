@@ -1,0 +1,595 @@
+2026-06-18T06:10:51+00:00 US-V08 E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-18T06:10:51+00:00 ========== PATH A: 1 char(s) 1-scene (attempt 1) ==========
+2026-06-18T06:10:51+00:00 Cancelling non-terminal active runs for project
+2026-06-18T06:10:51+00:00 terminating temporal workflow spark-pipeline-90516b45-477f-4dcf-969a-352e5b2d23eb
+Error: Terminate workflow failed.
+Error Details: Invalid RunId.
+('export TEMPORAL_CLI_SHOW_STACKS=1' to see stack traces)
+command terminated with exit code 1
+UPDATE 1
+2026-06-18T06:10:51+00:00 project idle (no active runs)
+2026-06-18T06:10:51+00:00 created character id=59c849fe-d507-4427-a191-88e3eb631921 name=Maya-A-a1
+2026-06-18T06:10:51+00:00 created episode id=8dfd3e9e-12e2-48ad-aad1-14016743dba0 number=29 title=US-V08 Path A Episode
+{"id":"18214078-6f1c-47c5-ac5e-d94dce8f9d87","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":63,"content_hash":"2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:10:51.960823"}
+2026-06-18T06:10:52+00:00 start http=201 run_id=ae5ea742-c825-40f8-954e-99289630ff1d episode_id=8dfd3e9e-12e2-48ad-aad1-14016743dba0 chars=1
+2026-06-18T06:10:52+00:00   poll status=RUNNING stage=STORY scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:11:07+00:00   poll status=RUNNING stage=STORY scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:11:22+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae5ea742-c825-40f8-954e-99289630ff1d","approval_id":"feb0d087-fd83-4f7f-8f96-ab1772ee2c02","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T06:11:22+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:11:32+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:11:47+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae5ea742-c825-40f8-954e-99289630ff1d","approval_id":"0a741d89-bcfb-4f29-a452-84ed79160c72","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T06:11:47+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T06:11:47+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:11:57+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:12:12+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:12:27+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:12:42+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:12:57+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:13:12+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:13:27+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:13:42+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:13:57+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:14:12+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:14:27+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:14:42+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:14:57+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:15:12+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:15:27+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:15:42+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:15:57+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:16:12+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:16:27+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:16:42+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae5ea742-c825-40f8-954e-99289630ff1d","approval_id":"3461714e-7c4b-4a63-adb5-9ae7d600ab47","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T06:16:42+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T06:16:42+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:16:52+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae5ea742-c825-40f8-954e-99289630ff1d","approval_id":"516a44e4-4df0-4762-a5b0-50440b48ad9a","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T06:16:52+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:17:07+00:00   poll status=COMPLETED stage=null scene=null ep=8dfd3e9e-12e2-48ad-aad1-14016743dba0
+2026-06-18T06:17:07+00:00 export manifest_version=5 size=16977744 chars=1
+2026-06-18T06:17:07+00:00 FAIL PATH A could not parse characters block
+2026-06-18T06:17:07+00:00 ========== PATH A: 1 char(s) 1-scene (attempt 2) ==========
+2026-06-18T06:17:07+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:17:08+00:00 project idle (no active runs)
+2026-06-18T06:17:08+00:00 created character id=ff26209b-5916-42cd-8156-21a01738cdcc name=Maya-A-a2
+2026-06-18T06:17:08+00:00 created episode id=443de5c8-a04b-418f-9e57-5f446556f50a number=30 title=US-V08 Path A Episode
+{"id":"99eb7868-63d4-4a40-941d-7e6b3b9ed19a","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":64,"content_hash":"2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:17:08.381022"}
+2026-06-18T06:17:08+00:00 start http=201 run_id=4982e442-c1a3-48b3-bf76-f4d6b5b3aa9c episode_id=443de5c8-a04b-418f-9e57-5f446556f50a chars=1
+2026-06-18T06:17:08+00:00   poll status=RUNNING stage=STORY scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:17:23+00:00   poll status=RUNNING stage=STORY scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:17:38+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"4982e442-c1a3-48b3-bf76-f4d6b5b3aa9c","approval_id":"8aa31514-7e72-4ab9-b89a-06291e650bed","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T06:17:38+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:17:48+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:18:03+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"4982e442-c1a3-48b3-bf76-f4d6b5b3aa9c","approval_id":"47d0dfc0-6772-44d0-b7dc-ae05aff14a3b","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T06:18:03+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T06:18:03+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:18:13+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:18:28+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:18:43+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:18:58+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:19:13+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:19:28+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:19:43+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:19:58+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:20:13+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"4982e442-c1a3-48b3-bf76-f4d6b5b3aa9c","approval_id":"6bddf8d1-27dd-4d51-a596-f89adf4aff01","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T06:20:13+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T06:20:13+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:20:23+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"4982e442-c1a3-48b3-bf76-f4d6b5b3aa9c","approval_id":"dabe4f98-4adf-4392-8c63-c009879dbc07","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T06:20:23+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:20:38+00:00   poll status=COMPLETED stage=null scene=null ep=443de5c8-a04b-418f-9e57-5f446556f50a
+2026-06-18T06:20:39+00:00 export manifest_version=5 size=13837392 chars=1
+2026-06-18T06:20:39+00:00 FAIL PATH A could not parse characters block
+2026-06-18T06:20:39+00:00 ========== PATH A: 1 char(s) 1-scene (attempt 3) ==========
+2026-06-18T06:20:39+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:39+00:00 project idle (no active runs)
+2026-06-18T06:20:39+00:00 created character id= name=Maya-A-a3
+2026-06-18T06:20:39+00:00 created episode id=38f3dce4-6929-4854-96e5-ecc3b55c8f4e number=31 title=US-V08 Path A Episode
+{"id":"4aa27c1a-d675-4002-aa26-3d2e8668c52d","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":65,"content_hash":"2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:39.565725"}
+2026-06-18T06:20:39+00:00 start http=422 run_id= episode_id=38f3dce4-6929-4854-96e5-ecc3b55c8f4e chars=1
+2026-06-18T06:20:39+00:00 WARN pipeline start failed attempt 3 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:39+00:00 ========== PATH A: 1 char(s) 1-scene (attempt 4) ==========
+2026-06-18T06:20:39+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:39+00:00 project idle (no active runs)
+2026-06-18T06:20:39+00:00 created character id= name=Maya-A-a4
+2026-06-18T06:20:40+00:00 created episode id=f1e7322a-ed8f-4607-9aab-2ea9fb803466 number=32 title=US-V08 Path A Episode
+{"id":"4606a691-be4d-488d-8fee-9040ecf7978b","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":66,"content_hash":"2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:40.037653"}
+2026-06-18T06:20:40+00:00 start http=422 run_id= episode_id=f1e7322a-ed8f-4607-9aab-2ea9fb803466 chars=1
+2026-06-18T06:20:40+00:00 WARN pipeline start failed attempt 4 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:40+00:00 ========== PATH A: 1 char(s) 1-scene (attempt 5) ==========
+2026-06-18T06:20:40+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:40+00:00 project idle (no active runs)
+2026-06-18T06:20:40+00:00 created character id= name=Maya-A-a5
+2026-06-18T06:20:40+00:00 created episode id=ba270df9-733e-48b0-ba87-d250e7a0951d number=33 title=US-V08 Path A Episode
+{"id":"06fe42b8-53a5-4917-b9b2-0ab8f763b1c9","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":67,"content_hash":"2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:40.502464"}
+2026-06-18T06:20:40+00:00 start http=422 run_id= episode_id=ba270df9-733e-48b0-ba87-d250e7a0951d chars=1
+2026-06-18T06:20:40+00:00 WARN pipeline start failed attempt 5 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:40+00:00 FAIL PATH A after 5 attempts
+2026-06-18T06:20:40+00:00 ========== PATH B: 3 char(s) 3-scene (attempt 1) ==========
+2026-06-18T06:20:40+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:40+00:00 project idle (no active runs)
+2026-06-18T06:20:40+00:00 created character id= name=Maya-B-a1
+2026-06-18T06:20:40+00:00 created character id= name=Eli-B-a1
+2026-06-18T06:20:40+00:00 created character id= name=Jordan-B-a1
+2026-06-18T06:20:40+00:00 created episode id=8e2d27dc-8520-412b-9c81-32455d62f486 number=34 title=US-V08 Path B Episode
+{"id":"4055feaa-bbb5-4a57-8e4a-d065c568e283","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":68,"content_hash":"016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:40.989396"}
+2026-06-18T06:20:41+00:00 start http=422 run_id= episode_id=8e2d27dc-8520-412b-9c81-32455d62f486 chars=3
+2026-06-18T06:20:41+00:00 WARN pipeline start failed attempt 1 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:41+00:00 ========== PATH B: 3 char(s) 3-scene (attempt 2) ==========
+2026-06-18T06:20:41+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:41+00:00 project idle (no active runs)
+2026-06-18T06:20:41+00:00 created character id= name=Maya-B-a2
+2026-06-18T06:20:41+00:00 created character id= name=Eli-B-a2
+2026-06-18T06:20:41+00:00 created character id= name=Jordan-B-a2
+2026-06-18T06:20:41+00:00 created episode id=93c81db7-b30f-4dfa-b1b8-44e806d74fc8 number=35 title=US-V08 Path B Episode
+{"id":"6edb10ff-0c75-4b27-a804-e933aa626d53","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":69,"content_hash":"016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:41.497866"}
+2026-06-18T06:20:41+00:00 start http=422 run_id= episode_id=93c81db7-b30f-4dfa-b1b8-44e806d74fc8 chars=3
+2026-06-18T06:20:41+00:00 WARN pipeline start failed attempt 2 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:41+00:00 ========== PATH B: 3 char(s) 3-scene (attempt 3) ==========
+2026-06-18T06:20:41+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:41+00:00 project idle (no active runs)
+2026-06-18T06:20:41+00:00 created character id= name=Maya-B-a3
+2026-06-18T06:20:41+00:00 created character id= name=Eli-B-a3
+2026-06-18T06:20:41+00:00 created character id= name=Jordan-B-a3
+2026-06-18T06:20:41+00:00 created episode id=8179ee54-51fe-4bd8-8c5b-df51706e15dc number=36 title=US-V08 Path B Episode
+{"id":"2fb79273-2ed8-45b2-844d-294837c05edb","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":70,"content_hash":"016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:41.988311"}
+2026-06-18T06:20:42+00:00 start http=422 run_id= episode_id=8179ee54-51fe-4bd8-8c5b-df51706e15dc chars=3
+2026-06-18T06:20:42+00:00 WARN pipeline start failed attempt 3 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:42+00:00 ========== PATH B: 3 char(s) 3-scene (attempt 4) ==========
+2026-06-18T06:20:42+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:42+00:00 project idle (no active runs)
+2026-06-18T06:20:42+00:00 created character id= name=Maya-B-a4
+2026-06-18T06:20:42+00:00 created character id= name=Eli-B-a4
+2026-06-18T06:20:42+00:00 created character id= name=Jordan-B-a4
+2026-06-18T06:20:42+00:00 created episode id=c03c8a99-989a-493e-967e-e456104ecd04 number=37 title=US-V08 Path B Episode
+{"id":"e055d470-04b0-43b4-a574-6179b53a5881","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":71,"content_hash":"016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:42.480953"}
+2026-06-18T06:20:42+00:00 start http=422 run_id= episode_id=c03c8a99-989a-493e-967e-e456104ecd04 chars=3
+2026-06-18T06:20:42+00:00 WARN pipeline start failed attempt 4 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:42+00:00 ========== PATH B: 3 char(s) 3-scene (attempt 5) ==========
+2026-06-18T06:20:42+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:42+00:00 project idle (no active runs)
+2026-06-18T06:20:42+00:00 created character id= name=Maya-B-a5
+2026-06-18T06:20:42+00:00 created character id= name=Eli-B-a5
+2026-06-18T06:20:42+00:00 created character id= name=Jordan-B-a5
+2026-06-18T06:20:42+00:00 created episode id=72537001-a265-4e39-b472-56e3b1240b9e number=38 title=US-V08 Path B Episode
+{"id":"511d81e3-4572-4cda-8fb7-0522a9b7b05d","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":72,"content_hash":"016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:42.995442"}
+2026-06-18T06:20:43+00:00 start http=422 run_id= episode_id=72537001-a265-4e39-b472-56e3b1240b9e chars=3
+2026-06-18T06:20:43+00:00 WARN pipeline start failed attempt 5 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:43+00:00 FAIL PATH B after 5 attempts
+2026-06-18T06:20:43+00:00 ========== PATH C: multi-episode with 3 characters ==========
+2026-06-18T06:20:43+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 1) ==========
+2026-06-18T06:20:43+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:43+00:00 project idle (no active runs)
+2026-06-18T06:20:43+00:00 created character id= name=Maya-C1-a1
+2026-06-18T06:20:43+00:00 created character id= name=Eli-C1-a1
+2026-06-18T06:20:43+00:00 created character id= name=Jordan-C1-a1
+2026-06-18T06:20:43+00:00 created episode id=b711bac2-42da-4d31-ad38-3b7c87101686 number=39 title=US-V08 Path C Episode 1
+{"id":"3e5aef85-a1dd-47f8-ab19-c91727523e7a","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":73,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:43.498917"}
+2026-06-18T06:20:43+00:00 start http=422 run_id= episode_id=b711bac2-42da-4d31-ad38-3b7c87101686 chars=3
+2026-06-18T06:20:43+00:00 WARN pipeline start failed attempt 1 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:43+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 2) ==========
+2026-06-18T06:20:43+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:43+00:00 project idle (no active runs)
+2026-06-18T06:20:43+00:00 created character id= name=Maya-C1-a2
+2026-06-18T06:20:43+00:00 created character id= name=Eli-C1-a2
+2026-06-18T06:20:43+00:00 created character id= name=Jordan-C1-a2
+2026-06-18T06:20:43+00:00 created episode id=cba9808d-38a2-469c-b0d4-d002824f3419 number=40 title=US-V08 Path C Episode 1
+{"id":"95b5ed05-fae3-4cd0-a72c-0c5fb581da92","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":74,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:43.998368"}
+2026-06-18T06:20:44+00:00 start http=422 run_id= episode_id=cba9808d-38a2-469c-b0d4-d002824f3419 chars=3
+2026-06-18T06:20:44+00:00 WARN pipeline start failed attempt 2 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:44+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 3) ==========
+2026-06-18T06:20:44+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:44+00:00 project idle (no active runs)
+2026-06-18T06:20:44+00:00 created character id= name=Maya-C1-a3
+2026-06-18T06:20:44+00:00 created character id= name=Eli-C1-a3
+2026-06-18T06:20:44+00:00 created character id= name=Jordan-C1-a3
+2026-06-18T06:20:44+00:00 created episode id=504224cf-aa7b-4460-9aed-094c1ca5b633 number=41 title=US-V08 Path C Episode 1
+{"id":"e0857646-20c9-48aa-a665-306e7819d3ae","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":75,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:44.513385"}
+2026-06-18T06:20:44+00:00 start http=422 run_id= episode_id=504224cf-aa7b-4460-9aed-094c1ca5b633 chars=3
+2026-06-18T06:20:44+00:00 WARN pipeline start failed attempt 3 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:44+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 4) ==========
+2026-06-18T06:20:44+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:44+00:00 project idle (no active runs)
+2026-06-18T06:20:44+00:00 created character id= name=Maya-C1-a4
+2026-06-18T06:20:44+00:00 created character id= name=Eli-C1-a4
+2026-06-18T06:20:44+00:00 created character id= name=Jordan-C1-a4
+2026-06-18T06:20:45+00:00 created episode id=c6c60038-1633-45cc-8c0a-30b57e2268be number=42 title=US-V08 Path C Episode 1
+{"id":"cf5ae68c-dc0a-4bb5-a10f-e271c3111a40","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":76,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:45.029717"}
+2026-06-18T06:20:45+00:00 start http=422 run_id= episode_id=c6c60038-1633-45cc-8c0a-30b57e2268be chars=3
+2026-06-18T06:20:45+00:00 WARN pipeline start failed attempt 4 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:45+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 5) ==========
+2026-06-18T06:20:45+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:45+00:00 project idle (no active runs)
+2026-06-18T06:20:45+00:00 created character id= name=Maya-C1-a5
+2026-06-18T06:20:45+00:00 created character id= name=Eli-C1-a5
+2026-06-18T06:20:45+00:00 created character id= name=Jordan-C1-a5
+2026-06-18T06:20:45+00:00 created episode id=02d160c4-be87-44d5-b2b7-faf576de24bf number=43 title=US-V08 Path C Episode 1
+{"id":"6ac18619-abce-4d33-99d3-7c186474cacb","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":77,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:45.541931"}
+2026-06-18T06:20:45+00:00 start http=422 run_id= episode_id=02d160c4-be87-44d5-b2b7-faf576de24bf chars=3
+2026-06-18T06:20:45+00:00 WARN pipeline start failed attempt 5 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:45+00:00 FAIL PATH C1 after 5 attempts
+2026-06-18T06:20:45+00:00 ========== PATH C2: 3 char(s) 1-scene (attempt 1) ==========
+2026-06-18T06:20:45+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:45+00:00 project idle (no active runs)
+2026-06-18T06:20:45+00:00 created character id= name=Maya-C2-a1
+2026-06-18T06:20:45+00:00 created character id= name=Eli-C2-a1
+2026-06-18T06:20:46+00:00 created character id= name=Jordan-C2-a1
+2026-06-18T06:20:46+00:00 created episode id=7141697f-c2a8-4f46-b7b0-b12f506f98cd number=44 title=US-V08 Path C Episode 2
+{"id":"ade09a42-cd4b-46e7-bc69-bccdfa7c962f","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":78,"content_hash":"4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:46.041474"}
+2026-06-18T06:20:46+00:00 start http=422 run_id= episode_id=7141697f-c2a8-4f46-b7b0-b12f506f98cd chars=3
+2026-06-18T06:20:46+00:00 WARN pipeline start failed attempt 1 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:46+00:00 ========== PATH C2: 3 char(s) 1-scene (attempt 2) ==========
+2026-06-18T06:20:46+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:46+00:00 project idle (no active runs)
+2026-06-18T06:20:46+00:00 created character id= name=Maya-C2-a2
+2026-06-18T06:20:46+00:00 created character id= name=Eli-C2-a2
+2026-06-18T06:20:46+00:00 created character id= name=Jordan-C2-a2
+2026-06-18T06:20:46+00:00 created episode id=d6ef0398-9ede-445b-a79c-a318614eb9d5 number=45 title=US-V08 Path C Episode 2
+{"id":"8ff237be-7d1b-4369-80f9-348794c660f4","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":79,"content_hash":"4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:46.535618"}
+2026-06-18T06:20:46+00:00 start http=422 run_id= episode_id=d6ef0398-9ede-445b-a79c-a318614eb9d5 chars=3
+2026-06-18T06:20:46+00:00 WARN pipeline start failed attempt 2 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:46+00:00 ========== PATH C2: 3 char(s) 1-scene (attempt 3) ==========
+2026-06-18T06:20:46+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:46+00:00 project idle (no active runs)
+2026-06-18T06:20:46+00:00 created character id= name=Maya-C2-a3
+2026-06-18T06:20:46+00:00 created character id= name=Eli-C2-a3
+2026-06-18T06:20:46+00:00 created character id= name=Jordan-C2-a3
+2026-06-18T06:20:47+00:00 created episode id=a726bb58-4f05-44a4-ae29-aa6471be71bc number=46 title=US-V08 Path C Episode 2
+{"id":"438634dc-d91b-4778-af24-6d60bd1e1fba","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":80,"content_hash":"4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:47.040250"}
+2026-06-18T06:20:47+00:00 start http=422 run_id= episode_id=a726bb58-4f05-44a4-ae29-aa6471be71bc chars=3
+2026-06-18T06:20:47+00:00 WARN pipeline start failed attempt 3 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:47+00:00 ========== PATH C2: 3 char(s) 1-scene (attempt 4) ==========
+2026-06-18T06:20:47+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:47+00:00 project idle (no active runs)
+2026-06-18T06:20:47+00:00 created character id= name=Maya-C2-a4
+2026-06-18T06:20:47+00:00 created character id= name=Eli-C2-a4
+2026-06-18T06:20:47+00:00 created character id= name=Jordan-C2-a4
+2026-06-18T06:20:47+00:00 created episode id=7ccb03b9-0b00-44d6-b4fa-3853fadcf01d number=47 title=US-V08 Path C Episode 2
+{"id":"22a4200f-34c9-43b5-997e-9f471abd35e3","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":81,"content_hash":"4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:47.543384"}
+2026-06-18T06:20:47+00:00 start http=422 run_id= episode_id=7ccb03b9-0b00-44d6-b4fa-3853fadcf01d chars=3
+2026-06-18T06:20:47+00:00 WARN pipeline start failed attempt 4 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:47+00:00 ========== PATH C2: 3 char(s) 1-scene (attempt 5) ==========
+2026-06-18T06:20:47+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T06:20:47+00:00 project idle (no active runs)
+2026-06-18T06:20:47+00:00 created character id= name=Maya-C2-a5
+2026-06-18T06:20:48+00:00 created character id= name=Eli-C2-a5
+2026-06-18T06:20:48+00:00 created character id= name=Jordan-C2-a5
+2026-06-18T06:20:48+00:00 created episode id=a38b1a85-e8bc-44c2-9909-83ef8b1de4b4 number=48 title=US-V08 Path C Episode 2
+{"id":"c6917dbb-e404-40d5-8dc8-49082e53e2be","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":82,"content_hash":"4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T06:20:48.073707"}
+2026-06-18T06:20:48+00:00 start http=422 run_id= episode_id=a38b1a85-e8bc-44c2-9909-83ef8b1de4b4 chars=3
+2026-06-18T06:20:48+00:00 WARN pipeline start failed attempt 5 body={"detail":[{"type":"uuid_parsing","loc":["body","character_ids",0],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",1],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}},{"type":"uuid_parsing","loc":["body","character_ids",2],"msg":"Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0","input":"","ctx":{"error":"invalid length: expected length 32 for simple format, found 0"}}]}
+2026-06-18T06:20:48+00:00 FAIL PATH C2 after 5 attempts
+2026-06-18T06:20:48+00:00 PATH C episode count=48 (expect >= 2 for C1+C2)
+2026-06-18T06:20:48+00:00 FAIL PATH C incomplete results c1= c2=
+2026-06-18T06:20:48+00:00 ========== PATH D: backward compatibility (v1/v2/v3/v4 without characters) ==========
+2026-06-18T06:20:48+00:00 v4 episode legacy run=1e9e6246-b059-4107-b50d-c1626d5d8e84 manifest=
+2026-06-18T06:20:48+00:00 v3 narrated legacy run=e3c0d402-f623-42e7-a120-c5b284d13242 manifest=3
+2026-06-18T06:20:49+00:00 v2 multi-scene legacy run=3258cc26-d971-47d9-8c7f-b5868c2de9d4 manifest=3
+2026-06-18T06:20:49+00:00 PASS PATH D backward compatibility (v2=1 v3=1 v4=0)
+2026-06-18T06:20:49+00:00 ========== PATH E: platform regression ==========
+2026-06-18T06:20:49+00:00 FAIL PATH E no reference run
+2026-06-18T06:20:49+00:00 DONE FAIL=1
+2026-06-18T07:00:10+00:00 US-V08 E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-18T07:00:10+00:00 ========== PATH A: 1 char(s) 1-scene (attempt 1) ==========
+2026-06-18T07:00:10+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T07:00:10+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T07:00:11+00:00 cleaned project characters (was 3)
+2026-06-18T07:00:11+00:00 created character id=b7788c4e-402a-42c6-9e78-1c8c159d6f95 name=Maya-A-a1
+2026-06-18T07:00:11+00:00 created episode id=9e706eb0-a2e7-4cd5-b146-322978a20970 number=49 title=US-V08 Path A Episode
+{"id":"c718778f-b745-4f09-82fc-b073625f50be","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":83,"content_hash":"2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/2a166bb5111b927a227facb9c9c547e97ad52fa96845dcb7d3bf4addc5ce7031","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T07:00:11.091492"}
+2026-06-18T07:00:11+00:00 start http=201 run_id=e2fbec9b-047a-4fde-8e0b-50a2a6290861 episode_id=9e706eb0-a2e7-4cd5-b146-322978a20970 chars=1
+2026-06-18T07:00:11+00:00   poll status=RUNNING stage=STORY scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:00:26+00:00   poll status=RUNNING stage=STORY scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:00:41+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"e2fbec9b-047a-4fde-8e0b-50a2a6290861","approval_id":"a260244c-8d91-4cc3-a034-64d357fde84c","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T07:00:41+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:00:51+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:01:06+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"e2fbec9b-047a-4fde-8e0b-50a2a6290861","approval_id":"b3dd92f2-f58d-4a3e-ab43-cf2f5d916e25","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T07:01:06+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T07:01:06+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:01:16+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:01:31+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:01:46+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:02:01+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:02:16+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:02:31+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:02:46+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:03:01+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:03:16+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:03:31+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"e2fbec9b-047a-4fde-8e0b-50a2a6290861","approval_id":"2754bde5-85ce-4932-9b8a-dc7bec7a8a00","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T07:03:31+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T07:03:31+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:03:41+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"e2fbec9b-047a-4fde-8e0b-50a2a6290861","approval_id":"fe19225c-4a26-4ea6-92f3-2ed21dba8991","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T07:03:41+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:03:56+00:00   poll status=COMPLETED stage=null scene=null ep=9e706eb0-a2e7-4cd5-b146-322978a20970
+2026-06-18T07:03:56+00:00 export manifest_version=5 size=14123089 chars=1
+2026-06-18T07:03:56+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T07:03:57+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T07:03:57+00:00 run character_ids count=1 (expect 1)
+2026-06-18T07:03:57+00:00 PASS PATH A character run e2fbec9b-047a-4fde-8e0b-50a2a6290861 ep=49 chars=1
+2026-06-18T07:03:57+00:00 ========== PATH B: 3 char(s) 3-scene (attempt 1) ==========
+2026-06-18T07:03:57+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T07:03:57+00:00 project idle (no active runs)
+DELETE 1
+2026-06-18T07:03:57+00:00 cleaned project characters (was 1)
+2026-06-18T07:03:57+00:00 created character id=e3399ad8-f7bb-4da0-82be-2aa899cf7acc name=Maya-B-a1
+2026-06-18T07:03:57+00:00 created character id=02614956-62e9-4875-a15c-1d61dc01aed5 name=Eli-B-a1
+2026-06-18T07:03:57+00:00 created character id=529e275c-de16-4357-9028-a42b9d1a3995 name=Jordan-B-a1
+2026-06-18T07:03:58+00:00 created episode id=e270a06b-23db-4d3c-9a22-1e860069f4ac number=50 title=US-V08 Path B Episode
+{"id":"c6e6b52f-bf5a-4eb4-a752-f0f53e1fec0c","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":84,"content_hash":"016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/016bb85ec3e2fa444fe77cc7705eee02f729f8860bbfb67048990c1491234a4b","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T07:03:58.016841"}
+2026-06-18T07:03:58+00:00 start http=201 run_id=925b2faa-6d34-47de-8c24-c79dd1ea1382 episode_id=e270a06b-23db-4d3c-9a22-1e860069f4ac chars=3
+2026-06-18T07:03:58+00:00   poll status=RUNNING stage=STORY scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:04:13+00:00   poll status=RUNNING stage=STORY scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:04:28+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"27dd5ae6-4265-48f1-9d6e-1398ad03c68f","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T07:04:28+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:04:38+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:04:53+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"887bcde0-3405-4f9b-a58a-3c63cc6c8f24","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T07:04:53+00:00 --- Scene 1 / 3 STORYBOARD ---
+2026-06-18T07:04:53+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:05:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:05:18+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:05:33+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:05:48+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:06:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:06:18+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:06:33+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:06:48+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:07:03+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:07:18+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"6c939bfa-1b8c-4e8d-8f50-8282fc2f3667","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T07:07:18+00:00 --- Scene 1 / 3 VIDEO (narration) ---
+2026-06-18T07:07:18+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:07:28+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"9cc01f8f-5247-42ac-94f1-1c03a4b145f2","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T07:07:28+00:00 --- Scene 2 / 3 STORYBOARD ---
+2026-06-18T07:07:28+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:07:38+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:07:53+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:08:08+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:08:23+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:08:38+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:08:53+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:09:08+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:09:23+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:09:38+00:00   poll status=RUNNING stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:09:53+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"29c5dfcf-31de-4e25-a3c3-a53a5d6ab0fa","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":2}
+2026-06-18T07:09:53+00:00 --- Scene 2 / 3 VIDEO (narration) ---
+2026-06-18T07:09:53+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:10:03+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"d7097ac7-7516-4109-b557-3335ad1d343f","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":2}
+2026-06-18T07:10:03+00:00 --- Scene 3 / 3 STORYBOARD ---
+2026-06-18T07:10:03+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=2 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:10:13+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:10:28+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:10:43+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:10:58+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:11:13+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:11:28+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:11:43+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:11:58+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:12:13+00:00   poll status=RUNNING stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:12:28+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"1c9fa6c6-1500-4f90-9317-37b25f9d832f","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":3}
+2026-06-18T07:12:28+00:00 --- Scene 3 / 3 VIDEO (narration) ---
+2026-06-18T07:12:28+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:12:38+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"925b2faa-6d34-47de-8c24-c79dd1ea1382","approval_id":"11d5052b-a5c7-496a-88e6-e7b0f3670a58","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":3}
+2026-06-18T07:12:38+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=3 ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:12:53+00:00   poll status=COMPLETED stage=null scene=null ep=e270a06b-23db-4d3c-9a22-1e860069f4ac
+2026-06-18T07:12:54+00:00 export manifest_version=5 size=45287215 chars=3
+2026-06-18T07:12:54+00:00 NARRATION assets for run: 3 (expect >= 3)
+2026-06-18T07:12:55+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T07:12:55+00:00 run character_ids count=3 (expect 3)
+2026-06-18T07:12:55+00:00 PASS PATH B character run 925b2faa-6d34-47de-8c24-c79dd1ea1382 ep=50 chars=3
+2026-06-18T07:12:55+00:00 ========== PATH C: multi-episode with 3 characters ==========
+2026-06-18T07:12:55+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 1) ==========
+2026-06-18T07:12:55+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T07:12:55+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T07:12:55+00:00 cleaned project characters (was 3)
+2026-06-18T07:12:55+00:00 created character id=c0060497-c442-4dc6-83d1-ad46555e2760 name=Maya-C1-a1
+2026-06-18T07:12:55+00:00 created character id=cfef308b-de24-434f-b191-108470d22232 name=Eli-C1-a1
+2026-06-18T07:12:56+00:00 created character id=e4fd1ba1-2532-4cc8-a5ef-1387bac1a353 name=Jordan-C1-a1
+2026-06-18T07:12:56+00:00 created episode id=6df2e0cf-d571-4181-bfb9-b33c5657cfd5 number=51 title=US-V08 Path C Episode 1
+{"id":"f0398cc5-ff4e-41e5-b91d-4493b921e8e3","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":85,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T07:12:56.047708"}
+2026-06-18T07:12:56+00:00 start http=201 run_id=6f76999c-a519-4ea2-a64f-f8e9b10c61f1 episode_id=6df2e0cf-d571-4181-bfb9-b33c5657cfd5 chars=3
+2026-06-18T07:12:56+00:00   poll status=RUNNING stage=STORY scene=null ep=6df2e0cf-d571-4181-bfb9-b33c5657cfd5
+2026-06-18T07:13:11+00:00   poll status=RUNNING stage=STORY scene=null ep=6df2e0cf-d571-4181-bfb9-b33c5657cfd5
+2026-06-18T07:13:26+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=6df2e0cf-d571-4181-bfb9-b33c5657cfd5
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"6f76999c-a519-4ea2-a64f-f8e9b10c61f1","approval_id":"f47ce6f5-156a-4f4f-89e0-d5654ed5b10b","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T07:13:26+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=6df2e0cf-d571-4181-bfb9-b33c5657cfd5
+2026-06-18T07:13:36+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=6df2e0cf-d571-4181-bfb9-b33c5657cfd5
+2026-06-18T07:13:51+00:00   poll status=FAILED stage=SCRIPT scene=null ep=6df2e0cf-d571-4181-bfb9-b33c5657cfd5
+2026-06-18T07:13:51+00:00 FAIL pipeline FAILED: {"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"6f76999c-a519-4ea2-a64f-f8e9b10c61f1","status":"FAILED","current_stage":"SCRIPT","current_scene_index":null,"scene_count":1,"episode_id":"6df2e0cf-d571-4181-bfb9-b33c5657cfd5","episode_number":51,"episode_title":"US-V08 Path C Episode 1","stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-18T07:13:39.870134"}
+2026-06-18T07:13:51+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 2) ==========
+2026-06-18T07:13:51+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T07:13:51+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T07:13:51+00:00 cleaned project characters (was 3)
+2026-06-18T07:13:51+00:00 created character id=7e5d4715-5fc1-4f34-ac3d-08a5331f2556 name=Maya-C1-a2
+2026-06-18T07:13:51+00:00 created character id=3dd7d4f3-c30b-44fe-a6a3-211d330dbced name=Eli-C1-a2
+2026-06-18T07:13:51+00:00 created character id=6b4bd68f-f162-41af-824a-458e9c7b5331 name=Jordan-C1-a2
+2026-06-18T07:13:51+00:00 created episode id=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7 number=52 title=US-V08 Path C Episode 1
+{"id":"88d07d0a-a3b0-4738-beaa-284c5faec9fc","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":86,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T07:13:52.002129"}
+2026-06-18T07:13:52+00:00 start http=201 run_id=878e52f0-3609-480c-a164-b461f4a944c5 episode_id=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7 chars=3
+2026-06-18T07:13:52+00:00   poll status=RUNNING stage=STORY scene=null ep=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7
+2026-06-18T07:14:07+00:00   poll status=RUNNING stage=STORY scene=null ep=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7
+2026-06-18T07:14:22+00:00   poll status=RUNNING stage=STORY scene=null ep=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7
+2026-06-18T07:14:37+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"878e52f0-3609-480c-a164-b461f4a944c5","approval_id":"fa75580f-a215-4217-b966-9465d5385f27","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T07:14:37+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7
+2026-06-18T07:14:47+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7
+2026-06-18T07:15:02+00:00   poll status=FAILED stage=SCRIPT scene=null ep=3958be3e-9d7e-47c0-b53d-7eb8fc9349f7
+2026-06-18T07:15:02+00:00 FAIL pipeline FAILED: {"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"878e52f0-3609-480c-a164-b461f4a944c5","status":"FAILED","current_stage":"SCRIPT","current_scene_index":null,"scene_count":1,"episode_id":"3958be3e-9d7e-47c0-b53d-7eb8fc9349f7","episode_number":52,"episode_title":"US-V08 Path C Episode 1","stages":["IDEA","STORY","SCRIPT","STORYBOARD","VIDEO"],"updated_at":"2026-06-18T07:14:53.415518"}
+2026-06-18T07:15:02+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 3) ==========
+2026-06-18T07:15:02+00:00 Cancelling non-terminal active runs for project
+2026-06-18T07:15:02+00:00 terminating temporal workflow spark-pipeline-6f76999c-a519-4ea2-a64f-f8e9b10c61f1
+Error: Terminate workflow failed.
+Error Details: Invalid RunId.
+('export TEMPORAL_CLI_SHOW_STACKS=1' to see stack traces)
+command terminated with exit code 1
+UPDATE 1
+2026-06-18T07:15:02+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T07:15:02+00:00 cleaned project characters (was 3)
+2026-06-18T07:15:03+00:00 created character id=9255a380-b7b0-41a3-b5a6-a6d51a2f2732 name=Maya-C1-a3
+2026-06-18T07:15:03+00:00 created character id=c2d70807-392f-4d49-80d8-7b862c1a2a77 name=Eli-C1-a3
+2026-06-18T07:15:03+00:00 created character id=e8451dcf-aa97-4c64-8ce4-1e419f804419 name=Jordan-C1-a3
+2026-06-18T07:15:03+00:00 created episode id=19f77d4a-9874-4dea-862c-4ec18be1cea0 number=53 title=US-V08 Path C Episode 1
+{"id":"489f4301-58e9-46a3-95c4-6b209398a0db","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":87,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T07:15:03.122065"}
+2026-06-18T07:15:03+00:00 start http=201 run_id=2dacd911-853d-497f-a3f1-9b5f7332dcdc episode_id=19f77d4a-9874-4dea-862c-4ec18be1cea0 chars=3
+2026-06-18T07:15:03+00:00   poll status=RUNNING stage=STORY scene=null ep=19f77d4a-9874-4dea-862c-4ec18be1cea0
+2026-06-18T07:15:18+00:00   poll status=RUNNING stage=STORY scene=null ep=19f77d4a-9874-4dea-862c-4ec18be1cea0
+2026-06-18T07:15:33+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=19f77d4a-9874-4dea-862c-4ec18be1cea0
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"2dacd911-853d-497f-a3f1-9b5f7332dcdc","approval_id":"dbc14034-2731-4b44-98d2-421c12f3c324","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T07:15:33+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=19f77d4a-9874-4dea-862c-4ec18be1cea0
+2026-06-18T07:15:43+00:00 ========== PATH C2: 3 char(s) 1-scene (attempt 1) ==========
+2026-06-18T07:15:43+00:00 Cancelling non-terminal active runs for project
+2026-06-18T07:15:43+00:00 terminating temporal workflow spark-pipeline-878e52f0-3609-480c-a164-b461f4a944c5
+Error: Terminate workflow failed.
+Error Details: Invalid RunId.
+('export TEMPORAL_CLI_SHOW_STACKS=1' to see stack traces)
+command terminated with exit code 1
+2026-06-18T07:15:43+00:00 terminating temporal workflow spark-pipeline-2dacd911-853d-497f-a3f1-9b5f7332dcdc
+Error: Terminate workflow failed.
+Error Details: Invalid RunId.
+('export TEMPORAL_CLI_SHOW_STACKS=1' to see stack traces)
+command terminated with exit code 1
+UPDATE 2
+2026-06-18T07:15:43+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T07:15:44+00:00 cleaned project characters (was 3)
+2026-06-18T07:15:44+00:00 created character id=1c0ad503-649b-4713-a004-45bf60c3329e name=Maya-C2-a1
+2026-06-18T07:15:44+00:00 created character id=73c18583-f654-41df-a99d-88534e15074d name=Eli-C2-a1
+2026-06-18T07:15:44+00:00 created character id=6e32632a-bd56-45c3-98aa-51e3d95b2c12 name=Jordan-C2-a1
+2026-06-18T07:15:44+00:00 created episode id=dca4b850-729f-49ed-99a8-d5ed63a4f01a number=54 title=US-V08 Path C Episode 2
+{"id":"32ddee6b-9084-4c18-9275-d8aaf01fc1f7","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":88,"content_hash":"4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/4ac1af39925bfa341f0b8ebae3543a2591074dbbd1e74511033e3f728aa556c8","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T07:15:44.319042"}
+2026-06-18T07:15:44+00:00 start http=201 run_id=ae26081f-2783-4edd-a700-deb3d2f9c80a episode_id=dca4b850-729f-49ed-99a8-d5ed63a4f01a chars=3
+2026-06-18T07:15:44+00:00   poll status=RUNNING stage=STORY scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:15:59+00:00   poll status=RUNNING stage=STORY scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:16:14+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae26081f-2783-4edd-a700-deb3d2f9c80a","approval_id":"5bff119c-e3e7-4fea-879a-90a80c9b972c","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T07:16:14+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:16:24+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:16:39+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae26081f-2783-4edd-a700-deb3d2f9c80a","approval_id":"82c9df6e-ee56-4f22-8ed5-ed1c8fb599ce","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T07:16:39+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T07:16:39+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:16:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:17:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:17:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:17:34+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:17:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:18:04+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:18:19+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:18:34+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:18:49+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:19:04+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae26081f-2783-4edd-a700-deb3d2f9c80a","approval_id":"90ded3d8-dcd9-446f-a057-750795030f35","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T07:19:04+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T07:19:04+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:19:14+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"ae26081f-2783-4edd-a700-deb3d2f9c80a","approval_id":"1c9d05cd-7e99-4886-a470-53988d1a2302","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T07:19:14+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:19:29+00:00   poll status=COMPLETED stage=null scene=null ep=dca4b850-729f-49ed-99a8-d5ed63a4f01a
+2026-06-18T07:19:30+00:00 export manifest_version=5 size=15119230 chars=3
+2026-06-18T07:19:30+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T07:19:30+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T07:19:30+00:00 run character_ids count=3 (expect 3)
+2026-06-18T07:19:30+00:00 PASS PATH C2 character run ae26081f-2783-4edd-a700-deb3d2f9c80a ep=54 chars=3
+2026-06-18T07:19:30+00:00 PATH C episode count=54 (expect >= 2 for C1+C2)
+2026-06-18T07:19:30+00:00 FAIL PATH C incomplete results c1= c2=54
+2026-06-18T07:19:30+00:00 ========== PATH D: backward compatibility (v1/v2/v3/v4 without characters) ==========
+2026-06-18T07:19:30+00:00 v4 episode legacy run=1e9e6246-b059-4107-b50d-c1626d5d8e84 manifest=
+2026-06-18T07:19:31+00:00 v3 narrated legacy run=e3c0d402-f623-42e7-a120-c5b284d13242 manifest=3
+2026-06-18T07:19:32+00:00 v2 multi-scene legacy run=3258cc26-d971-47d9-8c7f-b5868c2de9d4 manifest=3
+2026-06-18T07:19:32+00:00 PASS PATH D backward compatibility (v2=1 v3=1 v4=0)
+2026-06-18T07:19:32+00:00 ========== PATH E: platform regression ==========
+2026-06-18T07:19:32+00:00 audit=1 runs=1 episodes=54 characters=3
+2026-06-18T07:19:32+00:00 PASS PATH E platform regression
+2026-06-18T07:19:32+00:00 DONE FAIL=1
+2026-06-18T08:08:40+00:00 US-V08 E2E start PROJECT=ba0c4636-817c-423b-9771-20100e080b76 API=http://10.233.21.231:8000
+2026-06-18T08:08:40+00:00 ========== PATH C1: 3 char(s) 1-scene (attempt 1) ==========
+2026-06-18T08:08:40+00:00 Cancelling non-terminal active runs for project
+UPDATE 0
+2026-06-18T08:08:40+00:00 project idle (no active runs)
+DELETE 3
+2026-06-18T08:08:40+00:00 cleaned project characters (was 3)
+2026-06-18T08:08:40+00:00 created character id=084e989c-36c9-4d8a-bc76-ba6be4f3b7e8 name=Maya-C1-a1
+2026-06-18T08:08:40+00:00 created character id=42ebdc12-77af-4174-b09c-483b98b211a6 name=Eli-C1-a1
+2026-06-18T08:08:40+00:00 created character id=a13b2180-f914-444a-802c-5d75176dc08d name=Jordan-C1-a1
+2026-06-18T08:08:40+00:00 created episode id=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d number=55 title=US-V08 Path C1 Episode
+{"id":"30bdff0f-9fde-44f8-9a2a-fb99d2403187","project_id":"ba0c4636-817c-423b-9771-20100e080b76","stage":"IDEA","version":89,"content_hash":"9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","minio_key":"ba0c4636-817c-423b-9771-20100e080b76/IDEA/9dcbd4d87ec7b9ffe172b50e4bd90a717fc05bd06d4f71f641c5b74b76304e2f","is_ai_generated":false,"branch":"main","metadata_json":{"style_note":"character bible test"},"created_at":"2026-06-18T08:08:40.933781"}
+2026-06-18T08:08:40+00:00 start http=201 run_id=885b7b2c-56b9-409d-b640-8111af7c9434 episode_id=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d chars=3
+2026-06-18T08:08:40+00:00   poll status=RUNNING stage=STORY scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:08:55+00:00   poll status=RUNNING stage=STORY scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:09:11+00:00   poll status=RUNNING stage=STORY scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:09:26+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"885b7b2c-56b9-409d-b640-8111af7c9434","approval_id":"bc557a25-f593-4c9e-9a7b-ddf15c349dbb","decision":"APPROVED","stage":"STORY","status":"AWAITING_APPROVAL","current_stage":"STORY","scene_index":null}
+2026-06-18T08:09:26+00:00   poll status=AWAITING_APPROVAL stage=STORY scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:09:36+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:09:51+00:00   poll status=RUNNING stage=SCRIPT scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:10:06+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"885b7b2c-56b9-409d-b640-8111af7c9434","approval_id":"658ec564-68e9-4a63-9ed7-f279a72f378a","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T08:10:06+00:00 --- Scene 1 / 1 STORYBOARD ---
+2026-06-18T08:10:06+00:00   poll status=AWAITING_APPROVAL stage=SCRIPT scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:10:16+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:10:31+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:10:46+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:11:01+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:11:16+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:11:31+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:11:46+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:12:01+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:12:16+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:12:31+00:00   poll status=RUNNING stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:12:46+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"885b7b2c-56b9-409d-b640-8111af7c9434","approval_id":"b5d27629-d806-485d-810a-dc984796c309","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T08:12:46+00:00 --- Scene 1 / 1 VIDEO (narration) ---
+2026-06-18T08:12:46+00:00   poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:12:56+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"885b7b2c-56b9-409d-b640-8111af7c9434","approval_id":"cdb0aead-4aa5-4a88-ae0a-329a74ce6fa6","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T08:12:56+00:00   poll status=AWAITING_APPROVAL stage=VIDEO scene=1 ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:13:11+00:00   poll status=COMPLETED stage=null scene=null ep=a21f5d65-fc0c-41f1-a65f-fd9cfae4ae1d
+2026-06-18T08:13:11+00:00 export manifest_version=5 size=17748182 chars=3
+2026-06-18T08:13:11+00:00 NARRATION assets for run: 1 (expect >= 1)
+2026-06-18T08:13:12+00:00 episode status=COMPLETED (expect COMPLETED)
+2026-06-18T08:13:12+00:00 run character_ids count=3 (expect 3)
+2026-06-18T08:13:12+00:00 PASS PATH C1 character run 885b7b2c-56b9-409d-b640-8111af7c9434 ep=55 chars=3
+2026-06-18T08:13:12+00:00 DONE FAIL=0 (only=C1)

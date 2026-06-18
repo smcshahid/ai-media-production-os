@@ -1,0 +1,150 @@
+{
+  "characters": [
+    {
+      "description": "US-V08 C2-2-a1 character",
+      "id": "73c18583-f654-41df-a99d-88534e15074d",
+      "name": "Eli-C2-a1",
+      "personality_notes": "calm pragmatic",
+      "role": "mentor",
+      "visual_traits": "weathered field jacket"
+    },
+    {
+      "description": "US-V08 C2-3-a1 character",
+      "id": "6e32632a-bd56-45c3-98aa-51e3d95b2c12",
+      "name": "Jordan-C2-a1",
+      "personality_notes": "optimistic energetic",
+      "role": "ally",
+      "visual_traits": "bright orange scarf"
+    },
+    {
+      "description": "US-V08 C2-1-a1 character",
+      "id": "1c0ad503-649b-4713-a004-45bf60c3329e",
+      "name": "Maya-C2-a1",
+      "personality_notes": "curious analytical",
+      "role": "protagonist",
+      "visual_traits": "silver lab coat"
+    }
+  ],
+  "episode_id": "dca4b850-729f-49ed-99a8-d5ed63a4f01a",
+  "episode_number": 54,
+  "exported_at": "2026-06-18T07:19:29.784200Z",
+  "files": [
+    {
+      "approval_at": null,
+      "asset_id": "d585b232-ad5f-4d82-b822-c3ff1336d12d",
+      "branch": "main",
+      "content_hash": "bd1c1b241b3205218f873817ad4104c5324f4552ecdd574fbf91353d848212aa",
+      "episode_number": 54,
+      "path": "idea.txt",
+      "size_bytes": 174,
+      "stage": "IDEA",
+      "version": 1
+    },
+    {
+      "approval_at": "2026-06-18T07:16:14.411238Z",
+      "asset_id": "c702a19d-e1c8-4b90-a97b-cc654fa524ae",
+      "branch": "ai-draft",
+      "content_hash": "68f28d7dfaabff8f5a4d08db66049fd625fd68165a8337ee9bc13c75ebc5c522",
+      "episode_number": 54,
+      "path": "episodes/episode_54/story.md",
+      "size_bytes": 3010,
+      "stage": "STORY",
+      "version": 50
+    },
+    {
+      "approval_at": "2026-06-18T07:16:39.480302Z",
+      "asset_id": "9e0eef96-f57a-4cf5-94cc-4f45dc258381",
+      "branch": "ai-draft",
+      "content_hash": "adbd9b7a190d7d933cf8f313312b484f1428d8e4deb8f6684540981971acd8f3",
+      "episode_number": 54,
+      "path": "episodes/episode_54/script.fountain",
+      "size_bytes": 1322,
+      "stage": "SCRIPT",
+      "version": 42
+    },
+    {
+      "approval_at": "2026-06-18T07:19:04.678136Z",
+      "asset_id": "35d443d0-8d82-41d0-b005-cee56297ee61",
+      "branch": "ai-draft",
+      "content_hash": "e46117df4e36a1b1b8985ae5a0166d56b668191ce535d917e8ead1f119c305c8",
+      "episode_number": 54,
+      "frame_index": 1,
+      "path": "episodes/episode_54/frames/frame_01.png",
+      "scene_index": 1,
+      "size_bytes": 3252267,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-18T07:19:04.678136Z",
+      "asset_id": "25f576f7-f79e-4e0a-b51c-7a339a98d8a5",
+      "branch": "ai-draft",
+      "content_hash": "7f21f055da89a83c7709cc63ce41f2a996c270255469a81f65024cf130e10b5e",
+      "episode_number": 54,
+      "frame_index": 2,
+      "path": "episodes/episode_54/frames/frame_02.png",
+      "scene_index": 1,
+      "size_bytes": 2780212,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-18T07:19:04.678136Z",
+      "asset_id": "8ed9e5db-58b5-47af-a32a-8af4291064f9",
+      "branch": "ai-draft",
+      "content_hash": "e43cdbc2c9682fdedb40e60bc8ac7cbf123a37c9b22bcc44da2f43031d6db77b",
+      "episode_number": 54,
+      "frame_index": 3,
+      "path": "episodes/episode_54/frames/frame_03.png",
+      "scene_index": 1,
+      "size_bytes": 2489240,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-18T07:19:04.678136Z",
+      "asset_id": "581ae2ce-5eb9-4a60-866b-f7aff0d8edae",
+      "branch": "ai-draft",
+      "content_hash": "5d86c4b32c2d99e9e6fa4b4179e54f5d2878e4934eeacc234aef685f11f181c7",
+      "episode_number": 54,
+      "frame_index": 4,
+      "path": "episodes/episode_54/frames/frame_04.png",
+      "scene_index": 1,
+      "size_bytes": 3050473,
+      "stage": "STORYBOARD",
+      "version": 38
+    },
+    {
+      "approval_at": "2026-06-18T07:19:14.728581Z",
+      "asset_id": "68b65923-6ba2-4639-9175-c47f8b2bce1b",
+      "branch": "ai-draft",
+      "content_hash": "0550cb2849eaefe71886655f8246ad1396006188c56d6126316a4c30befd4437",
+      "episode_number": 54,
+      "has_narration": true,
+      "narration_source": "espeak",
+      "path": "episodes/episode_54/scene_video.mp4",
+      "scene_index": 1,
+      "size_bytes": 2655188,
+      "stage": "VIDEO",
+      "version": 26
+    },
+    {
+      "approval_at": "2026-06-18T07:19:14.728581Z",
+      "asset_id": "ceee04a9-cac0-437d-84e1-ebf1440cb7a0",
+      "branch": "ai-draft",
+      "content_hash": "7234f3bd421aff9920fb71a8dd2d9724dd25f6b93021a44d149df190c821e1c6",
+      "duration_sec": 31.006,
+      "episode_number": 54,
+      "path": "episodes/episode_54/narration.wav",
+      "scene_index": 1,
+      "size_bytes": 1367396,
+      "stage": "NARRATION",
+      "tts_source": "espeak",
+      "version": 23
+    }
+  ],
+  "manifest_version": "5",
+  "narration_enabled": true,
+  "pipeline_run_id": "ae26081f-2783-4edd-a700-deb3d2f9c80a",
+  "project_id": "ba0c4636-817c-423b-9771-20100e080b76"
+}

@@ -44,11 +44,19 @@ def plan_shots_node(state: CinematographyState, settings: Settings) -> Cinematog
             f"{rejection_note}\n"
         )
 
+    character_block = ""
+    character_bible = (state.get("character_bible") or "").strip()
+    if character_bible:
+        character_block = f"\n{character_bible}\n"
+
     user_prompt = prompt_cfg["user_template"].format(
         script_excerpt=excerpt,
         style_note_block=style_block,
     )
-    full_prompt = f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}{revision_block}"
+    full_prompt = (
+        f"{prompt_cfg['system'].strip()}\n\n{user_prompt.strip()}"
+        f"{character_block}{revision_block}"
+    )
 
     model_id = load_storyboard_model(settings)
     try:

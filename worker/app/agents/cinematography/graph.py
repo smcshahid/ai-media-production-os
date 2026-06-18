@@ -29,6 +29,7 @@ def run_cinematography_graph(
     script_fountain: str,
     style_note: str | None = None,
     rejection_note: str | None = None,
+    character_bible: str | None = None,
 ) -> CinematographyState:
     compiled = build_cinematography_graph(settings)
     result: CinematographyState = compiled.invoke(
@@ -36,6 +37,7 @@ def run_cinematography_graph(
             "script_fountain": script_fountain,
             "style_note": style_note,
             "rejection_note": rejection_note,
+            "character_bible": character_bible,
         }
     )
     if result.get("error"):

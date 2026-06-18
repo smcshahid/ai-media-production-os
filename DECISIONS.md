@@ -506,3 +506,27 @@ Format: `D-NN | Decision | Date | Rationale`
 **Decision:** Export uses **`manifest_version=4`** when run has `episode_id`. ZIP layout: `episodes/episode_XX/` prefix (with `scenes/scene_XX/` for multi-scene). Shared `idea.txt` at ZIP root. Top-level `episode_id`, `episode_number`. **v1/v2/v3 unchanged** for legacy runs.
 **Rationale:** Backward-compatible version ladder; episode consumers detect v4 paths.
 **Verification:** `api/tests/unit/test_episode_export.py`; US-V07 PATH D.
+
+### D-89 — Phase 7 — Character entity (SCR-2026-005)
+**Date:** 2026-06-18
+**Decision:** Introduce **`characters`** table with `project_id`, `name`, `description`, `role`, `visual_traits`, `personality_notes`. Unique `(project_id, name)`. Alembic **0006** additive only. **Max 3 characters per project** enforced in service layer.
+**Rationale:** Structured character profiles for continuity without memory/graph infrastructure.
+**Verification:** `api/alembic/versions/0006_character_bible_pilot.py`; `api/tests/unit/test_character_service.py`; US-V08 PATH A–C.
+
+### D-90 — Phase 7 — Pipeline run character binding
+**Date:** 2026-06-18
+**Decision:** `pipeline_runs.character_ids` JSON stores up to **3** character UUIDs selected at `POST /pipeline/start`. IDs validated against project. Response includes `character_ids` for audit/traceability.
+**Rationale:** Explicit run-scoped continuity contract; no retroactive mutation of past runs.
+**Verification:** `api/app/routes/pipeline.py`; `api/app/routes/characters.py`; US-V08 export checks.
+
+### D-91 — Phase 7 — Worker character bible injection
+**Date:** 2026-06-18
+**Decision:** Worker fetches run-bound character profiles via API and injects **`format_character_bible()`** text into story architect, screenwriter, and cinematography agent state. No new pipeline stages or approvals.
+**Rationale:** Reduce continuity drift using existing LLM prompts; pilot goal is improvement not perfect identity preservation.
+**Verification:** `worker/app/tools/characters.py`; `packages/aimpos-core/aimpos_core/character.py`; agent graph state fields.
+
+### D-92 — Phase 7 — Export manifest v5
+**Date:** 2026-06-18
+**Decision:** Export uses **`manifest_version=5`** when run has non-empty `character_ids`. Top-level **`characters[]`** mirrors profile fields. **v1/v2/v3/v4 unchanged** when no characters bound. v5 may co-exist with episode and narration fields (v4 layout + character metadata).
+**Rationale:** Backward-compatible version ladder; v5 consumers detect character metadata in portable exports.
+**Verification:** `api/app/domain/export/manifest.py`; `api/tests/unit/test_character_export.py`; US-V08 PATH D.

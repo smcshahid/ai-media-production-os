@@ -11,6 +11,7 @@ from __future__ import annotations
 import uuid
 from typing import Literal
 
+from aimpos_core.character import MAX_CHARACTERS_PER_RUN
 from aimpos_core.enums import ApprovalDecision, EpisodeStatus, PipelineRunStatus, PipelineStage
 from aimpos_core.events import AuditEventType
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -31,6 +32,7 @@ from app.infrastructure.db.models.episode import Episode
 from app.infrastructure.db.models.pipeline_run import PipelineRun
 from app.infrastructure.db.repositories.approval import ApprovalRepository
 from app.infrastructure.db.repositories.audit_event import AuditEventRepository
+from app.infrastructure.db.repositories.character import CharacterRepository
 from app.infrastructure.db.repositories.episode import EpisodeRepository
 from app.infrastructure.db.repositories.pipeline_run import PipelineRunRepository
 from app.infrastructure.db.repositories.project import ProjectRepository
@@ -45,6 +47,7 @@ class PipelineStartRequest(BaseModel):
     project_id: uuid.UUID
     scene_count: int = Field(default=1, ge=1, le=3)
     episode_id: uuid.UUID | None = None
+    character_ids: list[uuid.UUID] | None = Field(default=None, max_length=3)
 
 
 class PipelineStartResponse(BaseModel):
@@ -55,6 +58,7 @@ class PipelineStartResponse(BaseModel):
     current_stage: str | None
     scene_count: int
     episode_id: uuid.UUID | None = None
+    character_ids: list[uuid.UUID] | None = None
 
 
 class PipelineApproveRequest(BaseModel):
@@ -182,12 +186,29 @@ async def pipeline_start(
             detail="a pipeline run is already active for this project",
         )
 
+    character_id_strs: list[str] | None = None
+    if body.character_ids:
+        if len(body.character_ids) > MAX_CHARACTERS_PER_RUN:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"at most {MAX_CHARACTERS_PER_RUN} characters per run",
+            )
+        unique_ids = list(dict.fromkeys(body.character_ids))
+        chars = await CharacterRepository(session).list_by_ids(project_id, unique_ids)
+        if len(chars) != len(unique_ids):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="one or more character_ids not found for project",
+            )
+        character_id_strs = [str(c.id) for c in chars]
+
     run = PipelineRun(
         project_id=project_id,
         status=PipelineRunStatus.PENDING,
         current_stage=None,
         scene_count=body.scene_count,
         episode_id=body.episode_id,
+        character_ids=character_id_strs,
     )
     await runs.add(run)
     if episode is not None:
@@ -242,6 +263,7 @@ async def pipeline_start(
         current_stage=run.current_stage.value,
         scene_count=body.scene_count,
         episode_id=body.episode_id,
+        character_ids=body.character_ids,
     )
 
 

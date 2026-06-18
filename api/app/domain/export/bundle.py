@@ -23,6 +23,7 @@ async def build_export_zip(
     scene_count: int | None = None,
     episode_id: uuid.UUID | None = None,
     episode_number: int | None = None,
+    characters: list[dict[str, str | None]] | None = None,
 ) -> ExportBundleResult:
     """Load MinIO bytes, build manifest, assemble deterministic ZIP."""
     exported_at = datetime.now(tz=UTC)
@@ -41,6 +42,7 @@ async def build_export_zip(
         scene_count=scene_count,
         episode_id=episode_id,
         episode_number=episode_number,
+        characters=characters,
     )
     manifest_bytes = json.dumps(manifest, indent=2, sort_keys=True).encode("utf-8")
     manifest_hash = compute_content_hash(manifest_bytes)

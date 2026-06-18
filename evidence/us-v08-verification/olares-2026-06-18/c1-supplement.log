@@ -1,0 +1,22 @@
+2026-06-18T08:04:00+00:00 PATH C1 supplemental complete run=2dacd911-853d-497f-a3f1-9b5f7332dcdc ep=53
+2026-06-18T08:04:00+00:00 poll status=AWAITING_APPROVAL stage=SCRIPT scene=null
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"2dacd911-853d-497f-a3f1-9b5f7332dcdc","approval_id":"1087fe6e-13aa-4efd-8328-ecfb23ccfdb7","decision":"APPROVED","stage":"SCRIPT","status":"AWAITING_APPROVAL","current_stage":"SCRIPT","scene_index":null}
+2026-06-18T08:04:00+00:00 poll status=AWAITING_APPROVAL stage=SCRIPT scene=null
+2026-06-18T08:04:10+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:04:26+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:04:41+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:04:56+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:05:11+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:05:26+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:05:41+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:05:56+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:06:11+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:06:26+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:06:41+00:00 poll status=RUNNING stage=STORYBOARD scene=1
+2026-06-18T08:06:56+00:00 poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"2dacd911-853d-497f-a3f1-9b5f7332dcdc","approval_id":"9bf5359c-8ec4-4635-84eb-7bb1f9d21020","decision":"APPROVED","stage":"STORYBOARD","status":"AWAITING_APPROVAL","current_stage":"STORYBOARD","scene_index":1}
+2026-06-18T08:06:56+00:00 poll status=AWAITING_APPROVAL stage=STORYBOARD scene=1
+2026-06-18T08:07:06+00:00 poll status=AWAITING_APPROVAL stage=VIDEO scene=1
+{"project_id":"ba0c4636-817c-423b-9771-20100e080b76","run_id":"2dacd911-853d-497f-a3f1-9b5f7332dcdc","approval_id":"10beabeb-dfcc-48c6-9dca-9ad1132abb10","decision":"APPROVED","stage":"VIDEO","status":"AWAITING_APPROVAL","current_stage":"VIDEO","scene_index":1}
+2026-06-18T08:07:06+00:00 poll status=AWAITING_APPROVAL stage=VIDEO scene=1
+2026-06-18T08:07:21+00:00 poll status=COMPLETED stage=null scene=null

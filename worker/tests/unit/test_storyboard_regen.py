@@ -95,31 +95,35 @@ def test_run_storyboard_agent_passes_rejection_note_to_graph() -> None:
                         return_value="DB note ignored when arg set",
                     ):
                         with patch(
-                            "app.temporal.activities.storyboard.run_cinematography_graph",
-                            graph_mock,
+                            "app.temporal.activities.storyboard.fetch_run_character_profiles",
+                            return_value=([], ""),
                         ):
                             with patch(
-                                "app.temporal.activities.storyboard.unload_ollama_before_comfyui",
-                                return_value="qwen3:14b",
+                                "app.temporal.activities.storyboard.run_cinematography_graph",
+                                graph_mock,
                             ):
                                 with patch(
-                                    "app.temporal.activities.storyboard.generate_storyboard_png",
-                                    return_value=PNG,
+                                    "app.temporal.activities.storyboard.unload_ollama_before_comfyui",
+                                    return_value="qwen3:14b",
                                 ):
                                     with patch(
-                                        "app.temporal.activities.storyboard.store_storyboard_batch",
-                                        return_value=stored,
+                                        "app.temporal.activities.storyboard.generate_storyboard_png",
+                                        return_value=PNG,
                                     ):
                                         with patch(
-                                            "app.temporal.activities.storyboard.append_audit_event"
+                                            "app.temporal.activities.storyboard.store_storyboard_batch",
+                                            return_value=stored,
                                         ):
-                                            asyncio.run(
-                                                run_storyboard_agent(
-                                                    project_id,
-                                                    run_id,
-                                                    rejection_note="Brighter lighting please",
+                                            with patch(
+                                                "app.temporal.activities.storyboard.append_audit_event"
+                                            ):
+                                                asyncio.run(
+                                                    run_storyboard_agent(
+                                                        project_id,
+                                                        run_id,
+                                                        rejection_note="Brighter lighting please",
+                                                    )
                                                 )
-                                            )
 
     graph_mock.assert_called_once()
     assert graph_mock.call_args.kwargs["rejection_note"] == "Brighter lighting please"

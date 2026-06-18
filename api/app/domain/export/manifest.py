@@ -13,6 +13,7 @@ MANIFEST_VERSION_V1 = "1"
 MANIFEST_VERSION_V2 = "2"
 MANIFEST_VERSION_V3 = "3"
 MANIFEST_VERSION_V4 = "4"
+MANIFEST_VERSION_V5 = "5"
 
 
 def _has_narration_entries(file_entries: list[tuple[ExportFileEntry, bytes]]) -> bool:
@@ -30,7 +31,10 @@ def _manifest_version_for_entries(
     file_entries: list[tuple[ExportFileEntry, bytes]],
     *,
     episode_number: int | None = None,
+    has_characters: bool = False,
 ) -> str:
+    if has_characters:
+        return MANIFEST_VERSION_V5
     if episode_number is not None:
         return MANIFEST_VERSION_V4
     if _has_narration_entries(file_entries):
@@ -54,10 +58,12 @@ def build_manifest(
     scene_count: int | None = None,
     episode_id: uuid.UUID | None = None,
     episode_number: int | None = None,
+    characters: list[dict[str, str | None]] | None = None,
 ) -> dict:
     """Build manifest dict from resolved entries and loaded bytes."""
+    has_characters = bool(characters)
     manifest_version = _manifest_version_for_entries(
-        file_entries, episode_number=episode_number
+        file_entries, episode_number=episode_number, has_characters=has_characters
     )
     has_narration = _has_narration_entries(file_entries)
     files = []
@@ -117,6 +123,8 @@ def build_manifest(
     if episode_id is not None and episode_number is not None:
         payload["episode_id"] = str(episode_id)
         payload["episode_number"] = episode_number
+    if characters:
+        payload["characters"] = characters
     return payload
 
 

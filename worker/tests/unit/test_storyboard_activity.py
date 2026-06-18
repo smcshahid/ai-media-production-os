@@ -57,30 +57,34 @@ def test_run_storyboard_agent_happy_path() -> None:
                         return_value=None,
                     ):
                         with patch(
-                            "app.temporal.activities.storyboard.run_cinematography_graph",
-                            return_value={
-                                "shots": shots,
-                                "model_id": "qwen3:14b",
-                                "duration_ms": 100,
-                            },
+                            "app.temporal.activities.storyboard.fetch_run_character_profiles",
+                            return_value=([], ""),
                         ):
                             with patch(
-                                "app.temporal.activities.storyboard.unload_ollama_before_comfyui",
-                                return_value="qwen3:14b",
+                                "app.temporal.activities.storyboard.run_cinematography_graph",
+                                return_value={
+                                    "shots": shots,
+                                    "model_id": "qwen3:14b",
+                                    "duration_ms": 100,
+                                },
                             ):
                                 with patch(
-                                    "app.temporal.activities.storyboard.generate_storyboard_png",
-                                    return_value=PNG,
+                                    "app.temporal.activities.storyboard.unload_ollama_before_comfyui",
+                                    return_value="qwen3:14b",
                                 ):
                                     with patch(
-                                        "app.temporal.activities.storyboard.store_storyboard_batch",
-                                        return_value=stored,
+                                        "app.temporal.activities.storyboard.generate_storyboard_png",
+                                        return_value=PNG,
                                     ):
                                         with patch(
-                                            "app.temporal.activities.storyboard.append_audit_event"
+                                            "app.temporal.activities.storyboard.store_storyboard_batch",
+                                            return_value=stored,
                                         ):
-                                            result = asyncio.run(
-                                                run_storyboard_agent(project_id, run_id)
-                                            )
+                                            with patch(
+                                                "app.temporal.activities.storyboard.append_audit_event"
+                                            ):
+                                                result = asyncio.run(
+                                                    run_storyboard_agent(project_id, run_id)
+                                                )
 
     assert len(result.split(",")) == STORYBOARD_FRAME_COUNT
